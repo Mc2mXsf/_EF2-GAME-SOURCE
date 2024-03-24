@@ -2389,13 +2389,17 @@ void G_StartCinematic( void )
 	level.cinematic = true;
 	gi.cvar_set( "sv_cinematic", "1" );
 
-	entity = g_entities[ 0 ].entity;
+	//--------------------------------------------------------------
+	// GAMEFIX - cinematic accessing client 0 only and always - chrissstrahl
+	//--------------------------------------------------------------
+	for (int i = 0; i < maxclients->integer;i++) {
+		entity = g_entities[i].entity;
+		if(entity && entity->isSubclassOf(Player))
+		{
+			Player* player = (Player*)entity;
 
-	if ( entity->isSubclassOf( Player ) )
-	{
-		Player *player = (Player *)entity;
-
-		player->cinematicStarted();
+			player->cinematicStarted();
+		}
 	}
 }
 
