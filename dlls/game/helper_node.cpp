@@ -1766,8 +1766,26 @@ HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float ma
 				continue;
 			
 			Player* player;
-			player = GetPlayer(0);
-			if ( !player ) return false;
+			//--------------------------------------------------------------
+			// GAMEFIX - check with all players - grab any player on server - chrissstrahl
+			//--------------------------------------------------------------
+			Player* playerChosen = GetPlayer(0);
+			if (!playerChosen) {
+				for (int i = 1; i < maxclients->integer; i++) {
+					player = GetPlayer(i);
+					if ( player ) {
+						playerChosen = player;
+					}
+				}
+			}
+			player = playerChosen;
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - error: cannot convert 'bool' to 'HelperNode*' in return - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !player ) return nullptr;
+
 
 			if ( player->WithinDistance( node->origin , minDistanceFromPlayer ) )
 				continue;
@@ -2296,8 +2314,26 @@ HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , 
 
 			//Check if node is within the minimum distance of the player
 			Player* player;
-			player = GetPlayer(0);
-			if ( !player ) return false;
+			//--------------------------------------------------------------
+			// GAMEFIX - check with all players - grab any player on server - chrissstrahl
+			//--------------------------------------------------------------
+			Player* playerChosen = GetPlayer(0);
+			if (!playerChosen) {
+				for (int i = 1; i < maxclients->integer; i++) {
+					player = GetPlayer(i);
+					if (player) {
+						playerChosen = player;
+					}
+				}
+			}
+			player = playerChosen;
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - error: cannot convert 'bool' to 'HelperNode*' in return - chrissstrahl
+			//--------------------------------------------------------------
+			if (!player) return nullptr;
+
 
 			if ( player->WithinDistance( node->origin , minDistFromPlayer ) )
 				continue;
