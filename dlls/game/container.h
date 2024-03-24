@@ -35,6 +35,11 @@
 //
 #include "g_local.h"
 
+//--------------------------------------------------------------
+// GAMEFIX - error: 'gi' was not declared in this scope - chrissstrahl
+//--------------------------------------------------------------
+extern game_import_t gi;
+
 #define CONTAINER_Error gi.Error
 #define CONTAINER_DPrintf gi.DPrintf
 #define CONTAINER_WDPrintf gi.WDPrintf
