@@ -2322,6 +2322,11 @@ Event EV_TriggerHurt_SetDamageType
 
 CLASS_DECLARATION( TriggerUse, TriggerHurt, "trigger_hurt" )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Trigger Hurt can no longer be activated by pressing USE - chrissstrahl
+	//--------------------------------------------------------------
+	{ &EV_Use, NULL },
+
 	{ &EV_Trigger_Effect,						&TriggerHurt::Hurt },
 	{ &EV_TriggerHurt_SetDamage,				&TriggerHurt::SetDamage },
 	{ &EV_SetGameplayDamage,					&TriggerHurt::setDamage },
