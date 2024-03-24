@@ -800,6 +800,13 @@ void MultiplayerManager::changePlayerModel( Player *player, const char *modelNam
 	if ( !_inMultiplayerGame || !player )
 		return;
 
+	//--------------------------------------------------------------
+	// GAMEFIX - can't change model when dead, preventing animation replay - chrissstrahl
+	//--------------------------------------------------------------
+	if ( player->health <= 0.0f )
+		return;
+
+
 	if ( ( player->model != modelName ) || ( force ) )
 	{
 		modelToUse = modelName;
