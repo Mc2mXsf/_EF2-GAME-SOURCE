@@ -356,34 +356,28 @@ inline void SafePtrBase::InitSafePtr
 
 template<class T>
 class SafePtr : public SafePtrBase
-	{
-	public:
-		SafePtr( T* objptr = 0 );
-		SafePtr( const SafePtr& obj );
+{
+public:
+	SafePtr(T* objptr = 0);
+	SafePtr(const SafePtr& obj);
 
-		SafePtr& operator=( const SafePtr& obj );
-		SafePtr& operator=( T * const obj );
+	SafePtr& operator=(const SafePtr& obj);
+	SafePtr& operator=(T* const obj);
 
-#ifdef LINUX
-		template<class T> friend int operator==<>( SafePtr<T> a, T *b );
-		template<class T> friend int operator!=<>( SafePtr<T> a, T *b );
-		template<class T> friend int operator==<>( T *a, SafePtr<T> b );
-		template<class T> friend int operator!=<>( T *a, SafePtr<T> b );
-		template<class T> friend int operator==<>( SafePtr<T> a, SafePtr<T> b );
-		template<class T> friend int operator!=<>( SafePtr<T> a, SafePtr<T> b );
-#else
-		template<class T> friend int operator==( SafePtr<T> a, T *b );
-		template<class T> friend int operator!=( SafePtr<T> a, T *b );
-		template<class T> friend int operator==( T *a, SafePtr<T> b );
-		template<class T> friend int operator!=( T *a, SafePtr<T> b );
-		template<class T> friend int operator==( SafePtr<T> a, SafePtr<T> b );
-		template<class T> friend int operator!=( SafePtr<T> a, SafePtr<T> b );
-#endif
+	//--------------------------------------------------------------
+	// GAMEFIX - error: declaration of template parameter 'T' shadows template parameter - chrissstrahl
+	//--------------------------------------------------------------
+	template<class F> friend int operator==(SafePtr<F> a, F* b);
+	template<class F> friend int operator!=(SafePtr<F> a, F* b);
+	template<class F> friend int operator==(F* a, SafePtr<F> b);
+	template<class F> friend int operator!=(F* a, SafePtr<F> b);
+	template<class F> friend int operator==(SafePtr<F> a, SafePtr<F> b);
+	template<class F> friend int operator!=(SafePtr<F> a, SafePtr<F> b);
 
-      operator	T*() const;
-		T* operator->() const;
-		T& operator*() const;
-	};
+	operator T* () const;
+	T* operator->() const;
+	T& operator*() const;
+};
 
 template<class T>
 inline SafePtr<T>::SafePtr( T* objptr )
