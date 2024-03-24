@@ -182,6 +182,10 @@ inline qboolean Archiver::NoErrors
 	return ( !fileerror );
    }
 
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member *Container<str>::Archive' requires 'template<>' syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<str>::Archive
 	(
    Archiver &arc
@@ -206,6 +210,10 @@ inline void Container<str>::Archive
       }
 	}
 
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member 'Container<Vector>::Archive' requires 'template<>' syntax syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<Vector>::Archive
 	(
    Archiver &arc
@@ -230,6 +238,10 @@ inline void Container<Vector>::Archive
       }
 	}
 
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member 'Container<int>::Archive' requires 'template<>' syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<int>::Archive
 	(
    Archiver &arc
@@ -254,6 +266,10 @@ inline void Container<int>::Archive
       }
 	}
 
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member 'Container<float>::Archive' requires 'template<>' syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<float>::Archive
 	(
    Archiver &arc
@@ -296,6 +312,10 @@ inline void Container<float>::Archive
 // Returns:		None
 // 
 //===============================================================
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member 'Container<Class*>::Archive' requires 'template<>' syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<Class*>::Archive
 (
 	Archiver &arc
@@ -327,6 +347,10 @@ inline void Container<Class*>::Archive
 // Returns:		None
 // 
 //===============================================================
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member 'Container<Class>::Archive' requires 'template<>' syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<Class>::Archive
 (
 	Archiver &arc
@@ -388,6 +412,10 @@ inline void Container< SafePtr<Class*> >::Archive
 // Returns:		None
 // 
 //===============================================================
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member 'Container<Entity*>::Archive' requires 'template<>' syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<Entity*>::Archive
 (
 	Archiver &arc
@@ -406,6 +434,10 @@ inline void Container<Entity*>::Archive
 	}
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - error: specializing member 'Container<EntityPtr>::Archive' requires 'template<>' syntax - chrissstrahl
+//--------------------------------------------------------------
+template<>
 inline void Container<EntityPtr>::Archive
 (
 	Archiver &arc
