@@ -1898,13 +1898,21 @@ extern "C" void G_ClientUserinfoChanged( gentity_t *ent, const char *userinfo )
 
 		// Setup the name
 
-		strncpy( tempName, s, MAX_NETNAME - 1 - 3 );
+		//--------------------------------------------------------------
+		// GAMEFIX - Stack Buffer Overflow - chrissstrahl
+		//--------------------------------------------------------------
+		strncpy(tempName, s, MAX_NETNAME - 1); // Prevent Overflow
+		tempName[MAX_NETNAME - 1] = '\0'; // Add zero termination
+
 
 		// Make sure there is a valid name
 
 		validName = false;
 
-		for ( i = 0 ; i < strlen( tempName ) ; i++ )
+		//--------------------------------------------------------------
+		// GAMEFIX - Prevent Overflow and Check for zero termination - chrissstrahl
+		//--------------------------------------------------------------
+		for (int i = 0; i < MAX_NETNAME && tempName[i] != '\0'; i++)
 		{
 			if ( ( tempName[ i ] == '^' ) && ( tempName[ i + 1 ] >= '0' ) && ( tempName[ i + 1 ] <= '9' ) )
 			{
@@ -1930,7 +1938,7 @@ extern "C" void G_ClientUserinfoChanged( gentity_t *ent, const char *userinfo )
 
 		// Strip out bad characters
 
-		for ( i = 0 ; i < strlen( ent->client->pers.netname ) ; i++ )
+		for (int i = 0 ; i < strlen( ent->client->pers.netname ) ; i++ )
 		{
 			if ( ent->client->pers.netname[ i ] == ':' )
 			{
