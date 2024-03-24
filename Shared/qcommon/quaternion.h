@@ -18,7 +18,12 @@
 #define _QUATERNION_H_
 
 #include <math.h>
-#include "vector.h"
+
+//--------------------------------------------------------------
+// GAMEFIX - fatal error: vector.h: No such file or directory #include "vector.h" - chrissstrahl
+//--------------------------------------------------------------
+#include <game/vector.h>
+
 //#include "Matrix.h"
 
 #define UNUSED_ARG (void)
