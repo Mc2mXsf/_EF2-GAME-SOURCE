@@ -5571,7 +5571,10 @@ void DoBeamAttack::_createBeam( Actor &self )
 			trace.ent->entity->Damage( &self, &self, damage, vec_zero, dir, vec_zero, 0, 0, MOD_ELECTRIC );		
 			}
 
-		beam = CreateBeam( NULL, beamShader.c_str(), tagOrig, _beamEndPos, 1, 1.5f, 0.25f );      
+		//--------------------------------------------------------------
+		// GAMEFIX - error: 'CreateBeam' was not declared in this scope - requires 9 not 7 parameters - chrissstrahl
+		//--------------------------------------------------------------
+		beam = CreateBeam( NULL, beamShader.c_str(), tagOrig, _beamEndPos, 1, 1.5f, 0.25f, 0.0f, nullptr );      
 		_beamList.AddObject ( beam );
 		}	
 
