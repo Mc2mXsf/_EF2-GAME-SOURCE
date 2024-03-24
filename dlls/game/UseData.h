@@ -55,7 +55,10 @@ class UseData : public Class
 		int _useCount;
 
 	public:
-		UseData::UseData()
+		//--------------------------------------------------------------
+		// GAMEFIX - error : extra qualification 'UseData::' on member 'UseData'[-fpermissive]
+		//--------------------------------------------------------------
+		UseData()
 			:_useAnim(""),
 			 _useType(""),
 			 _useThread(""),
