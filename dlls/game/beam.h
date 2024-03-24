@@ -40,6 +40,12 @@ extern Event EV_FuncBeam_ToggleDelay;
 extern Event EV_FuncBeam_FindEndpoint;
 extern Event EV_FuncBeam_EndAlpha;
 
+//--------------------------------------------------------------
+// GAMEFIX -  error: 'FuncBeam* CreateBeam(...)' wasn't declared in this scope - chrissstrahl
+//--------------------------------------------------------------
+class FuncBeam;
+FuncBeam* CreateBeam(const char* model, const char* shader, const Vector& start, const Vector& end, int numsegments = 4, float scale = 1.0f, float life = 1.0f, float damage = 0.0f, Entity* origin_target = nullptr);
+
 class FuncBeam : public ScriptSlave
 	{
    protected:

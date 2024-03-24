@@ -9013,8 +9013,12 @@ BehaviorReturnCode_t	ShockWater::Evaluate
 		end_pos += dir;
 
 		// Add the left and right beams
-      left_beam   = CreateBeam( NULL, "emap1", left_tag_orig, end_pos, 10, 1.5f, 0.2f );
-		right_beam  = CreateBeam( NULL, "emap1", right_tag_orig, end_pos, 10, 1.5f, 0.2f );
+
+		//--------------------------------------------------------------
+		// GAMEFIX - error: 'CreateBeam' was not declared in this scope - requires 9 not 7 parameters - chrissstrahl
+		//--------------------------------------------------------------
+		left_beam   = CreateBeam( NULL, "emap1", left_tag_orig, end_pos, 10, 1.5f, 0.2f, 0.0f, nullptr );
+		right_beam  = CreateBeam( NULL, "emap1", right_tag_orig, end_pos, 10, 1.5f, 0.2f, 0.0f, nullptr );
 
 		center_point = center_actor->origin;
 
@@ -9037,8 +9041,11 @@ BehaviorReturnCode_t	ShockWater::Evaluate
 			center_actor->Sound( "sound/weapons/sword/electric/hitmix2.wav", 0, 1.0f, 500.0f );
 			}
 
-      // create the center beam
-      center_beam = CreateBeam( NULL, "emap1", end_pos, center_point, 20, 3.0f, 0.2f );
+		// create the center beam
+		//--------------------------------------------------------------
+		// GAMEFIX - error: 'CreateBeam' was not declared in this scope - requires 9 not 7 parameters - chrissstrahl
+		//--------------------------------------------------------------
+		center_beam = CreateBeam( NULL, "emap1", end_pos, center_point, 20, 3.0f, 0.2f, 0.0f, nullptr );
 
 		// Damage player if in water
 	
@@ -9195,7 +9202,10 @@ BehaviorReturnCode_t	Shock::Evaluate
 			}
 
 		// Add the beam
-		beam = CreateBeam( NULL, beamShader.c_str(), tag_orig, end_pos, 2, 1.5f, 0.25f );
+		//--------------------------------------------------------------
+		// GAMEFIX - error: 'CreateBeam' was not declared in this scope - requires 9 not 7 parameters - chrissstrahl
+		//--------------------------------------------------------------
+		beam = CreateBeam( NULL, beamShader.c_str(), tag_orig, end_pos, 2, 1.5f, 0.25f,0.0f,nullptr );
 
       already_started = true;
 		}
@@ -9357,7 +9367,10 @@ BehaviorReturnCode_t	MultiShock::Evaluate
 			}
 
 		// Add the beam
-		beam1 = CreateBeam( NULL, beamShader.c_str(), tag1_orig, end_pos1, 20, 1.5f, 0.2f );
+		//--------------------------------------------------------------
+		// GAMEFIX - error: 'CreateBeam' was not declared in this scope - requires 9 not 7 parameters - chrissstrahl
+		//--------------------------------------------------------------
+		beam1 = CreateBeam( NULL, beamShader.c_str(), tag1_orig, end_pos1, 20, 1.5f, 0.2f, 0.0f, nullptr );
 
 		trace = G_Trace( tag2_orig, Vector (-15.0f, -15.0f, -15.0f), Vector (15.0f, 15.0f, 15.0f), end_pos2, &self, MASK_SHOT, false, "ShockAttack" );
 
@@ -9370,7 +9383,10 @@ BehaviorReturnCode_t	MultiShock::Evaluate
 			}
 
 		// Add the beam
-		beam2 = CreateBeam( NULL, beamShader.c_str(), tag2_orig, end_pos2, 20, 1.5f, 0.2f );
+		//--------------------------------------------------------------
+		// GAMEFIX - error: 'CreateBeam' was not declared in this scope - requires 9 not 7 parameters - chrissstrahl
+		//--------------------------------------------------------------
+		beam2 = CreateBeam( NULL, beamShader.c_str(), tag2_orig, end_pos2, 20, 1.5f, 0.2f,0.0f,nullptr );
 
       already_started = true;
 		}
@@ -9498,7 +9514,10 @@ BehaviorReturnCode_t	ShockDown::Evaluate
 			}
 
 		// Add the beam
-		beam = CreateBeam( NULL, beamShader.c_str(), tag_orig, end_pos, 20, 1.5f, 0.2f );
+		//--------------------------------------------------------------
+		// GAMEFIX - error: 'CreateBeam' was not declared in this scope - requires 9 not 7 parameters - chrissstrahl
+		//--------------------------------------------------------------
+		beam = CreateBeam( NULL, beamShader.c_str(), tag_orig, end_pos, 20, 1.5f, 0.2f, 0.0f, nullptr );
 
       already_started = true;
 		}
