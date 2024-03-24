@@ -37,6 +37,16 @@
 #include <qcommon/stringresource.hpp>
 #include "teammateroster.hpp"
 
+//--------------------------------------------------------------
+// GAMEFIX - error: '...' was not declared in this scope - chrissstrahl
+//--------------------------------------------------------------
+extern void L_ShutdownEvents();
+extern void L_InitEvents();
+extern void L_UnarchiveEvents(Archiver& arc);
+extern void L_ArchiveEvents(Archiver& arc);
+extern void L_ProcessPendingEvents();
+extern void L_ClearEventList();
+
 Vector			vec_origin = Vector(0, 0, 0);
 Vector			vec_zero = Vector(0, 0, 0);
 
