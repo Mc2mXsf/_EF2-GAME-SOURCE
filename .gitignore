@@ -1,6 +1,7 @@
 *.vcxproj
 *.user
 *.opt
+*.sbr
 *.sdf
 *.suo
 *.sln
@@ -18,10 +19,9 @@
 *.o
 *.so
 Browse.VC.*
-code/linux/debugi386
-code/linux/releasei386
-code/Executable/Debug
-code/dlls/game/Debug
-code/dlls/Debug
-code/ipch
-code/dlls/game/game.vcxproj.user
+linux/debugi386
+linux/releasei386
+Executable/Debug
+dlls/game/Debug
+dlls/Debug
+ipch
