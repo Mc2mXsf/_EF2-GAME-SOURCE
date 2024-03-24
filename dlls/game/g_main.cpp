@@ -2111,8 +2111,15 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 		{
 			// check for a password
 			value = Info_ValueForKey( userinfo, "password" );
-			if ( strcmp( password->string, value ) != 0 )
+			
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Server rejecting players with a password set, when the server it self has currently no password set
+			// ADDED - Printouts
+			//--------------------------------------------------------------
+			if (strlen(password->string) && strcmp(password->string, value) != 0)
 			{
+				multiplayerManager.HUDPrintAllClients(va("%s ^3faild to connect: $$InvalidPassword$$\n", Info_ValueForKey(userinfo, "name")));
+				gi.Printf("%s faild to connect: $$InvalidPassword$$\n", Info_ValueForKey(userinfo, "name"));
 				return "$$InvalidPassword$$";
 			}
 		}
