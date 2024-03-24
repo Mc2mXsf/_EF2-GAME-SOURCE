@@ -119,8 +119,13 @@ qboolean SV_FilterPacket( const char *from )
 {
 	int i;
 	unsigned	in;
-	byte m[ 4 ];
 	const char *p;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - uninitialized variable - chrissstrahl
+	//--------------------------------------------------------------
+	byte m[ 4 ] = { 0 };
+	
 	
 	if ( !from )
 		return false;
