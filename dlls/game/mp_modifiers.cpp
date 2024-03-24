@@ -1799,7 +1799,10 @@ int ModifierDiffusion::getStat( Player *player, int statNum, int value )
 			return _bombCarriedByRedTeamIconIndex;
 		else if ( bomber && ( bomberTeamName == "Blue" ) )
 			return _bombCarriedByBlueTeamIconIndex;
-		else if ( _bomb->getSolidType() != SOLID_NOT )
+		//--------------------------------------------------------------
+		// GAMEFIX - prevent crash if level does not have a bomb item in the gamemode - chrissstrahl
+		//--------------------------------------------------------------
+		else if ( _bomb && _bomb->getSolidType() != SOLID_NOT )
 			return _bombInBaseIconIndex;
 		else
 			return _bombOnGroundIconIndex;
