@@ -1818,20 +1818,26 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		return;
 	}
 
+	//--------------------------------------------------------------
+	// GAMEFIX - g_gametype changed to correct mp_gametype - chrissstrahl
+	//--------------------------------------------------------------
 	if ( ( stricmp( command.c_str(), "restart" )    != 0 ) &&
 		 ( stricmp( command.c_str(), "nextmap" )    != 0 ) &&
 		 ( stricmp( command.c_str(), "map" )        != 0 ) &&
-		 ( stricmp( command.c_str(), "g_gametype" ) != 0 ) &&
+		 ( stricmp( command.c_str(), "mp_gametype" ) != 0 ) && //was g_gametype
 		 ( stricmp( command.c_str(), "kick" )       != 0 ) )
 	{
 		HUDPrint( player->entnum, "$$InvalidVote$$\n" );
-		HUDPrint( player->entnum, "$$VoteCommands$$: restart, nextmap, map <mapname>, g_gametype <n> and kick <player>.\n" );
+		HUDPrint( player->entnum, "$$VoteCommands$$: restart, nextmap, map <mapname>, mp_gametype <n> and kick <player>.\n" );
 		return;
 	}
 
 	// If a map command, make sure the map actually exists
-
-	if ( stricmp( command.c_str(), "map" ) == 0 )
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - check for nextmap - chrissstrahl
+	//--------------------------------------------------------------
+	if ( stricmp( command.c_str(), "map" ) == 0 || stricmp(command.c_str(), "nextmap") == 0)
 	{
 		str fullMapName;
 		str printString;
