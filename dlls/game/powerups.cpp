@@ -1118,6 +1118,21 @@ bool HoldableItemExplosive::isPlayerInRange( const Vector &position, float maxDi
 			continue;
 		}
 
+		//hzm gamefix chrissstrahl - make mine not beep if same team, (check owner first cuz thats faster)
+
+		//--------------------------------------------------------------
+		// GAMEFIX - holdable mine beeping if owner is standing on it - chrissstrahl
+		//--------------------------------------------------------------
+		if (entity == _owner){
+			continue;
+		}
+		//--------------------------------------------------------------
+		// GAMEFIX - holdable mine beeping if player from same team is standing on it (excluding DEATHMATCH mp_gametype 0) - chrissstrahl
+		//--------------------------------------------------------------
+		if (multiplayerManager.inMultiplayer() && mp_gametype->integer != 0 && multiplayerManager.getPlayersTeam((Player*)entity) == multiplayerManager.getPlayersTeam((Player*)_owner)) {
+			continue;
+		}
+
 		dir = entity->centroid - position;
 		distance = dir.length();
 
