@@ -1561,7 +1561,21 @@ void CThread::EventWaitForPlayer( Event *ev )
 
 void CThread::CPrint( Event *ev )
 {
-	gi.centerprintf( &g_entities[ 0 ], CENTERPRINT_IMPORTANCE_NORMAL, ev->GetString( 1 ) );
+	//--------------------------------------------------------------
+	// GAMEFIX - importance from normal to critical, to make sure the message is always shown - chrissstrahl
+	// GAMEFIX - message now shown to all players not just client 0 - chrissstrahl
+	//--------------------------------------------------------------
+	int         j;
+	gentity_t* other;
+
+	for (j = 0; j < game.maxclients; j++)
+	{
+		other = &g_entities[j];
+		if (other->inuse && other->client)
+		{
+			gi.centerprintf(other, CENTERPRINT_IMPORTANCE_CRITICAL, ev->GetString(1));
+		}
+	}
 }
 
 void CThread::Print( Event *ev )
@@ -3135,7 +3149,10 @@ void CThread::CenterPrint( Event *ev )
 		other = &g_entities[ j ];
 		if ( other->inuse && other->client )
 		{
-			gi.centerprintf( other, CENTERPRINT_IMPORTANCE_NORMAL, ev->GetString( 1 ) );
+			//--------------------------------------------------------------
+			// GAMEFIX - importance from normal to critical, to make sure the message is always shown - chrissstrahl
+			//--------------------------------------------------------------
+			gi.centerprintf( other, CENTERPRINT_IMPORTANCE_CRITICAL, ev->GetString( 1 ) );
 		}
 	}
 }
