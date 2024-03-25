@@ -623,6 +623,13 @@ void AwardSystem::pickedupItem( Player *player, MultiplayerItemType itemType, co
 		if ( !playerToCheck )
 			continue;
 
+		//--------------------------------------------------------------
+		// GAMEFIX - don't, if a player with a item gets killed and another player picks it up - chrissstrahl
+		//--------------------------------------------------------------
+		if (playerToCheck->health <= 0.0f)
+			continue;
+
+
 		// Make sure not to check the player that picked up the item
 
 		if ( playerToCheck == player )
