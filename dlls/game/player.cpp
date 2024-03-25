@@ -6625,6 +6625,13 @@ void Player::Kill( Event *ev )
 		return;
 	}
 	
+	//--------------------------------------------------------------
+	// GAMEFIX - kill working during cinematic/spectator or if already dead - chrissstrahl
+	//--------------------------------------------------------------
+	if (level.cinematic || health <= 0.0f || multiplayerManager.inMultiplayer() && multiplayerManager.isPlayerSpectator(this)) {
+		return;
+	}
+	
 	flags &= ~FL_GODMODE;
 	health = 1.0f;
 	Damage( this, this, 10.0f, origin, vec_zero, vec_zero, 0, DAMAGE_NO_PROTECTION, MOD_SUICIDE );
