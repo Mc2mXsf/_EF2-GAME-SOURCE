@@ -281,15 +281,21 @@ void PuzzleObject::Think( void )
 	if( (_puzzleState == PUZZLE_STATE_IDLE) || (_puzzleState == PUZZLE_STATE_IDLE_OPEN) )
 	{
 		// get the player's distance from the puzzle	
-		player = (Player *)g_entities[ 0 ].entity;
-		if ( player )
+		//--------------------------------------------------------------
+		// GAMEFIX - check all players not just client 0 - chrissstrahl
+		//--------------------------------------------------------------
+		for (int i = 0; i < maxclients->integer; i++)
 		{
-			dir = player->origin - origin;
-			distance = dir.length();
+			player = (Player*)g_entities[i].entity;
+			if (player) {
+				dir = player->origin - origin;
+				distance = dir.length();
 
-			if ( distance < _openDistance )
-			{
-				playerNearby = true;
+				if (distance < _openDistance)
+				{
+					playerNearby = true;
+					break;
+				}
 			}
 		}
 
