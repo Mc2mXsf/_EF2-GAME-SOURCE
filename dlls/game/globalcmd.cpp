@@ -1572,18 +1572,27 @@ void CThread::Print( Event *ev )
 	n = ev->NumArgs();
 	for( i = 1; i <= n; i++ )
 	{
-		gi.DPrintf( "%s", ev->GetString( i ) );
+		//--------------------------------------------------------------
+		// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+		//--------------------------------------------------------------
+		gi.Printf( "%s", ev->GetString( i ) );
 	}
 }
 
 void CThread::PrintInt( Event *ev )
 {
-	gi.DPrintf( "%d", ev->GetInteger( 1 ) );
+	//--------------------------------------------------------------
+	// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+	//--------------------------------------------------------------
+	gi.Printf( "%d", ev->GetInteger( 1 ) );
 }
 
 void CThread::PrintFloat( Event *ev )
 {
-	gi.DPrintf( "%.2f", ev->GetFloat( 1 ) );
+	//--------------------------------------------------------------
+	// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+	//--------------------------------------------------------------
+	gi.Printf( "%.2f", ev->GetFloat( 1 ) );
 }
 
 void CThread::PrintVector( Event *ev )
@@ -1591,12 +1600,18 @@ void CThread::PrintVector( Event *ev )
 	Vector vec;
 	
 	vec = ev->GetVector( 1 );
-	gi.DPrintf( "(%.2f %.2f %.2f)", vec.x, vec.y, vec.z );
+	//--------------------------------------------------------------
+	// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+	//--------------------------------------------------------------
+	gi.Printf( "(%.2f %.2f %.2f)", vec.x, vec.y, vec.z );
 }
 
 void CThread::NewLine( Event *ev )
 {
-	gi.DPrintf( "\n" );
+	//--------------------------------------------------------------
+	// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+	//--------------------------------------------------------------
+	gi.Printf( "\n" );
 }
 
 void CThread::Assert( Event *ev )

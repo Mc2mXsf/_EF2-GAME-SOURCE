@@ -118,7 +118,10 @@ extern "C" void G_CleanupGame( qboolean restart )
 {
 	try
 	{
-		gi.DPrintf ("==== CleanupGame ====\n");
+		//--------------------------------------------------------------
+		// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+		//--------------------------------------------------------------
+		gi.Printf ("==== CleanupGame ====\n");
 		
 		level.CleanUp( restart );
 	}
@@ -141,7 +144,10 @@ extern "C" void G_ShutdownGame( void )
 {
 	try
 	{
-		gi.DPrintf ("==== ShutdownGame ====\n");
+		//--------------------------------------------------------------
+		// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+		//--------------------------------------------------------------
+		gi.Printf ("==== ShutdownGame ====\n");
 		
 		// close the player log file if necessary
 		ClosePlayerLogFile();
@@ -183,7 +189,10 @@ only happens when a new game is begun
 */
 extern "C" void G_InitGame( int startTime, int randomSeed )
 {
-	gi.DPrintf ("==== InitGame ====\n");
+	//--------------------------------------------------------------
+	// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+	//--------------------------------------------------------------
+	gi.Printf ("==== InitGame ====\n");
 	
 	// Install our own error handler, since we can't
 	// call the EXE's handler from within a C++ class
