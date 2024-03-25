@@ -442,6 +442,14 @@ void DamageModifierActorType::resolvePain(Damage &damage)
 //--------------------------------------------------------------
 void DamageModifierTargetName::resolveDamage(Damage &damage)
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - prevents player from hurting ai, usually done by targetname but that can be "unreliable" in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (!damage.attacker || damage.attacker->isSubclassOf(Player) && _targetname == "player") {
+		damage.damage *= getMultiplier();
+		return;
+	}
+
 	if ( damage.attacker->targetname == _targetname )
 	{
 		float rand = G_Random();
