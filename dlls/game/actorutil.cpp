@@ -183,13 +183,19 @@ qboolean FindEnemyMovement::done( PathNode *node , const PathNode *end )
 //======================================
 qboolean EntityIsValidTarget( const Entity *ent )
 {
-	if ( ent && ( ent->flags & FL_NOTARGET ) )
-		return false;
-	
-	if ( ent && ( ent->entnum == ENTITYNUM_WORLD ) )
-		return false;
-	
-	return true;
+	//--------------------------------------------------------------
+	// GAMEFIX - returns no longer true if entity does not exist - chrissstrahl
+	//--------------------------------------------------------------
+	if (ent) {
+		if (ent && (ent->flags & FL_NOTARGET))
+			return false;
+
+		if (ent && (ent->entnum == ENTITYNUM_WORLD))
+			return false;
+		
+		return true;
+	}
+	return false;
 }
 
 
