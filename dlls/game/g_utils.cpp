@@ -777,7 +777,10 @@ void SelectSpawnPoint( Vector &org, Vector &ang, str &thread )
 	
 	if ( !spot )
 	{
-		gi.Error( ERR_DROP, "No player spawn position named '%s'.  Can't spawn player.\n", level.spawnpoint.c_str() );
+		//--------------------------------------------------------------
+		// GAMEFIX - changed error message to spell out the object type - chrissstrahl
+		//--------------------------------------------------------------
+		gi.Error( ERR_DROP, "No info_player_start named '%s'.  Can't spawn player.\n", level.spawnpoint.c_str() );
 	}
 	
 	org = spot->origin;
