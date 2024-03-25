@@ -572,13 +572,37 @@ void PuzzleObject::useEvent(Event* event)
 		{
 			if ( _nextNeedToUseTime < level.time )
 			{
-				gi.centerprintf ( entity->edict, CENTERPRINT_IMPORTANCE_NORMAL, "$$NeedToUse$$ %s", _itemToUse.c_str() );
-
 				if ( entity->isSubclassOf( Player ) )
 				{
-					Player *player = (Player *)entity;
+					//--------------------------------------------------------------
+					// GAMEFIX - changed message to always print - chrissstrahl
+					//--------------------------------------------------------------
+					Item* item;
+					ClassDef* cls;
+					cls = getClass(_itemToUse);
+					if (!cls)
+					{
+						gi.Printf("No item named '%s' exists in game\n", _itemToUse.c_str());
+						return;
+					}
+					item = (Item*)cls->newInstance();
+					item->CancelEventsOfType(EV_Item_DropToFloor);
+					item->CancelEventsOfType(EV_Remove);
+					item->ProcessPendingEvents();
 
+
+
+					Player *player = (Player *)entity;
 					player->loadUseItem( _itemToUse );
+					
+					gi.centerprintf(entity->edict, CENTERPRINT_IMPORTANCE_NORMAL, "$$NeedToUse$$ %s", _itemToUse.c_str());
+
+					//--------------------------------------------------------------
+					// GAMEFIX - added print out to hud/chat in multiplayer - chrissstrahl
+					//--------------------------------------------------------------
+					if (g_gametype->integer != GT_SINGLE_PLAYER) {
+						player->hudPrint(va("$$NeedToUse$$ %s", _itemToUse.c_str()));
+					}
 				}
 
 				_nextNeedToUseTime = level.time + 1.0f;

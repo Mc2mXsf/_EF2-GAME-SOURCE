@@ -765,7 +765,10 @@ void Trigger::TriggerStuff( Event *ev )
 			cls = FindClass( key.c_str(), &setModel );
 			if ( !cls || !checkInheritance( "Item", cls->classname ) )
 			{
-				gi.WDPrintf( "No item named '%s'\n", key.c_str() );
+				//--------------------------------------------------------------
+				// GAMEFIX - changed message to always print - chrissstrahl
+				//--------------------------------------------------------------
+				gi.Printf( "No item named '%s' exists in game\n", key.c_str() );
 				return;
 			}
 			item = ( Item * )cls->newInstance();
@@ -784,6 +787,22 @@ void Trigger::TriggerStuff( Event *ev )
 			else
             {
 				gi.centerprintf ( activator->edict, CENTERPRINT_IMPORTANCE_NORMAL, "$$ItemNeeded$$%s", item->getName().c_str() );
+				
+				//--------------------------------------------------------------
+				// GAMEFIX - added print out to hud/chat in multiplayer - chrissstrahl
+				// - Make sure it doesn't spam, this could cycle out a reliable command otherwhise
+				//--------------------------------------------------------------
+				if (g_gametype->integer != GT_SINGLE_PLAYER && other->isSubclassOf(Player)) {
+					static float fLastTime = 0.0f;
+					if ((fLastTime + 1) < level.time) {
+						fLastTime = level.time;
+
+						Player* player = (Player*)other;
+						player->hudPrint(va("$$ItemNeeded$$%s", item->getName().c_str()));
+					}
+				}
+
+				
             }
 			delete item;
 			return;
