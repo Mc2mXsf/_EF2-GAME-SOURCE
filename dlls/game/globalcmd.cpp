@@ -3202,6 +3202,14 @@ void CThread::SendClientCommand( Event *ev )
 	// Get the player
 	
 	entity = ev->GetEntity( 1 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - crash if given entity does not exist - chrissstrahl
+	//--------------------------------------------------------------
+	if (!entity) {
+		gi.Printf("SendClientCommand: Given Entity does not exist!\n");
+		return;
+	}
 	
 	if ( !entity->isSubclassOf( Player ) )
 		return;
@@ -3233,6 +3241,17 @@ void CThread::GetNumFreeReliableServerCommands( Event* ev )
 	int i;
 
 	entity = ev->GetEntity( 1 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - crash if given entity does not exist - chrissstrahl
+	//--------------------------------------------------------------
+	if (!entity) {
+		gi.Printf("GetNumFreeReliableServerCommands: Given Entity does not exist!\n");
+		ev->ReturnFloat( 0.0 );
+		return;
+	}
+
+
 	if( !entity->isSubclassOf( Player ) )
 	{
 		ev->ReturnFloat( 0.0 );
