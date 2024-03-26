@@ -1,0 +1,186 @@
+Fixed: game. variable cut off by one letter
+void CThread::SetFloatVar( Event *ev )
+void CThread::SetVectorVar( Event *ev )
+void CThread::SetStringVar( Event *ev )
+void CThread::RemoveVariable( Event* ev )
+void CThread::GetFloatVar( Event *ev )
+void CThread::GetVectorVar( Event *ev )
+void CThread::GetStringVar( Event *ev )
+void CThread::doesVarExist( Event *ev )
+
+Fixed: Basher crashing linux server when rotating, on windows sometimes Basher was randomly doing several 180 turns
+RotateToEntity::RotateToEntity()
+
+Fixed: game. Variables where cut off by one letter when set or read or checked, they still did "work"
+void CThread::GetFloatVar( Event *ev )
+void CThread::GetVectorVar( Event *ev )
+void CThread::GetStringVar( Event *ev )
+void CThread::SetFloatVar( Event *ev )
+void CThread::SetVectorVar( Event *ev )
+void CThread::SetStringVar( Event *ev )
+void CThread::RemoveVariable( Event* ev )
+void CThread::doesVarExist( Event *ev )
+
+Added: info printouts to hud/chat for multiplayer
+void Trigger::TriggerStuff( Event *ev )
+
+Added: info printouts to hud/chat for multiplayer
+Door::TryOpen( Event *ev )
+
+Added: check if item exists in game for puzzleobject
+void PuzzleObject::useEvent(Event* event)
+
+Fixed: Dispenser checking distance for all players not just client 0
+void Dispenser::Think( void )
+
+Fixed: Puzzleobject checking distance for all players not just client 0
+void PuzzleObject::Think( void )
+
+Fixed: kill working during cinematic/spectator or if already dead
+void Player::Kill( Event *ev )
+
+Changed: Importance from normal to critical
+void CThread::CPrint( Event *ev )
+CThread::CenterPrint( Event *ev )
+
+Fixed: show to all players not just client 0
+void CThread::CPrint( Event *ev )
+
+Fixed: printouts working on one OS but not the other windows/linux 
+extern "C" void G_CleanupGame( qboolean restart )
+extern "C" void G_ShutdownGame( void )
+extern "C" void G_InitGame( int startTime, int randomSeed )
+void CThread::Print( Event *ev )
+void CThread::PrintInt( Event *ev )
+void CThread::PrintFloat( Event *ev )
+void CThread::PrintVector( Event *ev )
+void CThread::NewLine( Event *ev )
+
+Fixed: checking players by their class to prevent issues if player get re-targetnamed
+void DamageModifierTargetName::resolveDamage(Damage &damage)
+
+Fixed: mp_bigGunMode also applying in singleplayer 
+void Weapon::AttachGun( weaponhand_t hand, qboolean holstering )
+
+Changed: changed error message to spell out the object type 
+void SelectSpawnPoint( Vector &org, Vector &ang, str &thread )
+
+Fixed: Server rejecting players with a password set, when the server it self has currently no password set
+extern "C" const char *G_ClientConnect
+
+Fixed: crash when using fakeplayer script command in multiplayer 
+void Player::StartFakePlayer( void )
+void Player::FakePlayer( qboolean holster )
+void Player::RemoveFakePlayer( void )
+
+Fixed: chrash if entity does not exist
+CThread::SendClientCommand( Event *ev )
+
+Fixed: chrash if entity does not exist
+void CThread::GetNumFreeReliableServerCommands( Event* ev )
+
+Fixed: Bat'leth / Batleth stabbing sound being played global(CHAN_VOICE) on the entire map
+void Projectile::Touch( Event *ev )
+
+Fixed: Borg adapting to batleth, melee and other damage types they should not
+AdaptiveArmor::AdaptiveArmor()
+
+Fixed: falsely returning true if checked entity does not exist 
+qboolean EntityIsValidTarget( const Entity *ent )
+
+Fixed: Denied taunt being played if a player gets killed and other player picks the item up
+void AwardSystem::pickedupItem( Player *player, MultiplayerItemType itemType, const char *itemName )
+
+Fixed: holdable mine beeping if owner or player from same team is standing on it
+bool HoldableItemExplosive::isPlayerInRange( const Vector &position, float maxDistance )
+
+Fixed: Trigger Hurt can be activated by pressing USE 
+CLASS_DECLARATION( TriggerUse, TriggerHurt, "trigger_hurt" )
+
+Fixed: Player can change model when dead, death animation replaying
+void MultiplayerManager::changePlayerModel( Player *player, const char *modelName, bool force )
+
+Fixed: crash if level does not have a bomb item in mp_gametype 3
+int ModifierDiffusion::getStat( Player *player, int statNum, int value )
+
+Fixed: error: '...' was not declared in this scope
+extern void L_ShutdownEvents();
+extern void L_InitEvents();
+extern void L_UnarchiveEvents(Archiver& arc);
+extern void L_ArchiveEvents(Archiver& arc);
+extern void L_ProcessPendingEvents();
+extern void L_ClearEventList();
+dlls/game/g_main.cpp
+dlls/game/level.cpp
+dlls/game/listener.cpp
+
+Fixed: error: 'CreateBeam' was not declared in this scope
+void DoBeamAttack::_createBeam( Actor &self )
+
+Fixed: error: 'CreateBeam' was not declared in this scope
+BehaviorReturnCode_t	ShockDown::Evaluate
+
+Fixed: error: 'CreateBeam' was not declared in this scope
+BehaviorReturnCode_t	MultiShock::Evaluate
+
+Fixed: error: 'CreateBeam' was not declared in this scope
+BehaviorReturnCode_t	Shock::Evaluate
+
+Fixed: error: 'CreateBeam' was not declared in this scope
+BehaviorReturnCode_t	ShockWater::Evaluate
+
+Fixed: error: 'CreateBeam' was not declared in this scope
+dlls/game/beam.h
+
+Fixed: client 0 access and error
+Fixed: cannot convert 'bool' to 'HelperNode*'
+HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float maxDist , float minDistanceFromPlayer, bool unreserveCurrentNode )
+
+Fixed: client 0 access and error
+Fixed: cannot convert 'bool' to 'HelperNode*'
+HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , int mask , unsigned int clipMask , float maxDist , float minDist , Entity *ent , float minDistFromPlayer )
+
+Fixed: fatal error: vector.h: No such file or directory #include "vector.h"
+Shared/qcommon/quaternion.h
+
+Fixed: error: friend declaration of 'FuncBeam* CreateBeam(...)' specifies default arguments and isn't a definition [-fpermissive]
+class FuncBeam : public ScriptSlave
+
+Fixed: error: specializing member *Container<...>::Archive' requires 'template<>' syntax
+inline void Container<str>::Archive
+inline void Container<Vector>::Archive
+inline void Container<int>::Archive
+inline void Container<float>::Archive
+inline void Container<Class*>::Archive
+inline void Container<Class>::Archive
+inline void Container<Entity*>::Archive
+inline void Container<EntityPtr>::Archive
+
+Fixed: error: declaration of template parameter 'T' shadows template parameter
+inline void SafePtrBase::InitSafePtr
+
+Fixed: error: 'gi' was not declared in this scope 
+dlls/game/container.h
+extern game_import_t gi;
+
+Fixed: extra qualification 'UseData::' on member 'UseData'[-fpermissive] 
+class UseData : public Class
+
+Fixed: cinematic accessing client 0 only and always 
+void G_StartCinematic( void )
+
+Fixed: cinematic accessing client 0 only and always
+void G_StopCinematic( void )
+
+Fixed: uninitialized variable
+qboolean SV_FilterPacket( const char *from )
+
+Fixed: Callvote allowing g_gametype but should be mp_gametype
+Fixed: Added File exist check for nextmap
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+
+Fixed: strcpy-param-overlap and Stack Buffer Overflow 
+extern "C" void G_ClientUserinfoChanged( gentity_t *ent, const char *userinfo )
+
+Fixed: strcpy-param-overlap
+void Info_RemoveKey (char *s, const char *key)
