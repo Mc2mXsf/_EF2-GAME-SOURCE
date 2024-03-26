@@ -57,6 +57,12 @@ RotateToEntity::RotateToEntity()
 	_turnspeed = 10.0f;
 	_ent = NULL;
 	_entityType = "enemy";
+
+	//--------------------------------------------------------------
+	// GAMEFIX - uninizialised var, crash on linux in MovementSubsystem::setTurnSpeed - chrissstrahl
+	// this did crash the Linux Server when a basher was about to turn towards a player when the player was previously dead
+	//--------------------------------------------------------------
+	_oldTurnSpeed = _turnspeed;
 }
 
 
