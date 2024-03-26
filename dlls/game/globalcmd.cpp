@@ -2964,7 +2964,12 @@ void CThread::SetFloatVar( Event *ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		gameVars.SetVariable( real_var_name, value );
 	}
 }
@@ -2985,7 +2990,12 @@ void CThread::SetVectorVar( Event *ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		gameVars.SetVariable( real_var_name, value );
 	}
 }
@@ -3006,7 +3016,12 @@ void CThread::SetStringVar( Event *ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		gameVars.SetVariable( real_var_name, value );
 	}
 }
@@ -3025,7 +3040,12 @@ void CThread::RemoveVariable( Event* ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		levelVars.RemoveVariable( real_var_name );
 	}
 }
@@ -3045,7 +3065,12 @@ void CThread::GetFloatVar( Event *ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		var = gameVars.GetVariable( real_var_name );
 	}
 	
@@ -3073,7 +3098,12 @@ void CThread::GetVectorVar( Event *ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		var = gameVars.GetVariable( real_var_name );
 	}
 	
@@ -3101,7 +3131,12 @@ void CThread::GetStringVar( Event *ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		var = gameVars.GetVariable( real_var_name );
 	}
 	
@@ -3129,7 +3164,12 @@ void CThread::doesVarExist( Event *ev )
 	}
 	else if ( strncmp( var_name.c_str(), "game.", 5 ) == 0 )
 	{
-		real_var_name = var_name.c_str() + 6;
+		//--------------------------------------------------------------
+		// GAMEFIX - using now +5 instead of +6 (the first letter got cut off) - chrissstrahl
+		//--------------------------------------------------------------
+		real_var_name = var_name.c_str() + 5;
+
+
 		var = gameVars.GetVariable( real_var_name );
 	}
 	
