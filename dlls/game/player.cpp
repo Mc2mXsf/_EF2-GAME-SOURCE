@@ -9532,6 +9532,15 @@ void Player::StartFakePlayer( void )
 	{
 		return;
 	}
+
+	//--------------------------------------------------------------
+	// GAMEFIX - crash in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->value != GT_SINGLE_PLAYER) {
+		gi.Printf("WARNING: fakeplayer script command can only be used in Singleplayer\n");
+		return;
+	}
+
 	
 	fakePlayer_active = false;
 	
@@ -9580,6 +9589,15 @@ void Player::FakePlayer( qboolean holster )
 	{
 		return;
 	}
+
+	//--------------------------------------------------------------
+	// GAMEFIX - crash in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->value != GT_SINGLE_PLAYER) {
+		gi.Printf("WARNING: fakeplayer script command can only be used in Singleplayer\n");
+		return;
+	}
+
 	
 	fakePlayer_active = true;
 	
@@ -9609,6 +9627,16 @@ void Player::RemoveFakePlayer( void )
 	{
 		return;
 	}
+
+	//--------------------------------------------------------------
+	// GAMEFIX - crash in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->value != GT_SINGLE_PLAYER) {
+		gi.Printf("WARNING: fakeplayer script command can only be used in Singleplayer\n");
+		return;
+	}
+
+
 	fake = fakePlayer;
 	
 	//
