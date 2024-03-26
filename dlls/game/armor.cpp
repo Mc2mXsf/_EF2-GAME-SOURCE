@@ -344,6 +344,26 @@ AdaptiveArmor::AdaptiveArmor()
 	_AddMODToCannotAdaptList( MOD_IMOD_PRIMARY);   
 	_AddMODToCannotAdaptList( MOD_IMOD_SECONDARY);
 	_AddMODToCannotAdaptList( MOD_SUICIDE );
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - do not allow borg to adapt to these damage types - chrissstrahl
+	// not sure if I should add: MOD_ACID MOD_GAS MOD_IMPACT MOD_GAS_BLOCKABLE MOD_DROWN MOD_POISON MOD_ELECTRICWATER MOD_ELECTRIC MOD_LAVA MOD_SLIME 
+	//--------------------------------------------------------------    
+	_AddMODToCannotAdaptList(MOD_MELEE); //(hazard)teammates
+	_AddMODToCannotAdaptList(MOD_STASIS); //idryll staff
+	_AddMODToCannotAdaptList(MOD_FALLING); //fall damage
+	_AddMODToCannotAdaptList(MOD_VEHICLE); //vehicles
+	_AddMODToCannotAdaptList(MOD_AXE); //heaymetal fkk 2, maybe we build in a new weaon some day
+	_AddMODToCannotAdaptList(MOD_CRUSH); //doors, script objects
+	_AddMODToCannotAdaptList(MOD_CRUSH_EVERY_FRAME); //not quite sure
+	_AddMODToCannotAdaptList(MOD_TELEFRAG); //beam me inside scottchy
+	_AddMODToCannotAdaptList(MOD_THROWNOBJECT); //if a a throws something
+	_AddMODToCannotAdaptList(MOD_EXPLODEWALL); //used by script/level editor, exploding walls
+	_AddMODToCannotAdaptList(MOD_ALIEN_MELEE); //alien attack 
+	_AddMODToCannotAdaptList(MOD_KLINGON_MELEE); //klingon attack
+	_AddMODToCannotAdaptList(MOD_SWORD); //player batleth
+
 
 	if ( !LoadingSavegame )
 	{
