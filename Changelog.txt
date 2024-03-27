@@ -1,3 +1,31 @@
+Fixed: Missing .c_str()
+void G_BeginIntermission( const char *map )
+
+Fixed: trigger_hurt crash if activating entity was just deleted in this frame
+void TriggerHurt::Hurt( Event *ev )
+
+Fixed: trigger_hurt only hurting the activator, even when multiple players/actors are inside the triggerfield
+void TriggerHurt::Hurt( Event *ev )
+
+Added: Cap on integer digit length to prevent crash and set correct return type
+void CThread::GetIntegerFromString( Event *ev )
+
+Added: Automatic loading of localstrings for each map (if not set in leveldefs.txt)
+Example file location: loc/deu/stringresource/mapname.loc AND loc/eng/stringresource/mapname.loc
+void Level::loadLevelStrings( void )
+
+Added: Player Taunts not playing during cinematic
+qboolean G_TauntCmd( const gentity_t *ent )
+
+Added: Print out of (key)Message to of activating player hud for multiplayer
+void Trigger::ActivateTargets( Event *ev )
+
+Added: Print out of (key)Message to hud for multiplayer
+void Trigger::ActivateTargets( Event *ev )
+
+Changed: importance of (key)Message to high
+void Trigger::ActivateTargets( Event *ev )
+
 Added: Print Message to hud in multiplayer
 Door::TryOpen
 
