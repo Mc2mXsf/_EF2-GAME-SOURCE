@@ -529,13 +529,19 @@ qboolean G_TeamSayCmd( const gentity_t *ent )
 
 qboolean G_TauntCmd( const gentity_t *ent )
 {
-	str tauntName;
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Player Taunts not playing during cinematic - chrissstrahl
+	//--------------------------------------------------------------
+	if (level.cinematic) {
+		return true;
+	}
 	
 	if ( gi.argc() < 2 )
 	{
 		return true;
 	}
-	
+
+	str tauntName;
 	tauntName = "taunt";
 	tauntName += gi.argv( 1 );
 	
