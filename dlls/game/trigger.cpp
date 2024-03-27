@@ -2430,6 +2430,13 @@ void TriggerHurt::Hurt( Event *ev )
 	Entity *other;
 	
 	other = ev->GetEntity( 1 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - prevent crash if entity was just deleted in the same frame - chrissstrahl
+	//--------------------------------------------------------------
+	if (!other) {
+		return;
+	}
 	
 	if ( ( damage != 0 ) && !other->deadflag && !( other->flags & FL_GODMODE ) )
 	{
