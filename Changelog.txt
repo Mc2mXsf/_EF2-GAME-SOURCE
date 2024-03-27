@@ -1,3 +1,6 @@
+Added: Print Message to hud in multiplayer
+Door::TryOpen
+
 Fixed: game. variable cut off by one letter
 void CThread::SetFloatVar( Event *ev )
 void CThread::SetVectorVar( Event *ev )
