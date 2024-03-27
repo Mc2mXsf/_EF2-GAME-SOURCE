@@ -884,7 +884,7 @@ void Door::TryOpen( Event *ev )
 					fLastTime = level.time;
 
 					Player* player = (Player*)other;
-					player->hudPrint(va("$$UnlockItem$$%s", item->getName().c_str()));
+					player->hudPrint(va("$$UnlockItem$$%s\n", item->getName().c_str()));
 				}
 			}
 			
@@ -901,6 +901,17 @@ void Door::TryOpen( Event *ev )
 		gi.centerprintf( other->edict, CENTERPRINT_IMPORTANCE_NORMAL, Message().c_str() );
 		Sound( sound_message, CHAN_VOICE );
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - print message to hud in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->integer != GT_SINGLE_PLAYER && Message().length() && other->isSubclassOf(Player))
+	{
+		Player* player = (Player*)other;
+		player->hudPrint(va("%\n", Message().c_str()));
+	}
+
 
 	event = new Event( EV_Door_Fire );
 	event->AddEntity( other );
