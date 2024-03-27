@@ -601,7 +601,7 @@ void PuzzleObject::useEvent(Event* event)
 					// GAMEFIX - added print out to hud/chat in multiplayer - chrissstrahl
 					//--------------------------------------------------------------
 					if (g_gametype->integer != GT_SINGLE_PLAYER) {
-						player->hudPrint(va("$$NeedToUse$$ %s", _itemToUse.c_str()));
+						player->hudPrint(va("$$NeedToUse$$ %s\n", _itemToUse.c_str()));
 					}
 				}
 

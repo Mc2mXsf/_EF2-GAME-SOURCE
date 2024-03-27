@@ -798,7 +798,7 @@ void Trigger::TriggerStuff( Event *ev )
 						fLastTime = level.time;
 
 						Player* player = (Player*)other;
-						player->hudPrint(va("$$ItemNeeded$$%s", item->getName().c_str()));
+						player->hudPrint(va("$$ItemNeeded$$ %s\n", item->getName().c_str()));
 					}
 				}
 
