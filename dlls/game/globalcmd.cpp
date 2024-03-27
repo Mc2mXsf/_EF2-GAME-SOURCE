@@ -4112,6 +4112,7 @@ void CThread::GetIntegerFromString( Event *ev )
 		}
 		valueText = text ;
 
+		//Bug reported by SMFScar
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Cap on integer digit length to prevent crash and correct return - chrissstrahl
 		//--------------------------------------------------------------
