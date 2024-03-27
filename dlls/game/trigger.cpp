@@ -956,11 +956,17 @@ void Trigger::ActivateTargets( Event *ev )
 		// if it is a camera, pass in default player
 		if ( !other->isClient() )
 		{
-			gi.centerprintf( &g_entities[ 0 ], CENTERPRINT_IMPORTANCE_NORMAL, message.c_str() );
+			//--------------------------------------------------------------
+			// GAMEFIX - chaqnged importance to high - chrissstrahl
+			//--------------------------------------------------------------
+			gi.centerprintf( &g_entities[ 0 ], CENTERPRINT_IMPORTANCE_HIGH, message.c_str() );
 		}
 		else
 		{
-			gi.centerprintf( other->edict, CENTERPRINT_IMPORTANCE_NORMAL, message.c_str() );
+			//--------------------------------------------------------------
+			// GAMEFIX - chaqnged importance to high - chrissstrahl
+			//--------------------------------------------------------------
+			gi.centerprintf( other->edict, CENTERPRINT_IMPORTANCE_HIGH, message.c_str() );
 		}
 		if ( Noise().length() )
 		{
