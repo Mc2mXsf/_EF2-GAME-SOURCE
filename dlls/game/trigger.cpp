@@ -957,16 +957,24 @@ void Trigger::ActivateTargets( Event *ev )
 		if ( !other->isClient() )
 		{
 			//--------------------------------------------------------------
-			// GAMEFIX - chaqnged importance to high - chrissstrahl
+			// GAMEFIX - changed importance to high - chrissstrahl
 			//--------------------------------------------------------------
 			gi.centerprintf( &g_entities[ 0 ], CENTERPRINT_IMPORTANCE_HIGH, message.c_str() );
 		}
 		else
 		{
 			//--------------------------------------------------------------
-			// GAMEFIX - chaqnged importance to high - chrissstrahl
+			// GAMEFIX - changed importance to high - chrissstrahl
 			//--------------------------------------------------------------
 			gi.centerprintf( other->edict, CENTERPRINT_IMPORTANCE_HIGH, message.c_str() );
+
+			//--------------------------------------------------------------
+			// GAMEFIX - added print to hud for multiplayer - chrissstrahl
+			//--------------------------------------------------------------
+			if (g_gametype->integer != GT_SINGLE_PLAYER){
+				Player* player = (Player*)other;
+				player->hudPrint(va("%s\n", message.c_str()));
+			}
 		}
 		if ( Noise().length() )
 		{
