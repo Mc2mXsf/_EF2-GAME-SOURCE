@@ -885,6 +885,17 @@ void Level::loadLevelStrings( void )
 	const char* environmentName;
 	
 	gi.GetLevelDefs(mapname, &environmentName, &levelName, &sublevelName);
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: load localstrings for each map (if not set in leveldefs.txt) - chrissstrahl
+	// localstring files must go to: loc/deu/stringresource/mapname.loc AND loc/eng/stringresource/mapname.loc
+	//--------------------------------------------------------------
+	if (!strlen(environmentName)) {
+		environmentName = mapname;
+		levelName = mapname;
+		sublevelName = mapname;
+	}
+
 	gi.SR_LoadLevelStrings(environmentName);
 }
 
