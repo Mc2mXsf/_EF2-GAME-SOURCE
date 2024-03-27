@@ -1259,7 +1259,10 @@ void G_BeginIntermission( const char *map )
 	
 	level.nextmap = map;
 	
-	if ( gi.areSublevels( level.mapname, map ) || !level._showIntermission )
+	//--------------------------------------------------------------
+	// GAMEFIX - missing .c_str() - chrissstrahl
+	//--------------------------------------------------------------
+	if ( gi.areSublevels( level.mapname.c_str(), map) || !level._showIntermission)
 	{
 		// We don't want a intermission (sublevel or something has specified no intermission )
 		
