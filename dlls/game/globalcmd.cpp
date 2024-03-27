@@ -4101,7 +4101,9 @@ void CThread::GetIntegerFromString( Event *ev )
 	strcpy( buffer, ev->GetString( 1 ) );
 	text = buffer ;
 	
-	while ( text && *text )
+
+	
+	while ( text && *text)
 	{
 		if ( ( *text < '0' ) ||  ( *text > '9') )
 		{
@@ -4109,20 +4111,27 @@ void CThread::GetIntegerFromString( Event *ev )
 			continue ;
 		}
 		valueText = text ;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Cap on integer digit length to prevent crash and correct return - chrissstrahl
+		//--------------------------------------------------------------
+		short maxlength = 6;
 		while ( text && *text )
 		{
-			if ( ( *text < '0') || ( *text > '9' ) )
+			if ( ( *text < '0') || ( *text > '9' ) || maxlength <= 0)
 			{
 				*text = 0 ;
 				break ;
 			}
+			maxlength--;
 			text++ ;
 		}
 		break ;
 	}
-	
-	int value = atoi( valueText );
-	ev->ReturnInteger( value );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: return as float, because CThread supports return type float - chrissstrahl
+	//--------------------------------------------------------------
+	ev->ReturnFloat( atof(va("%s",valueText)));
 }
 
 //===============================================================
