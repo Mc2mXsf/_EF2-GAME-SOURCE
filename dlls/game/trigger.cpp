@@ -2435,6 +2435,36 @@ void TriggerHurt::Hurt( Event *ev )
 	{
 		other->Damage( this, world, damage, other->origin, vec_zero, vec_zero, 0, DAMAGE_NO_ARMOR|DAMAGE_NO_SKILL, damage_type );
 	}
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - hurt all players that are inside the trigger field, not just the one who activated it - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->integer == GT_SINGLE_PLAYER || damage == 0) {
+		return;
+	}
+	Entity* ent = NULL;
+	for (int i = 0; i < maxentities->integer; i++) {
+		ent = g_entities[i].entity;
+		if (!ent || other == ent || ent->deadflag || ent->flags & FL_GODMODE) {
+			continue;
+		}
+		if (!ent->isSubclassOf(Player) && !ent->isSubclassOf(Actor)) {
+			continue;
+		}
+		if (ent->isSubclassOf(Player) && multiplayerManager.inMultiplayer() && multiplayerManager.isPlayerSpectator((Player*)ent)) {
+			continue;
+		}
+		//Bounding box not touching check
+		if ((ent->absmin[0] > this->absmax[0]) ||
+			(ent->absmin[1] > this->absmax[1]) ||
+			(ent->absmin[2] > this->absmax[2]) ||
+			(ent->absmax[0] < this->absmin[0]) ||
+			(ent->absmax[1] < this->absmin[1]) ||
+			(ent->absmax[2] < this->absmin[2])) {
+			continue;
+		}
+		ent->Damage(this, world, damage, ent->origin, vec_zero, vec_zero, 0, DAMAGE_NO_ARMOR | DAMAGE_NO_SKILL, damage_type);
+	}
 }
 
 /*****************************************************************************/
