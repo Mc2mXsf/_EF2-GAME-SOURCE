@@ -1403,7 +1403,7 @@ out: */
 	else
 	{
 		//--------------------------------------------------------------
-		// GAMEFIX - Fix: crash after succsess screen is done, if no map key is set on trigger_changelevel in singleplayer - chrissstrahl
+		// GAMEFIX - Fixed: crash after success screen is done, if no map key is set on trigger_changelevel in singleplayer - chrissstrahl
 		// Disconnect - Return Player to Main Menu
 		//--------------------------------------------------------------
 		if (!level.nextmap.length()) {

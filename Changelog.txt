@@ -1,3 +1,6 @@
+Fixed: crash after success screen is done, if no map key is set on trigger_changelevel in singleplayer
+void G_ExitLevel( void )
+
 Fixed: Missing .c_str()
 void G_BeginIntermission( const char *map )
 
