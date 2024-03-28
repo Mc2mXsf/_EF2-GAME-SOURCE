@@ -748,7 +748,12 @@ void SplinePath::SetPrev( SplinePath *node )
 {
 	if ( owner != this )
 	{
-		owner->next = NULL;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Crash if owner does not exist - chrissstrahl
+		//--------------------------------------------------------------
+		if (owner) {
+			owner->next = NULL;
+		}
 	}
 	
 	if ( node && ( node != this ) )
