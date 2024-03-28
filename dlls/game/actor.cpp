@@ -4380,6 +4380,16 @@ void Actor::AttackEntity( Event *ev	)
 	{
 	Entity *target = ev->GetEntity( 1 );
 
+	//[b60011] chrissstrahl - gamefix - if given entity does not exist, give us at least something man! Don't you just crash
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Crash if $actor.attack($entity) is used but $entity does not exist - chrissstrahl
+	//--------------------------------------------------------------
+	if (!target) {
+		gi.Printf(va("Actor::AttackEntity - $%s.attack($entity) failed, entity does not exist\n", this->targetname.c_str()));
+		return;
+	}
+
 	bool forceEnemy = true;
 
 	if ( !GetActorFlag( ACTOR_FLAG_STARTED ) )
