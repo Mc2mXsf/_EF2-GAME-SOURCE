@@ -8497,7 +8497,10 @@ Player *GetPlayer( int index )
 
 	ed = &g_entities[ index ];
 
-	if ( !ed->inuse || !ed->entity )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Crash if a error is thrown before a level is loaded - chrissstrahl
+	//--------------------------------------------------------------
+	if (!ed || !ed->inuse || !ed->entity )
 		return 0;
 	
 	return ( Player * )g_entities[index].entity;
