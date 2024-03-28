@@ -1402,8 +1402,19 @@ out: */
 	}
 	else
 	{
-		Com_sprintf( command, sizeof( command ), "gamemap \"%s\"\n", level.nextmap.c_str() );
-		gi.SendConsoleCommand( command );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fix: crash after succsess screen is done, if no map key is set on trigger_changelevel in singleplayer - chrissstrahl
+		// Disconnect - Return Player to Main Menu
+		//--------------------------------------------------------------
+		if (!level.nextmap.length()) {
+			gi.SendServerCommand( 0 , "disconnect" );
+		}
+
+
+		else {
+			Com_sprintf( command, sizeof( command ), "gamemap \"%s\"\n", level.nextmap.c_str() );
+			gi.SendConsoleCommand( command );
+		}
 	}
 	
 	// Tell all the clients that the level is done
