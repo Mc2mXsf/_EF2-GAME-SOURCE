@@ -1,3 +1,18 @@
+Fixed: Crash if a error is thrown before a level is loadad
+Player *GetPlayer( int index )
+
+Added: Multiplayer handling for StopDialog
+void Actor::StopDialog()
+
+Fixed: Crash if $actor.attack($entity) is used but $entity does not exist
+void Actor::AttackEntity( Event *ev	)
+
+Fixed: Crash if client 0 does not exist
+void G_FinishMissionFailed( void )
+
+Fixed: Crash if owner does not exist
+void SplinePath::SetPrev( SplinePath *node )
+
 Fixed: crash after success screen is done, if no map key is set on trigger_changelevel in singleplayer
 void G_ExitLevel( void )
 
