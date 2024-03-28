@@ -2350,25 +2350,25 @@ void G_MissionFailed( const str& reason )
 
 void G_FinishMissionFailed( void )
 {
-	Entity* entity;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Crash if client 0 does not exist - chrissstrahl
+	//--------------------------------------------------------------
+	gentity_t* other;
 	Player* player;
+	if (g_gametype->integer == GT_SINGLE_PLAYER) {
+		other = &g_entities[0];
+		if (other->inuse && other->client) {
+			player = (Player*)other->entity;
 
-	// Get the player
-	
-	entity = g_entities[ 0 ].entity;
-
-	if ( !entity->isSubclassOf( Player ) )
-		return;
-
-	player = (Player *)entity;
+			if (player) {
+				player->setMissionFailed();
+			}
+		}
+	}
 
 	// Fade everything out
 	G_FadeOut( 1.0f );
 	G_FadeSound( 1.0f );
-	
-	// Fail the mission
-
-	player->setMissionFailed();
 	
 	level.mission_failed = true;
 	level.playerfrozen = true;
