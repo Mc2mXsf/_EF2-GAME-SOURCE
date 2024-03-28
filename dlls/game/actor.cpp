@@ -11241,11 +11241,25 @@ void Actor::StopDialog()
 
 	if ( GetActorFlag( ACTOR_FLAG_USING_HUD ) )
 	{
-		Player *player = GetPlayer( 0 );
-		
-		if ( player )
-		{
-			player->ClearDialog();
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Multiplayer handling for StopDialog - chrissstrahl
+		//--------------------------------------------------------------
+		if(g_gametype->integer == GT_SINGLE_PLAYER) {
+			Player *player = GetPlayer( 0 );
+			if ( player )
+			{
+				player->ClearDialog();
+			}
+		}
+		else {
+			Player* player = nullptr;
+			for (int i = 0; i < maxclients->integer; i++) {
+				player = GetPlayer(i);
+				if (player)
+				{
+					player->ClearDialog();
+				}
+			}
 		}
 	}
 }
