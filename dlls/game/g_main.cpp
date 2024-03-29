@@ -2183,6 +2183,14 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 		{
 			gi.Printf( "%s connected\n", ent->client->pers.netname );
 		}
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Turn ON LEVEL AI if server no longer empty, is turned off again if server is empty - chrissstrahl
+		//--------------------------------------------------------------
+		if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
+			level.ai_on = true;
+		}
+
 		
 		LoadingServer = false;
 	}
@@ -2219,6 +2227,13 @@ extern "C" void G_ClientDisconnect( gentity_t *ent )
 		
 		delete ent->entity;
 		ent->entity = NULL;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Turn OFF LEVEL AI if server empty, prevent issues with ai - chrissstrahl
+		//--------------------------------------------------------------
+		if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
+			level.ai_on = false;
+		}
 	}
 	
 	catch( const char *error )
