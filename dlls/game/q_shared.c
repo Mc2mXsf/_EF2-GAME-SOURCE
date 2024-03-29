@@ -1463,8 +1463,12 @@ void ParseMapName( const char *fullName, char *mapName, char *spawnposName, char
 
 	if ( movieNamePtr )
 		strcpy( tempMovieName, movieNamePtr );
-	else
-		tempMovieName[ 0 ] = '/0';
+	else {
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Bad null terminator - chrissstrahl
+		//--------------------------------------------------------------
+		tempMovieName[0] = '\0';
+	}
 
 	// Get the map name
 
@@ -1498,7 +1502,10 @@ void ParseMapName( const char *fullName, char *mapName, char *spawnposName, char
 	}
 	else
 	{
-		tempSpawnposName[ 0 ] = '/0';
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Bad null terminator - chrissstrahl
+		//--------------------------------------------------------------
+		tempSpawnposName[ 0 ] = '\0';
 	}
 
 	// Update all parms
