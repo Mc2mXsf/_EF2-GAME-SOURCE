@@ -1805,6 +1805,14 @@ extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
 		}
 		else
 		{
+			//--------------------------------------------------------------
+			// GAMEFIX - Added: Turn ON LEVEL AI if server no longer empty, is turned off again if server is empty - chrissstrahl
+			//--------------------------------------------------------------
+			if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
+				level.ai_on = true;
+				gi.Printf("level_ai - ON - Server no longer empty!\n");
+			}
+
 			// Record the time entered
 			ent->client->pers.enterTime = level.time;
 			// send effect if in a multiplayer game
@@ -2183,15 +2191,6 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 		{
 			gi.Printf( "%s connected\n", ent->client->pers.netname );
 		}
-
-		//--------------------------------------------------------------
-		// GAMEFIX - Added: Turn ON LEVEL AI if server no longer empty, is turned off again if server is empty - chrissstrahl
-		//--------------------------------------------------------------
-		if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
-			level.ai_on = true;
-			gi.Printf("level_ai - ON - Server no longer empty!\n");
-		}
-
 		
 		LoadingServer = false;
 	}
