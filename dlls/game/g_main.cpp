@@ -2189,6 +2189,7 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 		//--------------------------------------------------------------
 		if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
 			level.ai_on = true;
+			gi.Printf("level_ai - ON - Server no longer empty!\n");
 		}
 
 		
@@ -2233,6 +2234,7 @@ extern "C" void G_ClientDisconnect( gentity_t *ent )
 		//--------------------------------------------------------------
 		if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
 			level.ai_on = false;
+			gi.Printf("level_ai - OFF - Server is now empty!\n");
 		}
 	}
 	
