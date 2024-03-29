@@ -91,6 +91,14 @@ public:
 
 class MultiplayerManager : public Class
    {
+//--------------------------------------------------------------
+// GAMEFIX - Functions - chrissstrahl
+//--------------------------------------------------------------
+   public:
+	   float					getNextTauntTime(Player* player);
+	   void						setNextTauntTime(Player* player);
+
+
 	private:
 		static const int				_playerFreezeTime;
 		//static const int				_maxVoteCount;

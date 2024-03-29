@@ -551,8 +551,16 @@ qboolean G_TauntCmd( const gentity_t *ent )
 
 		if ( multiplayerManager.inMultiplayer() && !multiplayerManager.isPlayerSpectator( player ) )
 		{
-			//ent->entity->Sound( tauntName, CHAN_TAUNT, DEFAULT_VOL, LEVEL_WIDE_MIN_DIST );
-			ent->entity->Sound( tauntName, CHAN_TAUNT, DEFAULT_VOL, 250.0f );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: MP-Taunt Cooldown, the variable was there but nothing was implemented - chrissstrahl
+			//--------------------------------------------------------------
+			if (multiplayerManager.getNextTauntTime(player) <= level.time) {
+				multiplayerManager.setNextTauntTime(player);
+
+
+				//ent->entity->Sound( tauntName, CHAN_TAUNT, DEFAULT_VOL, LEVEL_WIDE_MIN_DIST );
+				ent->entity->Sound(tauntName, CHAN_TAUNT, DEFAULT_VOL, 250.0f);
+			}
 		}
 	}
 

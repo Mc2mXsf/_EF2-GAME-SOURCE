@@ -3971,3 +3971,32 @@ bool MultiplayerManager::skipWeaponReloads( void )
 
 	return false;
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Constants for configuration - chrissstrahl
+//--------------------------------------------------------------
+constexpr auto gamefix_mpManager_tauntCooldown = 15.0f;
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to grab next taunt time var - chrissstrahl
+//--------------------------------------------------------------
+float MultiplayerManager::getNextTauntTime(Player* player)
+{
+	if (player) {
+		MultiplayerPlayerData* playerData;
+		playerData = &_playerData[player->entnum];
+		return playerData->_nextTauntTime;
+	}
+	return 0.0f;
+}
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to set next taunt time var - chrissstrahl
+//--------------------------------------------------------------
+void MultiplayerManager::setNextTauntTime(Player* player)
+{
+	if (player) {
+		MultiplayerPlayerData* playerData;
+		playerData = &_playerData[player->entnum];
+		playerData->_nextTauntTime = (level.time + gamefix_mpManager_tauntCooldown);
+	}
+}
