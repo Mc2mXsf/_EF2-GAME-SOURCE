@@ -1,3 +1,38 @@
+Added: Make player view from the current camera during cinematic, when just entering or switching around
+void G_StopCinematic( void )
+void SetCamera( Entity* ent, float switchTime )
+void CThread::CuePlayer( Event *ev )
+class MultiplayerManager : public Class
+MultiplayerManager::MultiplayerManager()
+void MultiplayerManager::cleanup( qboolean restart )
+void MultiplayerManager::playerEnterArena( int entnum, float health )
+void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
+
+Fixed: First map in the map list repeating on linux servers
+str MultiplayerManager::getNextMap( void )
+
+Fixed: Dynamic lights appearing off if they have switched on before the player was in game
+MultiplayerManager::MultiplayerManager()
+void MultiplayerManager::addPlayer( Player *player )
+void MultiplayerManager::cleanup( qboolean restart )
+void World::UpdateDynamicLights( void )
+
+Added: GAMEFIX identification string printout with Compile date
+extern "C" void G_InitGame( int startTime, int randomSeed )
+
+Added: Disallowed Playername "server"
+extern "C" void G_ClientUserinfoChanged( gentity_t *ent, const char *userinfo )
+
+Fixed: MP-Taunt Cooldown, the variable was there but nothing was implemented
+qboolean G_TauntCmd( const gentity_t *ent )
+
+Added: Turn OFF LEVEL AI if server empty, prevent issues with ai - turns on if player connects
+extern "C" void G_ClientDisconnect( gentity_t *ent )
+extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qboolean isBot, qboolean checkPassword )
+
+Fixed: Bad null terminator
+void ParseMapName( const char *fullName, char *mapName, char *spawnposName, char *movieName )
+
 Fixed: Crash if a error is thrown before a level is loadad
 Player *GetPlayer( int index )
 
