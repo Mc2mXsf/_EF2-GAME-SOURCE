@@ -1,3 +1,6 @@
+Fixed: Activator not being set on entry event for trigger_EntryAndExit
+void TriggerEntryAndExit::TriggerStuff( Event *ev )
+
 Added: Make player view from the current camera during cinematic, when just entering or switching around
 void G_StopCinematic( void )
 void SetCamera( Entity* ent, float switchTime )
