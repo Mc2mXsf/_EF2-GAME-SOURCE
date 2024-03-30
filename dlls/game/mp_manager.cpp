@@ -94,6 +94,12 @@ MultiplayerManager::MultiplayerManager()
 	_restartMatchTime = 0.0f;
 
 	_voteTime = 0.0f;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
+	//--------------------------------------------------------------
+	gameFix_updateDynamicLights = false;
 }
 
 MultiplayerManager::~MultiplayerManager()
@@ -146,6 +152,12 @@ void MultiplayerManager::cleanup( qboolean restart )
 	_modifiers.FreeObjectList();
 
 	_voteTime = 0.0f;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
+	//--------------------------------------------------------------
+	gameFix_updateDynamicLights = false;
 }
 
 void MultiplayerManager::init( void )
@@ -749,6 +761,13 @@ void MultiplayerManager::addPlayer( Player *player )
 	// Inform all of the players that the player has joined the game
 
 	multiplayerManager.HUDPrintAllClients( va( "%s $$JoinedGame$$\n", player->client->pers.netname ) );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
+	// Signal World::UpdateDynamicLights to update the dynamic lights
+	//--------------------------------------------------------------
+	multiplayerManager.gameFix_updateDynamicLights = true;
 }
 
 void MultiplayerManager::removePlayer( Player *player )

@@ -662,12 +662,22 @@ void World::UpdateEntityFadeDist( void )
 	gi.setConfigstring( CS_ENTITYFADEINFO, va( "%f", entity_fade_dist ) );
 }
 
-void World::UpdateDynamicLights( void )
+void World::UpdateDynamicLights(void)
 {
-	int i;
-
-	for ( i = 0 ; i < MAX_LIGHTING_GROUPS ; i++ )
-	{
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
+	// Triggered from MultiplayerManager::addPlayer
+	//--------------------------------------------------------------
+	if (multiplayerManager.inMultiplayer() && multiplayerManager.gameFix_updateDynamicLights) {
+		multiplayerManager.gameFix_updateDynamicLights = false;
+		for (int i = 0; i < MAX_LIGHTING_GROUPS; i++) {
+			gi.SetDynamicLight(i, 0.0f);
+			gi.SetDynamicLightDefault(i, 0.0f);
+		}
+		return;
+	}
+	
+	for (int i = 0 ; i < MAX_LIGHTING_GROUPS ; i++ ){
 		gi.SetDynamicLight( i, dynamic_lights[ i ].intensity );
 		gi.SetDynamicLightDefault( i, dynamic_lights[ i ].defaultIntensity );
 	}

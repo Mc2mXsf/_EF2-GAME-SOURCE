@@ -92,9 +92,10 @@ public:
 class MultiplayerManager : public Class
    {
 //--------------------------------------------------------------
-// GAMEFIX - Functions - chrissstrahl
+// GAMEFIX - Functions and Variables - chrissstrahl
 //--------------------------------------------------------------
    public:
+	   bool						gameFix_updateDynamicLights = false;
 	   float					getNextTauntTime(Player* player);
 	   void						setNextTauntTime(Player* player);
 
