@@ -4282,7 +4282,14 @@ void TriggerEntryAndExit::TriggerStuff( Event *ev )
 		other = ev->GetEntity( 1 );
 	}
 	assert( other != this );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Activator not being set on entry event for trigger_EntryAndExit - chrissstrahl
+	//--------------------------------------------------------------
+	activator = other;
 	
+
 	// Always respond to activate messages from the world since they're probably from
 	// the "trigger" command
 	if ( !respondTo( other ) && !( ( other == world ) && ( ( int )*ev == ( int )EV_Activate ) ) &&
