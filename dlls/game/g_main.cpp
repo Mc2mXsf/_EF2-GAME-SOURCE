@@ -193,6 +193,16 @@ extern "C" void G_InitGame( int startTime, int randomSeed )
 	// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
 	//--------------------------------------------------------------
 	gi.Printf ("==== InitGame ====\n");
+
+	//--------------------------------------------------------------
+	// GAMEFIX - print identification string - chrissstrahl
+	//--------------------------------------------------------------
+	str sLibrarayName = "gamex86.dll";	//WIN32
+#ifdef __linux__	
+	sLibrarayName = "ef2gamei386.so";
+#endif
+	gi.Printf(va("==== GAMEFIX %s ====\n==== Compiled %s @ %s====\n",sLibrarayName.c_str(), __DATE__, __TIME__));
+
 	
 	// Install our own error handler, since we can't
 	// call the EXE's handler from within a C++ class
