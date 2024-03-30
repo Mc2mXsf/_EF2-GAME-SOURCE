@@ -8454,9 +8454,7 @@ void Actor::SetIdleThread( Event *ev )
 void AI_SenseEnemies	( void )
 	{
 	Actor    *actor;
-	Player	 *player;
-
-	player = GetPlayer( 0 );
+	//Player	 *player = GetPlayer( 0 ); //GAMEFIX - Disabled unused variable
 	
 	// process the list in reverse order in case SleepList is changed
 	for( int i = SleepList.NumObjects(); i > 0; i-- )
