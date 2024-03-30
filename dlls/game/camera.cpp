@@ -24,6 +24,13 @@
 #include "player.h"
 #include "camera.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
+//--------------------------------------------------------------
+#include "mp_manager.hpp"
+
+
 //#define CAMERA_PATHFILE_VERSION 1
 
 CameraManager CameraMan;
@@ -2248,6 +2255,15 @@ void SetCamera( Entity* ent, float switchTime )
 		return;
 
 	cam = ( Camera * )ent;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
+	//--------------------------------------------------------------
+	if (multiplayerManager.inMultiplayer()) {
+		multiplayerManager.gameFix_currentCamera = cam;
+	}
+
+	
 	for( j = 0; j < game.maxclients; j++ )
 	{
 		other = &g_entities[ j ];

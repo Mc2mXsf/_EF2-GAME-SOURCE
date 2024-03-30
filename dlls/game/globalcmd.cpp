@@ -23,6 +23,13 @@
 #include <qcommon/gameplaymanager.h>
 #include "CinematicArmature.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
+//--------------------------------------------------------------
+#include "mp_manager.hpp"
+
+
 Event EV_ProcessCommands
 ( 
 	"processCommands",
@@ -1966,7 +1973,16 @@ void CThread::CuePlayer( Event *ev )
 	{
 		switchTime = 0;
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
+	//--------------------------------------------------------------
+	if (multiplayerManager.inMultiplayer()) {
+		multiplayerManager.gameFix_currentCamera = nullptr;
+	}
 	
+
 	SetCamera( NULL, switchTime );
 }
 

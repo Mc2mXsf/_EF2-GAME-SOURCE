@@ -2427,6 +2427,13 @@ void G_StopCinematic( void )
 			player->cinematicStopped();
 		}
 	}
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
+	//--------------------------------------------------------------
+	if(multiplayerManager.inMultiplayer()){
+		multiplayerManager.gameFix_currentCamera = nullptr;
+	}
 }
 
 int G_NumClients( void )

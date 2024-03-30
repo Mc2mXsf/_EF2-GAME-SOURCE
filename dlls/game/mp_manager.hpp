@@ -96,6 +96,7 @@ class MultiplayerManager : public Class
 //--------------------------------------------------------------
    public:
 	   bool						gameFix_updateDynamicLights = false;
+	   Camera*					gameFix_currentCamera = nullptr;
 	   float					getNextTauntTime(Player* player);
 	   void						setNextTauntTime(Player* player);
 
