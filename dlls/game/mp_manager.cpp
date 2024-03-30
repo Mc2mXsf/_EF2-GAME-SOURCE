@@ -3719,8 +3719,13 @@ str MultiplayerManager::getNextMap( void )
 		return "";
 
 	// Get the position in the list
-
-	realCurrentPos = mp_currentPosInMapList->integer % numMaps;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: First map in the map list repeating on linux servers - chrissstrahl
+	//--------------------------------------------------------------
+	realCurrentPos = mp_currentPosInMapList->integer;
+	if (realCurrentPos >= numMaps) {
+		realCurrentPos = mp_currentPosInMapList->integer % numMaps;
+	}
 
 	// Get the next map string
 
