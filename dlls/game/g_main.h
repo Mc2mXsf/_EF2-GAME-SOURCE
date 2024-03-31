@@ -72,7 +72,14 @@ extern "C" {
 	void		G_ShutdownGame( void );
 	void		G_CleanupGame( qboolean restart );
 	void		G_RunFrame( int levelTime, int frametime );
-	void		G_ServerCommand( void );
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: G_ServerCommand returning bool if command was recognized - chrissstrahl
+	//--------------------------------------------------------------
+	bool		G_ServerCommand( void );
+
+	
 	void		G_ClientThink( gentity_t *ent, usercmd_t *ucmd );
 	qboolean	G_SendEntity( gentity_t *clientEntity, gentity_t *entityToSend );
 	void		G_UpdateEntityStateForClient( gentity_t *clientEntity, entityState_t *state );

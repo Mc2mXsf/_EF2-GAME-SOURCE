@@ -303,7 +303,7 @@ The game can issue gi.argc() / gi.argv() commands to get the rest
 of the parameters
 =================
 */
-void G_ServerCommand( void )
+bool G_ServerCommand( void )
 {
 	const char *cmd;
 	
@@ -330,5 +330,14 @@ void G_ServerCommand( void )
 		// GAMEFIX - Changed: Unknown server command, print out is now directly printed to console - chrissstrahl
 		//--------------------------------------------------------------
 		gi.Printf(va("Unknown server command %s.\n",cmd));
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: G_ServerCommand returning bool if command was recognized - chrissstrahl
+		//--------------------------------------------------------------
+		return false;
 	}
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: G_ServerCommand returning bool if command was recognized - chrissstrahl
+	//--------------------------------------------------------------
+	return true;
 }
