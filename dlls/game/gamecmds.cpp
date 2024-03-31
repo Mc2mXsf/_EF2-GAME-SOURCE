@@ -121,6 +121,15 @@ qboolean	G_ConsoleCommand( void )
 			}
 		}
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Check if it is a valid server command, because it would otherwise print out commands send to server at G_ProcessClientCommand - daggolin - chrissstrahl
+		//--------------------------------------------------------------
+		if (!result){
+			result = G_ServerCommand();
+		}
+
+
 		if ( !result )
 		{
 			ent = &g_entities[ 0 ];
