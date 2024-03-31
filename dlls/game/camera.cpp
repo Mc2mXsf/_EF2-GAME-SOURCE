@@ -2175,7 +2175,7 @@ void Camera::SetFOV( float fov, float time )
 
 
 		//--------------------------------------------------------------
-		// GAMEFIX - Fixed: Crash if Client 0 is missing upon Camera Fov - chrissstrahl
+		// GAMEFIX - Fixed: Crash if Client 0 is missing while Camera Fov is set - chrissstrahl
 		//--------------------------------------------------------------
 		gentity_t* gentity;
 		if ( g_gametype->integer == GT_SINGLE_PLAYER ){
@@ -2184,7 +2184,18 @@ void Camera::SetFOV( float fov, float time )
 				currentstate.fov = g_entities[0].entity->client->ps.fov;
 			}
 		}
-
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Multiplayer compatibility for Camera Fov - chrissstrahl
+		//--------------------------------------------------------------
+		else{
+			for (int i = 0; i < maxclients->integer; i++) {
+				gentity = &g_entities[i];
+				if (gentity->inuse && gentity->entity && gentity->client && gentity->entity->isSubclassOf(Player)) {
+					currentstate.fov = g_entities[i].entity->client->ps.fov;
+					break;
+				}
+			}
+		}
 
 
 		newstate.fov = fov;
