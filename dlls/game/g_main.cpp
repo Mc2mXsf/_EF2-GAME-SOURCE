@@ -747,6 +747,14 @@ qboolean G_ArchiveLevel( const char *filename, qboolean autosave, qboolean loadi
 {
 	try
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Savegames getting created during Multiplayer - chrissstrahl
+		//--------------------------------------------------------------
+		if ( g_gametype->integer != GT_SINGLE_PLAYER) {
+			return false;
+		}
+
+
 		int		i;
 		int      num;
 		Archiver arc;
