@@ -1820,13 +1820,21 @@ void CThread::TriggerEvent( Event *ev )
 void CThread::TriggerEntityEvent( Event *ev )
 {
 	Event	   *event;
-	Entity	   *ent;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Crash if given entity did not exist - chrissstrahl
+	//--------------------------------------------------------------
+	Entity	   *ent = nullptr;
 	
 	// Get the entity we wish to trigger
-	
 	ent = ev->GetEntity( 1 );
 	
-	if ( !ent )
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Print out on triggerEntity command failure for feedback - chrissstrahl
+	//--------------------------------------------------------------
+	if (!ent) {
+		gi.Printf("triggerEntity($...) - given entity does not exist\n");
+	}
 		return;
 	
 	// Trigger the entity
