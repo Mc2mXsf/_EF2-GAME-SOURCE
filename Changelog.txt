@@ -1,3 +1,33 @@
+Fixed: Crash if client 0 does not exist
+void Actor::SpawnItems( void )
+
+Added: Multiplayer compatibility for Camera Fov
+void Camera::SetFOV( float fov, float time )
+
+Fixed: Crash if Client 0 is missing while Camera Fov is set
+void Camera::SetFOV( float fov, float time )
+
+Fixed: sv_maxclient > 1 having a impact on script console commands in Singleplayer
+qboolean G_ProcessClientCommand( gentity_t *ent )
+
+Added: Convince Feature to strip leading /,^ or \ from console commands
+void G_ClientCommand( gentity_t *ent )
+
+Added: Check if it is a valid server command, because it would otherwise print out commands send to server at G_ProcessClientCommand
+qboolean	G_ConsoleCommand( void )
+
+Changed: Unknown server command, print out is now directly printed to console
+G_ServerCommand( void )
+
+Fixed: Savegames getting created during Multiplayer
+qboolean G_ArchiveLevel( const char *filename, qboolean autosave, qboolean loading )
+
+Added: Print out to all player huds/chat in multiplayer if trigger_secret is triggered
+void TriggerSecret::FoundSecret( Event *ev )
+
+Fixed: Crash in multiplayer if client 0 is not present and trigger_secret is triggered
+void TriggerSecret::FoundSecret( Event *ev )
+
 Fixed: Activator not being set on entry event for trigger_EntryAndExit
 void TriggerEntryAndExit::TriggerStuff( Event *ev )
 
@@ -155,7 +185,9 @@ void SelectSpawnPoint( Vector &org, Vector &ang, str &thread )
 Fixed: Server rejecting players with a password set, when the server it self has currently no password set
 extern "C" const char *G_ClientConnect
 
-Fixed: crash when using fakeplayer script command in multiplayer 
+Fixed: crash when using fakeplayer script command in multiplayer
+void CThread::FakePlayer( Event *ev )
+void CThread::RemoveFakePlayer( Event *ev )
 void Player::StartFakePlayer( void )
 void Player::FakePlayer( qboolean holster )
 void Player::RemoveFakePlayer( void )
