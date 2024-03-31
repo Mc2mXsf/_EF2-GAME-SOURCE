@@ -2172,7 +2172,21 @@ void Camera::SetFOV( float fov, float time )
 		fovFadeTime = time;
 		fovTime = level.time + fovFadeTime;
 		//currentstate.fov = newstate.fov;
-		currentstate.fov = g_entities[0].entity->client->ps.fov;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Crash if Client 0 is missing upon Camera Fov - chrissstrahl
+		//--------------------------------------------------------------
+		gentity_t* gentity;
+		if ( g_gametype->integer == GT_SINGLE_PLAYER ){
+			gentity = &g_entities[0];
+			if (gentity->inuse && gentity->entity && gentity->client && gentity->entity->isSubclassOf(Player)){
+				currentstate.fov = g_entities[0].entity->client->ps.fov;
+			}
+		}
+
+
+
 		newstate.fov = fov;
 	}
 }
