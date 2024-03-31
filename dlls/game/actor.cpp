@@ -12017,11 +12017,23 @@ void Actor::SpawnItems( void )
 
 			// See what he player needs
 
-			player = (Player *)g_entities[ 0 ].entity;
-
-			player_health  = player->health;
-			player_plasma  = player->AmmoCount( "Plasma" );
-			player_bullets = player->AmmoCount( "Bullet" );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Crash if client 0 does not exist - chrissstrahl
+			//--------------------------------------------------------------
+			player = nullptr;
+			if (g_gametype->integer == GT_SINGLE_PLAYER) {
+				player = (Player*)g_entities[0].entity;
+			}
+			if (player) {
+				player_health = player->health;
+				player_plasma = player->AmmoCount("Plasma");
+				player_bullets = player->AmmoCount("Bullet");			
+			}
+			else {
+				player_health = G_Random( 100 );
+				player_plasma = G_Random( 50 );
+				player_bullets = G_Random( 100 );
+			}
 
 			// See if the player is low on health
 
@@ -12033,7 +12045,6 @@ void Actor::SpawnItems( void )
 
 			if ( player_bullets <= 50.0f )
 				bullets_chance *= ( 60.0f - player_bullets ) / 10.0f;
-
 			}
 		}
 	}
