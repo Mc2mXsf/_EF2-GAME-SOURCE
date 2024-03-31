@@ -151,6 +151,38 @@ void G_ClientCommand( gentity_t *ent )
 	{
 		if ( ent && !G_ProcessClientCommand( ent ) )
 		{
+			//--------------------------------------------------------------
+			// GAMEFIX - Added: Convince Feature to strip leading /,^ or \ from console commands - chrissstrahl
+			// Once the command has been stripped it will be send back to the client console it will then decide what to do with it
+			//--------------------------------------------------------------
+			const char* cmd;
+			cmd = gi.argv(0);
+			bool bFiltered = false;
+			while (*cmd == '^' || *cmd == '/' || *cmd == '\\') {
+				cmd++;
+				bFiltered = true;
+			}
+
+			if (bFiltered && gi.GetNumFreeReliableServerCommands(ent->entity->entnum) > 32)
+			{
+				int cmdNum = 1;
+				str cmdGlueUp = "";
+				char* checkCmdPresent;
+
+				cmdGlueUp = va("%s", cmd);
+
+				checkCmdPresent = gi.argv(cmdNum);
+				while (checkCmdPresent && strlen(checkCmdPresent) > 0) {
+					cmdGlueUp += va(" %s", checkCmdPresent);
+					cmdNum++;
+					checkCmdPresent = gi.argv(cmdNum);
+				}
+				//send back to client and client console will decide it it wants to send it again
+				gi.SendServerCommand(ent->entity->entnum, va("stufftext \"%s\"\n", cmdGlueUp.c_str()));
+				return;
+			}
+
+
 			// anything that doesn't match a command will be a chat
 			G_Say( ent, false, true );
 		}
