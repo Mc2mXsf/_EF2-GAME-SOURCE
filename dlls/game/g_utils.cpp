@@ -2365,6 +2365,12 @@ void G_FinishMissionFailed( void )
 			}
 		}
 	}
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Print info of mission failure to player huds - chrissstrahl
+	//--------------------------------------------------------------
+	else if(multiplayerManager.inMultiplayer()){
+		multiplayerManager.HUDPrintAllClients("^1=/\\=^3 Mission Failed ^1=/\\=\n");
+	}
 
 	// Fade everything out
 	G_FadeOut( 1.0f );
