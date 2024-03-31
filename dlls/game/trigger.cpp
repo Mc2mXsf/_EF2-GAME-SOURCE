@@ -1446,6 +1446,14 @@ void TriggerSecret::FoundSecret( Event *ev )
 	if ( g_gametype->integer == GT_SINGLE_PLAYER ) {
 		gi.centerprintf ( &g_entities[0], CENTERPRINT_IMPORTANCE_NORMAL, "$$FoundSecretArea$$" );
 	}
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: printout to all player huds/chat in multiplayer if trigger_secret is triggered  - chrissstrahl
+	//--------------------------------------------------------------
+	else {
+		if (multiplayerManager.inMultiplayer()) {
+			multiplayerManager.HUDPrintAllClients("A Secret was found =/\\= Ein Versteck wurde gefunden\n");
+		}
+	}
 }
 
 /*****************************************************************************/
