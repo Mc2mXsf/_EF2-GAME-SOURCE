@@ -326,6 +326,9 @@ void G_ServerCommand( void )
 	}
 	else
 	{
-		gi.SendServerCommand( NULL, "print \"Unknown server command %s.\n\"", cmd );
+		//--------------------------------------------------------------
+		// GAMEFIX - Changed: Unknown server command, print out is now directly printed to console - chrissstrahl
+		//--------------------------------------------------------------
+		gi.Printf(va("Unknown server command %s.\n",cmd));
 	}
 }
