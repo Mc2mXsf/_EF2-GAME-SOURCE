@@ -1440,7 +1440,12 @@ void TriggerSecret::FoundSecret( Event *ev )
 	level.found_secrets++;
 	levelVars.SetVariable( "found_secrets", level.found_secrets );
 
-	gi.centerprintf ( &g_entities[0], CENTERPRINT_IMPORTANCE_NORMAL, "$$FoundSecretArea$$" );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Crash in multiplayer if client 0 is not present and trigger_secret is triggered  - chrissstrahl
+	//--------------------------------------------------------------
+	if ( g_gametype->integer == GT_SINGLE_PLAYER ) {
+		gi.centerprintf ( &g_entities[0], CENTERPRINT_IMPORTANCE_NORMAL, "$$FoundSecretArea$$" );
+	}
 }
 
 /*****************************************************************************/
