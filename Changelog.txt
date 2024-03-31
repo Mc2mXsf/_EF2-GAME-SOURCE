@@ -1,3 +1,9 @@
+Added: Print out on triggerEntity command failure for feedback
+void CThread::TriggerEntityEvent( Event *ev )
+
+Fixed: Crash if given entity did not exist - triggerEntity script command
+void CThread::TriggerEntityEvent( Event *ev )
+
 Fixed: Crash if client 0 does not exist
 void Actor::SpawnItems( void )
 
@@ -74,6 +80,9 @@ void Actor::StopDialog()
 
 Fixed: Crash if $actor.attack($entity) is used but $entity does not exist
 void Actor::AttackEntity( Event *ev	)
+
+Added: Print info of mission failure to player huds
+void G_FinishMissionFailed( void )
 
 Fixed: Crash if client 0 does not exist
 void G_FinishMissionFailed( void )
