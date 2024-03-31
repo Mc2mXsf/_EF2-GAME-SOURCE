@@ -1998,6 +1998,14 @@ void CThread::ReleasePlayer( Event *ev )
 
 void CThread::FakePlayer( Event *ev )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - crash in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->value != GT_SINGLE_PLAYER) {
+		gi.Printf("WARNING: fakeplayer script command can only be used in Singleplayer\n");
+		return;
+	}
+
 	Player *player;
 	
 	player = ( Player * )g_entities[ 0 ].entity;
@@ -2009,6 +2017,14 @@ void CThread::FakePlayer( Event *ev )
 
 void CThread::RemoveFakePlayer( Event *ev )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - crash in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->value != GT_SINGLE_PLAYER) {
+		gi.Printf("WARNING: fakeplayer script command can only be used in Singleplayer\n");
+		return;
+	}
+
 	Player *player;
 	
 	player = ( Player * )g_entities[ 0 ].entity;
