@@ -213,15 +213,10 @@ qboolean G_ProcessClientCommand( gentity_t *ent )
 	for( cmds = G_ConsoleCmds; cmds->command != NULL; cmds++ )
 	{
 		// if we have multiple clients and this command isn't allowed by multiple clients, skip it
-		
-		//--------------------------------------------------------------
-		// GAMEFIX - Fixed: sv_maxclient > 1 having a impact on script console commands in Singleplayer - chrissstrahl
-		//--------------------------------------------------------------
 		if ( ( game.maxclients > 1 ) && ( !cmds->allclients ) && !sv_cheats->integer )
 		{
 			continue;
 		}
-
 		
 		if ( !Q_stricmp( cmd, cmds->command ) )
 		{
