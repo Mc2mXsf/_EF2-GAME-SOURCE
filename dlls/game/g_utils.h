@@ -18,6 +18,13 @@
 #ifndef __G_UTILS_H__
 #define __G_UTILS_H__
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Helper Function - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox);
+
+
 class Archiver;
 
 void        G_ArchiveEdict( Archiver &arc, gentity_t *edict );
