@@ -4014,29 +4014,33 @@ void TriggerCallVolume::EntityLeftVolume( Event *ev )
 	{
 		_notifyRequiredEnts(false);
 		
+		if ( _exitThread.length() ){
+			if (!ExecuteThread(_exitThread, true, this)) {
+				warning("StartThread", "Null game script");
+			}
+		}
+
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: trigger_volume_callvolume targetname not being cleared from Player when leaving trigger - chrissstrahl
+		// - Changed: Code moved down to avoid possible conflicts when trigger targetname is cleared - chrissstrahl
+		//--------------------------------------------------------------
 		// Null out the currentCallVolume on the Player		
 		player = ( Player* )other;
-		player->SetCurrentCallVolume( TargetName() );
+		player->SetCurrentCallVolume( "" );
 
-		if ( _exitThread.length() )
-			{
-			if ( !ExecuteThread( _exitThread , true , this  ) )
-				warning( "StartThread", "Null game script" );
-			}
-			
-			int entNum;
-			for ( int i = entList.NumObjects() ; i > 0  ; i-- )
-			{
+
+		int entNum;
+		for ( int i = entList.NumObjects() ; i > 0  ; i-- ){
 			entNum = entList.ObjectAt( i );
-			if ( entNum == other->entnum )
-				{
+			if ( entNum == other->entnum ){
 				entList.RemoveObjectAt( i );
-				}
-				
 			}
+		}
 	}
 	
-	if ( other->isSubclassOf( Actor ) )
+	else if ( other->isSubclassOf( Actor ) )
 	{
 		actor = (Actor*)other;
 		actor->SetActorFlag( ACTOR_FLAG_IN_CALL_VOLUME , false );
