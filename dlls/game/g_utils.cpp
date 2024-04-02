@@ -2521,37 +2521,3 @@ str G_GetDatabaseString( const str &prefix, const str &objectName, const str &va
 
 	return gpm->getStringValue( gameplayObjectName, varName );
 }
-
-
-//--------------------------------------------------------------
-// GAMEFIX - Added: Function used to check if entity is inside boundingbox of other-entity - chrissstrahl
-//--------------------------------------------------------------
-bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
-{
-	if (!eCheck || !eTheBox || eCheck == eTheBox) {
-		return false;
-	}
-
-	if (eCheck->isSubclassOf(Sentient) && eCheck->deadflag || eTheBox->isSubclassOf(Sentient) && eTheBox->deadflag) {
-		return false;
-	}
-	
-	if (multiplayerManager.inMultiplayer()) {
-		if (eCheck->isSubclassOf(Player) && multiplayerManager.isPlayerSpectator((Player*)eCheck) ||
-			eTheBox->isSubclassOf(Player) && multiplayerManager.isPlayerSpectator((Player*)eTheBox))
-		{
-			return false;
-		}
-	}
-
-	if ((eCheck->absmin[0] > eTheBox->absmax[0]) ||
-		(eCheck->absmin[1] > eTheBox->absmax[1]) ||
-		(eCheck->absmin[2] > eTheBox->absmax[2]) ||
-		(eCheck->absmax[0] < eTheBox->absmin[0]) ||
-		(eCheck->absmax[1] < eTheBox->absmin[1]) ||
-		(eCheck->absmax[2] < eTheBox->absmin[2]))
-	{
-		return false;
-	}
-	return true;
-}
