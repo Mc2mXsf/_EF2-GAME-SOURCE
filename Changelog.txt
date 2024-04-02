@@ -1,3 +1,27 @@
+Added: File to provide a bridge between the general game code and elite force 2 specific code
+bool gameFix_inMultiplayer();
+bool gamefix_isSpectator_stef2(Entity* ent);
+bool gameFix_isDead(Entity* ent);
+bool gameFix_isDedicatedServer();
+bool gameFix_isListenServer();
+bool gameFix_isWindowsServer();
+bool gameFix_isLinuxServer();
+void gameFix_hudPrint(Player* player, str sText);
+
+Added: info_player_start Singleplayer Spawn being used if no other is found on a map - allows to spawn on Singleplayer maps
+void ModeDeathmatch::respawnPlayer( Player *player )
+void ModeDeathmatch::AddPlayer( Player *player )
+void ModeTeamBase::addPlayerToTeam( Player *player, Team *team )
+void ModeTeamBase::respawnPlayer( Player *player )
+bool HoldableItemTransporter::use( void )
+
+Added: Function used to check if entity is inside boundingbox of other-entity
+bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
+
+Fixed: trigger_volume_callvolume targetname not being cleared from Player when leaving trigger
+Changed: Code moved down to avoid possible conflicts when trigger targetname is cleared - chrissstrahl
+TriggerCallVolume::EntityLeftVolume
+
 Added: Print out on triggerEntity command failure for feedback
 void CThread::TriggerEntityEvent( Event *ev )
 
