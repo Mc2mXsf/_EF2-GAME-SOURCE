@@ -15,6 +15,14 @@
 // DESCRIPTION:
 
 #include "_pch_cpp.h"
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 #include "powerups.h"
 #include "player.h"
 #include "mp_manager.hpp"
@@ -868,6 +876,15 @@ bool HoldableItemTransporter::use( void )
 		if ( multiplayerManager.inMultiplayer() )
 		{
 			spawnPoint = multiplayerManager.getSpawnPoint( player );
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Use info_player_start Singleplayer Spawn if no other is found - chrissstrahl
+			//--------------------------------------------------------------
+			if (!spawnPoint) {
+				spawnPoint = gamefix_returnInfoPlayerStart();
+			}
+
 
 			if ( spawnPoint )
 			{

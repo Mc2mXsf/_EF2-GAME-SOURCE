@@ -16,6 +16,13 @@
 
 #include "_pch_cpp.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 #include "mp_manager.hpp"
 #include "mp_modeBase.hpp"
 #include "mp_modeTeamBase.hpp"
@@ -295,6 +302,15 @@ void ModeTeamBase::addPlayerToTeam( Player *player, Team *team )
 
 	spawnPoint = getSpawnPoint( player );
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Use info_player_start Singleplayer Spawn if no other is found - chrissstrahl
+	//--------------------------------------------------------------
+	if (!spawnPoint) {
+		spawnPoint = gamefix_returnInfoPlayerStart();
+	}
+
+
 	if ( spawnPoint )
 	{
 		player->WarpToPoint( spawnPoint );
@@ -342,6 +358,15 @@ void ModeTeamBase::respawnPlayer( Player *player )
 	multiplayerManager.initPlayer( player );
 
 	spawnPoint = getSpawnPoint( player );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Use info_player_start Singleplayer Spawn if no other is found - chrissstrahl
+	//--------------------------------------------------------------
+	if (!spawnPoint) {
+		spawnPoint = gamefix_returnInfoPlayerStart();
+	}
+
 
 	if ( spawnPoint )
 	{

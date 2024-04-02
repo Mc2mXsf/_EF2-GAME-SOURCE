@@ -16,6 +16,13 @@
 
 #include "_pch_cpp.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 #include "mp_manager.hpp"
 #include "mp_modeDm.hpp"
 
@@ -89,6 +96,15 @@ void ModeDeathmatch::respawnPlayer( Player *player )
 
 	spawnPoint = getSpawnPoint( player );
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Use info_player_start Singleplayer Spawn if no other is found - chrissstrahl
+	//--------------------------------------------------------------
+	if (!spawnPoint) {
+		spawnPoint = gamefix_returnInfoPlayerStart();
+	}
+
+
 	if ( spawnPoint )
 	{
 		player->WarpToPoint( spawnPoint );
@@ -143,6 +159,15 @@ void ModeDeathmatch::AddPlayer( Player *player )
 	// Warp the player to a spawn point
 
 	spawnPoint = getSpawnPoint( player );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Use info_player_start Singleplayer Spawn if no other is found - chrissstrahl
+	//--------------------------------------------------------------
+	if (!spawnPoint) {
+		spawnPoint = gamefix_returnInfoPlayerStart();
+	}
+
 
 	if ( spawnPoint )
 	{
