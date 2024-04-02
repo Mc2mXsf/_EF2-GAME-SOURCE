@@ -35,6 +35,9 @@
       <UniqueIdentifier>{3ed57cc9-f828-4ec4-afd3-e268ec7ca41d}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Gamefix Files">
+      <UniqueIdentifier>{d3bbd3c1-1b48-410b-8520-55eb819e9dd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="changePosture.cpp">
@@ -519,6 +522,12 @@
     </ClCompile>
     <ClCompile Include="worldspawn.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gamefix.cpp">
+      <Filter>Gamefix Files</Filter>
+    </ClCompile>
+    <ClCompile Include="api_stef2.cpp">
+      <Filter>Gamefix Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1070,6 +1079,12 @@
     </ClInclude>
     <ClInclude Include="worldspawn.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gamefix.hpp">
+      <Filter>Gamefix Files</Filter>
+    </ClInclude>
+    <ClInclude Include="api_stef2.hpp">
+      <Filter>Gamefix Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
