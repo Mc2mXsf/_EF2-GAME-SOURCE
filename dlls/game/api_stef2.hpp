@@ -1,7 +1,7 @@
 //--------------------------------------------------------------
 // GAMEFIX - ELITE FORCE 2 - API
 // 
-// Elite Force 2 Specific Functions and classes are made avialable
+// Elite Force 2 Specific Functions and classes are made available
 // here in a fashion that the regular gamefix code can be ported
 // to fakk2 and others, with very little effort
 //--------------------------------------------------------------
