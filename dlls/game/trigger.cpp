@@ -1441,7 +1441,10 @@ TriggerSecret::TriggerSecret()
 	respondto = spawnflags ^ TRIGGER_PLAYERS;
 	
 	// set the thread to trigger when secrets are found
-	thread = "global/universal_script.scr::secret";
+	//--------------------------------------------------------------
+	// GAMEFIX - Disabled: Fakk2 relic, secret thread - chrissstrahl
+	//--------------------------------------------------------------
+	//thread = "global/universal_script.scr::secret";
 }
 
 void TriggerSecret::FoundSecret( Event *ev )
