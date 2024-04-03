@@ -6631,6 +6631,13 @@ void Player::Kill( Event *ev )
 	if (level.cinematic || health <= 0.0f || multiplayerManager.inMultiplayer() && multiplayerManager.isPlayerSpectator(this)) {
 		return;
 	}
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Kill not always working under various conditions - chrissstrahl
+	//--------------------------------------------------------------
+	takedamage = DAMAGE_YES;
+	SetArmorValue(0);
+
 	
 	flags &= ~FL_GODMODE;
 	health = 1.0f;
