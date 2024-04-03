@@ -8499,7 +8499,7 @@ Player *GetPlayer( int index )
 	// GAMEFIX - Fixed: Crash if a error is thrown before a level is loaded - chrissstrahl
 	//--------------------------------------------------------------
 	if (!ed || !ed->inuse || !ed->entity )
-		return 0;
+		return nullptr;
 	
 	return ( Player * )g_entities[index].entity;
 
