@@ -959,7 +959,22 @@ void Trigger::ActivateTargets( Event *ev )
 			//--------------------------------------------------------------
 			// GAMEFIX - changed importance to high - chrissstrahl
 			//--------------------------------------------------------------
-			gi.centerprintf( &g_entities[ 0 ], CENTERPRINT_IMPORTANCE_HIGH, message.c_str() );
+			if (g_gametype->integer != GT_SINGLE_PLAYER) {
+				gi.centerprintf(&g_entities[0], CENTERPRINT_IMPORTANCE_HIGH, message.c_str());
+			}
+			//--------------------------------------------------------------
+			// GAMEFIX - Added: Made Message print out multiplayer compatible if activator is a camera - chrissstrahl
+			//--------------------------------------------------------------
+			else if (multiplayerManager.inMultiplayer()) {
+				Player* player;
+				for (int i = 0; i < maxclients->integer; i++) {
+					player = GetPlayer(i);
+					if (player && !multiplayerManager.isPlayerSpectator(player)) {
+						gi.centerprintf( &g_entities[ i ], CENTERPRINT_IMPORTANCE_HIGH, message.c_str() );
+						player->hudPrint(va("%s\n", message.c_str()));
+					}
+				}
+			}
 		}
 		else
 		{
