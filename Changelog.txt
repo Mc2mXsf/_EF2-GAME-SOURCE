@@ -8,6 +8,35 @@ bool gameFix_isWindowsServer();
 bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 
+Fixed Server Commands regarding the IP-Bann List: addip, removeip, listip, writeip
+
+Added: G_ServerCommand returning bool if command was recognized
+void G_ServerCommand( void ) -> bool G_ServerCommand( void )
+
+Added: addip info print out that IP was added to bann list
+void SVCmd_AddIP_f( void )
+
+Disabled: Unknown server command, print out, we handle it as chat text anyway
+void G_ServerCommand( void )
+
+Changed: Server commands no longer using sv prefix before command
+void SVCmd_AddIP_f( void )
+void SVCmd_RemoveIP_f( void )
+void SVCmd_WriteIP_f( void )
+bool G_ServerCommand( void 
+
+Added: removeip command printing out the IP that was removed
+void SVCmd_RemoveIP_f( void )
+
+Added: Printout of Number of banned IPs in list
+void SVCmd_ListIP_f( void )
+
+Fixed: Writing of banned IP-List to a file
+void SVCmd_WriteIP_f( void )
+
+Disabled: Fakk2 relic, secret thread
+TriggerSecret::TriggerSecret()
+
 Added: info_player_start Singleplayer Spawn being used if no other is found on a map - allows to spawn on Singleplayer maps
 void ModeDeathmatch::respawnPlayer( Player *player )
 void ModeDeathmatch::AddPlayer( Player *player )
@@ -45,9 +74,6 @@ void G_ClientCommand( gentity_t *ent )
 
 Added: Check if it is a valid server command, because it would otherwise print out commands send to server at G_ProcessClientCommand
 qboolean	G_ConsoleCommand( void )
-
-Changed: Unknown server command, print out is now directly printed to console
-G_ServerCommand( void )
 
 Fixed: Savegames getting created during Multiplayer
 qboolean G_ArchiveLevel( const char *filename, qboolean autosave, qboolean loading )
@@ -96,7 +122,7 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 Fixed: Bad null terminator
 void ParseMapName( const char *fullName, char *mapName, char *spawnposName, char *movieName )
 
-Fixed: Crash if a error is thrown before a level is loadad
+Fixed: Crash if a error is thrown before a level is loadad -> returns nullptr on failure
 Player *GetPlayer( int index )
 
 Added: Multiplayer handling for StopDialog
@@ -135,6 +161,9 @@ void Level::loadLevelStrings( void )
 
 Added: Player Taunts not playing during cinematic
 qboolean G_TauntCmd( const gentity_t *ent )
+
+Added: Made Message print out multiplayer compatible if activator is a camera
+void Trigger::ActivateTargets( Event *ev )
 
 Added: Print out of (key)Message to of activating player hud for multiplayer
 void Trigger::ActivateTargets( Event *ev )
@@ -177,14 +206,18 @@ void Trigger::TriggerStuff( Event *ev )
 Added: info printouts to hud/chat for multiplayer
 Door::TryOpen( Event *ev )
 
-Added: check if item exists in game for puzzleobject
-void PuzzleObject::useEvent(Event* event)
 
 Fixed: Dispenser checking distance for all players not just client 0
 void Dispenser::Think( void )
 
+Added: check if item exists in game for puzzleobject
+void PuzzleObject::useEvent(Event* event)
+
 Fixed: Puzzleobject checking distance for all players not just client 0
 void PuzzleObject::Think( void )
+
+Fixed: Kill not always working under various conditions
+void Player::Kill( Event *ev )
 
 Fixed: kill working during cinematic/spectator or if already dead
 void Player::Kill( Event *ev )
