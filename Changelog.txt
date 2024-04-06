@@ -1,4 +1,5 @@
 Added: File to provide a bridge between the general game code and elite force 2 specific code
+bool gameFix_inSingleplayer();
 bool gameFix_inMultiplayer();
 bool gamefix_isSpectator_stef2(Entity* ent);
 bool gameFix_isDead(Entity* ent);
@@ -7,6 +8,16 @@ bool gameFix_isListenServer();
 bool gameFix_isWindowsServer();
 bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
+void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
+
+Fixed: Archetype cleared, regardless if other players are targeting the given entity
+void Player::Killed( Event *ev )
+
+Fixed: Archetype still showing as targeted when player enters spectator, related to Player::ProcessTargetedEntity
+void Player::InitView( void )
+
+Fixed: Spectators being able to show/trigger Archetypes
+void Player::ProcessTargetedEntity( void )
 
 Fixed Server Commands regarding the IP-Bann List: addip, removeip, listip, writeip
 
