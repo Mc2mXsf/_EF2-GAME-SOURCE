@@ -42,6 +42,13 @@
 #include "teammateroster.hpp"
 #include <qcommon/gameplaymanager.h>
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 //Forward
 //Back
 //TurnRight
@@ -3664,6 +3671,12 @@ void Player::InitInventory( void )
 
 void Player::InitView( void )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Archetype still showing as targeted when player enters spectator, related to Player::ProcessTargetedEntity - chrissstrahl
+	//--------------------------------------------------------------
+	gameFix_clearArchetypeInfoDisplay(this,_targetedEntity);
+
+
 	// view stuff
 	camera         = NULL;
 	v_angle			= vec_zero;
@@ -3885,7 +3898,12 @@ void Player::Killed( Event *ev )
 	// Stop targeting monsters
 	if( _targetedEntity != NULL)
 	{
-		_targetedEntity->edict->s.eFlags &= ~EF_DISPLAY_INFO;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Archetype cleared, regardless if other players are targeting the given entity - chrissstrahl
+		//--------------------------------------------------------------
+		gameFix_clearArchetypeInfoDisplay(this,_targetedEntity);
+
+
 		_targetedEntity = NULL;
 	}
 	
@@ -5774,6 +5792,16 @@ void Player::ProcessTargetedEntity( void )
 	if(_targetedEntity == 0)
 		return;	
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Spectators being able to show/trigger Archetypes - chrissstrahl
+	//--------------------------------------------------------------
+	if (gameFix_inMultiplayer()) {
+		if (gamefix_isSpectator_stef2((Entity*)this)) {
+			return;
+		}
+	}
+
 	_targetedEntity->edict->s.eFlags |= EF_DISPLAY_DESC1;
 }
 
