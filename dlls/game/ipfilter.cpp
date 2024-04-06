@@ -121,6 +121,7 @@ qboolean SV_FilterPacket( const char *from )
 	unsigned	in;
 	const char *p;
 
+
 	//--------------------------------------------------------------
 	// GAMEFIX - uninitialized variable - chrissstrahl
 	//--------------------------------------------------------------
@@ -172,7 +173,11 @@ void SVCmd_AddIP_f( void )
 {
 	int i;
 	
-	if ( gi.argc() < 3 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
+	//--------------------------------------------------------------
+	if ( gi.argc() < 2 )
 	{
 		gi.SendServerCommand( NULL, "print \"Usage: addip <ip-mask>\n\"" );
 		return;
@@ -197,9 +202,19 @@ void SVCmd_AddIP_f( void )
 		numipfilters++;
 	}
 	
-	if ( !StringToFilter( gi.argv( 2 ), &ipfilters[ i ] ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
+	//--------------------------------------------------------------
+	if ( !StringToFilter( gi.argv( 1 ), &ipfilters[ i ] ) )
 	{
 		ipfilters[ i ].compare = 0xffffffff;
+	}
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: addip info print out that IP was added to bann list - chrissstrahl
+	//--------------------------------------------------------------	
+	else {
+		gi.SendServerCommand(NULL, "print \"added IP: %s\n\"",gi.argv(1));
 	}
 }
 
@@ -214,13 +229,21 @@ void SVCmd_RemoveIP_f( void )
 	int			i;
 	int         j;
 	
-	if ( gi.argc() < 3 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
+	//--------------------------------------------------------------
+	if ( gi.argc() < 2 )
 	{
-		gi.SendServerCommand( NULL, "print \"Usage: sv removeip <ip-mask>\n\"" );
+		gi.SendServerCommand( NULL, "print \"Usage: removeip <ip-mask>\n\"" );
 		return;
 	   }
 	
-	if ( !StringToFilter( gi.argv( 2 ), &f ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
+	//--------------------------------------------------------------
+	if ( !StringToFilter( gi.argv( 1 ), &f ) )
 	{
 		return;
 	}
@@ -235,12 +258,21 @@ void SVCmd_RemoveIP_f( void )
             }
 			
 			numipfilters--;
-			gi.SendServerCommand( NULL, "print \"Removed.\n\"" );
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Added: removeip command printing out the IP that was removed - chrissstrahl
+			//--------------------------------------------------------------
+			gi.SendServerCommand( NULL, va("print \"Removed: %s\n\"",gi.argv( 1 )) );
 			return;
 		}
 	}
 	
-	gi.SendServerCommand( NULL, "print \"Didn't find %s.\n\"", gi.argv( 2 ) );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
+	//--------------------------------------------------------------
+	gi.SendServerCommand( NULL, "print \"Didn't find %s.\n\"", gi.argv( 1 ) );
 }
 
 /*
@@ -259,6 +291,12 @@ void SVCmd_ListIP_f( void )
 		*( unsigned * )b = ipfilters[ i ].compare;
 		gi.SendServerCommand( NULL, "print \"%3i.%3i.%3i.%3i\n\"", b[ 0 ], b[ 1 ], b[ 2 ], b[ 3 ] );
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Printout of Number of banned IPs in list  - chrissstrahl
+	//--------------------------------------------------------------
+	gi.SendServerCommand(NULL, "print \"%i IPs in the current List\n\"",i);
 }
 
 /*
@@ -268,6 +306,48 @@ SV_WriteIP_f
 */
 void SVCmd_WriteIP_f( void )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Writing of banned IP-List to a file - chrissstrahl
+	//--------------------------------------------------------------
+	byte	 bb[4];
+	str buffer = "";
+	fileHandle_t ipList = NULL;
+	str sFile = "listip.cfg";
+	
+	//open file to write
+	ipList = gi.FS_FOpenFileWrite(sFile.c_str());
+
+	if (!ipList) {
+		throw(va("SVCmd_WriteIP_f: could not open file to write: %s - Write-protection? Bad-Accsess-rights?\n", sFile.c_str()));
+		return;
+	}
+
+	buffer += va("set filterban %d\n", (int)filterban->integer);
+	for (int i = 0; i < numipfilters; i++)
+	{
+		*(unsigned*)bb = ipfilters[i].compare;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
+		//--------------------------------------------------------------
+		buffer += va("addip %i.%i.%i.%i\n", bb[0], bb[1], bb[2], bb[3]);
+	}
+
+	//make sure file ends with \n
+	if (buffer[buffer.length() - 1] != '\n') {
+		buffer += '\n';
+	}
+
+	if (gi.FS_Write(buffer, buffer.length(), ipList) == 0) {
+		throw(va("SVCmd_WriteIP_f: could not write data to file: %s - Write-protection? Bad-Accsess-rights?\n", sFile.c_str()));
+	}
+
+	//close file
+	gi.FS_Flush(ipList);
+	gi.FS_FCloseFile(ipList);
+	ipList = NULL;
+
+	/*
 	FILE	 *f;
 	char	 name[ MAX_OSPATH ];
 	byte	 b[ 4 ];
@@ -288,10 +368,10 @@ void SVCmd_WriteIP_f( void )
 	for( i = 0; i < numipfilters; i++ )
 	{
 		*( unsigned * )b = ipfilters[ i ].compare;
-		fprintf( f, "sv addip %i.%i.%i.%i\n", b[ 0 ], b[ 1 ], b[ 2 ], b[ 3 ] );
+		fprintf( f, "addip %i.%i.%i.%i\n", b[ 0 ], b[ 1 ], b[ 2 ], b[ 3 ] );
 	}
 	
-	fclose( f );
+	fclose( f );*/
 }
 
 /*
@@ -305,9 +385,12 @@ of the parameters
 */
 bool G_ServerCommand( void )
 {
-	const char *cmd;
-	
-	cmd = gi.argv(1);
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
+	//--------------------------------------------------------------
+	const char *cmd = gi.argv(0);
+
+
 	if ( Q_stricmp( cmd, "addip" ) == 0 )
 	{
 		SVCmd_AddIP_f();
@@ -327,9 +410,13 @@ bool G_ServerCommand( void )
 	else
 	{
 		//--------------------------------------------------------------
+		// GAMEFIX - Disabled: Unknown server command, print out, we handle it as chat text anyway - chrissstrahl
+		//--------------------------------------------------------------
+		//gi.SendServerCommand( NULL, "print \"Unknown server command %s.\n\"", cmd );
+		//--------------------------------------------------------------
 		// GAMEFIX - Changed: Unknown server command, print out is now directly printed to console - chrissstrahl
 		//--------------------------------------------------------------
-		gi.Printf(va("Unknown server command %s.\n",cmd));
+		//gi.Printf(va("Unknown server command %s.\n",cmd));
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: G_ServerCommand returning bool if command was recognized - chrissstrahl
