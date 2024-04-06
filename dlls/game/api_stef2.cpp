@@ -8,6 +8,7 @@
 
 
 #include "api_stef2.hpp"
+#include "gamefix.hpp"
 #include "mp_manager.hpp"
 
 
@@ -127,5 +128,18 @@ void gameFix_hudPrint(Player* player, str sText)
 {
 	if (player && sText && sText.length()) {
 		player->hudPrint(sText.c_str());
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Clears Archetype if no other player is targeting the given entity - chrissstrahl
+//--------------------------------------------------------------
+void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
+{
+	if (player && entity) {
+		Entity* curTarget = player->GetTargetedEntity();
+		if (curTarget && !gamefix_targetedByOtherPlayer(player, curTarget)) {
+			curTarget->edict->s.eFlags &= ~(EF_DISPLAY_INFO | EF_DISPLAY_DESC1 | EF_DISPLAY_DESC2 | EF_DISPLAY_DESC3);
+		}
 	}
 }

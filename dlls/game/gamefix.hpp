@@ -12,3 +12,4 @@
 
 Entity*				gamefix_returnInfoPlayerStart();
 bool				gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox);
+bool				gamefix_targetedByOtherPlayer(Player* player, Entity* entity);

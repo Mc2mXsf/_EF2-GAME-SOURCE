@@ -45,3 +45,25 @@ bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
 	}
 	return true;
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Checks if any other player is targeting the given entity - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
+{
+	if (player && !gameFix_inSingleplayer()) {
+		for (int i = 0; i < maxclients->integer; ++i) {
+			gentity_t* ent = g_entities + i;
+			if (!ent || !ent->inuse || !ent->client || !ent->entity || player->entnum == i || gameFix_isDead(ent->entity) || gamefix_isSpectator_stef2(ent->entity)) {
+				continue;
+			}
+
+			Entity* curTarget = player->GetTargetedEntity();
+			Player* playerOther = (Player*)ent;
+			if (curTarget && curTarget == entity) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
