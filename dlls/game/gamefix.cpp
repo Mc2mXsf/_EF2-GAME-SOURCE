@@ -18,6 +18,24 @@ Entity* gamefix_returnInfoPlayerStart()
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Return Player by client number - chrissstrahl
+//--------------------------------------------------------------
+Player* gameFix_getPlayer(int index)
+{
+	gentity_t* ed;
+
+	if (index > gameFix_maxClients())
+		return nullptr;
+
+	ed = &g_entities[index];
+
+	if (!ed || !ed->inuse || !ed->entity)
+		return nullptr;
+
+	return (Player*)g_entities[index].entity;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function used to check if entity is inside boundingbox of other-entity - chrissstrahl
 //--------------------------------------------------------------
 bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
@@ -66,4 +84,46 @@ bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 		}
 	}
 	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Returns closest player to given entity - chrissstrahl
+//--------------------------------------------------------------
+Player* gameFix_getClosestPlayer(Entity* entity)
+{
+	return gameFix_getClosestPlayer(entity, true, true);
+}
+
+Player* gameFix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead)
+{
+	if (gameFix_inSingleplayer()) {
+		return gameFix_getPlayer(0);
+	}
+
+	if (!entity) {
+		return nullptr;
+	}
+
+	Player* playerClosest = nullptr;
+	float distanceClosest = 999999;
+
+	Player* player = nullptr;
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gameFix_getPlayer(i);
+
+		if (!player) {
+			continue;
+		}
+
+		if (noDead && gameFix_isDead((Entity*)player) || noSpectator && gamefix_isSpectator_stef2((Entity*)player)) {
+			continue;
+		}
+
+		float distanceCurrent = VectorLength(player->centroid - entity->centroid);
+		if (distanceClosest > distanceCurrent) {
+			distanceClosest = distanceCurrent;
+			playerClosest = player;
+		}
+	}
+	return player;
 }
