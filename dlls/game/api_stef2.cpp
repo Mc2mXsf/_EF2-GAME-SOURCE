@@ -141,8 +141,7 @@ void gameFix_hudPrint(Player* player, str sText)
 //--------------------------------------------------------------
 int gameFix_maxClients()
 {
-	return maxclients->integer;
-	//FAKK2 Equivalent is: return game.maxclients;
+	return game.maxclients;
 }
 
 //--------------------------------------------------------------
@@ -159,6 +158,18 @@ Entity* gameFix_getTargetedEntity(Player* player)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Returns CallvolumeTrigger Name this player is currently inside of - chrissstrahl
+//--------------------------------------------------------------
+str gameFix_getCurrentCallVolume(Player* player)
+{
+	if (!player) {
+		return "";
+	}
+	return player->GetCurrentCallVolume();
+	//FAKK2 Equivalent does not exist - trigger_volume_callvolume
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Clears Archetype if no other player is targeting the given entity - chrissstrahl
 //--------------------------------------------------------------
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
@@ -169,7 +180,48 @@ void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
 			curTarget->edict->s.eFlags &= ~(EF_DISPLAY_INFO | EF_DISPLAY_DESC1 | EF_DISPLAY_DESC2 | EF_DISPLAY_DESC3);
 		}
 	}
-	//FAKK2 Equivalent does not exist
+	//FAKK2 Equivalent does not exist - EF_DISPLAY_INFO - EF_DISPLAY_DESC1 - EF_DISPLAY_DESC2 - EF_DISPLAY_DESC3
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Returns closest player to given entity that also is inside a callvolume-trigger - chrissstrahl
+//--------------------------------------------------------------
+Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
+{
+	if (gameFix_inSingleplayer()) {
+		return gameFix_getPlayer(0);
+	}
+
+	if (!entity) {
+		return nullptr;
+	}
+
+	Player* playerClosest = nullptr;
+	float distanceClosest = 999999;
+
+	Player* player = nullptr;
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gameFix_getPlayer(i);
+
+		if (!player) {
+			continue;
+		}
+
+		if (gameFix_isDead((Entity*)player) || gamefix_isSpectator_stef2((Entity*)player)) {
+			continue;
+		}
+
+		if (!strlen(gameFix_getCurrentCallVolume(player))) {
+			continue;
+		}
+		
+		float distanceCurrent = VectorLength(player->centroid - entity->centroid);
+		if (distanceClosest > distanceCurrent) {
+			distanceClosest = distanceCurrent;
+			playerClosest = player;
+		}
+	}
+	return player;
+	//FAKK2 Equivalent does not exist - trigger_volume_callvolume
+}
 

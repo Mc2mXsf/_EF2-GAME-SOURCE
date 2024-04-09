@@ -22,5 +22,7 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 int gameFix_maxClients();
 
+
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 Entity* gameFix_getTargetedEntity(Player* player);
+Player* gameFix_getClosestPlayerInCallvolume(Entity* entity);
