@@ -58,7 +58,7 @@ bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 				continue;
 			}
 
-			Entity* curTarget = gameFix_GetTargetedEntity(player);
+			Entity* curTarget = gameFix_getTargetedEntity(player);
 			Player* playerOther = (Player*)ent;
 			if (curTarget && curTarget == entity) {
 				return true;

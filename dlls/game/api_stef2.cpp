@@ -146,6 +146,19 @@ int gameFix_maxClients()
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Return Entity the Player is currently targeting - chrissstrahl
+//--------------------------------------------------------------
+Entity* gameFix_getTargetedEntity(Player* player)
+{
+	if (!player) {
+		return nullptr;
+	}
+	return player->GetTargetedEntity();
+
+	//FAKK2 Equivalent can probably be deduced from Player::AcquireTarget
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Clears Archetype if no other player is targeting the given entity - chrissstrahl
 //--------------------------------------------------------------
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
@@ -160,15 +173,3 @@ void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
 }
 
 
-//--------------------------------------------------------------
-// GAMEFIX - Return Entity the Player is currently targeting - chrissstrahl
-//--------------------------------------------------------------
-Entity* gameFix_GetTargetedEntity(Player* player)
-{
-	if (!player) {
-		return nullptr;
-	}
-	return player->GetTargetedEntity();
-
-	//FAKK2 Equivalent can probably be deduced from Player::AcquireTarget
-}

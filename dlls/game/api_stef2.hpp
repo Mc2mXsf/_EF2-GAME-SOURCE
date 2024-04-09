@@ -23,4 +23,4 @@ void gameFix_hudPrint(Player* player, str sText);
 int gameFix_maxClients();
 
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
-Entity* gameFix_GetTargetedEntity(Player* player);
+Entity* gameFix_getTargetedEntity(Player* player);
