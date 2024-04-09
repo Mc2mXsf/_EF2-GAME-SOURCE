@@ -23,6 +23,13 @@
 #include "player.h"
 #include "behaviors_general.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 extern Container<HelperNode*> HelperNodes;
 extern Event EV_Contents;
 extern Event EV_HelperNodeCommand;
@@ -7432,7 +7439,13 @@ void GotoLiftPosition::_warpToPathNode( Actor &self )
 
 void GotoLiftPosition::FindNodes(Actor &self )
 {
-	Player* player = GetPlayer(0);
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: GotoLiftPosition::FindNodes allways refering to client 0 - chrissstrahl
+	//--------------------------------------------------------------
+	Player* player = gameFix_getClosestPlayerInCallvolume((Entity*)&self);
+	if (!player) { return; }
+
+
 	str volumeName = player->GetCurrentCallVolume();
 	HelperNode* node;
 	int nodeID;
