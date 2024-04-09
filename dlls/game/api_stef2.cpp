@@ -143,3 +143,17 @@ void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
 		}
 	}
 }
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Return Entity the Player is currently targeting - chrissstrahl
+//--------------------------------------------------------------
+Entity* gameFix_GetTargetedEntity(Player* player)
+{
+	if (!player) {
+		return nullptr;
+	}
+	return player->GetTargetedEntity();
+
+	//FAKK2 Equivalent can probably be deduced from Player::AcquireTarget
+}
