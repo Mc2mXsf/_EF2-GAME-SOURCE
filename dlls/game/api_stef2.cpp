@@ -32,6 +32,7 @@ bool gameFix_inMultiplayer()
 		return false;
 	}
 	return true;
+	//FAKK2 Equivalent is probably just a check for deathmatch->integer == 0
 }
 
 //--------------------------------------------------------------
@@ -47,6 +48,7 @@ bool gamefix_isSpectator_stef2(Entity* ent)
 		return true;
 	}
 	return false;
+	//FAKK2 Equivalent does not exist, there is just PM_NOCLIP
 }
 
 //--------------------------------------------------------------
@@ -87,6 +89,7 @@ bool gameFix_isWindowsServer()
 #else
 	return false;
 #endif
+	//FAKK2 Equivalent is _WIN32
 }
 
 //--------------------------------------------------------------
@@ -119,6 +122,7 @@ bool gameFix_isHost(Player *player)
 		return true;
 	}
 	return false;
+	//FAKK2 Equivalent might involve: deathmatch->integer + dedicated->integer + cl_running ? + there is no linux in fakk2
 }
 
 //--------------------------------------------------------------
@@ -129,6 +133,16 @@ void gameFix_hudPrint(Player* player, str sText)
 	if (player && sText && sText.length()) {
 		player->hudPrint(sText.c_str());
 	}
+	//FAKK2 Equivalent or the clostest thing to that would be gi.centerprintf and probably gi.SendServerCommand( NULL, "print \"%s\"", text );
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Returns current maxclients - chrissstrahl
+//--------------------------------------------------------------
+int gameFix_maxClients()
+{
+	return maxclients->integer;
+	//FAKK2 Equivalent is: return game.maxclients;
 }
 
 //--------------------------------------------------------------
@@ -142,6 +156,7 @@ void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
 			curTarget->edict->s.eFlags &= ~(EF_DISPLAY_INFO | EF_DISPLAY_DESC1 | EF_DISPLAY_DESC2 | EF_DISPLAY_DESC3);
 		}
 	}
+	//FAKK2 Equivalent does not exist
 }
 
 

@@ -52,7 +52,7 @@ bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
 bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 {
 	if (player && !gameFix_inSingleplayer()) {
-		for (int i = 0; i < maxclients->integer; ++i) {
+		for (int i = 0; i < gameFix_maxClients(); ++i) {
 			gentity_t* ent = g_entities + i;
 			if (!ent || !ent->inuse || !ent->client || !ent->entity || player->entnum == i || gameFix_isDead(ent->entity) || gamefix_isSpectator_stef2(ent->entity)) {
 				continue;
