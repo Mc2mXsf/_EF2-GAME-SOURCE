@@ -15,4 +15,5 @@ Player*				gameFix_getPlayer(int index);
 bool				gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox);
 bool				gamefix_targetedByOtherPlayer(Player* player, Entity* entity);
 Player*				gameFix_getClosestPlayer(Entity* entity);
-Player*				gameFix_getClosestPlayer(Entity* entity, bool noSpectator, bool noDead);
+Player*				gameFix_getClosestPlayerSamePlane(Entity* entity);
+Player*				gameFix_getClosestPlayer(Entity* entity, bool noSpectator, bool noDead, bool samePlane, int planeMaxVertDiff, int planeMaxRange);

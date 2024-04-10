@@ -91,10 +91,15 @@ bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 //--------------------------------------------------------------
 Player* gameFix_getClosestPlayer(Entity* entity)
 {
-	return gameFix_getClosestPlayer(entity, true, true);
+	return gameFix_getClosestPlayer(entity, true, true, false, 0, 0);
 }
 
-Player* gameFix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead)
+Player* gameFix_getClosestPlayerSamePlane(Entity* entity)
+{
+	return gameFix_getClosestPlayer(entity, true, true, true, 196, 1024);
+}
+
+Player* gameFix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bool samePlane,int planeMaxVertDiff, int planeMaxRange)
 {
 	if (gameFix_inSingleplayer()) {
 		return gameFix_getPlayer(0);
@@ -107,7 +112,11 @@ Player* gameFix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead)
 	Player* playerClosest = nullptr;
 	float distanceClosest = 999999;
 
+	Player* playerClosestSamePlane = nullptr;
+	float distanceClosestSamePlane = 999999;
+
 	Player* player = nullptr;
+
 	for (int i = 0; i < gameFix_maxClients(); i++) {
 		player = gameFix_getPlayer(i);
 
@@ -120,10 +129,30 @@ Player* gameFix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead)
 		}
 
 		float distanceCurrent = VectorLength(player->centroid - entity->centroid);
+		
+		//always grab player closest as a backup
 		if (distanceClosest > distanceCurrent) {
 			distanceClosest = distanceCurrent;
 			playerClosest = player;
 		}
+
+		//have limited range for same plane check
+		if (samePlane) {
+			Vector zAxiOther = Vector(0, 0, 0);
+			Vector zAxiPlayer = Vector(0, 0, 0);
+			zAxiOther[2] = entity->origin[2];
+			zAxiPlayer[2] = player->origin[2];
+			if (distanceCurrent <= planeMaxRange && VectorLength(zAxiOther - zAxiPlayer) < planeMaxVertDiff && distanceClosestSamePlane > distanceCurrent) {
+				distanceClosestSamePlane = distanceCurrent;
+				playerClosestSamePlane = player;
+			}
+		}
 	}
-	return player;
+
+	//if we don't have player on same plane within range, fallback
+	if (!playerClosestSamePlane) {
+		playerClosestSamePlane = player;
+	}
+
+	return playerClosestSamePlane;
 }
