@@ -7440,7 +7440,7 @@ void GotoLiftPosition::_warpToPathNode( Actor &self )
 void GotoLiftPosition::FindNodes(Actor &self )
 {
 	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: GotoLiftPosition::FindNodes allways refering to client 0 - chrissstrahl
+	// GAMEFIX - Fixed: GotoLiftPosition::FindNodes always refering to client 0 - chrissstrahl
 	//--------------------------------------------------------------
 	Player* player = gameFix_getClosestPlayerInCallvolume((Entity*)&self);
 	if (!player) { return; }
