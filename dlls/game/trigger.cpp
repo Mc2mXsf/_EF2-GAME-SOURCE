@@ -35,6 +35,12 @@
 #include "spawners.h"
 
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 Event EV_Trigger_ActivateTargets
 (
 	"activatetrigger",
@@ -4084,8 +4090,13 @@ void TriggerCallVolume::CheckReady( Event *ev )
 	
 	_ready = true;
 	
-	player = GetPlayer( 0 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Trigger always refering to client 0 - chrissstrahl
+	//--------------------------------------------------------------
+	player = gamefix_getPlayerInsideOfEntity((Entity*)this);
 	
+
 	if ( !player )
 	{
 		_ready = false;
@@ -4130,10 +4141,16 @@ void TriggerCallVolume::_notifyRequiredEnts(bool inCallVolume )
 	str name;
 	Entity *ent; 
 	Actor  *actor;
+	Player *player;
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Trigger always refering to client 0 - chrissstrahl
+	//--------------------------------------------------------------
+	player = gamefix_getPlayerInsideOfEntity((Entity*)this);
+	
 	
 	// Set the currentCallVolume on the Player
-	Player *player;
-	player = GetPlayer( 0 );
 	player->SetCurrentCallVolume( TargetName() );
 	
 	for ( int i = 1; i <= _requiredEntities.NumObjects() ; i++ )
