@@ -36,6 +36,42 @@ Player* gameFix_getPlayer(int index)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function to get player that is inside of the given entity boundingbox - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getPlayerInsideOfEntity(Entity* eTheBox)
+{
+	Player* player = nullptr;
+	Player* playerReturn = nullptr;
+
+	if (!eTheBox || gameFix_isDead(eTheBox) || gamefix_isSpectator_stef2(player)) {
+		return nullptr;
+	}
+
+
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gameFix_getPlayer(i);
+
+		if (!player || gameFix_isDead((Entity*)player) || gamefix_isSpectator_stef2(eTheBox)) {
+			continue;
+		}
+
+		Entity* ePlayer = (Entity*)player;
+		if ((ePlayer->absmin[0] > eTheBox->absmax[0]) ||
+			(ePlayer->absmin[1] > eTheBox->absmax[1]) ||
+			(ePlayer->absmin[2] > eTheBox->absmax[2]) ||
+			(ePlayer->absmax[0] < eTheBox->absmin[0]) ||
+			(ePlayer->absmax[1] < eTheBox->absmin[1]) ||
+			(ePlayer->absmax[2] < eTheBox->absmin[2]))
+		{
+			continue;
+		}
+
+		playerReturn = player;
+	}
+	return playerReturn;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function used to check if entity is inside boundingbox of other-entity - chrissstrahl
 //--------------------------------------------------------------
 bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
