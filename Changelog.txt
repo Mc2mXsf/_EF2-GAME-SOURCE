@@ -10,7 +10,21 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
-Fixed: GotoLiftPosition::FindNodes allways refering to client 0
+Added: Function to get player that is inside of the given entity boundingbox - chrissstrahl
+Player* gamefix_getPlayerInsideOfEntity(Entity* eTheBox)
+
+Fixed: Trigger always refering to client 0
+void TriggerCallVolume::_notifyRequiredEnts(bool inCallVolume )
+void TriggerCallVolume::CheckReady( Event *ev )
+
+Fixed: trigger_volume_callvolume targetname not being cleared from Player when leaving trigger
+Changed: Code moved down to avoid possible conflicts when trigger targetname is cleared - chrissstrahl
+TriggerCallVolume::EntityLeftVolume
+
+Added: Aditional information being printed out on failure of $cam.follow($entity)
+void Camera::FollowEvent( Event* ev )
+
+Fixed: GotoLiftPosition::FindNodes always refering to client 0
 void GotoLiftPosition::FindNodes(Actor &self )
 
 Fixed: Archetype cleared, regardless if other players are targeting the given entity
@@ -60,10 +74,6 @@ bool HoldableItemTransporter::use( void )
 
 Added: Function used to check if entity is inside boundingbox of other-entity
 bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
-
-Fixed: trigger_volume_callvolume targetname not being cleared from Player when leaving trigger
-Changed: Code moved down to avoid possible conflicts when trigger targetname is cleared - chrissstrahl
-TriggerCallVolume::EntityLeftVolume
 
 Added: Print out on triggerEntity command failure for feedback
 void CThread::TriggerEntityEvent( Event *ev )
