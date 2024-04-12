@@ -13,7 +13,7 @@
 
 bool gameFix_inSingleplayer();
 bool gameFix_inMultiplayer();
-bool gamefix_isSpectator_stef2(Entity* ent);
+bool gameFix_isSpectator_stef2(Entity* ent);
 bool gameFix_isDead(Entity* ent);
 bool gameFix_isDedicatedServer();
 bool gameFix_isListenServer();

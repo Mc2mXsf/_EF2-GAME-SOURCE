@@ -38,7 +38,7 @@ bool gameFix_inMultiplayer()
 //--------------------------------------------------------------
 // GAMEFIX - Returns if given entity(Player) is a spectator - chrissstrahl
 //--------------------------------------------------------------
-bool gamefix_isSpectator_stef2(Entity* ent)
+bool gameFix_isSpectator_stef2(Entity* ent)
 {
 	if (!ent || !gameFix_inMultiplayer()) {
 		return false;
@@ -189,7 +189,7 @@ void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
 Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
 {
 	if (gameFix_inSingleplayer()) {
-		return gameFix_getPlayer(0);
+		return gamefix_getPlayer(0);
 	}
 
 	if (!entity) {
@@ -201,13 +201,13 @@ Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
 
 	Player* player = nullptr;
 	for (int i = 0; i < gameFix_maxClients(); i++) {
-		player = gameFix_getPlayer(i);
+		player = gamefix_getPlayer(i);
 
 		if (!player) {
 			continue;
 		}
 
-		if (gameFix_isDead((Entity*)player) || gamefix_isSpectator_stef2((Entity*)player)) {
+		if (gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2((Entity*)player)) {
 			continue;
 		}
 

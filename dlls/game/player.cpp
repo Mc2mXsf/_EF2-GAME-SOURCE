@@ -5797,7 +5797,7 @@ void Player::ProcessTargetedEntity( void )
 	// GAMEFIX - Fixed: Spectators being able to show/trigger Archetypes - chrissstrahl
 	//--------------------------------------------------------------
 	if (gameFix_inMultiplayer()) {
-		if (gamefix_isSpectator_stef2((Entity*)this)) {
+		if (gameFix_isSpectator_stef2((Entity*)this)) {
 			return;
 		}
 	}

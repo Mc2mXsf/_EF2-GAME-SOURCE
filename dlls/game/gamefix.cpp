@@ -20,7 +20,7 @@ Entity* gamefix_returnInfoPlayerStart()
 //--------------------------------------------------------------
 // GAMEFIX - Return Player by client number - chrissstrahl
 //--------------------------------------------------------------
-Player* gameFix_getPlayer(int index)
+Player* gamefix_getPlayer(int index)
 {
 	gentity_t* ed;
 
@@ -43,15 +43,15 @@ Player* gamefix_getPlayerInsideOfEntity(Entity* eTheBox)
 	Player* player = nullptr;
 	Player* playerReturn = nullptr;
 
-	if (!eTheBox || gameFix_isDead(eTheBox) || gamefix_isSpectator_stef2(player)) {
+	if (!eTheBox || gameFix_isDead(eTheBox) || gameFix_isSpectator_stef2(player)) {
 		return nullptr;
 	}
 
 
 	for (int i = 0; i < gameFix_maxClients(); i++) {
-		player = gameFix_getPlayer(i);
+		player = gamefix_getPlayer(i);
 
-		if (!player || gameFix_isDead((Entity*)player) || gamefix_isSpectator_stef2(eTheBox)) {
+		if (!player || gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2(eTheBox)) {
 			continue;
 		}
 
@@ -84,7 +84,7 @@ bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
 		return false;
 	}
 
-	if (gamefix_isSpectator_stef2(eCheck) || gamefix_isSpectator_stef2(eTheBox)) {
+	if (gameFix_isSpectator_stef2(eCheck) || gameFix_isSpectator_stef2(eTheBox)) {
 		return false;
 	}
 
@@ -108,7 +108,7 @@ bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 	if (player && !gameFix_inSingleplayer()) {
 		for (int i = 0; i < gameFix_maxClients(); ++i) {
 			gentity_t* ent = g_entities + i;
-			if (!ent || !ent->inuse || !ent->client || !ent->entity || player->entnum == i || gameFix_isDead(ent->entity) || gamefix_isSpectator_stef2(ent->entity)) {
+			if (!ent || !ent->inuse || !ent->client || !ent->entity || player->entnum == i || gameFix_isDead(ent->entity) || gameFix_isSpectator_stef2(ent->entity)) {
 				continue;
 			}
 
@@ -125,20 +125,20 @@ bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 //--------------------------------------------------------------
 // GAMEFIX - Returns closest player to given entity - chrissstrahl
 //--------------------------------------------------------------
-Player* gameFix_getClosestPlayer(Entity* entity)
+Player* gamefix_getClosestPlayer(Entity* entity)
 {
-	return gameFix_getClosestPlayer(entity, true, true, false, 0, 0);
+	return gamefix_getClosestPlayer(entity, true, true, false, 0, 0);
 }
 
-Player* gameFix_getClosestPlayerSamePlane(Entity* entity)
+Player* gamefix_getClosestPlayerSamePlane(Entity* entity)
 {
 	return gameFix_getClosestPlayer(entity, true, true, true, 196, 1024);
 }
 
-Player* gameFix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bool samePlane,int planeMaxVertDiff, int planeMaxRange)
+Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bool samePlane,int planeMaxVertDiff, int planeMaxRange)
 {
 	if (gameFix_inSingleplayer()) {
-		return gameFix_getPlayer(0);
+		return gamefix_getPlayer(0);
 	}
 
 	if (!entity) {
@@ -154,13 +154,13 @@ Player* gameFix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 	Player* player = nullptr;
 
 	for (int i = 0; i < gameFix_maxClients(); i++) {
-		player = gameFix_getPlayer(i);
+		player = gamefix_getPlayer(i);
 
 		if (!player) {
 			continue;
 		}
 
-		if (noDead && gameFix_isDead((Entity*)player) || noSpectator && gamefix_isSpectator_stef2((Entity*)player)) {
+		if (noDead && gameFix_isDead((Entity*)player) || noSpectator && gameFix_isSpectator_stef2((Entity*)player)) {
 			continue;
 		}
 
