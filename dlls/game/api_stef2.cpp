@@ -145,6 +145,17 @@ int gameFix_maxClients()
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function to check if player is a BOT - chrissstrahl
+//--------------------------------------------------------------
+bool gameFix_isBot(Player* player)
+{
+	if (player && player->edict->svflags & SVF_BOT) {
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Return Entity the Player is currently targeting - chrissstrahl
 //--------------------------------------------------------------
 Entity* gameFix_getTargetedEntity(Player* player)

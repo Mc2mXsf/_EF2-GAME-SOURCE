@@ -21,6 +21,7 @@ bool gameFix_isWindowsServer();
 bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 int gameFix_maxClients();
+bool gameFix_isBot(Player* player);
 
 
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
