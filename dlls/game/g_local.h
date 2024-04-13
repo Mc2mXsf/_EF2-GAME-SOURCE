@@ -60,7 +60,7 @@ class Entity;
 
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Informatiomn we want to presist over level changes and restarts - chrissstrahl
+// GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 //--------------------------------------------------------------
 struct gamefix_client_persistant_s
 {

@@ -2147,7 +2147,7 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 	try
 	{
 		//--------------------------------------------------------------
-		// GAMEFIX - Added: Information we want to presist over level changes and restarts - chrissstrahl
+		// GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 		//--------------------------------------------------------------
 		if (g_gametype->integer != GT_SINGLE_PLAYER && firstTime) {
 			gamefix_client_persistant_t[clientNum].entNum	= clientNum;
@@ -2251,7 +2251,7 @@ extern "C" void G_ClientDisconnect( gentity_t *ent )
 
 
 		//--------------------------------------------------------------
-		// GAMEFIX - Added: Information we want to presist over level changes and restarts - chrissstrahl
+		// GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 		//--------------------------------------------------------------
 		if (g_gametype->integer != GT_SINGLE_PLAYER) {
 			gamefix_client_persistant_t[ent->s.clientNum].entNum	= -1;

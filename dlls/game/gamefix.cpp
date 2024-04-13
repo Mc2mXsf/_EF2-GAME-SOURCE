@@ -8,6 +8,10 @@
 #include "gamefix.hpp"
 #include "api_stef2.hpp"
 
+//--------------------------------------------------------------
+//Added: Information we want to persist over level changes and restarts - See g_local.h for the struct - chrissstrahl
+//--------------------------------------------------------------
+gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to return the singleplayer spawnspot if no multiplayer spawn spot was found - chrissstrahl
