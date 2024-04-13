@@ -18,3 +18,6 @@ bool				gamefix_targetedByOtherPlayer(Player* player, Entity* entity);
 Player*				gamefix_getClosestPlayer(Entity* entity);
 Player*				gamefix_getClosestPlayerSamePlane(Entity* entity);
 Player*				gamefix_getClosestPlayer(Entity* entity, bool noSpectator, bool noDead, bool samePlane, int planeMaxVertDiff, int planeMaxRange);
+int					gamefix_getCvarInt(str cvarName);
+float				gamefix_getCvarFloat(str cvarName);
+str					gamefix_getCvar(str cvarName);

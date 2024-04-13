@@ -132,7 +132,7 @@ Player* gamefix_getClosestPlayer(Entity* entity)
 
 Player* gamefix_getClosestPlayerSamePlane(Entity* entity)
 {
-	return gameFix_getClosestPlayer(entity, true, true, true, 196, 1024);
+	return gamefix_getClosestPlayer(entity, true, true, true, 196, 1024);
 }
 
 Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bool samePlane,int planeMaxVertDiff, int planeMaxRange)
@@ -191,4 +191,31 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 	}
 
 	return playerClosestSamePlane;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to return interger value from cVar - chrissstrahl
+//--------------------------------------------------------------
+int gamefix_getCvarInt(str cvarName)
+{
+	cvar_t* cvar = gi.cvar_get(cvarName.c_str());
+	return (cvar ? cvar->integer : 0);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to return float value from cVar - chrissstrahl
+//--------------------------------------------------------------
+float gamefix_getCvarFloat(str cvarName)
+{
+	cvar_t* cvar = gi.cvar_get(cvarName.c_str());
+	return (cvar ? cvar->value : 0.0f);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to return string value from cVar - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_getCvar(str cvarName)
+{
+	cvar_t* cvar = gi.cvar_get(cvarName.c_str());
+	return (cvar ? cvar->string : "");
 }
