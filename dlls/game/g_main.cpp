@@ -2146,6 +2146,17 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 	
 	try
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Information we want to presist over level changes and restarts - chrissstrahl
+		//--------------------------------------------------------------
+		if (g_gametype->integer != GT_SINGLE_PLAYER && firstTime) {
+			gamefix_client_persistant_t[clientNum].entNum	= clientNum;
+			gamefix_client_persistant_t[clientNum].language	= "Eng";
+			gamefix_client_persistant_t[clientNum].isBot	= (bool)isBot;
+			gamefix_client_persistant_t[clientNum].admin	= false;
+		}
+
+
 		ent = &g_entities[ clientNum ];
 		gi.getUserinfo( clientNum, userinfo, sizeof( userinfo ) );
 		
@@ -2237,7 +2248,19 @@ extern "C" void G_ClientDisconnect( gentity_t *ent )
 		{
 			return;
 		}
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Information we want to presist over level changes and restarts - chrissstrahl
+		//--------------------------------------------------------------
+		if (g_gametype->integer != GT_SINGLE_PLAYER) {
+			gamefix_client_persistant_t[ent->s.clientNum].entNum	= -1;
+			gamefix_client_persistant_t[ent->s.clientNum].language	= "Eng";
+			gamefix_client_persistant_t[ent->s.clientNum].isBot		= false;
+			gamefix_client_persistant_t[ent->s.clientNum].admin		= false;
+		}
 		
+
 		Player *player;
 		
 		player = ( Player * )ent->entity;
