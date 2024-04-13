@@ -147,11 +147,21 @@ int gameFix_maxClients()
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to check if player is a BOT - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isBot(Player* player)
+bool gameFix_isBot(Player* player) {
+	gentity_t* ent = &g_entities[player->entnum];
+	return gameFix_isBot(ent);
+}
+
+bool gameFix_isBot(gentity_t* ent)
 {
-	if (player && player->edict->svflags & SVF_BOT) {
+	if (!ent || !ent->client || gameFix_inSingleplayer()) {
+		return false;
+	}
+
+	if (ent->svflags & SVF_BOT || gamefix_client_persistant_t[ent->s.number].isBot ) {
 		return true;
 	}
+
 	return false;
 }
 
