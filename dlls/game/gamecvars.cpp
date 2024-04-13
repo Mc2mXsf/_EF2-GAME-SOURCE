@@ -165,7 +165,19 @@ void CVAR_Init( void )
 	developer						= gi.cvar( "developer",						"0",		CVAR_CHEAT );
 	precache						= gi.cvar( "sv_precache",					"1",		0 );
 	dedicated						= gi.cvar( "dedicated",						"0",		CVAR_LATCH );
-	skill							= gi.cvar( "skill",							"1",		CVAR_SERVERINFO|CVAR_LATCH );
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Allow SKILL cvar to be changed on the fly - chrissstrahl
+	// 
+	// There are only a couple of Singleplayer maps that do not fully
+	// support that. The worst that can happen is that the puzzle is
+	// still on the higher difficulty or does not turn ito a modulation
+	// bar. This is not really a issue, so we can ingnore that
+	//--------------------------------------------------------------
+	skill							= gi.cvar( "skill",							"1",		CVAR_SERVERINFO );
+
+
 #ifdef DEDICATED
 	maxclients						= gi.cvar( "sv_maxclients",					"16",		CVAR_SERVERINFO | CVAR_LATCH );
 	sv_maxspeed						= gi.cvar( "sv_maxspeed",					"400",		0 );

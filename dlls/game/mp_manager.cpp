@@ -3857,9 +3857,33 @@ void MultiplayerManager::checkModifiedCvars( bool informPlayers )
 		checkCvar( mp_respawnTime, "$$OptionRespawnTime$$", MP_CVAR_TYPE_INTEGER );
 		checkCvar( mp_bombTime, "$$OptionBombTime$$", MP_CVAR_TYPE_INTEGER );
 		checkCvar( mp_maxVotes, "$$OptionMaxVotes$$", MP_CVAR_TYPE_INTEGER );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Allow SKILL cvar to be changed on the fly - chrissstrahl
+		//--------------------------------------------------------------
+		checkCvar(skill, "skill", MP_CVAR_TYPE_INTEGER);
+		if (skill->modified) {
+			level.setSkill(skill->integer);
+			
+			Player* player = nullptr;
+			for (int i = 0; i < maxclients->integer; i++) {
+				player = getPlayer(i);
+				if (player) {
+					player->setSkill(skill->integer);
+				}
+			}
+		}
 	}
 
 	// Mark everything as not modified
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Allow SKILL cvar to be changed on the fly - chrissstrahl
+	//--------------------------------------------------------------
+	skill->modified = false;
+
 
 	mp_flags->modified = false;
 	mp_pointlimit->modified = false;

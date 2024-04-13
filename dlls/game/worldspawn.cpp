@@ -1288,6 +1288,23 @@ void World::Think( void )
 	{
 		gi.cvar_set( "sv_currentGravity", va( "%f", gravity ) );
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Allow SKILL cvar to be changed on the fly - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->integer == GT_SINGLE_PLAYER && skill->modified) {
+		level.setSkill(skill->integer);
+		skill->modified = false;
+
+		gentity_t* gentity;
+		Player* player = nullptr;
+		gentity = &g_entities[0];
+		if (gentity->inuse && gentity->entity && gentity->client && gentity->entity->isSubclassOf(Player)){
+			player = (Player*)gentity->entity;
+			player->setSkill(skill->integer);
+		}
+	}
 }
 
 //----------------------------------------------------------------
