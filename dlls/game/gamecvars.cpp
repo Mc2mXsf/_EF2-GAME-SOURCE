@@ -159,6 +159,12 @@ cvar_t *mp_minTauntTime;
 cvar_t *sv_showinfo;
 cvar_t *sv_showinfodist;
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Cvar local_language to gamecode logic - chrissstrahl
+//--------------------------------------------------------------
+cvar_t* local_language;
+
+
 void CVAR_Init( void )
 {
 	
@@ -176,6 +182,12 @@ void CVAR_Init( void )
 	// bar. This is not really a issue, so we can ingnore that
 	//--------------------------------------------------------------
 	skill							= gi.cvar( "skill",							"1",		CVAR_SERVERINFO );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Cvar local_language to gamecode logic - chrissstrahl
+	//--------------------------------------------------------------
+	local_language					= gi.cvar("local_language",					"Eng",		CVAR_USERINFO);
 
 
 #ifdef DEDICATED

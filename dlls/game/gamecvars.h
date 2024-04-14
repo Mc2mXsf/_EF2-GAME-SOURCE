@@ -158,6 +158,13 @@ extern cvar_t *mp_currentPosInMapList;
 extern	cvar_t	*sv_showinfo;
 extern	cvar_t	*sv_showinfodist;
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Cvar local_language to gamecode logic - chrissstrahl
+//--------------------------------------------------------------
+extern	cvar_t* local_language;
+
+
 void CVAR_Init( void );
 
 #endif /* !__GAMECVARS_H__ */
