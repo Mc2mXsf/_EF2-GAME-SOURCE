@@ -35,6 +35,13 @@
 #include "equipment.h"
 #include <qcommon/gameplaymanager.h>
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 /*****************************************************************************/
 /*QUAKED script_object (0 0.5 1) ? NOT_SOLID
 
@@ -2592,14 +2599,32 @@ void ScriptSkyOrigin::Think( void )
 		if ( translation_multiplier  )
 		{
 			// Get player
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: ScriptSkyOrigin::Think crashing with certain commands if no player present - chrissstrahl
+			//
+			// Bug Reported by MJT - Moritz
+			// .baseposition
+			// .playerbaseposition
+			// .translationmult
+			// .maxtranslationdist
+			//--------------------------------------------------------------
+			player = (Entity*)gamefix_getAnyPlayerPreferably();
+
+			Vector player_origin = origin;
 			
-			player = g_entities[ 0 ].entity;
+			if (player) {
+				player_origin = player->origin;
+			}
 			
+
 			if ( !use_player_base_position )
 			{
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: ScriptSkyOrigin::Think crashing with certain commands if no player present - chrissstrahl
+				//--------------------------------------------------------------
 				// Get current player position
-				
-				player_base_position = player->origin;
+				player_base_position = player_origin;
+
 				
 				use_player_base_position = true;
 			}
