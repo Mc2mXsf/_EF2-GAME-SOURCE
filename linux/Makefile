@@ -142,6 +142,9 @@ makedirs:
 #############################################################################
 
 GOBJ =\
+    $(B)/game/gamefix.o \
+    $(B)/game/api_stef2.o \
+	\
     $(B)/game/changePosture.o \
     $(B)/game/closeInOnEnemy.o \
     $(B)/game/closeInOnEnemyWhileFiringWeapon.o \
@@ -307,6 +310,9 @@ GOBJ =\
 
 $(B)/ef2game$(ARCH).$(SHLIBEXT) : $(GOBJ)
 	$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(GOBJ)
+
+$(B)/game/gamefix.o : $(GDIR)/gamefix.cpp; $(DO_GAME_SHLIB_CC)
+$(B)/game/api_stef2.o : $(GDIR)/api_stef2.cpp; $(DO_GAME_SHLIB_CC)
 
 $(B)/game/changePosture.o : $(GDIR)/changePosture.cpp; $(DO_GAME_SHLIB_CC)
 $(B)/game/closeInOnEnemy.o : $(GDIR)/closeInOnEnemy.cpp; $(DO_GAME_SHLIB_CC)
