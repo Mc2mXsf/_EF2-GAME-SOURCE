@@ -30,3 +30,5 @@ Entity* gameFix_getTargetedEntity(Player* player);
 Player* gameFix_getClosestPlayerInCallvolume(Entity* entity);
 qboolean gameFix_languageEng(const gentity_t* ent);
 qboolean gameFix_languageDeu(const gentity_t* ent);
+str gameFix_getServerLanguage();
+str gameFix_getLanguage(Player* player);

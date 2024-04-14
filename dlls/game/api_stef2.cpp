@@ -275,3 +275,32 @@ qboolean gameFix_languageDeu(const gentity_t* ent)
 	}
 	return true;
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function retrieving Server Language - chrissstrahl
+//--------------------------------------------------------------
+str gameFix_getServerLanguage()
+{
+	if (local_language->string) {
+		return local_language->string;
+	}
+	return "Eng";
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function retrieving Server Language - chrissstrahl
+//--------------------------------------------------------------
+str gameFix_getLanguage(Player* player)
+{
+	if (player) {
+		if (gameFix_inSingleplayer()) {
+			if (local_language->string) {
+				return local_language->string;
+			}
+		}
+		else {
+			return gamefix_client_persistant_t[player->client->ps.clientNum].language;
+		}
+	}
+	return "Eng";
+}
