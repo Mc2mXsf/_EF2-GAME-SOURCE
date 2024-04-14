@@ -673,8 +673,11 @@ static void G_AddBot( char *name, float skill, const char *team, const char *spe
 
 	gi.setUserinfo( clientNum, userinfo );
 
+	//--------------------------------------------------------------
+	// GAMEFIX - Disabled: Checking passwords for bots (by daggo) - chrissstrahl
+	//--------------------------------------------------------------
 	// have it connect to the game as a normal client
-	if ( G_ClientConnect( clientNum, qtrue, qtrue, qtrue ) ) {
+	if ( G_ClientConnect( clientNum, qtrue, qtrue, qfalse ) ) {
 		return;
 	}
 
