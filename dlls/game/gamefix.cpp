@@ -198,6 +198,61 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function that returns any player preferably not dead or spectator - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getAnyPlayerPreferably()
+{
+	return gamefix_getAnyPlayerPreferably(true,true);
+}
+
+Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
+{
+	if (gameFix_inSingleplayer()) {
+		return gamefix_getPlayer(0);
+	}
+
+	Player* player = nullptr;
+	Player* playerDead = nullptr;
+	Player* playerSpec = nullptr;
+
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+
+		if (!player) {
+			continue;
+		}
+
+		if (noDead && gameFix_isDead((Entity*)player)) {
+			if (!playerDead) {
+				playerDead = player;
+			}
+			continue;
+		}
+		
+		if(noSpectator && gameFix_isSpectator_stef2((Entity*)player)) {
+			if (!playerSpec) {
+				playerSpec = player;
+			}
+			continue;
+		}
+		//yay a player is a match
+		break;
+	}
+
+	//we didn't get the prefered player, now take any avialable
+	if (!player) {
+		if (!playerDead) {
+			player = playerDead;
+		}
+		else if(!playerSpec){
+			player = playerSpec;
+		}
+	}
+
+	return player;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function to return interger value from cVar - chrissstrahl
 //--------------------------------------------------------------
 int gamefix_getCvarInt(str cvarName)
