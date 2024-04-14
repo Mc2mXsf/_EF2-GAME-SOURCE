@@ -1833,6 +1833,15 @@ extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
 
 			// Record the time entered
 			ent->client->pers.enterTime = level.time;
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Added: Detection of Player local_language cvar, for Eng/Deu Language detection - chrissstrahl
+			//--------------------------------------------------------------
+			if (multiplayerManager.inMultiplayer()) {
+				gi.SendServerCommand(ent->client->ps.clientNum,"stufftext \"vstr local_language\n\"");
+			}
+
 			// send effect if in a multiplayer game
 			if ( game.maxclients > 1 )
 			{

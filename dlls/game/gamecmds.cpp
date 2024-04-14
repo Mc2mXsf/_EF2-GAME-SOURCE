@@ -25,6 +25,13 @@
 #include <qcommon/gameplaymanager.h>
 #include "botmenudef.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 typedef struct
 {
 	const char  *command;
@@ -35,6 +42,15 @@ typedef struct
 consolecmd_t G_ConsoleCmds[] =
 {
 	//   command name       function             available in multiplayer?
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Commands for german/english Language detection - G_ConsoleCmds - chrissstrahl
+	//--------------------------------------------------------------
+	{ "Eng",				gameFix_languageEng,	true },
+	{ "Deu",				gameFix_languageDeu,	true },
+
+
 	{ "vtaunt",				G_VTaunt,				true },
 //	{ "vsay_team",			G_VTaunt,				true },
 //	{ "vosay_team",			G_VTaunt,				true },

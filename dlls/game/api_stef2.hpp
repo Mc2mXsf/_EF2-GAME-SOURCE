@@ -28,3 +28,5 @@ bool gameFix_isBot(Player* player);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 Entity* gameFix_getTargetedEntity(Player* player);
 Player* gameFix_getClosestPlayerInCallvolume(Entity* entity);
+qboolean gameFix_languageEng(const gentity_t* ent);
+qboolean gameFix_languageDeu(const gentity_t* ent);

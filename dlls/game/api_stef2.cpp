@@ -246,3 +246,32 @@ Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
 	//FAKK2 Equivalent does not exist - trigger_volume_callvolume
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function that allows Language selection English - chrissstrahl
+//--------------------------------------------------------------
+qboolean gameFix_languageEng(const gentity_t* ent)
+{
+	Player* player = (Player*)ent->entity;
+	gamefix_client_persistant_t[ent->client->ps.clientNum].language = "Eng";
+	
+	//after x sec on server assume client typed the command
+	if ((player->client->pers.enterTime + 5) < level.time) {	
+		gameFix_hudPrint(player,"Your Language was set to English\n");
+	}
+	return true;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function that allows Language selection German - chrissstrahl
+//--------------------------------------------------------------
+qboolean gameFix_languageDeu(const gentity_t* ent)
+{
+	Player* player = (Player*)ent->entity;
+	gamefix_client_persistant_t[ent->client->ps.clientNum].language = "Deu";
+	
+	//after x sec on server assume client typed the command
+	if ((player->client->pers.enterTime + 5) < level.time) {
+		gameFix_hudPrint(player,"Ihre Sprache wurde auf deutsch festgelegt\n");
+	}
+	return true;
+}
