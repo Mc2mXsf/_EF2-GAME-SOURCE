@@ -11,10 +11,44 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+Disabled: Checking passwords for bots (by daggo)
+static void G_AddBot( char *name, float skill, const char *team, const char *specialty, char *altname)
+
+Added: Cvar local_language to gamecode logic
+void CVAR_Init( void )
+
+Added: Function retrieving Server Language
+str gameFix_getServerLanguage();
+
+Added: Function retrieving Player Language
+str gameFix_getLanguage(Player* player);
+
+Added: Detection of Player local_language cvar, for Eng/Deu Language detection
+extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
+
+Added: Function that allows Language selection English
+qboolean gameFix_languageEng(const gentity_t* ent)
+
+Added: Function that allows Language selection German
+qboolean gameFix_languageDeu(const gentity_t* ent)
+
+Added: Commands for german/english Language detection - G_ConsoleCmds
+consolecmd_t G_ConsoleCmds[] - gamecmds.cpp
+
+Fixed: ScriptSkyOrigin::Think crashing with certain commands if no player present - baseposition, playerbaseposition, translationmult, maxtranslationdist
+void ScriptSkyOrigin::Think( void )
+
+Added: Function that returns any player preferably not dead or spectator
+Player* gamefix_getAnyPlayerPreferably()
+Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
+
+Added: Players get targetnames with their client-ID attached in multiplayer
+Player::Player()
+
 Added: Allow SKILL cvar to be changed on the fly
 void CVAR_Init( void )
-void MultiplayerManager::checkModifiedCvars( bool informPlayers )
-void World::Think( void )
+void MultiplayerManager::checkModifiedCvars( bool informPlayers ) - Multiplayer
+void World::Think( void ) - Singleplayer
 
 Added: Information we want to presist over level changes and restarts
 extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qboolean isBot, qboolean checkPassword )
