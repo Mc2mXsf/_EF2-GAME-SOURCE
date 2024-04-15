@@ -3918,7 +3918,10 @@ qboolean Weapon::Pickupable( Entity *other )
 
 	if ( getSolidType() == SOLID_NOT )
 	{
-		return NULL;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+		//--------------------------------------------------------------
+		return false;
 	}
 
 	if ( multiplayerManager.inMultiplayer() && other->isSubclassOf( Player ) )

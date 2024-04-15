@@ -92,7 +92,10 @@ consolecmd_t G_ConsoleCmds[] =
 	{ "swapItem",			G_SwapItemCmd,			false },
 	{ "dropItem",			G_DropItemCmd,			false },
 	{ "dialogrunthread",	G_DialogRunThread,		false },
-	{ NULL,					NULL,					NULL }
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+	//--------------------------------------------------------------
+	{ NULL,					NULL,					false }
 };
 
 void G_InitConsoleCommands( void )

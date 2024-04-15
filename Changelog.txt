@@ -11,8 +11,22 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
-Fixed: warning: ISO C++ forbids converting a string constant to ‘char * ’[-Wwrite - strings] for BotRandomWeaponName
-char *BotRandomWeaponName(void) -> static const char *BotRandomWeaponName(void)
+Fixed: warning: converting to non-pointer type ‘int’ from NULL [-Wconversion-null]
+void G_FadeSound( float delaytime )
+consolecmd_t G_ConsoleCmds[]
+static qboolean StringToFilter( const char *s, ipfilter_t *f )
+void SVCmd_AddIP_f( void )
+void SVCmd_RemoveIP_f( void )
+void SVCmd_ListIP_f( void )
+void SVCmd_WriteIP_f( void )
+ThrowObject::ThrowObject()
+static fileHandle_t logfile
+static void OpenPlayerLogFile( void )
+void ClosePlayerLogFile( void )
+static fileHandle_t heuristicFile
+void PlayerHeuristics::ClosePlayerHeuristicFile()
+qboolean Item::Pickupable( Entity *other )
+qboolean Weapon::Pickupable( Entity *other )
 
 Fixed: gameplaydatabase.h:36:1: warning: ‘typedef’ was ignored -> changed to class to be more type-safe
 void GameplayProperty::Archive(Archiver &arc)

@@ -250,7 +250,12 @@ ThrowObject::ThrowObject()
 	pickup_offset = vec_zero;
 	damage = 0;
 	hurt_target = false;
-	owner = NULL;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: converting to non-pointer type ‘int’ from NULL [-Wconversion-null] - chrissstrahl
+	//--------------------------------------------------------------
+	owner = 0;
 }
 
 void ThrowObject::PickupOffset( Event *ev )

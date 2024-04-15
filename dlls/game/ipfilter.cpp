@@ -79,7 +79,10 @@ static qboolean StringToFilter( const char *s, ipfilter_t *f )
 	{
 		if ( ( *s < '0' ) || ( *s > '9' ) )
 		{
-			gi.SendServerCommand( NULL, "print \"Bad filter address: %s\n\"", s );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+			//--------------------------------------------------------------
+			gi.SendServerCommand( 0, "print \"Bad filter address: %s\n\"", s );
 			return false;
 		}
 		
@@ -179,7 +182,10 @@ void SVCmd_AddIP_f( void )
 	//--------------------------------------------------------------
 	if ( gi.argc() < 2 )
 	{
-		gi.SendServerCommand( NULL, "print \"Usage: addip <ip-mask>\n\"" );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+		//--------------------------------------------------------------
+		gi.SendServerCommand( 0, "print \"Usage: addip <ip-mask>\n\"" );
 		return;
 	}
 	
@@ -196,7 +202,10 @@ void SVCmd_AddIP_f( void )
 	{
 		if ( numipfilters == MAX_IPFILTERS )
 		{
-			gi.SendServerCommand( NULL, "print \"IP filter list is full\n\"" );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+			//--------------------------------------------------------------
+			gi.SendServerCommand( 0, "print \"IP filter list is full\n\"" );
 			return;
 		}
 		numipfilters++;
@@ -212,9 +221,9 @@ void SVCmd_AddIP_f( void )
 	}
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: addip info print out that IP was added to bann list - chrissstrahl
-	//--------------------------------------------------------------	
+	//--------------------------------------------------------------
 	else {
-		gi.SendServerCommand(NULL, "print \"added IP: %s\n\"",gi.argv(1));
+		gi.SendServerCommand( 0, "print \"added IP: %s\n\"",gi.argv(1));
 	}
 }
 
@@ -235,7 +244,10 @@ void SVCmd_RemoveIP_f( void )
 	//--------------------------------------------------------------
 	if ( gi.argc() < 2 )
 	{
-		gi.SendServerCommand( NULL, "print \"Usage: removeip <ip-mask>\n\"" );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+		//--------------------------------------------------------------
+		gi.SendServerCommand( 0, "print \"Usage: removeip <ip-mask>\n\"" );
 		return;
 	   }
 	
@@ -263,7 +275,10 @@ void SVCmd_RemoveIP_f( void )
 			//--------------------------------------------------------------
 			// GAMEFIX - Added: removeip command printing out the IP that was removed - chrissstrahl
 			//--------------------------------------------------------------
-			gi.SendServerCommand( NULL, va("print \"Removed: %s\n\"",gi.argv( 1 )) );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+			//--------------------------------------------------------------
+			gi.SendServerCommand( 0, va("print \"Removed: %s\n\"",gi.argv( 1 )) );
 			return;
 		}
 	}
@@ -272,7 +287,10 @@ void SVCmd_RemoveIP_f( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Changed: Server commands no longer using sv prefix before command - chrissstrahl
 	//--------------------------------------------------------------
-	gi.SendServerCommand( NULL, "print \"Didn't find %s.\n\"", gi.argv( 1 ) );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+	//--------------------------------------------------------------
+	gi.SendServerCommand( 0, "print \"Didn't find %s.\n\"", gi.argv( 1 ) );
 }
 
 /*
@@ -285,18 +303,29 @@ void SVCmd_ListIP_f( void )
 	int   i;
 	byte	b[ 4 ];
 	
-	gi.SendServerCommand( NULL, "print \"Filter list:\n\"", gi.argv( 2 ) );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+	//--------------------------------------------------------------
+	gi.SendServerCommand( 0, "print \"Filter list:\n\"", gi.argv( 2 ) );
+
+
 	for( i = 0; i < numipfilters; i++ )
    	{
 		*( unsigned * )b = ipfilters[ i ].compare;
-		gi.SendServerCommand( NULL, "print \"%3i.%3i.%3i.%3i\n\"", b[ 0 ], b[ 1 ], b[ 2 ], b[ 3 ] );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+		//--------------------------------------------------------------
+		gi.SendServerCommand( 0, "print \"%3i.%3i.%3i.%3i\n\"", b[ 0 ], b[ 1 ], b[ 2 ], b[ 3 ] );
 	}
 
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Printout of Number of banned IPs in list  - chrissstrahl
 	//--------------------------------------------------------------
-	gi.SendServerCommand(NULL, "print \"%i IPs in the current List\n\"",i);
+	gi.SendServerCommand( 0, "print \"%i IPs in the current List\n\"",i);
 }
 
 /*
@@ -311,7 +340,14 @@ void SVCmd_WriteIP_f( void )
 	//--------------------------------------------------------------
 	byte	 bb[4];
 	str buffer = "";
-	fileHandle_t ipList = NULL;
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+	//--------------------------------------------------------------
+	fileHandle_t ipList = 0;
+
+
 	str sFile = "listip.cfg";
 	
 	//open file to write
@@ -345,7 +381,13 @@ void SVCmd_WriteIP_f( void )
 	//close file
 	gi.FS_Flush(ipList);
 	gi.FS_FCloseFile(ipList);
-	ipList = NULL;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+	//--------------------------------------------------------------
+	ipList = 0;
+
 
 	/*
 	FILE	 *f;
@@ -354,12 +396,12 @@ void SVCmd_WriteIP_f( void )
 	int	 i;
 	
 	sprintf( name, "%s/listip.cfg", GAME_NAME );
-	gi.SendServerCommand( NULL, "print \"Writing %s.\n\"", name );
+	gi.SendServerCommand( 0, "print \"Writing %s.\n\"", name );
 	
 	f = fopen( name, "wb" );
 	if ( !f )
 	{
-		gi.SendServerCommand( NULL, "print \"Couldn't open %s.\n\"", name );
+		gi.SendServerCommand( 0, "print \"Couldn't open %s.\n\"", name );
 		return;
 	}
 	

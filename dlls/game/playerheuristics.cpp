@@ -17,7 +17,13 @@
 #include "_pch_cpp.h"
 #include "playerheuristics.h"
 
-static fileHandle_t heuristicFile=NULL;
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+//--------------------------------------------------------------
+static fileHandle_t heuristicFile=0;
+
+
 static str heuristicFileName=NULL;
 
 PlayerHeuristics::PlayerHeuristics()
@@ -423,7 +429,12 @@ void PlayerHeuristics::ClosePlayerHeuristicFile()
 	if ( heuristicFile )
 	{
 		gi.FS_FCloseFile( heuristicFile );
-		heuristicFile = NULL;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+		//--------------------------------------------------------------
+		heuristicFile = 0;
 	}
 }
 

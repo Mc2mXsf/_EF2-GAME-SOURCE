@@ -482,7 +482,12 @@ void Player::GetStateAnims( Container<const char *> *c )
 	statemap_Torso->GetAllAnims( c );
 }
 
-static fileHandle_t logfile=NULL;
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+//--------------------------------------------------------------
+static fileHandle_t logfile=0;
+
 
 static void OpenPlayerLogFile( void )
 {
@@ -534,7 +539,12 @@ void ClosePlayerLogFile( void )
 	if ( logfile )
 	{
 		gi.FS_FCloseFile( logfile );
-		logfile = NULL;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: converting to non-pointer type ‘int’ from NULL [-Wconversion-null] - chrissstrahl
+		//--------------------------------------------------------------
+		logfile = 0;
 	}
 }
 

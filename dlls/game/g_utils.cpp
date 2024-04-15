@@ -2288,7 +2288,12 @@ void G_FadeSound( float delaytime )
 	
 	// Fade the screen out
 	time = delaytime * 1000.0f;
-	gi.SendServerCommand( NULL, va( "fadesound %0.2f", time ) );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+	//--------------------------------------------------------------
+	gi.SendServerCommand( 0, va( "fadesound %0.2f", time ) );
 }
 
 //
