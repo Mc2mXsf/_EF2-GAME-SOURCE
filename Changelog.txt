@@ -11,6 +11,15 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+Fixed: gameplaydatabase.h:36:1: warning: ‘typedef’ was ignored -> changed to class to be more type-safe
+void GameplayProperty::Archive(Archiver &arc)
+gameplaydatabase.h -> typedef enum GameplayValueType
+gameplaydatabase.h -> class PendingDelta
+void GameplayManager::processPendingMessages( void )
+void GameplayProperty::Archive(Archiver &arc)
+void GameplayDatabase::Archive(Archiver &arc)
+bool GameplayProperty::parseProperty(Parser &gameplayFile, const str& type)
+
 Disabled: Checking passwords for bots (by daggo)
 static void G_AddBot( char *name, float skill, const char *team, const char *specialty, char *altname)
 

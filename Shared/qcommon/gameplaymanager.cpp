@@ -515,15 +515,18 @@ void GameplayManager::processPendingMessages( void )
 
 		switch ( pendingDelta.getGameplayValueType() )
 		{
-			case VALUE_FLOAT:
+			//--------------------------------------------------------------
+			// GAMEFIX - change of GameplayValueType requires usuage of GameplayValueType:: - chrissstrahl
+			//--------------------------------------------------------------
+			case GameplayValueType::VALUE_FLOAT:
 				floatValue	= pendingDelta.getFloatValue();
 				sprintf( message, "gdb_setfloatproperty %s %s %g\n", objName.c_str(), propName.c_str(), floatValue );
 				break ;
-			case VALUE_STRING:
+			case GameplayValueType::VALUE_STRING:
 				stringValue	= pendingDelta.getStringValue();
 				sprintf( message, "gdb_setstringproperty %s %s %s\n", objName.c_str(), propName.c_str(), stringValue.c_str() );
 				break ;
-			case VALUE_VECTOR:
+			case GameplayValueType::VALUE_VECTOR:
 				vectorValue = pendingDelta.getVectorValue();
 				sprintf( message, "gdb_setvectorproperty %s %s %g %g %g\n", objName.c_str(), propName.c_str(), vectorValue.x, vectorValue.y, vectorValue.z );
 				break ;

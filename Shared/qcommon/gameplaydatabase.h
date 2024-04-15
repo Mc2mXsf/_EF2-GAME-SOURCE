@@ -33,13 +33,19 @@ class GameplayProperty;
 #include <game/container.h>
 #include <qcommon/tiki_script.h>
 
-typedef enum GameplayValueType
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Removed typedef and gone with a more type-safe approach using class - chrissstrahl
+// typedef enum GameplayValueType -> enum class GameplayValueType
+//--------------------------------------------------------------
+enum class GameplayValueType
 {
 	VALUE_FLOAT,
 	VALUE_STRING,
 	VALUE_VECTOR,
 	GAMEPLAY_VALUE_UNSPECIFIED
 };
+
 
 //------------------------ CLASS -------------------------------
 //
@@ -71,13 +77,19 @@ private:
 	GameplayValueType	_type ;
 	
 public:
-	PendingDelta() : _type( GAMEPLAY_VALUE_UNSPECIFIED ) { }
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - change of GameplayValueType requires usuage of GameplayValueType:: - chrissstrahl
+	//--------------------------------------------------------------
+	PendingDelta() : _type(GameplayValueType::GAMEPLAY_VALUE_UNSPECIFIED ) { }
 	PendingDelta( const str &objName, const str &propName, float floatValue )		
-		: _objName( objName ), _propName( propName ), _floatValue( floatValue ), _type( VALUE_FLOAT ) { }
+		: _objName( objName ), _propName( propName ), _floatValue( floatValue ), _type(GameplayValueType::VALUE_FLOAT ) { }
 	PendingDelta( const str &objName, const str &propName, const str &stringValue ) 
-		: _objName( objName ), _propName( propName ), _stringValue( stringValue ), _type( VALUE_STRING ) { }
+		: _objName( objName ), _propName( propName ), _stringValue( stringValue ), _type(GameplayValueType::VALUE_STRING ) { }
 	PendingDelta( const str &objName, const str &propName, const Vector &vectorValue ) 
-		: _objName( objName ), _propName( propName ), _vectorValue( vectorValue ), _type( VALUE_VECTOR ) { }
+		: _objName( objName ), _propName( propName ), _vectorValue( vectorValue ), _type(GameplayValueType::VALUE_VECTOR ) { }
+
 
 	float				getFloatValue()			{ return _floatValue ; }
 	const str&			getStringValue()		{ return _stringValue ; }
@@ -118,7 +130,14 @@ public:
 			_valuestr(""),
 			_valuefloat(1.0f),
 			_modified(false),
-			_type(VALUE_FLOAT),
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - change of GameplayValueType requires usuage of GameplayValueType:: - chrissstrahl
+			//--------------------------------------------------------------
+			_type(GameplayValueType::VALUE_FLOAT),
+
+
 			_valuevector(vec_zero)
 		{}
 

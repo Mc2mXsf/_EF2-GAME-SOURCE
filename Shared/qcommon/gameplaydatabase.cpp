@@ -147,20 +147,24 @@ bool GameplayProperty::parseProperty(Parser &gameplayFile, const str& type)
 
 	readcount = sscanf(token,"%f %f %f",&val1, &val2, &val3);
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - change of GameplayValueType requires usuage of GameplayValueType:: - chrissstrahl
+	//--------------------------------------------------------------
 	if ( readcount == 1 ) // Single Float
 	{
 		setFloatValue(val1);
-		setType(VALUE_FLOAT);
+		setType(GameplayValueType::VALUE_FLOAT);
 	}
 	else if ( readcount == 3 ) // Vector
 	{	
 		setVectorValue(Vector(val1, val2, val3));
-		setType(VALUE_VECTOR);
+		setType(GameplayValueType::VALUE_VECTOR);
 	}
 	else // String
 	{
 		setStringValue(token);
-		setType(VALUE_STRING);
+		setType(GameplayValueType::VALUE_STRING);
 	}
 
 	return true;
@@ -213,13 +217,18 @@ void GameplayProperty::Archive(Archiver &arc)
 		arc.ArchiveString( &_name );
 		switch ( _type )
 		{
-		case VALUE_FLOAT:
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - change of GameplayValueType requires usuage of GameplayValueType:: - chrissstrahl
+		//--------------------------------------------------------------
+		case GameplayValueType::VALUE_FLOAT:
 			arc.ArchiveFloat( &_valuefloat );
 			break ;
-		case VALUE_STRING:
+		case GameplayValueType::VALUE_STRING:
 			arc.ArchiveString( &_valuestr );
 			break ;
-		case VALUE_VECTOR:
+		case GameplayValueType::VALUE_VECTOR:
 			arc.ArchiveVector( &_valuevector );
 			break ;
 		}
@@ -1536,7 +1545,10 @@ void GameplayDatabase::Archive(Archiver &arc)
 			arc.ArchiveInteger( &numProperties );
 			for ( int propertyIdx = 1; propertyIdx <= numProperties; ++propertyIdx )
 			{
-				GameplayValueType	propertyType	= VALUE_FLOAT ;
+				//--------------------------------------------------------------
+				// GAMEFIX - change of GameplayValueType requires usuage of GameplayValueType:: - chrissstrahl
+				//--------------------------------------------------------------
+				GameplayValueType	propertyType	= GameplayValueType::VALUE_FLOAT ;
 				Vector				vectorValue ;
 				float				floatValue		= 0.0f ;
 				str					propertyName ;
@@ -1546,17 +1558,17 @@ void GameplayDatabase::Archive(Archiver &arc)
 				arc.ArchiveString( &propertyName );
 				switch( propertyType )
 				{
-					case VALUE_FLOAT:	
+					case GameplayValueType::VALUE_FLOAT:
 						arc.ArchiveFloat( &floatValue );	
 						setFloatValue( scopedObjectName, propertyName, floatValue, true );
 						_pendingDeltaList.AddObject( PendingDelta( scopedObjectName, propertyName, floatValue ) );
 						break ;
-					case VALUE_STRING:	
+					case GameplayValueType::VALUE_STRING:
 						arc.ArchiveString( &stringValue );
 						setStringValue( scopedObjectName, propertyName, stringValue, true );
 						_pendingDeltaList.AddObject( PendingDelta( scopedObjectName, propertyName, stringValue ) );
 						break ;
-					case VALUE_VECTOR:	
+					case GameplayValueType::VALUE_VECTOR:
 						arc.ArchiveVector( &vectorValue );
 //						setVectorValue( scopedObjectName, propertyName, vectorValue, true );
 						_pendingDeltaList.AddObject( PendingDelta( scopedObjectName, propertyName, vectorValue ) );
