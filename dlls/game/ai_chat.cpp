@@ -284,7 +284,10 @@ char *BotWeaponNameForMeansOfDeath( int mod )
 BotRandomWeaponName
 ==================
 */
-char *BotRandomWeaponName(void) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to ‘char * ’[-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+static const char *BotRandomWeaponName(void) {
 	int rnd;
 
 	rnd = rand() % 17;

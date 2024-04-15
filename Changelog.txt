@@ -11,6 +11,9 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+Fixed: warning: ISO C++ forbids converting a string constant to ‘char * ’[-Wwrite - strings] for BotRandomWeaponName
+char *BotRandomWeaponName(void) -> static const char *BotRandomWeaponName(void)
+
 Fixed: gameplaydatabase.h:36:1: warning: ‘typedef’ was ignored -> changed to class to be more type-safe
 void GameplayProperty::Archive(Archiver &arc)
 gameplaydatabase.h -> typedef enum GameplayValueType
