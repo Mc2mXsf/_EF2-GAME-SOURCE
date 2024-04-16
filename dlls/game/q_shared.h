@@ -32,6 +32,19 @@
 
 #ifdef _WIN32
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Suppression of warnings on windows for sscanf, strcpy, strcat - chrissstrahl
+//--------------------------------------------------------------
+#define _CRT_SECURE_NO_WARNINGS
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Disabled: Warning Visual Studio Community 2022 sais does not exist - chrissstrahl
+//--------------------------------------------------------------
+//#pragma warning(disable : 4136)     // conversion between different floating-point types
+
+
 #pragma warning(disable : 4018)     // signed/unsigned mismatch
 //#pragma warning(disable : 4032)     // formal parameter 'number' has different type when promoted
 #pragma warning(disable : 4051)     // type conversion, possible loss of data
@@ -41,7 +54,6 @@
 //#pragma warning(disable : 4125)		// decimal digit terminates octal escape sequence
 #pragma warning(disable : 4127)		// conditional expression is constant
 //#pragma warning(disable : 4131)     // 'function' : uses old-style declarator
-#pragma warning(disable : 4136)     // conversion between different floating-point types
 #pragma warning(disable : 4201)     // nonstandard extension used : nameless struct/union
 //#pragma warning(disable : 4214)     // nonstandard extension used : bit field types other than int
 //#pragma warning(disable : 4220)		// varargs matches remaining parameters
