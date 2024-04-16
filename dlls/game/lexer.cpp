@@ -533,7 +533,10 @@ Issues an error if the current token isn't equal to string
 Gets the next token
 =============
 */
-void Lexer::Expect( char *string )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+//--------------------------------------------------------------
+void Lexer::Expect( const char *string )
 {
 	if ( strcmp( string, pr_token ) )
 	{

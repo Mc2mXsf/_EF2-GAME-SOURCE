@@ -85,7 +85,14 @@ class Lexer
       void           LexPreprocessor( void );
       void           Lex( void );
       void           ParseError( const char *error, ... );
-      void           Expect( char *string );
+
+
+      //--------------------------------------------------------------
+      // GAMEFIX - Fixed: warning: converting to non-pointer type int from NULL [-Wconversion-null] - chrissstrahl
+      //--------------------------------------------------------------
+      void           Expect( const char *string );
+      
+      
       bool           Check( const char *string );
       char           *ParseName( void );
       void           SkipOutOfFunction( void );
