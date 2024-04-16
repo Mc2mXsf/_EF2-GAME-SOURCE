@@ -1935,7 +1935,7 @@ extern "C" void G_ClientUserinfoChanged( gentity_t *ent, const char *userinfo )
 	//Event       *ev;
 	bool			autoSwitchWeapons;
 	char tempName[ MAX_NETNAME ];
-	int i;
+	
 	bool validName;
 	
 	try
