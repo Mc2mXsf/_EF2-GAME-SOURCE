@@ -1834,8 +1834,8 @@ void CThread::TriggerEntityEvent( Event *ev )
 	//--------------------------------------------------------------
 	if (!ent) {
 		gi.Printf("triggerEntity($...) - given entity does not exist\n");
-	}
 		return;
+	}
 	
 	// Trigger the entity
 	
