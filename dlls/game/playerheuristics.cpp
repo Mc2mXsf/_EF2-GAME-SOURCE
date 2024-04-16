@@ -24,7 +24,11 @@
 static fileHandle_t heuristicFile=0;
 
 
-static str heuristicFileName=NULL;
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: passing NULL to non-pointer argument 1 of str::str(int) [-Wconversion-null] - chrissstrahl
+//--------------------------------------------------------------
+static str heuristicFileName = "";
+
 
 PlayerHeuristics::PlayerHeuristics()
 {
