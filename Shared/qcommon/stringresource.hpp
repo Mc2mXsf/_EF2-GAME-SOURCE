@@ -27,10 +27,16 @@
 //#include <cgame/cg_local.h>
 //#include <cgame/cg_commands.h>
 
+
 //The map types of the string.
 //Global - this is a global string and is used for every level
 //Level  - this is a string specific for the level and therefore loaded when the level is loaded.
-typedef enum StringType { GLOBAL, LEVEL };
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: typedef was ignored in this declaration - chrissstrahl
+//--------------------------------------------------------------
+enum class StringType { GLOBAL, LEVEL };
+
+
 #define STRING_HASH_SIZE 1024
 
 
