@@ -50,8 +50,15 @@ qboolean EntityIsShooting(aas_entityinfo_t *entinfo);
 //returns true if this entity has the kamikaze
 qboolean EntityHasKamikaze(aas_entityinfo_t *entinfo);
 #endif
+
+
 // set a user info key/value pair
-void BotSetUserInfo(bot_state_t *bs, char *key, char *value);
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotSetUserInfo(bot_state_t *bs, const char *key, const char *value);
+
+
 // set the team status (offense, defense etc.)
 void BotSetTeamStatus(bot_state_t *bs);
 //returns the name of the client

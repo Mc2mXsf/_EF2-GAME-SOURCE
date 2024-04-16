@@ -44,7 +44,12 @@
 
 typedef struct voiceCommand_s
 {
-	char *cmd;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	const char *cmd;
+
+
 	void (*func)(bot_state_t *bs, int client, int mode);
 } voiceCommand_t;
 

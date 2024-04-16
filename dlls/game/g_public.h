@@ -451,10 +451,17 @@ typedef struct
 	//--------------------------------------------
 	int			(*AAS_PointContents)(vec3_t point);
 	int			(*AAS_NextBSPEntity)(int ent);
-	int			(*AAS_ValueForBSPEpairKey)(int ent, char *key, char *value, int size);
-	int			(*AAS_VectorForBSPEpairKey)(int ent, char *key, vec3_t v);
-	int			(*AAS_FloatForBSPEpairKey)(int ent, char *key, float *value);
-	int			(*AAS_IntForBSPEpairKey)(int ent, char *key, int *value);
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	int			(*AAS_ValueForBSPEpairKey)(int ent, const char *key, char *value, int size);
+	int			(*AAS_VectorForBSPEpairKey)(int ent, const char *key, vec3_t v);
+	int			(*AAS_FloatForBSPEpairKey)(int ent, const char *key, float *value);
+	int			(*AAS_IntForBSPEpairKey)(int ent, const char *key, int *value);
+
+
 	//--------------------------------------------
 	// be_aas_reach.c
 	//--------------------------------------------
@@ -491,7 +498,14 @@ typedef struct
 	//ClientCommand elementary actions
 	void	(*EA_Command)(int client, const char *command );
 	void	(*EA_Say)(int client, char *str);
-	void	(*EA_SayTeam)(int client, char *str);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	void	(*EA_SayTeam)(int client, const char *str);
+	
+	
 	//
 	void	(*EA_Action)(int client, int action);
 	void	(*EA_Gesture)(int client);
@@ -540,8 +554,15 @@ typedef struct
 	void	(*BotRemoveConsoleMessage)(int chatstate, int handle);
 	int		(*BotNextConsoleMessage)(int chatstate, struct bot_consolemessage_s *cm);
 	int		(*BotNumConsoleMessages)(int chatstate);
-	void	(*BotInitialChat)(int chatstate, char *type, int mcontext, char *var0, char *var1, char *var2, char *var3, char *var4, char *var5, char *var6, char *var7);
-	int		(*BotNumInitialChats)(int chatstate, char *type);
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	void	(*BotInitialChat)(int chatstate, const char *type, int mcontext, const char *var0, const char *var1, const char *var2, const char *var3, const char *var4, const char *var5, const char *var6, const char *var7);
+	int		(*BotNumInitialChats)(int chatstate, const char *type);
+
+
 	int		(*BotReplyChat)(int chatstate, char *message, int mcontext, int vcontext, char *var0, char *var1, char *var2, char *var3, char *var4, char *var5, char *var6, char *var7);
 	int		(*BotChatLength)(int chatstate);
 	void	(*BotEnterChat)(int chatstate, int client, int sendto);
@@ -573,7 +594,14 @@ typedef struct
 								struct bot_goal_s *ltg, float maxtime);
 	int		(*BotTouchingGoal)(vec3_t origin, struct bot_goal_s *goal);
 	int		(*BotItemGoalInVisButNotVisible)(int viewer, vec3_t eye, vec3_t viewangles, struct bot_goal_s *goal);
-	int		(*BotGetLevelItemGoal)(int index, char *classname, struct bot_goal_s *goal);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	int		(*BotGetLevelItemGoal)(int index, const char *classname, struct bot_goal_s *goal);
+
+
 	int		(*BotGetNextCampSpotGoal)(int num, struct bot_goal_s *goal);
 	int		(*BotGetMapLocationGoal)(char *name, struct bot_goal_s *goal);
 	float	(*BotAvoidGoalTime)(int goalstate, int number);
@@ -676,10 +704,16 @@ typedef struct
 	int (*BotLibSetup)(void);
 	//shutdown the bot library, returns BLERR_
 	int (*BotLibShutdown)(void);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
 	//sets a library variable returns BLERR_
-	int (*BotLibVarSet)(char *var_name, char *value);
+	int (*BotLibVarSet)(const char *var_name, const char *value);
 	//gets a library variable returns BLERR_
-	int (*BotLibVarGet)(char *var_name, char *value, int size);
+	int (*BotLibVarGet)(const char *var_name, const char *value, int size);
+
 
 	//sets a C-like define returns BLERR_
 	int (*PC_AddGlobalDefine)(char *string);

@@ -271,7 +271,10 @@ void BotSayTeamOrder(bot_state_t *bs, int toclient) {
 BotVoiceChat
 ==================
 */
-void BotVoiceChat(bot_state_t *bs, int toclient, char *voicechat) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotVoiceChat(bot_state_t *bs, int toclient, const char *voicechat) {
 #ifdef MISSIONPACK
 	if (toclient == -1)
 		// voice only say team
@@ -287,7 +290,10 @@ void BotVoiceChat(bot_state_t *bs, int toclient, char *voicechat) {
 BotVoiceChatOnly
 ==================
 */
-void BotVoiceChatOnly(bot_state_t *bs, int toclient, char *voicechat) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotVoiceChatOnly(bot_state_t *bs, int toclient, const char *voicechat) {
 #ifdef MISSIONPACK
 	if (toclient == -1)
 		// voice only say team
@@ -303,7 +309,10 @@ void BotVoiceChatOnly(bot_state_t *bs, int toclient, char *voicechat) {
 BotSayVoiceTeamOrder
 ==================
 */
-void BotSayVoiceTeamOrder(bot_state_t *bs, int toclient, char *voicechat) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotSayVoiceTeamOrder(bot_state_t *bs, int toclient, const char *voicechat) {
 #ifdef MISSIONPACK
 	BotVoiceChat(bs, toclient, voicechat);
 #endif

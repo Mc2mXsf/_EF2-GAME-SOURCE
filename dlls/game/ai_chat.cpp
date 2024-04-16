@@ -285,7 +285,7 @@ BotRandomWeaponName
 ==================
 */
 //--------------------------------------------------------------
-// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to ‘char * ’[-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
 //--------------------------------------------------------------
 static const char *BotRandomWeaponName(void) {
 	int rnd;

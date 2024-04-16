@@ -81,7 +81,11 @@ BotRecordNodeSwitch
 */
 vmCvar_t bot_showstates;
 
-void BotRecordNodeSwitch(bot_state_t *bs, char *node, char *str, char *s) {
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotRecordNodeSwitch(bot_state_t *bs, const char *node, const char *str, const char *s) {
 	char netname[MAX_NETNAME];
 
 	ClientName(bs->client, netname, sizeof(netname));
@@ -1111,7 +1115,10 @@ int BotLongTermGoal(bot_state_t *bs, int tfl, int retreat, bot_goal_t *goal) {
 AIEnter_Intermission
 ==================
 */
-void AIEnter_Intermission(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Intermission(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "intermission", "", s);
 	//reset the bot state
 	BotResetState(bs);
@@ -1146,7 +1153,10 @@ int AINode_Intermission(bot_state_t *bs) {
 AIEnter_Observer
 ==================
 */
-void AIEnter_Observer(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Observer(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "observer", "", s);
 	//reset the bot state
 	BotResetState(bs);
@@ -1171,7 +1181,10 @@ int AINode_Observer(bot_state_t *bs) {
 AIEnter_Stand
 ==================
 */
-void AIEnter_Stand(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Stand(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "stand", "", s);
 	bs->standfindenemy_time = FloatTime() + 1;
 	bs->ainode = AINode_Stand;
@@ -1215,7 +1228,10 @@ int AINode_Stand(bot_state_t *bs) {
 AIEnter_Respawn
 ==================
 */
-void AIEnter_Respawn(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Respawn(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "respawn", "", s);
 	//reset some states
 	gi.BotResetMoveState(bs->ms);
@@ -1420,7 +1436,10 @@ void BotClearPath(bot_state_t *bs, bot_moveresult_t *moveresult) {
 AIEnter_Seek_ActivateEntity
 ==================
 */
-void AIEnter_Seek_ActivateEntity(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Seek_ActivateEntity(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "activate entity", "", s);
 	bs->ainode = AINode_Seek_ActivateEntity;
 }
@@ -1632,7 +1651,10 @@ int AINode_Seek_ActivateEntity(bot_state_t *bs) {
 AIEnter_Seek_NBG
 ==================
 */
-void AIEnter_Seek_NBG(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Seek_NBG(bot_state_t *bs, const char *s) {
 	bot_goal_t goal;
 	char buf[144];
 
@@ -1767,7 +1789,10 @@ int AINode_Seek_NBG(bot_state_t *bs) {
 AIEnter_Seek_LTG
 ==================
 */
-void AIEnter_Seek_LTG(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Seek_LTG(bot_state_t *bs, const char *s) {
 	bot_goal_t goal;
 	char buf[144];
 
@@ -1954,7 +1979,10 @@ int AINode_Seek_LTG(bot_state_t *bs)
 AIEnter_Battle_Fight
 ==================
 */
-void AIEnter_Battle_Fight(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Battle_Fight(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "battle fight", "", s);
 	gi.BotResetLastAvoidReach(bs->ms);
 	bs->ainode = AINode_Battle_Fight;
@@ -1965,7 +1993,10 @@ void AIEnter_Battle_Fight(bot_state_t *bs, char *s) {
 AIEnter_Battle_Fight
 ==================
 */
-void AIEnter_Battle_SuicidalFight(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Battle_SuicidalFight(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "battle fight", "", s);
 	gi.BotResetLastAvoidReach(bs->ms);
 	bs->ainode = AINode_Battle_Fight;
@@ -2133,7 +2164,10 @@ int AINode_Battle_Fight(bot_state_t *bs) {
 AIEnter_Battle_Chase
 ==================
 */
-void AIEnter_Battle_Chase(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Battle_Chase(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "battle chase", "", s);
 	bs->chase_time = FloatTime();
 	bs->ainode = AINode_Battle_Chase;
@@ -2273,7 +2307,10 @@ int AINode_Battle_Chase(bot_state_t *bs)
 AIEnter_Battle_Retreat
 ==================
 */
-void AIEnter_Battle_Retreat(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Battle_Retreat(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "battle retreat", "", s);
 	bs->ainode = AINode_Battle_Retreat;
 }
@@ -2462,7 +2499,10 @@ int AINode_Battle_Retreat(bot_state_t *bs) {
 AIEnter_Battle_NBG
 ==================
 */
-void AIEnter_Battle_NBG(bot_state_t *bs, char *s) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void AIEnter_Battle_NBG(bot_state_t *bs, const char *s) {
 	BotRecordNodeSwitch(bs, "battle NBG", "", s);
 	bs->ainode = AINode_Battle_NBG;
 }

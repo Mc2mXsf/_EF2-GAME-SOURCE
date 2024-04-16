@@ -95,7 +95,11 @@ int red_numaltroutegoals;
 aas_altroutegoal_t blue_altroutegoals[MAX_ALTROUTEGOALS];
 int blue_numaltroutegoals;
 
-void BotSetEntityNumForGoal(bot_goal_t *goal, char *classname);
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotSetEntityNumForGoal(bot_goal_t *goal, const char *classname);
 
 
 /*
@@ -103,7 +107,10 @@ void BotSetEntityNumForGoal(bot_goal_t *goal, char *classname);
 BotSetUserInfo
 ==================
 */
-void BotSetUserInfo(bot_state_t *bs, char *key, char *value) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotSetUserInfo(bot_state_t *bs, const char *key, const char *value) {
 	char userinfo[MAX_INFO_STRING];
 
 	gi.getUserinfo(bs->client, userinfo, sizeof(userinfo));
@@ -1412,7 +1419,14 @@ char *ClientName(int client, char *name, int size) {
 
 	if (client < 0 || client >= maxclients->integer) {
 		BotAI_Print(PRT_ERROR, "ClientName: client out of range\n");
-		return "[client out of range]";
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+		//--------------------------------------------------------------
+		strncpy(name, "[client out of range]", MAX_NETNAME - 1);
+		name[MAX_NETNAME - 1] = '\0';
+		return name;
 	}
 	strncpy(buf,gi.getConfigstring(CS_PLAYERS+client), sizeof(buf));
 	strncpy(name, Info_ValueForKey(buf, "name"), size-1);
@@ -1431,7 +1445,14 @@ char *ClientSkin(int client, char *skin, int size) {
 
 	if (client < 0 || client >= maxclients->integer) {
 		BotAI_Print(PRT_ERROR, "ClientSkin: client out of range\n");
-		return "[client out of range]";
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+		//--------------------------------------------------------------
+		strncpy(skin, "[client out of range]", MAX_QPATH - 1);
+		skin[MAX_QPATH - 1] = '\0';
+		return skin;
 	}
 	strncpy(buf,gi.getConfigstring(CS_PLAYERS+client), sizeof(buf));
 	strncpy(skin, Info_ValueForKey(buf, "model"), size-1);
@@ -2657,7 +2678,10 @@ int BotWantsToCamp(bot_state_t *bs) {
 BotDontAvoid
 ==================
 */
-void BotDontAvoid(bot_state_t *bs, char *itemname) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotDontAvoid(bot_state_t *bs, const char *itemname) {
 	bot_goal_t goal;
 	int num;
 
@@ -5504,7 +5528,10 @@ void BotSetEntityNumForGoalWithModel(bot_goal_t *goal, int eType, char *modelnam
 BotSetEntityNumForGoal
 ==================
 */
-void BotSetEntityNumForGoal(bot_goal_t *goal, char *classname) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotSetEntityNumForGoal(bot_goal_t *goal, const char *classname) {
 	gentity_t *ent;
 	int i;
 	vec3_t dir;

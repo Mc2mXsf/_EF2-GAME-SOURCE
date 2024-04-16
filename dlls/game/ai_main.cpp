@@ -75,7 +75,10 @@ vmCvar_t bot_interbreedwrite;
 BotAI_Print
 ==================
 */
-void QDECL BotAI_Print(int type, char *fmt, ...) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void QDECL BotAI_Print(int type, const char *fmt, ...) {
 	char str[2048];
 	va_list ap;
 
@@ -200,21 +203,41 @@ int BotAI_GetSnapshotEntity( int clientNum, int sequence, entityState_t *state )
 BotAI_BotInitialChat
 ==================
 */
-void QDECL BotAI_BotInitialChat( bot_state_t *bs, char *type, ... ) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] - chrissstrahl
+//--------------------------------------------------------------
+void QDECL BotAI_BotInitialChat(bot_state_t* bs, const char* type, ...) {
 	int		i, mcontext;
 	va_list	ap;
-	char	*p;
-	char	*vars[MAX_MATCHVARIABLES];
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] - chrissstrahl
+	//--------------------------------------------------------------
+	const char* p;
+	const char* vars[MAX_MATCHVARIABLES];
+
 
 	memset(vars, 0, sizeof(vars));
 	va_start(ap, type);
-	p = va_arg(ap, char *);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] - chrissstrahl
+	//--------------------------------------------------------------
+	p = va_arg(ap, const char*);
+
+
 	for (i = 0; i < MAX_MATCHVARIABLES; i++) {
 		if( !p ) {
 			break;
 		}
 		vars[i] = p;
-		p = va_arg(ap, char *);
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] - chrissstrahl
+		//--------------------------------------------------------------
+		p = va_arg(ap, const char*);
 	}
 	va_end(ap);
 
@@ -261,7 +284,15 @@ BotReportStatus
 void BotReportStatus(bot_state_t *bs) {
 	char goalname[MAX_MESSAGE_SIZE];
 	char netname[MAX_MESSAGE_SIZE];
-	char *leader, flagstatus[32];
+	char flagstatus[32];
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] - chrissstrahl
+	//--------------------------------------------------------------
+	const char *leader;
+	
+	
 	//
 	ClientName(bs->client, netname, sizeof(netname));
 	if (Q_stricmp(netname, bs->teamleader) == 0) leader = "L";
@@ -410,8 +441,16 @@ void BotSetInfoConfigString(bot_state_t *bs) {
 	char goalname[MAX_MESSAGE_SIZE];
 	char netname[MAX_MESSAGE_SIZE];
 	char action[MAX_MESSAGE_SIZE];
-	char *leader, carrying[32];
+	char carrying[32];
 	bot_goal_t goal;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] - chrissstrahl
+	//--------------------------------------------------------------
+	const char *leader;
+
+	
 	//
 	ClientName(bs->client, netname, sizeof(netname));
 	if (Q_stricmp(netname, bs->teamleader) == 0) leader = "L";

@@ -117,7 +117,10 @@ int G_ParseInfos( const char *buf, int max, char *infos[] ) {
 G_LoadArenasFromFile
 ===============
 */
-static void G_LoadArenasFromFile( char *filename ) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+static void G_LoadArenasFromFile( const char *filename ) {
 	return;
 
 	/* int				len;
@@ -254,8 +257,15 @@ G_AddRandomBot
 void G_AddRandomBot( int team ) {
 	int		i, n, num;
 	float	skill;
-	char	*value, netname[36], *teamstr;
+	char* value, netname[36];
 	gclient_t	*cl;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	const char* teamstr;
+
 
 	num = 0;
 	for ( n = 0; n < g_numBots ; n++ ) {
@@ -564,7 +574,14 @@ static void G_AddBot( char *name, float skill, const char *team, const char *spe
 	int				clientNum;
 	char			*botinfo;
 	gentity_t		*bot;
-	char			*key;
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	//char			*key;
+
+
 	char			*s;
 	char			*botname;
 	char			*model;
@@ -604,44 +621,67 @@ static void G_AddBot( char *name, float skill, const char *team, const char *spe
 		Info_SetValueForKey( userinfo, "handicap", "90" );
 	}
 
-	key = "mp_playermodel";
-	model = (char *)Info_ValueForKey( botinfo, key );
-	if ( !*model ) {
-		model = "models/char/munro.tik";
-	}
-	Info_SetValueForKey( userinfo, key, model );
-	key = "team_model";
-	Info_SetValueForKey( userinfo, key, model );
 
-	key = "headmodel";
-	headmodel = (char *)Info_ValueForKey( botinfo, key );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	model = (char *)Info_ValueForKey( botinfo, "mp_playermodel" );
+	if ( !*model ) {
+		Info_SetValueForKey(userinfo, "mp_playermodel", "models/char/munro.tik");
+		Info_SetValueForKey(userinfo, "team_model", "models/char/munro.tik");
+	}
+	else {
+		Info_SetValueForKey(userinfo, "mp_playermodel", model);
+		Info_SetValueForKey(userinfo, "team_model", model);
+	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	headmodel = (char *)Info_ValueForKey( botinfo, "headmodel" );
 	if ( !*headmodel ) {
 		headmodel = model;
 	}
-	Info_SetValueForKey( userinfo, key, headmodel );
-	key = "team_headmodel";
-	Info_SetValueForKey( userinfo, key, headmodel );
+	Info_SetValueForKey( userinfo, "headmodel" , headmodel );
+	Info_SetValueForKey( userinfo, "team_headmodel" , headmodel );
 
-	key = "gender";
-	s = (char *)Info_ValueForKey( botinfo, key );
-	if ( !*s ) {
-		s = "male";
-	}
-	Info_SetValueForKey( userinfo, "sex", s );
 
-	key = "color1";
-	s = (char *)Info_ValueForKey( botinfo, key );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	s = (char *)Info_ValueForKey( botinfo, "gender" );
 	if ( !*s ) {
-		s = "4";
+		Info_SetValueForKey(userinfo, "sex", "male");
 	}
-	Info_SetValueForKey( userinfo, key, s );
+	else {
+		Info_SetValueForKey( userinfo, "sex", s );
+	}
+	
 
-	key = "color2";
-	s = (char *)Info_ValueForKey( botinfo, key );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	s = (char *)Info_ValueForKey( botinfo, "color1" );
 	if ( !*s ) {
-		s = "5";
+		Info_SetValueForKey(userinfo, "color1", "4");
 	}
-	Info_SetValueForKey( userinfo, key, s );
+	else {
+		Info_SetValueForKey( userinfo, "color1", s );
+	}
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+	//--------------------------------------------------------------
+	s = (char *)Info_ValueForKey( botinfo, "color2" );
+	if ( !*s ) {
+		Info_SetValueForKey(userinfo, "color2", "5");
+	}
+	else {
+		Info_SetValueForKey( userinfo, "color2", s );
+	}
+
 
 	s = (char *)Info_ValueForKey(botinfo, "aifile");
 	if (!*s ) {
@@ -869,7 +909,10 @@ static void G_SpawnBots( char *botList, int baseDelay ) {
 G_LoadBotsFromFile
 ===============
 */
-static void G_LoadBotsFromFile( char *filename ) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+static void G_LoadBotsFromFile( const char *filename ) {
 	int				len;
 	fileHandle_t	f;
 	char			buf[MAX_BOTS_TEXT];

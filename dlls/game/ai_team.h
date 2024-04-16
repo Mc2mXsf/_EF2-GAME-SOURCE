@@ -17,7 +17,12 @@
 void BotTeamAI(bot_state_t *bs);
 int BotGetTeamMateTaskPreference(bot_state_t *bs, int teammate);
 void BotSetTeamMateTaskPreference(bot_state_t *bs, int teammate, int preference);
-void BotVoiceChat(bot_state_t *bs, int toclient, char *voicechat);
-void BotVoiceChatOnly(bot_state_t *bs, int toclient, char *voicechat);
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings] for BotRandomWeaponName - chrissstrahl
+//--------------------------------------------------------------
+void BotVoiceChat(bot_state_t *bs, int toclient, const char *voicechat);
+void BotVoiceChatOnly(bot_state_t *bs, int toclient, const char *voicechat);
 
 
