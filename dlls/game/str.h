@@ -189,7 +189,12 @@ inline str::str
 
 	if ( text )
 		{
-      stringLength = strlen( text );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		stringLength = (int)strlen( text );
+
+
 		EnsureAlloced ( stringLength + 1 );
 		strcpy( data, text );
       len = stringLength;
@@ -220,7 +225,6 @@ inline str::str
    )
 
 	{
-	int i;
    int stringLength;
 
 	data = buffer;
@@ -246,7 +250,11 @@ inline str::str
 
    EnsureAlloced ( stringLength + 1 );
 
-	for( i = 0; i < stringLength; i++ )
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Changed: Moved int inside its for loop. - chrissstrahl
+   //--------------------------------------------------------------
+	for( int i = 0; i < stringLength; i++ )
 		{
 		data[ i ] = text[ start + i ];
 		}
@@ -284,7 +292,14 @@ inline str::str
 	alloced = STRING_PREALLOC_SIZE;
 
    sprintf( text, "%.3f", num );
-   stringLength = strlen( text );
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch. - chrissstrahl
+   //--------------------------------------------------------------
+   stringLength = (int)strlen( text );
+
+
    EnsureAlloced( stringLength + 1 );
    strcpy( data, text );
    len = stringLength;
@@ -303,7 +318,14 @@ inline str::str
 	alloced = STRING_PREALLOC_SIZE;
 
    sprintf( text, "%d", num );
-   stringLength = strlen( text );
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch. - chrissstrahl
+   //--------------------------------------------------------------
+   stringLength = (int)strlen( text );
+
+
    EnsureAlloced( stringLength + 1 );
    strcpy( data, text );
    len = stringLength;
@@ -322,7 +344,14 @@ inline str::str
 	alloced = STRING_PREALLOC_SIZE;
 
    sprintf( text, "%u", num );
-   stringLength = strlen( text );
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch. - chrissstrahl
+   //--------------------------------------------------------------
+   stringLength = (int)strlen( text );
+
+
    EnsureAlloced( stringLength + 1 );
    strcpy( data, text );
    len = stringLength;
@@ -348,7 +377,14 @@ inline void str::append
 	if ( text )
 		{
 		new_length = length();
-		new_length += strlen( text );
+
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		new_length += (int)strlen( text );
+
+
 		EnsureAlloced( new_length + 1 );
 
       strcat( data, text );
@@ -460,7 +496,13 @@ inline str& str::operator=
       return *this;
       }
 
-	stringLength = strlen( text );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	stringLength = (int)strlen( text );
+
+
    EnsureAlloced ( stringLength + 1, false );
 	strcpy( data, text );
    len = stringLength;
