@@ -11,6 +11,15 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+Fixed: warning: passing NULL to non-pointer argument 1 of str::str(int) [-Wconversion-null]
+static str heuristicFileName=NULL; -> static str heuristicFileName = "";
+
+Fixed: warning: typedef was ignored in this declaration
+typedef enum StringType { GLOBAL, LEVEL }; -> enum class StringType { GLOBAL, LEVEL };
+
+Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings]
+void Lexer::Expect( char *string ) -> void Lexer::Expect( const char *string )
+
 Fixed: warning: ISO C++ forbids converting a string constant to char * [-Wwrite - strings]
 void QDECL BotAI_BotInitialChat( bot_state_t *bs,char *type, ... ) -> void QDECL BotAI_BotInitialChat( bot_state_t *bs,const char *type, ... )
 char *BotRandomWeaponName(void) -> static const char *BotRandomWeaponName(void)
