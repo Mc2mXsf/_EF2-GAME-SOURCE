@@ -8708,7 +8708,13 @@ qboolean Actor::checkcanseeenemy( Conditional &condition )
 
 	// Save can see info
 
-	SetActorFlag( ACTOR_FLAG_LAST_CANSEEENEMY, can_see && in_fov );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	SetActorFlag( ACTOR_FLAG_LAST_CANSEEENEMY, (qboolean)(can_see && in_fov) );
+
+
 	SetActorFlag( ACTOR_FLAG_LAST_CANSEEENEMY_NOFOV, can_see );
 
    canseeenemy_time = level.time + 0.2f + G_Random( 0.1f );
@@ -8772,7 +8778,13 @@ qboolean Actor::checkcanseeplayer( Conditional &condition )
 
 	// Save can see info
 
-	SetActorFlag( ACTOR_FLAG_LAST_CANSEEPLAYER, can_see && in_fov );
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	SetActorFlag( ACTOR_FLAG_LAST_CANSEEPLAYER, (qboolean)(can_see && in_fov) );
+
+
 	SetActorFlag( ACTOR_FLAG_LAST_CANSEEPLAYER_NOFOV, can_see );
 
    canseeplayer_time = level.time + 0.2f + G_Random( 0.1f );
