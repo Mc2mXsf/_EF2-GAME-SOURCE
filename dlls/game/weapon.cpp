@@ -1544,7 +1544,10 @@ void Weapon::SetAmmoType( Event *ev )
 //======================
 //Weapon::SetAmmoAmount
 //======================
-void Weapon::SetAmmoAmount( int amount, firemode_t mode )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of amount hides class member. Renamed to: temp_amount - chrissstrahl
+//--------------------------------------------------------------
+void Weapon::SetAmmoAmount( int temp_amount, firemode_t mode )
 {
 	firemode_t clipToUse;
 	
@@ -1559,7 +1562,7 @@ void Weapon::SetAmmoAmount( int amount, firemode_t mode )
 	if ( ( clipToUse >= 0 ) && ( clipToUse < MAX_FIREMODES ) )
 	{
 		if ( ammo_clip_size[clipToUse] )
-			ammo_in_clip[clipToUse] = amount;
+			ammo_in_clip[clipToUse] = temp_amount;
 	}
 	else
 	{
@@ -1614,7 +1617,10 @@ int Weapon::GetClipSize( firemode_t mode )
 //======================
 //Weapon::UseAmmo
 //======================
-void Weapon::UseAmmo( int amount, firemode_t mode )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of amount hides class member. Renamed to: temp_amount - chrissstrahl
+//--------------------------------------------------------------
+void Weapon::UseAmmo( int temp_amount, firemode_t mode )
 {
 	firemode_t clipToUse;
 
@@ -1642,7 +1648,7 @@ void Weapon::UseAmmo( int amount, firemode_t mode )
 
 	if ( ammo_clip_size[clipToUse] )
 	{
-		ammo_in_clip[clipToUse] -= amount;
+		ammo_in_clip[clipToUse] -= temp_amount;
 		if (ammo_in_clip[clipToUse] < 0)
 		{
 			warning("UseAmmo","Used more ammo than in clip.\n");
@@ -3450,10 +3456,16 @@ void Weapon::DoneFiring( Event *ev )
 //======================
 void Weapon::DoneReloading( Event *ev )
 {
-	int         amount;
 	int         amount_used;
 	firemode_t  mode;
 	firemode_t  clipToUse;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of amount hides class member. Renamed to: temp_amount - chrissstrahl
+	//--------------------------------------------------------------
+	int         temp_amount;
+
 	
 	// Get the mode from the passed in event
 	mode = (firemode_t)ev->GetInteger( 1 );
@@ -3524,13 +3536,13 @@ void Weapon::DoneReloading( Event *ev )
 		clipToUse = mode;
 	
 	// Calc the amount the clip should get
-	amount = ammo_clip_size[clipToUse] - ammo_in_clip[clipToUse];
+	temp_amount = ammo_clip_size[clipToUse] - ammo_in_clip[clipToUse];
 	
 	assert( owner );
 	if ( owner && owner->isClient() && !UnlimitedAmmo( mode ) )
 	{
 		// use up the ammo from the player
-		amount_used = owner->UseAmmo( ammo_type[mode], amount );
+		amount_used = owner->UseAmmo( ammo_type[mode], temp_amount );
 		
 		// Stick it in the clip
 		if ( ammo_clip_size[clipToUse] )
