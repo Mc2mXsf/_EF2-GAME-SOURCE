@@ -255,39 +255,45 @@ inline qboolean Class::isInheritedBy
   SafePtr
 
 ***********************************************************************/
-
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of ptr hides class member. - chrissstrahl
+//--------------------------------------------------------------
 inline void SafePtrBase::AddReference
 	(
-	Class *ptr
+	Class *temp_ptr
 	)
 
 	{
-	if ( !ptr->SafePtrList )
+	if ( !temp_ptr->SafePtrList )
 		{
-		ptr->SafePtrList = this;
+		temp_ptr->SafePtrList = this;
 		LL_Reset( this, nextSafePtr, prevSafePtr );
 		}
 	else
 		{
-		LL_Add( ptr->SafePtrList, this, nextSafePtr, prevSafePtr );
+		LL_Add( temp_ptr->SafePtrList, this, nextSafePtr, prevSafePtr );
 		}
 	}
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of ptr hides class member. - chrissstrahl
+//--------------------------------------------------------------
 inline void SafePtrBase::RemoveReference
 	(
-	Class *ptr
+	Class *temp_ptr
 	)
 
 	{
-	if ( ptr->SafePtrList == this )
+	if ( temp_ptr->SafePtrList == this )
 		{
-		if ( ptr->SafePtrList->nextSafePtr == this )
+		if ( temp_ptr->SafePtrList->nextSafePtr == this )
 			{
-			ptr->SafePtrList = NULL;
+			temp_ptr->SafePtrList = NULL;
 			}
 		else
 			{
-			ptr->SafePtrList = nextSafePtr;
+			temp_ptr->SafePtrList = nextSafePtr;
 			LL_Remove( this, nextSafePtr, prevSafePtr );
 			}
 		}
