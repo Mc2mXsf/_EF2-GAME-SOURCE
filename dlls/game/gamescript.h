@@ -35,8 +35,21 @@ class GameScriptMarker : public Class
 	public:
 		CLASS_PROTOTYPE( GameScriptMarker );
 
-      str               filename;
-		scriptmarker_t		scriptmarker;
+        str               filename;
+
+
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable scriptmarker was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+        scriptmarker_t		scriptmarker;
+        GameScriptMarker() {
+            scriptmarker.tokenready = false;
+            scriptmarker.offset = 0;
+            scriptmarker.line = 0;
+            memset(scriptmarker.token, 0, MAXTOKEN);  // Initialisiert das `token`-Array mit Nullen
+        }
+
+
       virtual void      Archive( Archiver &arc );
 	};
 
