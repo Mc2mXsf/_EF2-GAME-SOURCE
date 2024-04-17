@@ -6638,7 +6638,14 @@ void Actor::IfNearEvent( Event *ev )
 	Entity			*bestent;
 	float				bestdist;
 	float				dist;
-	str				name;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: nameOfOther - chrissstrahl
+	//--------------------------------------------------------------
+	str				nameOfOther;
+
+
    Vector         delta;
 	float				distance;
 	TargetList		*tlist;
@@ -6652,20 +6659,20 @@ void Actor::IfNearEvent( Event *ev )
 		return;
 		}
 
-	name = ev->GetString( 1 );
+	nameOfOther = ev->GetString( 1 );
 	distance = ev->GetFloat( 2 );
 
-	if ( name[ 0 ] == '*' )
+	if ( nameOfOther[ 0 ] == '*' )
 		{
 		ent = ev->GetEntity( 1 );
       ev->ReturnInteger( WithinDistance( ent, distance ) );
 		}
-	else if ( name[ 0 ] == '$' )
+	else if ( nameOfOther[ 0 ] == '$' )
 		{
 		bestent = NULL;
 		bestdist = distance * distance;
 
-		tlist = world->GetTargetList( str( &name[ 1 ] ) );
+		tlist = world->GetTargetList( str( &nameOfOther[ 1 ] ) );
 		n = tlist->list.NumObjects();
 		for( i = 1; i <= n; i++ )
 			{
@@ -6690,7 +6697,7 @@ void Actor::IfNearEvent( Event *ev )
 
 		for( ent = findradius( ent, origin, distance ) ; ent ; ent = findradius( ent, origin, distance ) )
 			{
-			if ( ent->inheritsFrom( name.c_str() ) )
+			if ( ent->inheritsFrom( nameOfOther.c_str() ) )
 				{
             delta = centroid - ent->centroid;
 			   dist = delta * delta;
@@ -10323,9 +10330,12 @@ qboolean Actor::checkUsingWeaponNamed( Conditional &condition )
 
    }
 
-qboolean Actor::checkUsingWeaponNamed ( const str &name )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: weaponName - chrissstrahl
+//--------------------------------------------------------------
+qboolean Actor::checkUsingWeaponNamed ( const str &weaponName )
    {
-   return combatSubsystem->UsingWeaponNamed( name );
+   return combatSubsystem->UsingWeaponNamed( weaponName );
    }
 
 qboolean Actor::checkOutOfTorsoRange( Conditional &condition )
@@ -10697,7 +10707,11 @@ void Actor::RegisterSelf( Event *ev	)
       }
 	}
 
-Actor *Actor::FindPartActor( const char *name )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: nameOfPart - chrissstrahl
+//--------------------------------------------------------------
+Actor *Actor::FindPartActor( const char *nameOfPart )
 	{
 	int current_part;
 	part_t *part;
@@ -10711,7 +10725,7 @@ Actor *Actor::FindPartActor( const char *name )
 		partent = part->ent;
 		partact = (Actor *)partent;
 
-		if ( partact && ( partact->part_name == name ) )
+		if ( partact && ( partact->part_name == nameOfPart ) )
 			return partact;
 		}
 
@@ -18193,7 +18207,10 @@ qboolean Actor::checkEnemyWeaponNamed( Conditional &condition )
 //
 // Returns:		true or false
 //--------------------------------------------------------------
-qboolean Actor::checkEnemyWeaponNamed( const str& name )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: weaponNameOfEnemy - chrissstrahl
+//--------------------------------------------------------------
+qboolean Actor::checkEnemyWeaponNamed( const str& weaponNameOfEnemy )
 {
 	Entity *enemy;
 	enemyManager->FindHighestHateEnemy();
@@ -18205,7 +18222,7 @@ qboolean Actor::checkEnemyWeaponNamed( const str& name )
 		{
 		Actor *act;
 		act = (Actor*)enemy;
-		return act->combatSubsystem->UsingWeaponNamed( name );
+		return act->combatSubsystem->UsingWeaponNamed( weaponNameOfEnemy );
 		}
 
 		if ( enemy->isSubclassOf( Player ) )
@@ -18215,15 +18232,15 @@ qboolean Actor::checkEnemyWeaponNamed( const str& name )
 		player = (Player*)enemy;
 
 		pWeapon = player->GetActiveWeapon(WEAPON_DUAL);
-		if ( pWeapon && pWeapon->getName() == name )
+		if ( pWeapon && pWeapon->getName() == weaponNameOfEnemy )
 			return true;
 
 		pWeapon = player->GetActiveWeapon(WEAPON_LEFT);		
-		if ( pWeapon && pWeapon->getName() == name )
+		if ( pWeapon && pWeapon->getName() == weaponNameOfEnemy )
 			return true;
 
 		pWeapon = player->GetActiveWeapon(WEAPON_RIGHT);
-		if ( pWeapon && pWeapon->getName() == name )
+		if ( pWeapon && pWeapon->getName() == weaponNameOfEnemy )
 			return true;
 
 		}
@@ -18262,7 +18279,10 @@ qboolean Actor::checkPlayerWeaponNamed( Conditional &condition )
 //
 // Returns:		true or false
 //--------------------------------------------------------------
-qboolean Actor::checkPlayerWeaponNamed( const str& name )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: weaponNameOfPlayer - chrissstrahl
+//--------------------------------------------------------------
+qboolean Actor::checkPlayerWeaponNamed( const str& weaponNameOfPlayer )
 {
 	Player *player;
 	player = GetPlayer ( 0 );
@@ -18272,15 +18292,15 @@ qboolean Actor::checkPlayerWeaponNamed( const str& name )
 		Weapon *pWeapon;
 
 		pWeapon = player->GetActiveWeapon(WEAPON_DUAL);
-		if ( pWeapon && pWeapon->getName() == name )
+		if ( pWeapon && pWeapon->getName() == weaponNameOfPlayer )
 			return true;
 
 		pWeapon = player->GetActiveWeapon(WEAPON_LEFT);		
-		if ( pWeapon && pWeapon->getName() == name )
+		if ( pWeapon && pWeapon->getName() == weaponNameOfPlayer )
 			return true;
 
 		pWeapon = player->GetActiveWeapon(WEAPON_RIGHT);
-		if ( pWeapon && pWeapon->getName() == name )
+		if ( pWeapon && pWeapon->getName() == weaponNameOfPlayer )
 			return true;
 	}
 
