@@ -116,9 +116,13 @@ class DamageModifier : public Class
 friend class DamageModificationSystem;
 
 private:
-	float					_multiplier;
-	float					_chance;
-	float					_painBaseLine;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable _multiplier/_chance/_painBaseLine was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float					_multiplier = 0.0f;
+	float					_chance = 0.0f;
+	float					_painBaseLine = 0.0f;
+
 
 protected:
 	DamageModifierType		_type;
@@ -246,7 +250,10 @@ inline void DamageModifierName::Archive(Archiver &arc)
 class DamageModifierGroup : public DamageModifier
 {
 private:
-	int _group;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable _group was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int _group = 0;
 
 protected:
 	/*virtual*/ void resolveDamage(Damage &damage);
@@ -282,7 +289,11 @@ inline void DamageModifierGroup::Archive(Archiver &arc)
 class DamageModifierActorType : public DamageModifier
 {
 private:
-	int _actortype;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable _actortype was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int _actortype = 0;
+
 
 protected:
 	/*virtual*/ void resolveDamage(Damage &damage);
@@ -354,7 +365,10 @@ inline void DamageModifierTargetName::Archive(Archiver &arc)
 class DamageModifierDamageType : public DamageModifier
 {
 private:
-	int _damagetype;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable _damagetype was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int _damagetype = 0;
 
 protected:
 	/*virtual*/ void resolveDamage(Damage &damage);
