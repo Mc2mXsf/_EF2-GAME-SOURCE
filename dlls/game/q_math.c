@@ -1995,7 +1995,10 @@ float angledist( float ang )
 
 
 // this is the slow, general version
-int BoxOnPlaneSide2 ( const vec3_t emins, const vec3_t emaxs, const struct cplane_s *p )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of p hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+int BoxOnPlaneSide2 ( const vec3_t emins, const vec3_t emaxs, const struct cplane_s *temp_p )
 {
 	int		i;
 	float	dist1, dist2;
@@ -2004,7 +2007,7 @@ int BoxOnPlaneSide2 ( const vec3_t emins, const vec3_t emaxs, const struct cplan
 
 	for (i=0 ; i<3 ; i++)
 	{
-		if (p->normal[i] < 0.0f)
+		if (temp_p->normal[i] < 0.0f)
 		{
 			corners[0][i] = emins[i];
 			corners[1][i] = emaxs[i];
@@ -2015,8 +2018,8 @@ int BoxOnPlaneSide2 ( const vec3_t emins, const vec3_t emaxs, const struct cplan
 			corners[0][i] = emaxs[i];
 		}
 	}
-	dist1 = DotProduct (p->normal, corners[0]) - p->dist;
-	dist2 = DotProduct (p->normal, corners[1]) - p->dist;
+	dist1 = DotProduct (temp_p->normal, corners[0]) - temp_p->dist;
+	dist2 = DotProduct (temp_p->normal, corners[1]) - temp_p->dist;
 	sides = 0;
 	if (dist1 >= 0.0f)
 		sides = 1;
