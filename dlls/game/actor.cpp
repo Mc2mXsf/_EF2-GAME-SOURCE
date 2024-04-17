@@ -9520,14 +9520,19 @@ qboolean Actor::checknoiseheard( Conditional &condition )
 
 qboolean Actor::checkpartstate( Conditional &condition )
 	{
-	str part_name;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of part_name hides class member. Renamed to: temp_part_name - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_part_name;
+
+
 	str state_name;
 	Actor *part;
 
-	part_name  = condition.getParm( 1 );
+	temp_part_name  = condition.getParm( 1 );
 	state_name = condition.getParm( 2 );
 
-	part = FindPartActor( part_name );
+	part = FindPartActor( temp_part_name );
 	
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
@@ -9537,7 +9542,12 @@ qboolean Actor::checkpartstate( Conditional &condition )
 
 qboolean Actor::checkpartflag( Conditional &condition )
 	{
-	str part_name;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of part_name hides class member. Renamed to: temp_part_name - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_part_name;
+
+
 	str flag_name;
 	unsigned int flag;
 	int current_part;
@@ -9545,7 +9555,7 @@ qboolean Actor::checkpartflag( Conditional &condition )
 	Entity *partent;
 	Actor *partact;
 
-	part_name  = condition.getParm( 1 );
+	temp_part_name  = condition.getParm( 1 );
 	flag_name  = condition.getParm( 2 );
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
@@ -9593,7 +9603,7 @@ qboolean Actor::checkpartflag( Conditional &condition )
 		partent = part->ent;
 		partact = (Actor *)partent;
 
-		if ( partact && ( partact->part_name == part_name ) )
+		if ( partact && ( partact->part_name == temp_part_name ) )
 			{
 			if ( part->state_flags & flag )
             {
@@ -9607,13 +9617,18 @@ qboolean Actor::checkpartflag( Conditional &condition )
 
 qboolean Actor::checkpartdead( Conditional &condition )
 	{
-	str part_name;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of part_name hides class member. Renamed to: temp_part_name - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_part_name;
+
+
 	str state_name;
 	Actor *part;
 
-	part_name = condition.getParm( 1 );
+	temp_part_name = condition.getParm( 1 );
 
-	part = FindPartActor( part_name );
+	part = FindPartActor( temp_part_name );
 
 	if ( !part )
 		return false;
@@ -12216,7 +12231,10 @@ const bool Actor::GetStickToGround( void ) const
 
 void Actor::SetActorFlag( int flag, qboolean flag_value )
 	{
-	unsigned int *flags;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of flags hides class member. Renamed to: temp_flags - chrissstrahl
+	//--------------------------------------------------------------
+	unsigned int *temp_flags;
 	int index;
 	int bit = 0;
 
@@ -12231,19 +12249,19 @@ void Actor::SetActorFlag( int flag, qboolean flag_value )
 	switch( index )
 		{
 		case 0 :
-			flags = &actor_flags1;
+			temp_flags = &actor_flags1;
 			bit = flag;
 			break;
 		case 1 :
-			flags = &actor_flags2;
+			temp_flags = &actor_flags2;
 			bit = flag - 32;
 			break;
 		case 2 :
-			flags = &actor_flags3;
+			temp_flags = &actor_flags3;
 			bit = flag - 64;
 			break;
 		case 3 :
-			flags = &actor_flags4;
+			temp_flags = &actor_flags4;
 			bit = flag - 96;
 			break;
 
@@ -12253,9 +12271,9 @@ void Actor::SetActorFlag( int flag, qboolean flag_value )
 		}
 
 	if ( flag_value )
-		*flags |= 1 << bit;
+		*temp_flags |= 1 << bit;
 	else
-		*flags &= ~( 1 << bit );
+		*temp_flags &= ~( 1 << bit );
 	}
 
 void Actor::SetActorFlag( const str &flag_name , qboolean flag_value )
@@ -12291,7 +12309,10 @@ qboolean Actor::GetActorFlag( const str &flag_name ) const
 
 qboolean Actor::GetActorFlag( int flag ) const
 	{
-	const unsigned int *flags;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of flags hides class member. Renamed to: temp_flags - chrissstrahl
+	//--------------------------------------------------------------
+	const unsigned int *temp_flags;
 	int index;
 	int bit = 0;
 
@@ -12306,19 +12327,19 @@ qboolean Actor::GetActorFlag( int flag ) const
 	switch( index )
 		{
 		case 0 :
-			flags = &actor_flags1;
+			temp_flags = &actor_flags1;
 			bit = flag;
 			break;
 		case 1 :
-			flags = &actor_flags2;
+			temp_flags = &actor_flags2;
 			bit = flag - 32;
 			break;
 		case 2 :
-			flags = &actor_flags3;
+			temp_flags = &actor_flags3;
 			bit = flag - 64;
 			break;
 		case 3:
-			flags = &actor_flags4;
+			temp_flags = &actor_flags4;
 			bit = flag - 96;
 			break;
 
@@ -12327,7 +12348,7 @@ qboolean Actor::GetActorFlag( int flag ) const
 			return false;
 		}
 
-	if ( *flags & ( 1 << bit ) )
+	if ( *temp_flags & ( 1 << bit ) )
 		return true;
 	else
 		return false;
@@ -12336,7 +12357,10 @@ qboolean Actor::GetActorFlag( int flag ) const
 
 void Actor::SetNotifyFlag( int flag, qboolean flag_value )
 	{
-	unsigned int *flags;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of flags hides class member. Renamed to: temp_flags - chrissstrahl
+	//--------------------------------------------------------------
+	unsigned int *temp_flags;
 	int index;
 
 	if ( flag > NOTIFY_FLAG_MAX )
@@ -12350,7 +12374,7 @@ void Actor::SetNotifyFlag( int flag, qboolean flag_value )
 	switch( index )
 		{
 		case 0 :
-			flags = &notify_flags1;
+			temp_flags = &notify_flags1;
 			break;
 
 		default :
@@ -12359,9 +12383,9 @@ void Actor::SetNotifyFlag( int flag, qboolean flag_value )
 		}
 
 	if ( flag_value )
-		*flags |= 1 << flag;
+		*temp_flags |= 1 << flag;
 	else
-		*flags &= ~( 1 << flag );
+		*temp_flags &= ~( 1 << flag );
 	}
 
 void Actor::SetNotifyFlag( const str &flag_name , qboolean flag_value )
@@ -12389,7 +12413,10 @@ void Actor::SetNotifyFlag( Event *ev )
 
 qboolean Actor::GetNotifyFlag( int flag )
 	{
-	unsigned int *flags;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of flags hides class member. Renamed to: temp_flags - chrissstrahl
+	//--------------------------------------------------------------
+	unsigned int *temp_flags;
 	int index;
 
 	if ( flag > NOTIFY_FLAG_MAX )
@@ -12403,7 +12430,7 @@ qboolean Actor::GetNotifyFlag( int flag )
 	switch( index )
 		{
 		case 0 :
-			flags = &notify_flags1;
+			temp_flags = &notify_flags1;
 			break;
 
 		default :
@@ -12411,7 +12438,7 @@ qboolean Actor::GetNotifyFlag( int flag )
 			return false;
 		}
 
-	if ( *flags & ( 1 << flag ) )
+	if ( *temp_flags & ( 1 << flag ) )
 		return true;
 	else
 		return false;
