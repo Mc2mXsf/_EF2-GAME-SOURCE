@@ -9120,8 +9120,9 @@ void Entity::SpawnEffect( Event *ev )
 
 //--------------------------------------------------------------
 // GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
 //--------------------------------------------------------------
-Entity *Entity::SpawnEffect( const str &name, const Vector &origin, const Vector &temp_angles, float removeTime )
+Entity *Entity::SpawnEffect( const str &name, const Vector &temp_origin, const Vector &temp_angles, float removeTime )
 {
 	Entity *newEntity;
 	str modelName;
@@ -9183,7 +9184,7 @@ Entity *Entity::SpawnEffect( const str &name, const Vector &origin, const Vector
 	newEntity->angles = temp_angles;
 	newEntity->setAngles();
 
-	newEntity->setOrigin( origin );
+	newEntity->setOrigin( temp_origin );
 
 	newEntity->setSolidType( SOLID_NOT );
 

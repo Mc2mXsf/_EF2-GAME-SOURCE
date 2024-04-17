@@ -2152,16 +2152,23 @@ bool Cinematic::areActorsAtTheirPlaces( void )
 void Cinematic::startAtNamedOrigin( const str &originName, bool callStartThread )
 {
 	CinematicOrigin *cinematicOrigin = getCinematicOriginByName( originName );
-	Vector			 origin( 0.0f, 0.0f, 0.0f );
+	
 	float			 yaw			 = 0.0f ;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+	//--------------------------------------------------------------
+	Vector			 temp_origin( 0.0f, 0.0f, 0.0f );
+
 
 	if ( cinematicOrigin )
 	{
-		origin	= cinematicOrigin->getOrigin();
+		temp_origin	= cinematicOrigin->getOrigin();
 		yaw		= cinematicOrigin->getYaw();
 	}
 
-	startAtOrigin( origin, yaw, callStartThread );
+	startAtOrigin( temp_origin, yaw, callStartThread );
 }
 
 
@@ -2184,7 +2191,10 @@ void Cinematic::startAtNamedOrigin( const str &originName, bool callStartThread 
 // Returns:		float -- the level time the cinematic was begun.
 // 
 //===============================================================
-void Cinematic::startAtOrigin( const Vector &origin, float yaw, bool callStartThread )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+//--------------------------------------------------------------
+void Cinematic::startAtOrigin( const Vector &temp_origin, float yaw, bool callStartThread )
 {
 	reset();
 
@@ -2192,7 +2202,7 @@ void Cinematic::startAtOrigin( const Vector &origin, float yaw, bool callStartTh
 	for ( int actorIdx = 1; actorIdx <= numActors; ++actorIdx )
 	{
 		CinematicActor *cinematicActor = _actorList.ObjectAt( actorIdx );
-		cinematicActor->takeControlOfActor( origin, yaw );
+		cinematicActor->takeControlOfActor( temp_origin, yaw );
 		cinematicActor->getToPosition();
 	}
 
@@ -2200,7 +2210,7 @@ void Cinematic::startAtOrigin( const Vector &origin, float yaw, bool callStartTh
 	for ( int cameraIdx = 1; cameraIdx <= numCameras; ++cameraIdx )
 	{
 		CinematicCamera *cinematicCamera = _cameraList.ObjectAt( cameraIdx );
-		cinematicCamera->takeControlOfCamera( origin, yaw );
+		cinematicCamera->takeControlOfCamera( temp_origin, yaw );
 	}
 
 	int numCuts = _cutList.NumObjects();
@@ -2327,13 +2337,19 @@ void Cinematic::handleBeginEvent( Event *ev )
 //===============================================================
 void Cinematic::handleBeginAtEvent( Event *ev )
 {
-	Vector	origin( 0.0f, 0.0f, 0.0f );
 	float	yawRotation		= 0.0f ;
 	bool	callStartThread	= true ;
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+	//--------------------------------------------------------------
+	Vector	temp_origin( 0.0f, 0.0f, 0.0f );
+
+
 	if ( ev->NumArgs() >= 1 )
 	{
-		origin = ev->GetVector( 1 );
+		temp_origin = ev->GetVector( 1 );
 	}
 	if ( ev->NumArgs() == 2 )
 	{
@@ -2344,7 +2360,7 @@ void Cinematic::handleBeginAtEvent( Event *ev )
 		callStartThread = ev->GetBoolean( 3 );
 	}
 
-	startAtOrigin( origin, yawRotation, callStartThread );
+	startAtOrigin( temp_origin, yawRotation, callStartThread );
 }
 
 

@@ -330,7 +330,11 @@ void Powerup::update( float frameTime )
 	specificUpdate( frameTime );
 }
 
-void Powerup::spawn( const Vector &origin )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+//--------------------------------------------------------------
+void Powerup::spawn( const Vector &temp_origin )
 {
 	SpawnArgs args;
 	Entity *ent;
@@ -348,12 +352,12 @@ void Powerup::spawn( const Vector &origin )
 
 	item = (Item *)ent;
 
-	item->setOrigin( origin );
+	item->setOrigin( temp_origin );
 
 	item->ProcessPendingEvents();
 
 	item->PlaceItem();
-	item->setOrigin( origin );
+	item->setOrigin( temp_origin );
 	//item->velocity = Vector( G_CRandom( 100.0f ), G_CRandom( 100.0f ), 200.0f + G_Random( 200.0f ) );
 	item->edict->clipmask = CONTENTS_SOLID | CONTENTS_PLAYERCLIP;
 	item->_nextPickupTime = level.time + 1.0f;
@@ -592,7 +596,11 @@ Rune *Rune::CreateRune( const str &className, const str &modelName, Sentient *se
 	return rune;
 }
 
-void Rune::spawn( const Vector &origin )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+//--------------------------------------------------------------
+void Rune::spawn( const Vector &temp_origin )
 {
 	SpawnArgs args;
 	Entity *ent;
@@ -607,12 +615,12 @@ void Rune::spawn( const Vector &origin )
 
 	item = (Item *)ent;
 
-	item->setOrigin( origin );
+	item->setOrigin( temp_origin );
 
 	item->ProcessPendingEvents();
 
 	item->PlaceItem();
-	item->setOrigin( origin );
+	item->setOrigin( temp_origin );
 	//item->velocity = Vector( G_CRandom( 100.0f ), G_CRandom( 100.0f ), 200.0f + G_Random( 200.0f ) );
 	item->edict->clipmask = CONTENTS_SOLID | CONTENTS_PLAYERCLIP;
 	item->_nextPickupTime = level.time + 1.0f;

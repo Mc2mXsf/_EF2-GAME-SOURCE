@@ -4395,13 +4395,14 @@ void Weapon::SetAimTarget( Entity *ent )
 //======================
 //--------------------------------------------------------------
 // GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
 //--------------------------------------------------------------
-void Weapon::WorldHitSpawn( firemode_t mode, const Vector &origin, const Vector &temp_angles, float life )
+void Weapon::WorldHitSpawn( firemode_t mode, const Vector &temp_origin, const Vector &temp_angles, float life )
 {
 	if ( !worldhitspawn[mode].length() )
 		return;
 	
-	Entity::SpawnEffect(worldhitspawn[mode], origin, temp_angles, life);
+	Entity::SpawnEffect(worldhitspawn[mode], temp_origin, temp_angles, life);
 }
 
 //======================

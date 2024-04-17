@@ -124,7 +124,11 @@ const bool IsValidHeadTarget( const Entity &entity)
 	return false;
 }
 
-Entity* Player::FindHeadTarget( const Vector &origin, const Vector &forward, const float fov, const float maxdist ) 
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+//--------------------------------------------------------------
+Entity* Player::FindHeadTarget( const Vector &temp_origin, const Vector &forward, const float fov, const float maxdist ) 
 {
 	const int maximumNumberOfCandidates = 10;
 	int numberOfCandidates=0;
@@ -142,7 +146,7 @@ Entity* Player::FindHeadTarget( const Vector &origin, const Vector &forward, con
 		Entity &currentEntity = *currentEdict->entity;
 		if ( IsValidHeadTarget( currentEntity ) )
 		{
-      		Vector delta = ( currentEntity.centroid ) - origin;
+      		Vector delta = ( currentEntity.centroid ) - temp_origin;
 			float lengthOfDeltaSquared = delta.lengthSquared();
 			if ( lengthOfDeltaSquared < validTargetRadiusSquared )
 			{
@@ -152,10 +156,10 @@ Entity* Player::FindHeadTarget( const Vector &origin, const Vector &forward, con
 				if ( dot > fovdot )
 				{
 					int insertionPoint = 1;
-					const float distanceSquaredToCurrentEntity = Vector::DistanceSquared( origin, currentEntity.centroid );
+					const float distanceSquaredToCurrentEntity = Vector::DistanceSquared( temp_origin, currentEntity.centroid );
 					for ( ; insertionPoint < possibleHeadTargets.NumObjects(); insertionPoint++ )
 					{
-						if ( distanceSquaredToCurrentEntity < Vector::DistanceSquared( origin, possibleHeadTargets.ObjectAt( insertionPoint )->centroid ) )
+						if ( distanceSquaredToCurrentEntity < Vector::DistanceSquared( temp_origin, possibleHeadTargets.ObjectAt( insertionPoint )->centroid ) )
 						{
 							break;
 						}
@@ -184,7 +188,7 @@ Entity* Player::FindHeadTarget( const Vector &origin, const Vector &forward, con
 	for (int i = 1; i <= possibleHeadTargets.NumObjects(); i++ )
 	{
 		Entity *currentCandidate = possibleHeadTargets.ObjectAt( i );
-		trace_t trace = G_Trace( origin, vec_zero, vec_zero, currentCandidate->centroid, NULL, MASK_OPAQUE, false, "FindHeadTarget" );
+		trace_t trace = G_Trace( temp_origin, vec_zero, vec_zero, currentCandidate->centroid, NULL, MASK_OPAQUE, false, "FindHeadTarget" );
 		if ( ( trace.ent && trace.entityNum == currentCandidate->entnum ) || ( trace.fraction == 1.0f ) )
 		{
 			closestValidEntity = currentCandidate;
