@@ -482,9 +482,13 @@ const char *ScriptVariable::stringValue( void )
 	return string.c_str();
 }
 
-void ScriptVariable::setString( const char *value )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of value hides class member. Renamed to: temp_value - chrissstrahl
+//--------------------------------------------------------------
+void ScriptVariable::setString( const char *temp_value )
 {
-	string = value;
+	string = temp_value;
 }
 
 void ScriptVariable::setStringValue( const char *newvalue )
@@ -1075,9 +1079,14 @@ void ScriptVariable::Var_Vector_Scale( Event *ev )
 
 void ScriptVariable::Var_Vector_Normalize( Event *ev )
 {
-	Vector vec( vectorValue() );
-	vec.normalize();
-	setVectorValue( vec );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of vec hides class member. Renamed to: temp_vec - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_vec( vectorValue() );
+
+
+	temp_vec.normalize();
+	setVectorValue( temp_vec );
 }
 
 void ScriptVariable::Var_Vector_GetX( Event *ev )

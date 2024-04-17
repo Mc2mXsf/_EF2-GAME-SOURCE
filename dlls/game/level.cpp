@@ -177,9 +177,12 @@ void Level::update( int levelTime, int frameTime )
 }
 
 
-void Level::SetIntermissionAdvanceTime(float time)
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of time hides class member. Renamed to: temp_time - chrissstrahl
+//--------------------------------------------------------------
+void Level::SetIntermissionAdvanceTime(float temp_time)
 {
-	intermission_advancetime = time;
+	intermission_advancetime = temp_time;
 }
 
 void Level::EndIntermission()

@@ -911,14 +911,20 @@ void ScriptSlave::EventUnbind( Event *ev )
 void ScriptSlave::DoMove( Event *ev )
 {
 	float dist;
-	CThread *thread;
 	Event *event;
-	
-	thread = ev->GetThread();
-	assert( thread );
-	if ( thread && thread->WaitingFor( this ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of thread hides class member. Renamed to: temp_thread - chrissstrahl
+	//--------------------------------------------------------------
+	CThread *temp_thread;
+
+
+	temp_thread = ev->GetThread();
+	assert( temp_thread );
+	if ( temp_thread && temp_thread->WaitingFor( this ) )
 	{
-		if ( movethread && ( movethread != thread ) )
+		if ( movethread && ( movethread != temp_thread ) )
 		{
 			// warn the user
 			ev->Error( "Overriding previous move commands for '%s'\n", TargetName() );
@@ -930,7 +936,7 @@ void ScriptSlave::DoMove( Event *ev )
 			movethread->ProcessEvent( event );
 		}
 		
-		movethread = thread;
+		movethread = temp_thread;
 	}
 	if ( commandswaiting )
 	{
@@ -952,7 +958,7 @@ void ScriptSlave::DoMove( Event *ev )
 		}
 		commandswaiting = false;
 	}
-	else if ( movethread && ( movethread == thread ) && !moving )
+	else if ( movethread && ( movethread == temp_thread ) && !moving )
 	{
 		// No commands, so tell the master that we're done
 		PostEvent( EV_ScriptSlave_MoveDone, 0.0f );

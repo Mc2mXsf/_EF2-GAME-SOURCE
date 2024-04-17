@@ -1086,7 +1086,11 @@ void World::SetLavaAlpha( Event *ev )
 	level.lava_alpha = ev->GetFloat( 1 );
 }
 
-TargetList * World::GetTargetList( const str &targetname, qboolean createnew )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of targetname hides class member. Renamed to: temp_targetname - chrissstrahl
+//--------------------------------------------------------------
+TargetList * World::GetTargetList( const str &temp_targetname, qboolean createnew )
 {
 	TargetList * targetlist;
 	int i;
@@ -1094,7 +1098,7 @@ TargetList * World::GetTargetList( const str &targetname, qboolean createnew )
 	for( i = 1; i <= targetList.NumObjects(); i++ )
 	{
 		targetlist = targetList.ObjectAt( i );
-		if ( targetname == targetlist->targetname)
+		if ( temp_targetname == targetlist->targetname)
 		{
 			return targetlist;
 		}
@@ -1105,36 +1109,48 @@ TargetList * World::GetTargetList( const str &targetname, qboolean createnew )
 		return NULL;
 	}
 
-	targetlist = new TargetList( targetname );
+	targetlist = new TargetList( temp_targetname );
 	targetlist->index = targetList.AddObject( targetlist );
 
 	return targetlist;
 }
 
-void World::AddTargetEntity( const str &targetname, Entity * ent )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of targetname hides class member. Renamed to: temp_targetname - chrissstrahl
+//--------------------------------------------------------------
+void World::AddTargetEntity( const str &temp_targetname, Entity * ent )
 {
 	TargetList * targetlist;
 
-	targetlist = GetTargetList( targetname );
+	targetlist = GetTargetList( temp_targetname );
 	targetlist->AddEntity( ent );
 }
 
-void World::RemoveTargetEntity( const str &targetname, Entity * ent )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of targetname hides class member. Renamed to: temp_targetname - chrissstrahl
+//--------------------------------------------------------------
+void World::RemoveTargetEntity( const str &temp_targetname, Entity * ent )
 {
 	TargetList * targetlist;
 
 	if ( world_dying )
 		return;
 
-	targetlist = GetTargetList( targetname );
+	targetlist = GetTargetList( temp_targetname );
 	targetlist->RemoveEntity( ent );
 }
 
-Entity * World::GetNextEntity( const str &targetname, Entity * ent )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of targetname hides class member. Renamed to: temp_targetname - chrissstrahl
+//--------------------------------------------------------------
+Entity * World::GetNextEntity( const str &temp_targetname, Entity * ent )
 {
 	TargetList * targetlist;
 
-	targetlist = GetTargetList( targetname );
+	targetlist = GetTargetList( temp_targetname );
 	return targetlist->GetNextEntity( ent );
 }
 
