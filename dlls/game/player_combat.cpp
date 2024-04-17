@@ -127,13 +127,14 @@ const bool IsValidHeadTarget( const Entity &entity)
 
 //--------------------------------------------------------------
 // GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+// GAMEFIX - Fixed: Warning C4458: declaration of fov hides class member. Renamed to: temp_fov - chrissstrahl
 //--------------------------------------------------------------
-Entity* Player::FindHeadTarget( const Vector &temp_origin, const Vector &forward, const float fov, const float maxdist ) 
+Entity* Player::FindHeadTarget( const Vector &temp_origin, const Vector &forward, const float temp_fov, const float maxdist ) 
 {
 	const int maximumNumberOfCandidates = 10;
 	int numberOfCandidates=0;
 	float validTargetRadiusSquared = maxdist * maxdist;
-	float fovdot = cos( DEG2RAD( fov * 0.5f) );
+	float fovdot = cos( DEG2RAD( temp_fov * 0.5f) );
 
 	if ( multiplayerManager.inMultiplayer() )
 		return NULL;
