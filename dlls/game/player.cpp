@@ -8555,7 +8555,12 @@ void Player::FinishMove( void )
 
 void Player::UpdateStats( void )
 {
-	int i,count;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	int count;
+
+
 	float healthToDisplay;
 	float armorToDisplay;
 	
@@ -8966,7 +8971,12 @@ void Player::UpdateStats( void )
 	Weapon* weapon;
 	Ammo*	ammo;
 	int		ammoRequired;
-	for ( i=1; i<=count; i++ )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	for (int i=1; i<=count; i++ )
 	{
 		int entnum = inventory.ObjectAt( i );
 		Item *item = ( Item * )G_GetEntity( entnum );
@@ -8999,8 +9009,12 @@ void Player::UpdateStats( void )
 	{
 		gi.Error( ERR_DROP, "Player::UpdateStats : Exceeded MAX_AMMO\n" );
 	}
-	
-	for ( i=1; i<=count; i++ )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	for (int i=1; i<=count; i++ )
 	{
 		Ammo *ammo = ammo_inventory.ObjectAt( i );
 		

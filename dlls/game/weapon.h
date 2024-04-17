@@ -682,8 +682,6 @@ inline float Weapon::GetRange( firemode_t idx )
 
 inline void Weapon::Archive( Archiver &arc )
 {
-	int i,j;
-
 	Item::Archive( arc );
 
 	arc.ArchiveBoolean( &attached );
@@ -788,8 +786,10 @@ inline void Weapon::Archive( Archiver &arc )
 	arc.ArchiveInteger( &burstcount );
 	arc.ArchiveInteger( &burstcountmax );
 	
-
-	for ( i=0;i<MAX_FIREMODES;i++ )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	for (int i=0;i<MAX_FIREMODES;i++ )
 		{
 		arc.ArchiveString( &ammo_type[i] );
 		arc.ArchiveInteger( &ammorequired[i] );
@@ -817,7 +817,7 @@ inline void Weapon::Archive( Archiver &arc )
 		arc.ArchiveFloat( &next_fire_time[i] );
 		arc.ArchiveFloat( &fire_timer[i] );
 
-		for ( j=0;j<MAX_ACCURACYTYPES;j++ )
+		for (int j=0;j<MAX_ACCURACYTYPES;j++ )
 			{
 			arc.ArchiveFloat( &accuracy[i][j] );
 			arc.ArchiveFloat( &accuracy[i][j] );

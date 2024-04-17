@@ -1171,7 +1171,7 @@ inline void Player::ClearNewActiveWeapon()
 inline void Player::Archive( Archiver &arc )
 	{
 	str tempStr;
-	int i, num;
+	int num;
 	WeaponSetItem *tempDualWeapon;
 
 	Sentient::Archive( arc );
@@ -1250,7 +1250,11 @@ inline void Player::Archive( Archiver &arc )
 
 	arc.ArchiveInteger( &num );
 
-	for( i = 1; i <= num; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	for(int i = 1; i <= num; i++ )
 		{
 		if ( arc.Saving() )
 			{
@@ -1264,7 +1268,11 @@ inline void Player::Archive( Archiver &arc )
 		tempDualWeapon->Archive( arc );
 		}
 
-	for( i = 0; i < MAX_ACTIVE_WEAPONS; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	for(int i = 0; i < MAX_ACTIVE_WEAPONS; i++ )
 		{
 		arc.ArchiveSafePointer( &holsteredWeapons[ i ] );
 		}

@@ -520,10 +520,13 @@ qboolean AdaptiveArmor::_AdaptionInList( int MeansOfDeath )
 //
 void AdaptiveArmor::_UpdateAdaption( int MeansOfDeath , float damage )
 {
-	int i;
 	MODHitCounter *adaption;
-		
-	for( i=_AdaptionList.NumObjects(); i>0; i-- )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	for(int i=_AdaptionList.NumObjects(); i>0; i-- )
 	{
 		adaption = _AdaptionList.ObjectAt( i );
 		if ( adaption->MODIndex == MeansOfDeath )
@@ -536,11 +539,15 @@ void AdaptiveArmor::_UpdateAdaption( int MeansOfDeath , float damage )
 			if ( (adaption->damage >= g_armoradaptionlimit->value) && !adaption->adapted )
 			{
 				adaption->adapted = true;				
-
 				Actor *act;
-				for ( int i=1; i<=ActiveList.NumObjects(); i++ )
+
+
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Warning C4456: Declaration of i hides previous local declaration. - chrissstrahl
+				//--------------------------------------------------------------
+				for ( int j=1; j<=ActiveList.NumObjects(); j++ )
 				{
-					act = ActiveList.ObjectAt(i);
+					act = ActiveList.ObjectAt(j);
 					if ( !act )
 						continue;
 					
