@@ -85,7 +85,10 @@ int MusicMood_NameToNum( const char * name )
 	
 	for ( i = 0; i < mood_totalnumber; i++ )
 	{
-		if ( !strcmpi( name, musicmoods[ i ] ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( name, musicmoods[ i ] ) )
 		{
 			return i;
 		}
@@ -120,7 +123,10 @@ int EAXMode_NameToNum( const char * name )
 	
 	for ( i = 0; i < eax_totalnumber; i++ )
 	{
-		if ( !strcmpi( name, eaxmodes[ i ] ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( name, eaxmodes[ i ] ) )
 		{
 			return i;
 		}
@@ -305,7 +311,10 @@ int PlayerStat_NameToNum( const char *name )
 
 	for ( i = 0 ; i < STAT_LAST_STAT ; i++ )
 	{
-		if ( strcmpi( name, playerStatNames[ i ] ) == 0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		if (Q_stricmp( name, playerStatNames[ i ] ) == 0 )
 		{
 			return i;
 		}
