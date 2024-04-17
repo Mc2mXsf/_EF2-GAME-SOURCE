@@ -1329,7 +1329,7 @@ int World::findBrokenThing( const char *name )
 
 
 		//--------------------------------------------------------------
-		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
 		//--------------------------------------------------------------
 		if (Q_stricmp( brokenThingName->c_str(), name ) == 0 )
 			return i;
@@ -1524,7 +1524,7 @@ int World::worldPhysicsVarNameToIndex( const char *varName )
 	for ( i = 0 ; i < WORLD_PHYSICS_TOTAL_NUMBER ; i++ )
 		{
 		//--------------------------------------------------------------
-		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
 		//--------------------------------------------------------------
 		if (Q_stricmp( varName, worldPhysicsVarNames[ i ] ) == 0 )
 			return i;
