@@ -579,24 +579,6 @@ void PuzzleObject::useEvent(Event* event)
 
 				if ( entity->isSubclassOf( Player ) )
 				{
-					//--------------------------------------------------------------
-					// GAMEFIX - changed message to always print - chrissstrahl
-					//--------------------------------------------------------------
-					Item* item;
-					ClassDef* cls;
-					cls = getClass(_itemToUse);
-					if (!cls)
-					{
-						gi.Printf("No item named '%s' exists in game\n", _itemToUse.c_str());
-						return;
-					}
-					item = (Item*)cls->newInstance();
-					item->CancelEventsOfType(EV_Item_DropToFloor);
-					item->CancelEventsOfType(EV_Remove);
-					item->ProcessPendingEvents();
-
-
-
 					Player *player = (Player *)entity;
 					player->loadUseItem( _itemToUse );
 					
