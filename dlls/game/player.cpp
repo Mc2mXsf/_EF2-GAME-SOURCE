@@ -14113,9 +14113,13 @@ void Player::clearTempAttachments( void )
 	}
 }
 
-void Player::setSkill( int skill )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of skill hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void Player::setSkill( int temp_skill )
 {
-	_skillLevel = skill;
+	_skillLevel = temp_skill;
 
 	if ( _skillLevel < 0 )
 		_skillLevel = 0;

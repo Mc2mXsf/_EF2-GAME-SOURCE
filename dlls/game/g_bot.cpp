@@ -256,9 +256,14 @@ G_AddRandomBot
 */
 void G_AddRandomBot( int team ) {
 	int		i, n, num;
-	float	skill;
 	char* value, netname[36];
 	gclient_t	*cl;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4459: declaration of skill hides global definition. - chrissstrahl
+	//--------------------------------------------------------------
+	float	temp_skill;
 
 
 	//--------------------------------------------------------------
@@ -312,14 +317,14 @@ void G_AddRandomBot( int team ) {
 		if (i >= maxclients->integer) {
 			num--;
 			if (num <= 0) {
-				skill = gi.Cvar_VariableValue( "g_spSkill" );
+				temp_skill = gi.Cvar_VariableValue( "g_spSkill" );
 				if (team == TEAM_RED) teamstr = "red";
 				else if (team == TEAM_BLUE) teamstr = "blue";
 				else teamstr = "";
 				strncpy(netname, value, sizeof(netname)-1);
 				netname[sizeof(netname)-1] = '\0';
 				Q_CleanStr(netname);
-				gi.SendConsoleCommand( va("addbot %s %f %s %i\n", netname, skill, teamstr, 0) ); // was  EXEC_INSERT,
+				gi.SendConsoleCommand( va("addbot %s %f %s %i\n", netname, temp_skill, teamstr, 0) ); // was  EXEC_INSERT,
 				return;
 			}
 		}
@@ -570,7 +575,10 @@ char *G_GetBotInfoByName( char *name );
 G_AddBot
 ===============
 */
-static void G_AddBot( char *name, float skill, const char *team, const char *specialty, char *altname) {
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of skill hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+static void G_AddBot( char *name, float temp_skill, const char *team, const char *specialty, char *altname) {
 	int				clientNum;
 	char			*botinfo;
 	gentity_t		*bot;
@@ -609,15 +617,15 @@ static void G_AddBot( char *name, float skill, const char *team, const char *spe
 	Info_SetValueForKey( userinfo, "name", botname );
 	Info_SetValueForKey( userinfo, "rate", "25000" );
 	Info_SetValueForKey( userinfo, "snaps", "20" );
-	Info_SetValueForKey( userinfo, "skill", va("%1.2f", skill) );
+	Info_SetValueForKey( userinfo, "skill", va("%1.2f", temp_skill) );
 
-	if ( skill >= 1 && skill < 2 ) {
+	if ( temp_skill >= 1 && temp_skill < 2 ) {
 		Info_SetValueForKey( userinfo, "handicap", "50" );
 	}
-	else if ( skill >= 2 && skill < 3 ) {
+	else if ( temp_skill >= 2 && temp_skill < 3 ) {
 		Info_SetValueForKey( userinfo, "handicap", "70" );
 	}
-	else if ( skill >= 3 && skill < 4 ) {
+	else if ( temp_skill >= 3 && temp_skill < 4 ) {
 		Info_SetValueForKey( userinfo, "handicap", "90" );
 	}
 
@@ -703,7 +711,7 @@ static void G_AddBot( char *name, float skill, const char *team, const char *spe
 
 	// register the userinfo
 	Info_SetValueForKey( userinfo, "characterfile", (char *)Info_ValueForKey( botinfo, "aifile" ) );
-	Info_SetValueForKey( userinfo, "skill", va( "%5.2f", skill ) );
+	Info_SetValueForKey( userinfo, "skill", va( "%5.2f", temp_skill ) );
 	
 	//Set the password if there is one.
 	if(strlen(password->string) != 0)
@@ -771,12 +779,18 @@ Svcmd_AddBot_f
 ===============
 */
 void SV_AddBot_f( void ) {
-	float			skill;
 	char			name[MAX_TOKEN_CHARS];
 	char			altname[MAX_TOKEN_CHARS];
 	char			string[MAX_TOKEN_CHARS];
 	char			team[MAX_TOKEN_CHARS];
 	char			specialty[MAX_TOKEN_CHARS];
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4459: declaration of skill hides global definition. - chrissstrahl
+	//--------------------------------------------------------------
+	float			temp_skill;
+
 	
 	// are bots enabled?
 	if ( !gi.Cvar_VariableIntegerValue( "bot_enable" ) ) {
@@ -793,10 +807,10 @@ void SV_AddBot_f( void ) {
 	// skill
 	strncpy(string,gi.argv( 2),sizeof(string));
 	if ( !string[0] ) {
-		skill = 4;
+		temp_skill = 4;
 	}
 	else {
-		skill = atof( string );
+		temp_skill = atof( string );
 	}
 
 	// team
@@ -808,7 +822,7 @@ void SV_AddBot_f( void ) {
 	// alternative name
 	strncpy(altname,gi.argv( 5),sizeof(altname));
 
-	G_AddBot( name, skill, team, specialty, altname );
+	G_AddBot( name, temp_skill, team, specialty, altname );
 }
 
 /*
@@ -854,22 +868,29 @@ G_SpawnBots
 static void G_SpawnBots( char *botList, int baseDelay ) {
 	char		*bot;
 	char		*p;
-	float		skill;
+	
 	int			delay;
 	char		bots[MAX_INFO_VALUE];
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4459: declaration of skill hides global definition. - chrissstrahl
+	//--------------------------------------------------------------
+	float		temp_skill;
+
 
 //	podium1 = NULL;
 //	podium2 = NULL;
 //	podium3 = NULL;
 
-	skill = gi.Cvar_VariableValue( "g_spSkill" );
-	if( skill < 1 ) {
+	temp_skill = gi.Cvar_VariableValue( "g_spSkill" );
+	if( temp_skill < 1 ) {
 		gi.cvar_set( "g_spSkill", "1" );
-		skill = 1;
+		temp_skill = 1;
 	}
-	else if ( skill > 5 ) {
+	else if ( temp_skill > 5 ) {
 		gi.cvar_set( "g_spSkill", "5" );
-		skill = 5;
+		temp_skill = 5;
 	}
 
 	Q_strncpyz( bots, botList, sizeof(bots) );
@@ -897,7 +918,7 @@ static void G_SpawnBots( char *botList, int baseDelay ) {
 
 		// we must add the bot this way, calling G_AddBot directly at this stage
 		// does "Bad Things"
-		gi.SendConsoleCommand(va("addbot %s %f free %i\n", bot, skill, delay) ); //  EXEC_INSERT, 
+		gi.SendConsoleCommand(va("addbot %s %f free %i\n", bot, temp_skill, delay) ); //  EXEC_INSERT, 
 
 		delay += BOT_BEGIN_DELAY_INCREMENT;
 	}
