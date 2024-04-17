@@ -80,9 +80,12 @@ class Strategos
 
 
 	private:
-		float    _sightBasedHate;
-		float    _nextEvaluateTime;
-		float    _evaluateInterval;      
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable _sightBasedHate/_nextEvaluateTime/_evaluateInterval was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float    _sightBasedHate = 0.0f;
+		float    _nextEvaluateTime = 0.0f;
+		float    _evaluateInterval = 0.0f;
       
       
 
