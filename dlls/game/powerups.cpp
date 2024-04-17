@@ -83,10 +83,14 @@ PowerupBase::PowerupBase()
 	amount = 30;
 }
 
-void PowerupBase::init( const str &modelName, Sentient *owner )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+//--------------------------------------------------------------
+void PowerupBase::init( const str &modelName, Sentient *temp_owner )
 {
 	_modelName = modelName;
-	_owner = owner;
+	_owner = temp_owner;
 
 	setModel( modelName );
 

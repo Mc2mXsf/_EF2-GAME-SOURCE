@@ -1699,12 +1699,19 @@ void Weapon::GetActorMuzzlePosition( Vector *position, Vector *forward, Vector *
 	vec3_t         mat[3]={0,0,0,0,0,0,0,0,0};
 	vec3_t         orient[3];
 	int            i, mi, tagnum;
-	Sentient *owner;   
-	owner = this->owner;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Sentient *temp_owner; 
+
+
+	temp_owner = this->owner;
 	
 	// Get the owner's weapon orientation ( this is custom code and doesn't use the GetTag function
 	// because we need to use the saved off fire_frame and fire_animation indexes from the owner	
-	mi = owner->edict->s.modelindex;
+	mi = temp_owner->edict->s.modelindex;
 	
 	tagnum = gi.Tag_NumForName( mi, current_attachToTag.c_str() );
 	
@@ -1713,22 +1720,22 @@ void Weapon::GetActorMuzzlePosition( Vector *position, Vector *forward, Vector *
 	// This is to prevent weird timing with getting orientations on different frames of firing
 	// animations and the orientations will not be consistent.
 	
-	AnglesToAxis( owner->angles, owner->orientation );
+	AnglesToAxis( temp_owner->angles, temp_owner->orientation );
 
 	orn	= gi.Tag_OrientationEx( mi,
-								owner->CurrentAnim( legs ),
-								owner->CurrentFrame( legs ),
+								temp_owner->CurrentAnim( legs ),
+								temp_owner->CurrentFrame( legs ),
 								tagnum & TAG_MASK,
-								owner->edict->s.scale,
-								owner->edict->s.bone_tag,
-								owner->edict->s.bone_quat,
+								temp_owner->edict->s.scale,
+								temp_owner->edict->s.bone_tag,
+								temp_owner->edict->s.bone_quat,
 								0,
 								0,
 								1.0f,
-								( owner->edict->s.anim & ANIM_BLEND ) != 0,
-								( owner->edict->s.torso_anim & ANIM_BLEND ) != 0,
-								owner->CurrentAnim( torso ),
-								owner->CurrentFrame( torso ),
+								( temp_owner->edict->s.anim & ANIM_BLEND ) != 0,
+								( temp_owner->edict->s.torso_anim & ANIM_BLEND ) != 0,
+								temp_owner->CurrentAnim( torso ),
+								temp_owner->CurrentFrame( torso ),
 								0,
 								0,
 								1.0f
@@ -1737,8 +1744,8 @@ void Weapon::GetActorMuzzlePosition( Vector *position, Vector *forward, Vector *
 	// Transform the weapon's orientation through the owner's orientation
 	// Player orientation is normally based on the player's view, but we need
 	// it to be based on the model's orientation, so we calculate it here.
-	AnglesToAxis( owner->angles, orient );
-	VectorCopy( owner->origin, weap_or.origin );
+	AnglesToAxis( temp_owner->angles, orient );
+	VectorCopy( temp_owner->origin, weap_or.origin );
 	for ( i=0;  i<3; i++ )
 	{
 		VectorMA( weap_or.origin, orn.origin[i], orient[i], weap_or.origin );
@@ -1748,8 +1755,8 @@ void Weapon::GetActorMuzzlePosition( Vector *position, Vector *forward, Vector *
 	
 	if ( !this->GetRawTag( tag_name, &barrel_or ) )
 	{
-		pos = owner->centroid;
-		AnglesToAxis( owner->angles, mat );
+		pos = temp_owner->centroid;
+		AnglesToAxis( temp_owner->angles, mat );
 		return;
 	}
 	
@@ -1784,15 +1791,21 @@ void Weapon::GetMuzzlePosition( Vector *position, Vector *forward, Vector *right
 	Vector endpoint, vorg;
 	orientation_t barrel_or;
 	Vector f, r, u, viewWeapOrg, pview, pos;
-	Sentient *owner;
 	Player *player;
 	int      tagnum;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Sentient *temp_owner;
+
+
+	temp_owner = this->owner;
+	assert( temp_owner );
 	
-	owner = this->owner;
-	assert( owner );
-	
-	if ( owner->isSubclassOf( Player ) )
-		player = ( Player * )owner;
+	if ( temp_owner->isSubclassOf( Player ) )
+		player = ( Player * )temp_owner;
 	else
 	{
 		warning("GetMuzzlePosition called from Weapon class for a non-player character.",NULL);
@@ -1855,9 +1868,9 @@ void Weapon::GetMuzzlePosition( Vector *position, Vector *forward, Vector *right
 	trace_t trace;
 	
 	if ( !multiplayerManager.inMultiplayer() || multiplayerManager.fullCollision() )
-		trace = G_FullTrace( vorg, vec_zero, vec_zero, endpoint, owner, MASK_SHOT, true, "Weapon::GetMuzzlePosition" );
+		trace = G_FullTrace( vorg, vec_zero, vec_zero, endpoint, temp_owner, MASK_SHOT, true, "Weapon::GetMuzzlePosition" );
 	else
-		trace = G_Trace( vorg, vec_zero, vec_zero, endpoint, owner, MASK_SHOT, true, "Weapon::GetMuzzlePosition" );
+		trace = G_Trace( vorg, vec_zero, vec_zero, endpoint, temp_owner, MASK_SHOT, true, "Weapon::GetMuzzlePosition" );
 	
 	// Get the barrel tag from the viewmodel
 	
@@ -2015,12 +2028,18 @@ void Weapon::Shoot( Event *ev )
 		_nextRegenTime[ regenMode ] = level.time + _regenTime[ regenMode ] + 0.5f;
 	}
 	
-	Sentient *owner;   
-	owner = this->owner;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Sentient *temp_owner;
+
+
+	temp_owner = this->owner;
 	
 	// If I am owned by a player, I need to get the muzzle position, otherwise, I just
 	// care about my barrel tag
-	if ( useActorAiming || !owner->isSubclassOf( Player ) )
+	if ( useActorAiming || !temp_owner->isSubclassOf( Player ) )
 	{
 		/*			
 		Actor *actorOwner;
@@ -2031,18 +2050,18 @@ void Weapon::Shoot( Event *ev )
 		actorOwner->combatSubsystem->GetGunPositionData( &gunPos, &gunForward, &gunRight, &gunUp );
 		forward = gunForward;
 		*/
-		owner->shotsFiredThisVolley++;
+		temp_owner->shotsFiredThisVolley++;
 		GetActorMuzzlePosition( &pos , &forward, &right, &up );
 	}
-	else if ( owner->isSubclassOf( Player ) )
+	else if ( temp_owner->isSubclassOf( Player ) )
 	{
-		Player *player = (Player *)owner;
+		Player *player = (Player *)temp_owner;
 
 		GetMuzzlePosition( &pos, &forward, &right, &up );
 		if (g_aimviewangles->integer || ( player->client->ps.pm_type == PM_SECRET_MOVE_MODE ) ) // use viewangles to aim instead of player muzzle orientation thing
 		{
 			vec3_t fwd;
-			AngleVectors(owner->client->ps.viewangles,fwd,NULL,NULL);
+			AngleVectors(temp_owner->client->ps.viewangles,fwd,NULL,NULL);
 			forward = fwd;
 		}
 		// Apply spread
@@ -2114,7 +2133,7 @@ void Weapon::Shoot( Event *ev )
 
 		ProjectileAttack( pos,
 			forward,
-			owner,
+			temp_owner,
 			projectileModelName,
 			charge_fraction
 			);
@@ -2124,7 +2143,7 @@ void Weapon::Shoot( Event *ev )
 		Vector spread;
 		float range;
 
-		if ( owner->isSubclassOf( Player ) )
+		if ( temp_owner->isSubclassOf( Player ) )
 		{
 			// Move the position to shoot from back a little ( 1 1/2 feet )
 			
@@ -2151,20 +2170,20 @@ void Weapon::Shoot( Event *ev )
 			GetMeansOfDeath( mode ),
 			spread,
 			bulletcount[mode],
-			owner,
+			temp_owner,
 			this
 			);
 	}
 	else if ( firetype[mode] == FT_EXPLOSION )
 	{
-		if ( owner && owner->isSubclassOf( Player ) )
+		if ( temp_owner && temp_owner->isSubclassOf( Player ) )
 		{
-			Player *player = (Player *)owner;
+			Player *player = (Player *)temp_owner;
 
 			player->shotFired();
 		}
 
-		ExplosionAttack( pos, owner, projectileModel[mode], forward, owner );
+		ExplosionAttack( pos, temp_owner, projectileModel[mode], forward, temp_owner );
 	}
 	// Apparently the special_projectile stuff is no longer used
 	/* else if ( firetype[mode] == FT_SPECIAL_PROJECTILE )
@@ -2186,11 +2205,11 @@ void Weapon::Shoot( Event *ev )
 		meansOfDeath_t meansofdeath;
 		float knockback;
 		
-		if ( owner->isSubclassOf( Player ) )
+		if ( temp_owner->isSubclassOf( Player ) )
 		{
 			Vector forward;
 
-			Player *player = (Player *)owner;
+			Player *player = (Player *)temp_owner;
 			melee_pos = player->origin + Vector( 0.0f, 0.0f, player->client->ps.viewheight );
 
 			player->GetVAngles().AngleVectors( &forward );
@@ -2199,8 +2218,8 @@ void Weapon::Shoot( Event *ev )
 		}
 		else
 		{
-			melee_pos = owner->centroid;
-			melee_end = owner->centroid + Vector( owner->orientation[0] ) * _meleeLength[ mode ];
+			melee_pos = temp_owner->centroid;
+			melee_end = temp_owner->centroid + Vector( temp_owner->orientation[0] ) * _meleeLength[ mode ];
 		}
 		
 		damage = bulletdamage[mode];
@@ -2208,9 +2227,9 @@ void Weapon::Shoot( Event *ev )
 		
 		meansofdeath = GetMeansOfDeath( mode );
 		
-		if ( owner->isSubclassOf( Player ) )
+		if ( temp_owner->isSubclassOf( Player ) )
 		{
-			Player *player = (Player *)(Sentient *)owner;
+			Player *player = (Player *)(Sentient *)temp_owner;
 			
 			meansofdeath = player->changetMeansOfDeath( meansofdeath );
 			damage = player->getDamageDone( damage, meansofdeath, true );
@@ -2220,7 +2239,7 @@ void Weapon::Shoot( Event *ev )
 		
 		Container<EntityPtr>victimlist;
 		
-		if ( MeleeAttack( melee_pos, melee_end, damage, owner, meansofdeath, _meleeWidth[ mode ], -_meleeHeight[ mode ], 
+		if ( MeleeAttack( melee_pos, melee_end, damage, temp_owner, meansofdeath, _meleeWidth[ mode ], -_meleeHeight[ mode ], 
 			 _meleeHeight[ mode ], knockback, true, &victimlist ) )
 		{
 			// Hit something
@@ -2232,7 +2251,7 @@ void Weapon::Shoot( Event *ev )
 			// Didn't hit anything that took damage
 
 			// Try to hit the world since we didn't do any damage to anything
-			trace_t trace = G_Trace( melee_pos, Vector( -8.0f, -8.0f, -8.0f ), Vector( 8.0f, 8.0f, 8.0f ), melee_end, owner, MASK_MELEE, false, "Weapon::Shoot" );
+			trace_t trace = G_Trace( melee_pos, Vector( -8.0f, -8.0f, -8.0f ), Vector( 8.0f, 8.0f, 8.0f ), melee_end, temp_owner, MASK_MELEE, false, "Weapon::Shoot" );
 			
 			Entity *victim = G_GetEntity( trace.entityNum );
 			
@@ -4607,13 +4626,21 @@ void Weapon::SetAimType( Event *ev )
 {
 	
 	str aimstr;
-	
-	Sentient *owner;
 	Player *player = NULL;
-	owner = this->owner;
-	assert( owner );
-	if ( owner->isSubclassOf( Player ) )
-		player = ( Player * )owner;
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Sentient *temp_owner;
+	
+	
+	temp_owner = this->owner;
+
+
+	assert( temp_owner );
+	if ( temp_owner->isSubclassOf( Player ) )
+		player = ( Player * )temp_owner;
 	
 	if ( ev->NumArgs() > 0 )
 		aimstr = ev->GetString( 1 );
@@ -4706,14 +4733,22 @@ void Weapon::TargetIdleThink( Event *ev )
 	
 	PostEvent( EV_Weapon_TargetIdleThink, TargetIdleTime );
 	
-	Sentient *owner;
-	Player *player;
-	owner = this->owner;
-	assert( owner );
 	
-	if ( owner->isSubclassOf( Player ) )
+	Player *player;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Sentient *temp_owner;
+
+
+	temp_owner = this->owner;
+	assert( temp_owner );
+	
+	if ( temp_owner->isSubclassOf( Player ) )
 	{
-		player = ( Player * )owner;
+		player = ( Player * )temp_owner;
 		Vector pos, forward, right, up, endpoint, vorg;   
 		GetMuzzlePosition( &pos, &forward, &right, &up );
 		vorg = player->origin;
@@ -5466,22 +5501,28 @@ void Weapon::AdvancedMeleeAttack(const char* tag1, const char* tag2, bool critic
 		
 		knockback = (knockback + player->GetPlayerKnockback()) * player->GetKnockbackMultiplier();
 	}
-	
-	Sentient *owner;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Sentient *temp_owner;
+
+
 	Player *player;
-	owner = this->owner;
-	assert( owner );
-	if ( owner->isSubclassOf( Player ) )
+	temp_owner = this->owner;
+	assert( temp_owner );
+	if ( temp_owner->isSubclassOf( Player ) )
 	{
-		player = ( Player * )owner;
+		player = ( Player * )temp_owner;
 		if ( !player->in_melee_attack )
 			meleeVictims.ClearObjectList();
 	}
 	
-	if ( !MeleeAttack( startpoint, endpoint, damage, owner, meansofdeath, 15.0f, -45.0f, 45.0f, knockback, true, &meleeVictims, this, criticalHit ) )
+	if ( !MeleeAttack( startpoint, endpoint, damage, temp_owner, meansofdeath, 15.0f, -45.0f, 45.0f, knockback, true, &meleeVictims, this, criticalHit ) )
 	{
 		// Try to hit the world since we didn't do any damage to anything
-		trace_t trace = G_Trace( startpoint, Vector( -8.0f, -8.0f, -8.0f ), Vector( 8.0f, 8.0f, 8.0f ), endpoint, owner, MASK_MELEE, false, "Weapon::Shoot" );
+		trace_t trace = G_Trace( startpoint, Vector( -8.0f, -8.0f, -8.0f ), Vector( 8.0f, 8.0f, 8.0f ), endpoint, temp_owner, MASK_MELEE, false, "Weapon::Shoot" );
 		
 		Entity *victim = G_GetEntity( trace.entityNum );
 		

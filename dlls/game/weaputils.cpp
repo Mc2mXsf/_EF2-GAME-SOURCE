@@ -1206,18 +1206,24 @@ void Projectile::SetImpactMarkOrientation( Event *ev )
 
 void Projectile::Explode( Event *ev )
 {
-	Entity *owner;
 	Entity *ignoreEnt=NULL;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *temp_owner;
+
 	
 	if ( ev->NumArgs() == 1 )
 		ignoreEnt = ev->GetEntity( 1 );
 	
 	// Get the owner of this projectile
-	owner = G_GetEntity( this->owner );
+	temp_owner = G_GetEntity( this->owner );
 	
 	// If the owner's not here, make the world the owner
-	if ( !owner )
-		owner = world;
+	if ( !temp_owner )
+		temp_owner = world;
 
 	takedamage = DAMAGE_NO;
 	
@@ -1242,7 +1248,7 @@ void Projectile::Explode( Event *ev )
 				scale = 1.0f;
 			
 			//ExplosionAttack( v, owner, explosionModleToUse, dir, ignoreEnt, scale );
-			ExplosionAttack( centroid, owner, explosionmodel, dir, ignoreEnt, scale );
+			ExplosionAttack( centroid, temp_owner, explosionmodel, dir, ignoreEnt, scale );
 		}
 	}
 	
@@ -1768,13 +1774,17 @@ void Projectile::didDamage( void )
 {
 	if ( !_damagedSomething )
 	{
-		Entity *owner = getOwner();
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+		//--------------------------------------------------------------
+		Entity *temp_owner = getOwner();
+
 
 		_damagedSomething = true;
 
-		if ( owner && owner->isSubclassOf( Player ) )
+		if ( temp_owner && temp_owner->isSubclassOf( Player ) )
 		{
-			Player *player = (Player *)owner;
+			Player *player = (Player *)temp_owner;
 			
 			player->shotHit();
 		}

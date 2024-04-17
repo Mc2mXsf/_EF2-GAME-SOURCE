@@ -309,7 +309,11 @@ void ThrowObject::Touch( Event *ev )
 	Damage( this, this, 0.0f, origin, velocity, level.impact_trace.plane.normal, 32, 0, MOD_THROWNOBJECT );
 }
 
-void ThrowObject::Throw( const Entity *owner, float speed, const Sentient *targetent, float gravity, float throw_damage )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+//--------------------------------------------------------------
+void ThrowObject::Throw( const Entity *temp_owner, float speed, const Sentient *targetent, float gravity, float throw_damage )
 {
 	float    traveltime;
 	float    vertical_speed;
@@ -327,8 +331,8 @@ void ThrowObject::Throw( const Entity *owner, float speed, const Sentient *targe
 	e = new Event( EV_Detach );
 	ProcessEvent( e );
 	
-	this->owner = owner->entnum;
-	edict->ownerNum = owner->entnum;
+	this->owner = temp_owner->entnum;
+	edict->ownerNum = temp_owner->entnum;
 	
 	damage = throw_damage;
 	temp_target = targetent->origin;
@@ -364,16 +368,22 @@ void ThrowObject::Throw( const Entity *owner, float speed, const Sentient *targe
 
 void ThrowObject::Throw( Event *ev )
 {
-	Entity   *owner;
 	Sentient *targetent;
 	float    speed;
 	float    grav;
 	float    throw_damage;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Entity   *temp_owner;
+
 	
-	owner = ev->GetEntity( 1 );
-	assert( owner );
+	temp_owner = ev->GetEntity( 1 );
+	assert( temp_owner );
 	
-	if ( !owner )
+	if ( !temp_owner )
 	{
 		return;
 	}
@@ -405,7 +415,7 @@ void ThrowObject::Throw( Event *ev )
 	else
 		throw_damage = 0;
 	
-	Throw( owner, speed, targetent, grav, throw_damage );
+	Throw( temp_owner, speed, targetent, grav, throw_damage );
 	
 	/*
 	e = new Event( EV_Detach );

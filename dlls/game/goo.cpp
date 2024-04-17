@@ -67,8 +67,14 @@ void GooDebris::Prethink( Event *ev )
 void GooDebris::Touch( Event *ev )
 {
 	Entity *other;
-	Entity *owner;
 	Vector ang;
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *temp_owner;
+
 	
 	other = ev->GetEntity( 1 );
 	
@@ -90,11 +96,11 @@ void GooDebris::Touch( Event *ev )
 		return;
 	}
 	
-	owner = G_GetEntity( this->owner );
+	temp_owner = G_GetEntity( this->owner );
 	
-	if ( !owner )
+	if ( !temp_owner )
 	{
-		owner = world;
+		temp_owner = world;
 	}
 	
 	if ( !other )
@@ -102,7 +108,7 @@ void GooDebris::Touch( Event *ev )
 		return;
 	}
 	
-	other->Damage( this, owner, damage, origin, Vector( 0.0f, 0.0f, 0.0f ), Vector( 0.0f, 0.0f, 0.0f ), 0, 0, meansofdeath );
+	other->Damage( this, temp_owner, damage, origin, Vector( 0.0f, 0.0f, 0.0f ), Vector( 0.0f, 0.0f, 0.0f ), 0, 0, meansofdeath );
 }
 
 Event EV_Goo_DebrisModel
@@ -149,18 +155,24 @@ void GooProjectile::SetDebrisCount( Event *ev )
 void GooProjectile::Explode( Event *ev )
 {
 	int i;
-	Entity *owner;
 	Entity *ignoreEnt=NULL;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *temp_owner;
+
 	
 	if ( ev->NumArgs() == 1 )
 		ignoreEnt = ev->GetEntity( 1 );
 	
 	// Get the owner of this projectile
-	owner = G_GetEntity( this->owner );
+	temp_owner = G_GetEntity( this->owner );
 	
 	// If the owner's not here, make the world the owner
-	if ( !owner )
-		owner = world;
+	if ( !temp_owner )
+		temp_owner = world;
 	
 	takedamage = DAMAGE_NO;
 	
@@ -176,7 +188,7 @@ void GooProjectile::Explode( Event *ev )
 		v = origin - v * 36.0f;
 		setOrigin( v );
 		
-		ExplosionAttack( v, owner, explosionmodel, dir, ignoreEnt );
+		ExplosionAttack( v, temp_owner, explosionmodel, dir, ignoreEnt );
 	}
 	
 	CancelEventsOfType( EV_Projectile_UpdateBeam );
