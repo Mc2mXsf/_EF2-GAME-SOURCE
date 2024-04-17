@@ -8279,7 +8279,11 @@ Entity const * Player::GetTarget( void ) const
 	return targetEnemy;
 }
 
-bool Player::GetProjectileLaunchAngles( Vector &launchAngles, const Vector &launchPoint, const float initialSpeed, const float gravity ) const
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of gravity hides class member. Renamed to: temp_gravity - chrissstrahl
+//--------------------------------------------------------------
+bool Player::GetProjectileLaunchAngles( Vector &launchAngles, const Vector &launchPoint, const float initialSpeed, const float temp_gravity ) const
 {
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
@@ -8291,7 +8295,7 @@ bool Player::GetProjectileLaunchAngles( Vector &launchAngles, const Vector &laun
 	{
 		const Vector targetPoint( temp_target->centroid );
 		
-		Trajectory projectileTrajectory( launchPoint, targetPoint, initialSpeed, gravity * -sv_currentGravity->value );
+		Trajectory projectileTrajectory( launchPoint, targetPoint, initialSpeed, temp_gravity * -sv_currentGravity->value );
 		if ( projectileTrajectory.GetTravelTime() > 0.0f )
 		{
 			launchAngles.setPitch( projectileTrajectory.GetLaunchAngle() );

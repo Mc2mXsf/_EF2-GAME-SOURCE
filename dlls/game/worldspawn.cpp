@@ -1284,25 +1284,30 @@ void World::Think( void )
 	UpdateTimeScale();
 
 	// Do gravity stuff
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of gravity hides class member. Renamed to: temp_gravity - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_gravity;
 
-	float gravity;
-
+	
 	// Try to use the world's specified gravity
 
-	gravity = getPhysicsVar( WORLD_PHYSICS_GRAVITY );
+	temp_gravity = getPhysicsVar( WORLD_PHYSICS_GRAVITY );
 
 	// If not set, use the normal cvar for the gravity
 
-	if ( gravity == -1 )
+	if ( temp_gravity == -1 )
 	{
-		gravity = sv_gravity->value;
+		temp_gravity = sv_gravity->value;
 	}
 
 	// If gravity has changed change the cvar
 
-	if ( sv_currentGravity->value != gravity )
+	if ( sv_currentGravity->value != temp_gravity )
 	{
-		gi.cvar_set( "sv_currentGravity", va( "%f", gravity ) );
+		gi.cvar_set( "sv_currentGravity", va( "%f", temp_gravity ) );
 	}
 
 

@@ -312,8 +312,9 @@ void ThrowObject::Touch( Event *ev )
 
 //--------------------------------------------------------------
 // GAMEFIX - Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner - chrissstrahl
+// GAMEFIX - Fixed: Warning C4458: declaration of gravity hides class member. Renamed to: temp_gravity - chrissstrahl
 //--------------------------------------------------------------
-void ThrowObject::Throw( const Entity *temp_owner, float speed, const Sentient *targetent, float gravity, float throw_damage )
+void ThrowObject::Throw( const Entity *temp_owner, float speed, const Sentient *targetent, float temp_gravity, float throw_damage )
 {
 	float    traveltime;
 	float    vertical_speed;
@@ -346,7 +347,7 @@ void ThrowObject::Throw( const Entity *temp_owner, float speed, const Sentient *
 	xydir = dir;
 	xydir.z = 0;
 	traveltime = xydir.length() / speed;
-	vertical_speed = ( dir.z / traveltime ) + ( 0.5f * gravity * sv_currentGravity->value * traveltime );
+	vertical_speed = ( dir.z / traveltime ) + ( 0.5f * temp_gravity * sv_currentGravity->value * traveltime );
 	xydir.normalize();
 	
 	// setup ambient flying sound
