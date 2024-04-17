@@ -9179,16 +9179,24 @@ void Player::UpdateMusic( void )
 	client->ps.allowMusicDucking		= _allowMusicDucking;
 }
 
-void Player::SetReverb( int type, float level )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void Player::SetReverb( int type, float temp_level )
 {
 	reverb_type  = type;
-	reverb_level = level;
+	reverb_level = temp_level;
 }
 
-void Player::SetReverb( const str &type, float level )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void Player::SetReverb( const str &type, float temp_level )
 {
 	reverb_type  = EAXMode_NameToNum( type );
-	reverb_level = level;
+	reverb_level = temp_level;
 }
 
 void Player::SetReverb( Event *ev )
@@ -12209,15 +12217,20 @@ int Player::AwardPoints(int numPoints)
 		
 		if ( experience >= 100.0f )
 		{
-			float level			= gpm->getFloatValue( "CurrentPlayer", "level" );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+			//--------------------------------------------------------------
+			float temp_level	= gpm->getFloatValue( "CurrentPlayer", "level" );
+
+
 			float skillPoints	= gpm->getFloatValue( "CurrentPlayer", "SkillPoints" );
 			
-			level		+= 1.0 ;
-			skillPoints += level ;
-			maxPoints	 = level * level * 100.0f ;
+			temp_level		+= 1.0 ;
+			skillPoints += temp_level ;
+			maxPoints	 = temp_level * temp_level * 100.0f ;
 			experience	 = 0.0f ;
 			
-			gpm->setFloatValue( "CurrentPlayer", "level",		level );
+			gpm->setFloatValue( "CurrentPlayer", "level",		temp_level );
 			gpm->setFloatValue( "CurrentPlayer", "SkillPoints",	skillPoints );
 			gpm->setFloatValue( "CurrentPlayer", "maxPoints",	maxPoints );
 			gpm->setFloatValue( "CurrentPlayer", "experience",	experience );
