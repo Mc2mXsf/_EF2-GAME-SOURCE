@@ -1960,7 +1960,7 @@ qboolean Player::checkatdoor( Conditional &condition )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return ( atobject && atobject->isSubclassOf( Door ) == qtrue );
+	return ( atobject && atobject->isSubclassOf( Door ) == qboolean(qtrue));
 }
 
 qboolean Player::checkatuseanim( Conditional &condition )
@@ -2503,7 +2503,7 @@ qboolean Player::checkputawayleft( Conditional &condition )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return (weapon && weapon->GetPutaway() == qtrue);
+	return (weapon && weapon->GetPutaway() == qboolean(qtrue));
 }
 
 qboolean Player::checkputawayright( Conditional &condition )
@@ -2514,7 +2514,7 @@ qboolean Player::checkputawayright( Conditional &condition )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return (weapon && weapon->GetPutaway() == qtrue);
+	return (weapon && weapon->GetPutaway() == qboolean(qtrue));
 }
 
 qboolean Player::checkputawayboth( Conditional &condition )
@@ -2525,7 +2525,7 @@ qboolean Player::checkputawayboth( Conditional &condition )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return (weapon && weapon->GetPutaway() == qtrue);
+	return (weapon && weapon->GetPutaway() == qboolean(qtrue));
 }
 
 qboolean Player::checktargetacquired( Conditional &condition )

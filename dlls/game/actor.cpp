@@ -9144,7 +9144,7 @@ qboolean Actor::checkdone ( Conditional &condition )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return ( checkbehaviordone( condition ) == qtrue || checktimedone( condition ) == qtrue);
+	return (checkbehaviordone(condition) == qboolean(qtrue) || checktimedone(condition) == qboolean(qtrue));
    }
 
 qboolean Actor::checkenemyrange ( Conditional &condition )
@@ -9947,7 +9947,7 @@ qboolean Actor::checkenemyranged( Conditional &condition )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return ( EntityHasFireType( currentEnemy, FT_BULLET ) == qtrue || EntityHasFireType( currentEnemy, FT_PROJECTILE ) == qtrue );
+	return ( EntityHasFireType( currentEnemy, FT_BULLET ) == qboolean(qtrue) || EntityHasFireType( currentEnemy, FT_PROJECTILE ) == qboolean(qtrue));
 	}
 
 qboolean Actor::checkplayerranged( Conditional &condition )
@@ -9967,7 +9967,7 @@ qboolean Actor::checkplayerranged()
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return ( EntityHasFireType( player, FT_BULLET ) == qtrue || EntityHasFireType( player, FT_PROJECTILE ) == qtrue );
+	return ( EntityHasFireType( player, FT_BULLET ) == qboolean(qtrue) || EntityHasFireType( player, FT_PROJECTILE ) == qboolean(qtrue));
 	}
 
 qboolean Actor::checkhasthing( Conditional &condition )
@@ -12182,7 +12182,7 @@ qboolean Actor::CanJump( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
 	//--------------------------------------------------------------
-	return ( animate->HasAnim( "jump" ) == qtrue && animate->HasAnim( "fall" ) == qtrue && animate->HasAnim( "land" ) == qtrue);
+	return ( animate->HasAnim( "jump" ) == qboolean(qtrue) && animate->HasAnim( "fall" ) == qboolean(qtrue) && animate->HasAnim( "land" ) == qboolean(qtrue));
 	}
 
 void Actor::SetUseGravity( Event *ev )
