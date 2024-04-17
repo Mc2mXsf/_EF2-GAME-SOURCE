@@ -9519,8 +9519,11 @@ qboolean Actor::checkpartstate( Conditional &condition )
 	state_name = condition.getParm( 2 );
 
 	part = FindPartActor( part_name );
-
-	return ( part && part->currentState && ( strnicmp( part->currentState->getName(), state_name.c_str(), strlen( state_name.c_str() ) ) == 0 ) );
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	return ( part && part->currentState && ( Q_stricmpn( part->currentState->getName(), state_name.c_str(), strlen( state_name.c_str() ) ) == 0 ) );
 	}
 
 qboolean Actor::checkpartflag( Conditional &condition )
@@ -11119,7 +11122,10 @@ void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char
 			if ( morph_time < 0.0f )
 				morph_time = 0.0f;
 			
-			if ( strnicmp( morph_target_name, "emt_", 4 ) == 0 )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( Q_stricmpn( morph_target_name, "emt_", 4 ) == 0 )
 			{
 				// Set the emotion
 
@@ -11127,7 +11133,10 @@ void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char
 				new_event->AddString( morph_target_name + 4 );
 				PostEvent( new_event, morph_time );
 			}
-			else if ( strnicmp( morph_target_name, "anm_", 4 ) == 0 )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+			//--------------------------------------------------------------
+			else if ( Q_stricmpn( morph_target_name, "anm_", 4 ) == 0 )
 			{
 				// Make sure we don't screw things up if we're in TALK_MODE
 				if (mode != ACTOR_MODE_TALK  )
@@ -19103,9 +19112,15 @@ const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str
 				case DIALOG_PARM_TYPE_DEPENDS :
 					script_var = NULL;
 
-					if ( strnicmp( dialog_node->parms[ i ].parm, "game.", 5 ) == 0 )
+					//--------------------------------------------------------------
+					// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+					//--------------------------------------------------------------
+					if ( Q_stricmpn( dialog_node->parms[ i ].parm, "game.", 5 ) == 0 )
 						script_var = gameVars.GetVariable( dialog_node->parms[ i ].parm + 5 );
-					else if ( strnicmp( dialog_node->parms[ i ].parm, "level.", 6 ) == 0 )
+					//--------------------------------------------------------------
+					// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+					//--------------------------------------------------------------
+					else if ( Q_stricmpn( dialog_node->parms[ i ].parm, "level.", 6 ) == 0 )
 						script_var = levelVars.GetVariable( dialog_node->parms[ i ].parm + 6 );
 					
 					if ( !script_var || !script_var->intValue() )
@@ -19115,9 +19130,15 @@ const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str
 				case DIALOG_PARM_TYPE_DEPENDSNOT :
 					script_var = NULL;
 
-					if ( strnicmp( dialog_node->parms[ i ].parm, "game.", 5 ) == 0 )
+					//--------------------------------------------------------------
+					// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+					//--------------------------------------------------------------
+					if ( Q_stricmpn( dialog_node->parms[ i ].parm, "game.", 5 ) == 0 )
 						script_var = gameVars.GetVariable( dialog_node->parms[ i ].parm + 5 );
-					else if ( strnicmp( dialog_node->parms[ i ].parm, "level.", 6 ) == 0 )
+					//--------------------------------------------------------------
+					// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+					//--------------------------------------------------------------
+					else if ( Q_stricmpn( dialog_node->parms[ i ].parm, "level.", 6 ) == 0 )
 						script_var = levelVars.GetVariable( dialog_node->parms[ i ].parm + 6 );
 					
 					if ( script_var && script_var->intValue() )
@@ -19127,9 +19148,15 @@ const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str
 				case DIALOG_PARM_TYPE_DEPENDSINT :
 					script_var = NULL;
 
-					if ( strnicmp( dialog_node->parms[ i ].parm, "game.", 5 ) == 0 )
+					//--------------------------------------------------------------
+					// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+					//--------------------------------------------------------------
+					if ( Q_stricmpn( dialog_node->parms[ i ].parm, "game.", 5 ) == 0 )
 						script_var = gameVars.GetVariable( dialog_node->parms[ i ].parm + 5 );
-					else if ( strnicmp( dialog_node->parms[ i ].parm, "level.", 6 ) == 0 )
+					//--------------------------------------------------------------
+					// GAMEFIX - Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+					//--------------------------------------------------------------
+					else if ( Q_stricmpn( dialog_node->parms[ i ].parm, "level.", 6 ) == 0 )
 						script_var = levelVars.GetVariable( dialog_node->parms[ i ].parm + 6 );
 					
 					if ( !script_var || ( script_var->intValue() != atoi( dialog_node->parms[ i ].parm2 ) ) )
