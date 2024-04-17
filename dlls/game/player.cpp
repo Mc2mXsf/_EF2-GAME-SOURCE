@@ -4194,24 +4194,25 @@ Actor *Player::getBestActorToUse( int *entityList, int count )
 	float yawDiff;
 	Actor *bestActor = NULL;
 	Actor *currentActor;
-	gentity_t *edict;
 	Vector dir;
 
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+	// GAMEFIX - Fixed: Warning C4458: declaration of edict hides class member. Renamed to: temp_edict - chrissstrahl
 	//--------------------------------------------------------------
 	Vector temp_angles;
+	gentity_t *temp_edict;
 
 
 	for ( i = 0 ; i < count ; i++ )
 	{
-		edict = &g_entities[ entityList[ i ] ];
+		temp_edict = &g_entities[ entityList[ i ] ];
 
-		if ( !edict->inuse || !edict->entity || !edict->entity->isSubclassOf( Actor ) )
+		if ( !temp_edict->inuse || !temp_edict->entity || !temp_edict->entity->isSubclassOf( Actor ) )
 			continue;
 
-		currentActor = (Actor *)edict->entity;
+		currentActor = (Actor *)temp_edict->entity;
 
 		dir = currentActor->centroid - centroid;
 		dir.normalize();

@@ -1126,28 +1126,33 @@ bool HoldableItemExplosive::isPlayerInRange( const Vector &position, float maxDi
 {
 	int i;
 	Entity *entity;
-	gentity_t *edict;
 	trace_t trace;
 	Vector dir;
 	float distance;
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of edict hides class member. Renamed to: temp_edict - chrissstrahl
+	//--------------------------------------------------------------
+	gentity_t *temp_edict;
+
+
 	for( i = 0; i < game.maxclients; i++ )
 	{
-		edict = &g_entities[ i ];
+		temp_edict = &g_entities[ i ];
 
-		if ( !edict->inuse || !edict->entity || !edict->client )
+		if ( !temp_edict->inuse || !temp_edict->entity || !temp_edict->client )
 		{
 			continue;
 		}
 		
-		entity = edict->entity;
+		entity = temp_edict->entity;
 
 		if ( entity->health < 0.0f )
 		{
 			continue;
 		}
 
-		//hzm gamefix chrissstrahl - make mine not beep if same team, (check owner first cuz thats faster)
 
 		//--------------------------------------------------------------
 		// GAMEFIX - holdable mine beeping if owner is standing on it - chrissstrahl
