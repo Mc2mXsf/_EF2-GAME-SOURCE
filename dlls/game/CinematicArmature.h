@@ -656,8 +656,13 @@ inline void Cinematic::Archive
 		_cameraList.Resize( numCameras );
 		for ( int originIdx = 1; originIdx <= numOrigins; ++originIdx )
 		{
-			CinematicOrigin *origin = 0 ;
-			_originList.AddObject( origin );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+			//--------------------------------------------------------------
+			CinematicOrigin *temp_origin = 0 ;
+
+
+			_originList.AddObject( temp_origin );
 			CinematicOrigin **originPtr = &_originList.ObjectAt( originIdx );
 			*originPtr = (CinematicOrigin*)arc.ReadObject();
 		}
@@ -666,8 +671,13 @@ inline void Cinematic::Archive
 	{
 		for ( int originIdx = 1; originIdx <= numOrigins; ++originIdx )
 		{
-			CinematicOrigin *origin = _originList.ObjectAt( originIdx );
-			arc.ArchiveObject( origin );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+			//--------------------------------------------------------------
+			CinematicOrigin *temp_origin = _originList.ObjectAt( originIdx );
+
+
+			arc.ArchiveObject( temp_origin );
 		}
 	}
 
