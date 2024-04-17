@@ -1548,10 +1548,15 @@ void ViewMaster::Spawn( Event *ev )
 		int pos = g_vt_modelIndex->integer ;
 		if ((pos > 1) && (pos < _modelNamesArray.NumObjects()) && (_modelNamesArray.ObjectAt(pos) != modelName) )
 		{
-			int pos = _modelNamesArray.IndexOfObject(modelName);
-			if (pos)
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4456: Declaration of pos hides previous local declaration. - chrissstrahl
+			//--------------------------------------------------------------
+			int temp_pos = _modelNamesArray.IndexOfObject(modelName);
+
+
+			if (temp_pos)
 			{
-				gi.cvar_set( "g_vt_modelIndex", va("%d", pos) );
+				gi.cvar_set( "g_vt_modelIndex", va("%d", temp_pos) );
 				DeleteCurrentViewthing();
 				DisplayCurrentModelInSet();
 				return ;
