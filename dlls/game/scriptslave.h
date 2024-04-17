@@ -248,8 +248,13 @@ inline void ScriptSlave::Archive( Archiver &arc )
 
 	if( arc.Saving() )
 	{
-		int count = _requiredMODlist.NumObjects();
-		arc.ArchiveInteger( &count );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of count hides class member. Renamed to: temp_count - chrissstrahl
+		//--------------------------------------------------------------
+		int temp_count = _requiredMODlist.NumObjects();
+
+
+		arc.ArchiveInteger( &temp_count );
 		for( int i = 1; i <= _requiredMODlist.NumObjects(); i++ )
 			arc.ArchiveString( &_requiredMODlist.ObjectAt( i ) );
 	}
@@ -257,11 +262,17 @@ inline void ScriptSlave::Archive( Archiver &arc )
 	{
 		assert( _requiredMODlist.NumObjects() == 0 );
 
-		int count;
-		arc.ArchiveInteger( &count );
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of count hides class member. Renamed to: temp_count - chrissstrahl
+		//--------------------------------------------------------------
+		int temp_count;
+
+
+		arc.ArchiveInteger( &temp_count );
 
 		str s;
-		for( int i = 0; i < count; i++ )
+		for( int i = 0; i < temp_count; i++ )
 		{
 			arc.ArchiveString( &s );
 			_requiredMODlist.AddObject( s );
