@@ -377,7 +377,10 @@ void str::EnsureAlloced( int amount, bool keepold )
 	
 	if ( wasalloced && keepold )
 	{
-		strncpy ( newbuffer, data, old_size );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 strncpy: This function or variable may be unsafe. Using Q_strncpyz instead. - chrissstrahl
+		//--------------------------------------------------------------
+		Q_strncpyz( newbuffer, data, old_size );
 	}
 	
 	// Delete old buffer if necessary
@@ -413,7 +416,11 @@ void str::snprintf( char *dst, int size, const char *fmt, ... )
 	
 	assert ( len < size );
 	
-	strncpy (dst, buffer, size-1);
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strncpy: This function or variable may be unsafe. Using Q_strncpyz instead. - chrissstrahl
+	//--------------------------------------------------------------
+	Q_strncpyz(dst, buffer, size-1);
 }
 
 #ifdef _WIN32
