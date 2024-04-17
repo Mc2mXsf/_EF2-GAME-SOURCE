@@ -9141,7 +9141,10 @@ qboolean Actor::checktimedone( Conditional &condition )
 
 qboolean Actor::checkdone ( Conditional &condition )
    {
-	return ( checkbehaviordone( condition ) || checktimedone( condition ) );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return ( checkbehaviordone( condition ) == qtrue || checktimedone( condition ) == qtrue);
    }
 
 qboolean Actor::checkenemyrange ( Conditional &condition )
@@ -9645,7 +9648,11 @@ qboolean Actor::checkpartdead( Conditional &condition )
 	if ( !part )
 		return false;
 
-	return ( part->deadflag || ( part->health <= 0 ) );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return ( part->deadflag > 0 || part->health <= 0 );
 	}
 
 qboolean Actor::checknumspawns( Conditional &condition )
@@ -9936,7 +9943,11 @@ qboolean Actor::checkenemyranged( Conditional &condition )
 	if ( !currentEnemy )
 		return false;
 
-	return ( EntityHasFireType( currentEnemy, FT_BULLET ) || EntityHasFireType( currentEnemy, FT_PROJECTILE ) );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return ( EntityHasFireType( currentEnemy, FT_BULLET ) == qtrue || EntityHasFireType( currentEnemy, FT_PROJECTILE ) == qtrue );
 	}
 
 qboolean Actor::checkplayerranged( Conditional &condition )
@@ -9952,7 +9963,11 @@ qboolean Actor::checkplayerranged()
 
 	if ( !player ) return false;
 
-	return ( EntityHasFireType( player, FT_BULLET ) || EntityHasFireType( player, FT_PROJECTILE ) );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return ( EntityHasFireType( player, FT_BULLET ) == qtrue || EntityHasFireType( player, FT_PROJECTILE ) == qtrue );
 	}
 
 qboolean Actor::checkhasthing( Conditional &condition )
@@ -12164,7 +12179,10 @@ void Actor::SpawnItem( const str &spawn_item_name )
 
 qboolean Actor::CanJump( void )
 	{
-	return ( animate->HasAnim( "jump" ) && animate->HasAnim( "fall" ) && animate->HasAnim( "land" ) );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return ( animate->HasAnim( "jump" ) == qtrue && animate->HasAnim( "fall" ) == qtrue && animate->HasAnim( "land" ) == qtrue);
 	}
 
 void Actor::SetUseGravity( Event *ev )
