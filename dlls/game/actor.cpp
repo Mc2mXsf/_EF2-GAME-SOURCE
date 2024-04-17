@@ -10749,16 +10749,21 @@ Actor *Actor::FindPartActor( const char *nameOfPart )
 
 void Actor::SendCommand( Event *ev )
 	{
-	str command;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of command hides class member. Renamed to: temp_command - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_command;
+
+
 	str part_to_send_to;
 	int i;
 	part_t *part;
 	Actor *partact;
 
-	command = ev->GetString( 1 );
+	temp_command = ev->GetString( 1 );
 	part_to_send_to = ev->GetString( 2 );
 
-	if ( ( command.length() == 0 ) || ( part_to_send_to.length() == 0 ) )
+	if ( ( temp_command.length() == 0 ) || ( part_to_send_to.length() == 0 ) )
 		return;
 
 	for( i = 1 ; i <= parts.NumObjects(); i++ )
@@ -10769,7 +10774,7 @@ void Actor::SendCommand( Event *ev )
 
 		if ( partact && ( partact->part_name == part_to_send_to ) )
 			{
-			partact->command = command;
+			partact->command = temp_command;
 			}
 		}
 	}
@@ -13838,9 +13843,15 @@ void Actor::TossThrowObject( Event *ev	)
 	// Due to the changes with enemy management, throw object stuff no longer works!!!
 	ThrowObject* tobj = 0;
 	float speed = 0;
-	float gravity = 1;
 	float damage = 25;
-	
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of gravity hides class member. Renamed to: temp_gravity - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_gravity = 1;
+
+
 	Entity* currentEnt;
 	currentEnt = enemyManager->GetCurrentEnemy();
 	if ( !currentEnt )
@@ -13850,13 +13861,13 @@ void Actor::TossThrowObject( Event *ev	)
 	if(!tobj || !currentEnt->isSubclassOf(Sentient)) return;
 	
 	speed = ev->GetFloat( 1 );
-	gravity = ev->GetFloat( 2 );
+	temp_gravity = ev->GetFloat( 2 );
 	if (ev->NumArgs() > 2 )
 		damage = ev->GetFloat( 3 );
 	
 	//Throw requires a Sentient Pointer, so we need to cast.  However, we should
 	//probably look into changing Throw to take an entity instead
-	tobj->Throw(this, speed , (Sentient*)currentEnt , gravity, damage );
+	tobj->Throw(this, speed , (Sentient*)currentEnt , temp_gravity, damage );
 		
 	}
 
@@ -15315,7 +15326,11 @@ void Actor::turnTowardsEntity( Entity *ent , float extraYaw )
 
 }
 
-void Actor::_printDebugInfo(const str &laststate , const str &currentState , const str &legAnim , const str &torsoAnim )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of currentState hides class member. Renamed to: temp_currentState - chrissstrahl
+//--------------------------------------------------------------
+void Actor::_printDebugInfo(const str &laststate , const str &temp_currentState , const str &legAnim , const str &torsoAnim )
 	{
 	// Print Debug Stuff
    gi.Printf( "\n");
@@ -15329,13 +15344,13 @@ void Actor::_printDebugInfo(const str &laststate , const str &currentState , con
 		case DEBUG_STATES_ONLY:
          gi.Printf( "StateMap or Package: %s\n", statemap_name.c_str()       );
          gi.Printf( "LastState     : %s\n", laststate.c_str()                );
-			gi.Printf( "CurrentState  : %s\n", currentState.c_str()             );
+			gi.Printf( "CurrentState  : %s\n", temp_currentState.c_str()             );
 			break;
 
 		case DEBUG_STATES_BEHAVIORS:
          gi.Printf( "StateMap or Package: %s\n", statemap_name.c_str()       );
          gi.Printf( "LastState     : %s\n", laststate.c_str()                );
-			gi.Printf( "CurrentState  : %s\n", currentState.c_str()             );
+			gi.Printf( "CurrentState  : %s\n", temp_currentState.c_str()             );
 			gi.Printf( "\n" );
 			if ( behavior )
 				{
@@ -15359,7 +15374,7 @@ void Actor::_printDebugInfo(const str &laststate , const str &currentState , con
 		case	DEBUG_ALL:
          gi.Printf( "StateMap or Package: %s\n", statemap_name.c_str()       );
          gi.Printf( "LastState     : %s\n", laststate.c_str()                );
-			gi.Printf( "CurrentState  : %s\n", currentState.c_str()             );
+			gi.Printf( "CurrentState  : %s\n", temp_currentState.c_str()             );
 			gi.Printf( "\n" );
 			if ( behavior )
 				{
@@ -19399,15 +19414,19 @@ qboolean Actor::checkWithinFollowRangeMin()
 
 void Actor::SetTalkWatchMode( Event *ev )
 {
-	str mode = ev->GetString( 1 );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of mode hides class member. Renamed to: temp_mode - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_mode = ev->GetString( 1 );
 
-	if ( mode == "ignore" )
+
+	if ( temp_mode == "ignore" )
 		talkMode = TALK_IGNORE;
 
-	if ( mode == "headwatchonly" )
+	if ( temp_mode == "headwatchonly" )
 		talkMode = TALK_HEADWATCH;
 
-	if ( mode == "turnto" )
+	if ( temp_mode == "turnto" )
 		talkMode = TALK_TURNTO;
 
 	if ( ev->NumArgs() > 1 )
