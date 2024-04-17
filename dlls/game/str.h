@@ -44,7 +44,14 @@ class str : public Class
 	protected:
 
 		char *data;
-		char buffer[ STRING_PREALLOC_SIZE ];
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Warning C26495: The Variable str::buffer was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		char buffer[STRING_PREALLOC_SIZE] = { 0 };
+
+
       int alloced;
       int len;
 
