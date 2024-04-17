@@ -14669,19 +14669,26 @@ void Actor::MeleeEvent( Event *ev )
 		if ( currentEnemy )
 			{
 			Vector enemy_dir;
-			Vector angles;
+
+			
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+			//--------------------------------------------------------------
+			Vector temp_angles;
+
+
 			Vector enemy_angles;
 			float length;
 
 			dir    = end - pos;
 			length = dir.length();
-			angles = dir.toAngles();
+			temp_angles = dir.toAngles();
 
 			enemy_dir    = currentEnemy->centroid - pos;
 			enemy_angles = enemy_dir.toAngles();
 
-			angles[PITCH] = enemy_angles[PITCH];
-			angles.AngleVectors( &dir );
+			temp_angles[PITCH] = enemy_angles[PITCH];
+			temp_angles.AngleVectors( &dir );
 			end = pos + ( dir * length );
 			}
 		}
@@ -16653,14 +16660,20 @@ qboolean Actor::checkForwardDirectionClear(float dist)
    Vector endPos;
    Vector startPos;
    Vector forward;
-   Vector angles;
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+   //--------------------------------------------------------------
+   Vector temp_angles;
+
 
    startPos = origin;
    startPos.z += 32;
    
-   angles = movementSubsystem->getAnimDir(); 
-   angles = angles.toAngles();
-   angles.AngleVectors( &forward );
+   temp_angles = movementSubsystem->getAnimDir(); 
+   temp_angles = temp_angles.toAngles();
+   temp_angles.AngleVectors( &forward );
 
    endPos = ( forward * dist) + startPos;
 
@@ -16686,15 +16699,21 @@ qboolean Actor::checkRearDirectionClear(float dist)
    Vector endPos;
    Vector startPos;
    Vector forward;
-   Vector angles;
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+   //--------------------------------------------------------------
+   Vector temp_angles;
+
 
    startPos = origin;
    startPos.z += 32;
    
-   angles = movementSubsystem->getAnimDir(); 
-   angles = angles.toAngles();
-   angles[YAW] = AngleNormalize180(angles[YAW] + 180);
-   angles.AngleVectors( &forward );
+   temp_angles = movementSubsystem->getAnimDir(); 
+   temp_angles = temp_angles.toAngles();
+   temp_angles[YAW] = AngleNormalize180(temp_angles[YAW] + 180);
+   temp_angles.AngleVectors( &forward );
    
    endPos = ( forward * dist) + startPos;
 
@@ -16721,14 +16740,20 @@ qboolean Actor::checkLeftDirectionClear(float dist)
    Vector endPos;
    Vector startPos;
    Vector left;
-   Vector angles;
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+   //--------------------------------------------------------------
+   Vector temp_angles;
+
 
    startPos = origin;
    //startPos.z += 32;
    
-   angles = movementSubsystem->getAnimDir(); 
-   angles = angles.toAngles();
-   angles.AngleVectors( NULL, &left, NULL );
+   temp_angles = movementSubsystem->getAnimDir(); 
+   temp_angles = temp_angles.toAngles();
+   temp_angles.AngleVectors( NULL, &left, NULL );
 
    endPos = ( left * dist) + startPos;
    
@@ -16758,16 +16783,22 @@ qboolean Actor::checkRightDirectionClear(float dist)
    Vector endPos;
    Vector startPos;
    Vector left;
-   Vector angles;
+
+   
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+   //--------------------------------------------------------------
+   Vector temp_angles;
+
 
    startPos = origin;
    //startPos.z += 16;
    
-   angles = movementSubsystem->getAnimDir();  
-   angles = angles.toAngles();
+   temp_angles = movementSubsystem->getAnimDir();  
+   temp_angles = temp_angles.toAngles();
 
-   angles[YAW] = AngleNormalize180(angles[YAW] + 180);
-   angles.AngleVectors( NULL, &left, NULL );
+   temp_angles[YAW] = AngleNormalize180(temp_angles[YAW] + 180);
+   temp_angles.AngleVectors( NULL, &left, NULL );
 
    endPos = ( left * dist) + startPos;
 
