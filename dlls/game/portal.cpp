@@ -41,9 +41,15 @@ CLASS_DECLARATION( Entity, PortalSurface, "portal_surface" )
 void PortalSurface::LocateCamera( Event *ev )
 {
 	Entity   *owner;
-	Entity   *target;
 	Vector   dir;
-	
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	Entity   *temp_target;
+
+
 	owner = G_FindTarget( NULL, Target() );
 	
 	if ( !owner )
@@ -69,11 +75,11 @@ void PortalSurface::LocateCamera( Event *ev )
 	VectorCopy( owner->origin, edict->s.origin2 );
 	
 	// see if the portal_camera has a target
-	target = G_FindTarget( NULL, owner->Target() );
+	temp_target = G_FindTarget( NULL, owner->Target() );
 	
-	if ( target )
+	if ( temp_target )
 	{
-		dir = target->origin - owner->origin;
+		dir = temp_target->origin - owner->origin;
 		dir.normalize();
 		setAngles( dir.toAngles() );
 	}

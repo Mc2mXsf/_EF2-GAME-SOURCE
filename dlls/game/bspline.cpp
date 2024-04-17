@@ -679,14 +679,20 @@ void SplinePath::SetThread( Event *ev )
 
 void SplinePath::CreatePath( Event *ev )
 {
-	const char  *target;
 	Entity      *ent;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	const char  *temp_target;
 	
+
 	// Make the path from the targetlist.
-	target = Target();
-	if ( target[ 0 ] )
+	temp_target = Target();
+	if ( temp_target[ 0 ] )
 	{
-		ent = G_FindTarget( NULL, target );
+		ent = G_FindTarget( NULL, temp_target );
 		if ( ent )
 		{
 			assert( next == NULL );
@@ -696,7 +702,7 @@ void SplinePath::CreatePath( Event *ev )
 		}
 		else
 		{
-			gi.Error( ERR_DROP, "SplinePath::CreatePath: target %s not found\n", target );
+			gi.Error( ERR_DROP, "SplinePath::CreatePath: target %s not found\n", temp_target );
 		}
 	}
 	if ( loop_name.length() )
@@ -865,19 +871,25 @@ void SplinePath::MoveSpline( Event *ev )
 void SplinePath::OffsetSpline( Event *ev )
 {
 	Vector offset;
-	const char  *target;
 	Entity      *ent;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	const char  *temp_target;
+
 	
 	offset = ev->GetVector( 1 );
 	
-	target = Target();
+	temp_target = Target();
 	
 	setOrigin( origin + offset );
 	
-	if ( !target || !target[ 0 ] )
+	if ( !temp_target || !temp_target[ 0 ] )
 		return;
 	
-	ent = G_FindTarget( NULL, target );
+	ent = G_FindTarget( NULL, temp_target );
 	
 	if ( !ent )
 		return;
@@ -886,12 +898,12 @@ void SplinePath::OffsetSpline( Event *ev )
 	{
 		ent->setOrigin( ent->origin + offset );
 		
-		target = ent->Target();
+		temp_target = ent->Target();
 		
-		if ( !target || !target[ 0 ] )
+		if ( !temp_target || !temp_target[ 0 ] )
 			break;
 		
-		ent = G_FindTarget( NULL, target );
+		ent = G_FindTarget( NULL, temp_target );
 	}
 }
 
@@ -900,10 +912,16 @@ void SplinePath::TurnSpline( Event *ev )
 	Vector new_angles;
 	Vector angles_diff;
 	float axis[3][3];
-	const char  *target;
 	Entity      *ent;
 	Vector offset;
 	Vector transformed_origin;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	const char  *temp_target;
+
 	
 	new_angles = ev->GetVector( 1 );
 	
@@ -913,12 +931,12 @@ void SplinePath::TurnSpline( Event *ev )
 	
 	setAngles( new_angles );
 	
-	target = Target();
+	temp_target = Target();
 	
-	if ( !target || !target[ 0 ] )
+	if ( !temp_target || !temp_target[ 0 ] )
 		return;
 	
-	ent = G_FindTarget( NULL, target );
+	ent = G_FindTarget( NULL, temp_target );
 	
 	if ( !ent )
 		return;
@@ -933,12 +951,12 @@ void SplinePath::TurnSpline( Event *ev )
 		
 		ent->setOrigin( transformed_origin );
 		
-		target = ent->Target();
+		temp_target = ent->Target();
 		
-		if ( !target || !target[ 0 ] )
+		if ( !temp_target || !temp_target[ 0 ] )
 			break;
 		
-		ent = G_FindTarget( NULL, target );
+		ent = G_FindTarget( NULL, temp_target );
 	}
 }
 

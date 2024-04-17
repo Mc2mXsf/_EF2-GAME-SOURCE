@@ -284,15 +284,21 @@ void GravPathNode::Activate( Event *ev )
 {
 	GravPathNode   *node;
 	Entity         *ent;
-	const char     *target;
 	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	const char     *temp_target;
+	
+
 	active = true;
 	node = this;
 	// Go through the entire path and activate it
-	target = node->Target();
-	while (target[0])
+	temp_target = node->Target();
+	while (temp_target[0])
 	{
-		ent = G_FindTarget( NULL, target );
+		ent = G_FindTarget( NULL, temp_target );
 		if ( ent )
 		{
 			node = (GravPathNode *)ent;
@@ -301,9 +307,9 @@ void GravPathNode::Activate( Event *ev )
 		}
 		else
 		{
-			gi.Error( ERR_DROP, "GravPathNode::CreatePath: target %s not found\n",target);
+			gi.Error( ERR_DROP, "GravPathNode::CreatePath: target %s not found\n",temp_target);
 		}
-		target = node->Target();
+		temp_target = node->Target();
 	}
 }
 
@@ -311,15 +317,21 @@ void GravPathNode::Deactivate(Event *ev)
 {
 	GravPathNode   *node;
 	Entity         *ent;
-	const char     *target;
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	const char     *temp_target;
+	
+
 	active = false;
 	node = this;
 	// Go through the entire path and activate it
-	target = node->Target();
-	while (target[0])
+	temp_target = node->Target();
+	while (temp_target[0])
 	{
-		ent = G_FindTarget( NULL, target);
+		ent = G_FindTarget( NULL, temp_target);
 		if ( ent )
 		{
 			node = (GravPathNode *)ent;
@@ -328,18 +340,24 @@ void GravPathNode::Deactivate(Event *ev)
 		}
 		else
 		{
-			gi.Error( ERR_DROP, "GravPathNode::CreatePath: target %s not found\n",target);
+			gi.Error( ERR_DROP, "GravPathNode::CreatePath: target %s not found\n",temp_target);
 		}
-		target = node->Target();
+		temp_target = node->Target();
 	}
 }
 
 void GravPathNode::CreatePath(Event *ev)
 {
-	const char     *target;
 	GravPath       *path = new GravPath;
 	GravPathNode   *node;
 	Entity         *ent;
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	const char     *temp_target;
+
 	
 	ClearBounds( path->mins, path->maxs );
 	
@@ -350,10 +368,10 @@ void GravPathNode::CreatePath(Event *ev)
 	path->force = spawnflags & 2;
 	
 	// Make the path from the targetlist.
-	target = node->Target();
-	while (target[0])
+	temp_target = node->Target();
+	while (temp_target[0])
 	{
-		ent = G_FindTarget( NULL, target );
+		ent = G_FindTarget( NULL, temp_target );
 		if ( ent )
 		{
 			node = (GravPathNode *)ent;
@@ -362,9 +380,9 @@ void GravPathNode::CreatePath(Event *ev)
 		}
 		else
 		{
-			gi.Error( ERR_DROP, "GravPathNode::CreatePath: target %s not found\n",target);
+			gi.Error( ERR_DROP, "GravPathNode::CreatePath: target %s not found\n",temp_target);
 		}
-		target = node->Target();
+		temp_target = node->Target();
 	}
 	
 	// Set the origin.

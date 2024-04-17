@@ -8269,10 +8269,15 @@ Entity const * Player::GetTarget( void ) const
 
 bool Player::GetProjectileLaunchAngles( Vector &launchAngles, const Vector &launchPoint, const float initialSpeed, const float gravity ) const
 {
-	Entity const *target = GetTarget();
-	if ( target && targetEnemyLocked)
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	Entity const *temp_target = GetTarget();
+
+
+	if ( temp_target && targetEnemyLocked)
 	{
-		const Vector targetPoint( target->centroid );
+		const Vector targetPoint( temp_target->centroid );
 		
 		Trajectory projectileTrajectory( launchPoint, targetPoint, initialSpeed, gravity * -sv_currentGravity->value );
 		if ( projectileTrajectory.GetTravelTime() > 0.0f )

@@ -3409,9 +3409,12 @@ Returns true if the inflictor can directly damage the target.  Used for
 explosions and melee attacks.
 ============
 */
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+//--------------------------------------------------------------
 qboolean Entity::CanDamage
 	(
-	const Entity *target,
+	const Entity *temp_target,
 	const Entity *skip_ent
 	)
 
@@ -3427,32 +3430,32 @@ qboolean Entity::CanDamage
 	else
 		skip_entity = this;
 
-   trace = G_Trace( origin, vec_origin, vec_origin, target->centroid, skip_entity, maskToUse, false, "Entity::CanDamage 1" );
-	if ( ( trace.fraction == 1.0f ) || ( trace.ent == target->edict ) )
+   trace = G_Trace( origin, vec_origin, vec_origin, temp_target->centroid, skip_entity, maskToUse, false, "Entity::CanDamage 1" );
+	if ( ( trace.fraction == 1.0f ) || ( trace.ent == temp_target->edict ) )
 		{
 		return true;
 		}
-	pos = target->centroid + Vector( 15.0f, 15.0f, 0.0f );
+	pos = temp_target->centroid + Vector( 15.0f, 15.0f, 0.0f );
    trace = G_Trace( origin, vec_origin, vec_origin, pos, skip_entity, maskToUse, false, "Entity::CanDamage 3" );
-	if ( ( trace.fraction == 1.0f ) || ( trace.ent == target->edict ) )
+	if ( ( trace.fraction == 1.0f ) || ( trace.ent == temp_target->edict ) )
 		{
 		return true;
 		}
-	pos = target->centroid + Vector( -15.0f, 15.0f, 0.0f );
+	pos = temp_target->centroid + Vector( -15.0f, 15.0f, 0.0f );
    trace = G_Trace( origin, vec_zero, vec_zero, pos, skip_entity, maskToUse, false, "Entity::CanDamage 4" );
-	if ( ( trace.fraction == 1.0f ) || ( trace.ent == target->edict ) )
+	if ( ( trace.fraction == 1.0f ) || ( trace.ent == temp_target->edict ) )
 		{
 		return true;
 		}
-	pos = target->centroid + Vector( 15.0f, -15.0f, 0.0f );
+	pos = temp_target->centroid + Vector( 15.0f, -15.0f, 0.0f );
    trace = G_Trace( origin, vec_zero, vec_zero, pos, skip_entity, maskToUse, false, "Entity::CanDamage 5" );
-	if ( ( trace.fraction == 1.0f ) || ( trace.ent == target->edict ) )
+	if ( ( trace.fraction == 1.0f ) || ( trace.ent == temp_target->edict ) )
 		{
 		return true;
 		}
-  	pos = target->centroid + Vector( -15.0f, -15.0f, 0.0f );
+  	pos = temp_target->centroid + Vector( -15.0f, -15.0f, 0.0f );
    trace = G_Trace( origin, vec_zero, vec_zero, pos, skip_entity, maskToUse, false, "Entity::CanDamage 6" );
-	if ( ( trace.fraction == 1.0f ) || ( trace.ent == target->edict ) )
+	if ( ( trace.fraction == 1.0f ) || ( trace.ent == temp_target->edict ) )
 		{
 		return true;
 		}
@@ -3501,16 +3504,22 @@ void Entity::FadeNoRemove
 
 	{
    float rate;
-   float target;
    float myalpha;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_target;
+
 
    if ( ev->NumArgs() > 1 )
       {
-      target = ev->GetFloat( 2 );
+      temp_target = ev->GetFloat( 2 );
       }
    else
       {
-      target = 0;
+      temp_target = 0;
       }
 
    if ( ev->NumArgs() > 0 )
@@ -3528,12 +3537,12 @@ void Entity::FadeNoRemove
    myalpha = edict->s.alpha;
    myalpha -= rate;
 
-   if ( myalpha < target )
-      myalpha = target;
+   if ( myalpha < temp_target )
+      myalpha = temp_target;
 
    setAlpha( myalpha );
 
-   if ( myalpha > target )
+   if ( myalpha > temp_target )
       {
       PostEvent( *ev, FRAMETIME );
       }
@@ -3579,16 +3588,23 @@ void Entity::FadeIn
 
 	{
    float rate;
-   float target;
+  
    float myalpha;
+
+   
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_target;
+
 
    if ( ev->NumArgs() > 1 )
       {
-      target = ev->GetFloat( 2 );
+      temp_target = ev->GetFloat( 2 );
       }
    else
       {
-      target = 1;
+      temp_target = 1;
       }
 
    if ( ev->NumArgs() > 0 )
@@ -3606,10 +3622,10 @@ void Entity::FadeIn
    myalpha = edict->s.alpha;
    myalpha += rate;
 
-   if ( myalpha > target )
-      myalpha = target;
+   if ( myalpha > temp_target )
+      myalpha = temp_target;
 
-   if ( myalpha < target )
+   if ( myalpha < temp_target )
 		{
    	PostEvent( *ev, FRAMETIME );
 		}
@@ -3623,16 +3639,22 @@ void Entity::Fade
 
 	{
    float rate;
-   float target;
    float myalpha;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_target;
+
 
    if ( ev->NumArgs() > 1 )
       {
-      target = ev->GetFloat( 2 );
+      temp_target = ev->GetFloat( 2 );
       }
    else
       {
-      target = 0;
+      temp_target = 0;
       }
 
    if ( ev->NumArgs() > 0 )
@@ -3656,10 +3678,10 @@ void Entity::Fade
       return;
 		}
 
-   if ( myalpha < target )
-      myalpha = target;
+   if ( myalpha < temp_target )
+      myalpha = temp_target;
 
-   if ( myalpha > target )
+   if ( myalpha > temp_target )
       {
       PostEvent( *ev, FRAMETIME );
       }
@@ -7546,10 +7568,16 @@ void Entity::ProjectileAttackEntity( Event *ev )
 {
 	const str projectileName( ev->GetString( 1 ) );
 	
-	Entity *target = ev->GetEntity( 2 );
-	if ( target )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *temp_target = ev->GetEntity( 2 );
+
+
+	if ( temp_target )
 	{
-		Vector direction( target->origin - origin );
+		Vector direction( temp_target->origin - origin );
 		direction.normalize();
 		Projectile *projectile = ProjectileAttack( origin, direction, this, projectileName.c_str(), 1.0f, 0.0f );
 
@@ -7559,7 +7587,7 @@ void Entity::ProjectileAttackEntity( Event *ev )
 		if ( ev->NumArgs() > 2 )
 		{
 			Angle launchAngle( ev->GetFloat( 3 ) );
-			Trajectory trajectory( origin, target->centroid, launchAngle, projectile->gravity * -sv_currentGravity->value );
+			Trajectory trajectory( origin, temp_target->centroid, launchAngle, projectile->gravity * -sv_currentGravity->value );
 
 			projectile->velocity = trajectory.GetInitialVelocity();
 			Vector launchDirection( projectile->velocity );

@@ -313,10 +313,15 @@ void ThrowObject::Throw( const Entity *owner, float speed, const Sentient *targe
 {
 	float    traveltime;
 	float    vertical_speed;
-	Vector   target;
 	Vector   dir;
 	Vector   xydir;
 	Event    *e;
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target - chrissstrahl
+	//--------------------------------------------------------------
+	Vector   temp_target;
 	
 	
 	e = new Event( EV_Detach );
@@ -326,14 +331,14 @@ void ThrowObject::Throw( const Entity *owner, float speed, const Sentient *targe
 	edict->ownerNum = owner->entnum;
 	
 	damage = throw_damage;
-	target = targetent->origin;
-	target.z += targetent->viewheight;
+	temp_target = targetent->origin;
+	temp_target.z += targetent->viewheight;
 	
 	setMoveType( MOVETYPE_BOUNCE );
 	setSolidType( SOLID_BBOX );
 	edict->clipmask = MASK_PROJECTILE;
 	
-	dir = target - origin;
+	dir = temp_target - origin;
 	xydir = dir;
 	xydir.z = 0;
 	traveltime = xydir.length() / speed;
