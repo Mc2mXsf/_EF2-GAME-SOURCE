@@ -572,6 +572,11 @@ void PuzzleObject::useEvent(Event* event)
 		{
 			if ( _nextNeedToUseTime < level.time )
 			{
+				//--------------------------------------------------------------
+				// GAMEFIX - Changed: Moved var up here to make sure it is always updated - chrissstrahl
+				//--------------------------------------------------------------
+				_nextNeedToUseTime = level.time + 1.0f;
+
 				if ( entity->isSubclassOf( Player ) )
 				{
 					//--------------------------------------------------------------
@@ -604,8 +609,6 @@ void PuzzleObject::useEvent(Event* event)
 						player->hudPrint(va("$$NeedToUse$$ %s\n", _itemToUse.c_str()));
 					}
 				}
-
-				_nextNeedToUseTime = level.time + 1.0f;
 			}
 
 			return;
