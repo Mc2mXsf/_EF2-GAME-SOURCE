@@ -18,6 +18,13 @@
 #include "helper_node.h"
 #include "actor.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 extern Event EV_SpawnFlags;
 //
 //======================================
@@ -1766,19 +1773,12 @@ HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float ma
 				continue;
 			
 			Player* player;
+
+
 			//--------------------------------------------------------------
 			// GAMEFIX - check with all players - grab any player on server - chrissstrahl
 			//--------------------------------------------------------------
-			Player* playerChosen = GetPlayer(0);
-			if (!playerChosen) {
-				for (int i = 1; i < maxclients->integer; i++) {
-					player = GetPlayer(i);
-					if ( player ) {
-						playerChosen = player;
-					}
-				}
-			}
-			player = playerChosen;
+			player = gamefix_getAnyPlayerPreferably();
 
 
 			//--------------------------------------------------------------
