@@ -1957,7 +1957,10 @@ qboolean Player::checkcanfall( Conditional &condition )
 qboolean Player::checkatdoor( Conditional &condition )
 {
 	// Check if the player is at a door
-	return ( atobject && atobject->isSubclassOf( Door ) );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return ( atobject && atobject->isSubclassOf( Door ) == qtrue );
 }
 
 qboolean Player::checkatuseanim( Conditional &condition )
@@ -2496,21 +2499,33 @@ qboolean Player::checkputawayleft( Conditional &condition )
 {
 	Weapon *weapon = GetActiveWeapon( WEAPON_LEFT );
 	
-	return weapon && weapon->GetPutaway();
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return (weapon && weapon->GetPutaway() == qtrue);
 }
 
 qboolean Player::checkputawayright( Conditional &condition )
 {
 	Weapon *weapon = GetActiveWeapon( WEAPON_RIGHT );
 	
-	return weapon && weapon->GetPutaway();
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return (weapon && weapon->GetPutaway() == qtrue);
 }
 
 qboolean Player::checkputawayboth( Conditional &condition )
 {
 	Weapon *weapon = GetActiveWeapon( WEAPON_DUAL );
 	
-	return weapon && weapon->GetPutaway();
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return (weapon && weapon->GetPutaway() == qtrue);
 }
 
 qboolean Player::checktargetacquired( Conditional &condition )
@@ -2530,11 +2545,17 @@ qboolean Player::checkstatename( Conditional &condition )
 	
 	if ( currentState_Legs && !part.icmp( "legs" ) )
 	{
-		return ( !statename.icmpn( currentState_Legs->getName(), statename.length() ) );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+		//--------------------------------------------------------------
+		return ( statename.icmpn( currentState_Legs->getName(), statename.length() ) == 0 );
 	}
 	else if ( !part.icmp( "torso" ) )
 	{
-		return ( !statename.icmpn( currentState_Torso->getName(), statename.length() ) );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+		//--------------------------------------------------------------
+		return ( statename.icmpn( currentState_Torso->getName(), statename.length() ) == 0 );
 	}
 	
 	return qfalse;
@@ -9360,8 +9381,13 @@ void Player::GibEvent( Event *ev )
 {
 	qboolean hidemodel;
 	
-	hidemodel = !ev->GetInteger( 1 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	hidemodel = !(ev->GetInteger( 1 ) == 0);
 	
+
 	if ( com_blood->integer )
 	{
 		if ( hidemodel )
