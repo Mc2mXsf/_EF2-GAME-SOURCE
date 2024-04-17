@@ -679,10 +679,16 @@ void Trigger::HandleKilled( Event *ev )
 void Trigger::TriggerStuff( Event *ev )
 {
 	Entity *other;
-	Entity *activator;
 	Event *event;
 	int    whatToTrigger;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of activator hides class member. Renamed to: temp_activator - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *temp_activator;
 	
+
 	if (!CanTrigger()) return ;
 	
 	
@@ -752,16 +758,16 @@ void Trigger::TriggerStuff( Event *ev )
 		}
 	}
 	
-	activator = getActivator( other );
-	setActivatingEntity( activator );
+	temp_activator = getActivator( other );
+	setActivatingEntity( temp_activator );
 	
 	if ( key.length() )
 	{
-		if ( !activator->isSubclassOf( Sentient ) )
+		if ( !temp_activator->isSubclassOf( Sentient ) )
 		{
 			return;
 		}
-		if ( !( ( (Sentient *)activator )->HasItem( key.c_str() ) ) )
+		if ( !( ( (Sentient *)temp_activator )->HasItem( key.c_str() ) ) )
 		{
 			qboolean    setModel;
 			Item        *item;
@@ -788,11 +794,11 @@ void Trigger::TriggerStuff( Event *ev )
 			dialog = item->GetDialogNeeded();
 			if ( dialog.length() > 1 )
             {
-				activator->Sound( dialog );
+				temp_activator->Sound( dialog );
             }
 			else
             {
-				gi.centerprintf ( activator->edict, CENTERPRINT_IMPORTANCE_NORMAL, "$$ItemNeeded$$%s", item->getName().c_str() );
+				gi.centerprintf ( temp_activator->edict, CENTERPRINT_IMPORTANCE_NORMAL, "$$ItemNeeded$$%s", item->getName().c_str() );
 				
 				//--------------------------------------------------------------
 				// GAMEFIX - added print out to hud/chat in multiplayer - chrissstrahl
@@ -865,29 +871,29 @@ void Trigger::TriggerStuff( Event *ev )
 	if ( !whatToTrigger )
 	{
 		event = new Event( EV_Trigger_Effect );
-		event->AddEntity( activator );
+		event->AddEntity( temp_activator );
 		PostEvent( event, delay );
 	}
 	else
 	{
 		event = new Event( EV_Trigger_Effect_Alt );
-		event->AddEntity( activator );
+		event->AddEntity( temp_activator );
 		PostEvent( event, delay );
 	}
 	
 	event = new Event( EV_Trigger_ActivateTargets );
-	event->AddEntity( activator );
+	event->AddEntity( temp_activator );
 	PostEvent( event, delay );
 	
 	if ( thread.length() )
 	{
 		// don't trigger the thread if we were triggered by the world touching us
-		if ( ( activator != world ) || ( ev->GetSource() != EV_FROM_CODE ) )
+		if ( ( temp_activator != world ) || ( ev->GetSource() != EV_FROM_CODE ) )
 		{
 			event = new Event( EV_Trigger_StartThread );
-			if ( activator )
+			if ( temp_activator )
             {
-				event->AddEntity( activator );
+				event->AddEntity( temp_activator );
             }
 			PostEvent( event, delay );
 		}
