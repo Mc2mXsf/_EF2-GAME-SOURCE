@@ -256,7 +256,11 @@ void Team::AddPlayer( Player* player )
 		return ;
 	}
 
-	if (_playerList.NumObjects() == _maxPlayers)
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4389 ==: Conflict between signed and unsigned - chrissstrahl
+	//--------------------------------------------------------------
+	if (_playerList.NumObjects() == static_cast<int>(_maxPlayers))
 	{
 		warning("Team::AddPlayer", va("The %s team is full!\n", getName().c_str() ) );
 		return ;

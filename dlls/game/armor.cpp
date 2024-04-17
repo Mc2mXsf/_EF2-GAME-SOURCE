@@ -754,7 +754,12 @@ void AdaptiveArmor::LoadAdaptionData( const str &name )
 			for( i=_AdaptionList.NumObjects(); i>0; i-- )
 			{
 			adaption = _AdaptionList.ObjectAt( i );
-			if ( adaption->MODIndex == theMOD )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4389 ==: Conflict between signed and unsigned - chrissstrahl
+			//--------------------------------------------------------------
+			if ( adaption->MODIndex == static_cast<int>(theMOD) )
 				{
 				adaption->adapted = true;
 				}

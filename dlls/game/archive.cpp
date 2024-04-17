@@ -312,7 +312,12 @@ qboolean Archiver::Read( const char *name, qboolean file_harderror )
 	}
 	
 	ArchiveUnsigned( &header );
-	if ( header != ArchiveHeader )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4389 ==: Conflict between signed and unsigned - chrissstrahl
+	//--------------------------------------------------------------
+	if ( static_cast<int>(header) != ArchiveHeader )
 	{
 		readfile.Close();
 		FileError( "Not a valid archive." );
