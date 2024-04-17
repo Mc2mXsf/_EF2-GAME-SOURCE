@@ -9017,8 +9017,13 @@ void Player::UpdateStats( void )
 	//--------------------------------------------------------------
 	for (int i=1; i<=count; i++ )
 	{
-		int entnum = inventory.ObjectAt( i );
-		Item *item = ( Item * )G_GetEntity( entnum );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of entnum hides class member. Renamed to: temp_entnum - chrissstrahl
+		//--------------------------------------------------------------
+		int temp_entnum = inventory.ObjectAt( i );
+
+
+		Item *item = ( Item * )G_GetEntity( temp_entnum );
 
 		if ( item )
 		{

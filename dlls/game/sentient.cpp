@@ -3711,20 +3711,26 @@ int Sentient::GiveAmmo( const str &type, int amount, bool pickedUp, int maxamoun
 
 	if ( amountLeft > 0 )
 	{
-		int entnum;
 		Item *item;
 		Weapon *weapon;
 		int roomLeftInClip;
 		int amountToAdd;
 		int i;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of entnum hides class member. Renamed to: temp_entnum - chrissstrahl
+		//--------------------------------------------------------------
+		int temp_entnum;
+
+
 		// Try to give directly to weapons now
 	
 		for ( i = 1 ; i <= inventory.NumObjects() ; i++ )
 		{
-			entnum = inventory.ObjectAt( i );
+			temp_entnum = inventory.ObjectAt( i );
 
-			item = ( Item * )G_GetEntity( entnum );
+			item = ( Item * )G_GetEntity( temp_entnum );
 
 			if ( item->isSubclassOf( Weapon ) )
 			{
@@ -3925,8 +3931,13 @@ void Sentient::ListInventory( void )
 	
 	for ( i=1; i<=count; i++ )
 	{
-		int entnum = inventory.ObjectAt( i );
-		Item *item = ( Item * )G_GetEntity( entnum );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of entnum hides class member. Renamed to: temp_entnum - chrissstrahl
+		//--------------------------------------------------------------
+		int temp_entnum = inventory.ObjectAt( i );
+
+
+		Item *item = ( Item * )G_GetEntity( temp_entnum );
 		gi.Printf( "'%s' : '%d'\n", item->getName().c_str(), item->getAmount() );
 	}
 	
