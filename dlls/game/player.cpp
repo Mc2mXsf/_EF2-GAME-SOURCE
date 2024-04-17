@@ -3785,8 +3785,14 @@ void Player::LevelCleanup( void )
 		client->ps.stats[ STAT_SHOTS_HIT ] = 0;
 		client->ps.stats[ STAT_MISSION_DURATION ] =0;
 	}
+	
 
-	client->ps.pm_flags &= ~PMF_NIGHTVISION;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer client. - chrissstrahl
+	//--------------------------------------------------------------
+	if (client) {
+		client->ps.pm_flags &= ~PMF_NIGHTVISION;
+	}
 }
 
 void Player::Respawn( Event *ev )
@@ -5618,14 +5624,19 @@ void Player::ClientThink( Event *ev )
 	}
 	
 	// Save cmd angles so that we can get delta angle movements next frame
-	client->cmd_angles[ 0 ] = SHORT2ANGLE( current_ucmd->angles[ 0 ] );
-	client->cmd_angles[ 1 ] = SHORT2ANGLE( current_ucmd->angles[ 1 ] );
-	client->cmd_angles[ 2 ] = SHORT2ANGLE( current_ucmd->angles[ 2 ] );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer current_ucmd. - chrissstrahl
+	//--------------------------------------------------------------
+	if (current_ucmd) {
+		client->cmd_angles[0] = SHORT2ANGLE(current_ucmd->angles[0]);
+		client->cmd_angles[1] = SHORT2ANGLE(current_ucmd->angles[1]);
+		client->cmd_angles[2] = SHORT2ANGLE(current_ucmd->angles[2]);
 
-	if ( client->ps.pm_flags & PMF_CAMERA_VIEW )
-	{
-		VectorCopy( current_ucmd->realvieworigin, client->ps.camera_origin );
-		VectorCopy( current_ucmd->realviewangles, client->ps.camera_angles );
+		if (client->ps.pm_flags & PMF_CAMERA_VIEW)
+		{
+			VectorCopy(current_ucmd->realvieworigin, client->ps.camera_origin);
+			VectorCopy(current_ucmd->realviewangles, client->ps.camera_angles);
+		}
 	}
 	
 	if ( g_logstats->integer )
@@ -7631,14 +7642,20 @@ void Player::SetPlayerViewUsingActorController( Camera *camera )
 		AutomaticallySelectedNewCamera();
 	}
 
-	client->ps.camera_angles[ 0 ] = camera->angles[ 0 ];
-	client->ps.camera_angles[ 1 ] = camera->angles[ 1 ];
-	client->ps.camera_angles[ 2 ] = camera->angles[ 2 ];
-	
-	client->ps.camera_origin[ 0 ] = camera->origin[ 0 ];
-	client->ps.camera_origin[ 1 ] = camera->origin[ 1 ];
-	client->ps.camera_origin[ 2 ] = camera->origin[ 2 ];
-	client->ps.pm_flags |= PMF_CAMERA_VIEW;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer camera. - chrissstrahl
+	//--------------------------------------------------------------
+	if (camera) {
+		client->ps.camera_angles[0] = camera->angles[0];
+		client->ps.camera_angles[1] = camera->angles[1];
+		client->ps.camera_angles[2] = camera->angles[2];
+
+		client->ps.camera_origin[0] = camera->origin[0];
+		client->ps.camera_origin[1] = camera->origin[1];
+		client->ps.camera_origin[2] = camera->origin[2];
+		client->ps.pm_flags |= PMF_CAMERA_VIEW;
+	}
 	
 	//
 	// clear out the flags, but preserve the CF_CAMERA_CUT_BIT
