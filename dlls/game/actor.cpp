@@ -6022,19 +6022,22 @@ void Actor::NotifyTorsoBehavior( Event *ev )
 void Actor::SetDialogMode( Event *ev )
 	{
 	str modeType = ev->GetString(1);
-	if(stricmp(modeType,"anxious") == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// 3 Times replaced stricmp with Q_stricmp
+	//--------------------------------------------------------------
+	if(Q_stricmp(modeType,"anxious") == 0 )
 		{
 		DialogMode = DIALOG_MODE_ANXIOUS;
 		return;
 		}
-
-	if(stricmp(modeType,"normal") == 0 )
+	if(Q_stricmp(modeType,"normal") == 0 )
 		{
 		DialogMode = DIALOG_MODE_NORMAL;
 		return;
 		}
-
-	if(stricmp(modeType,"ignore") == 0)
+	if(Q_stricmp(modeType,"ignore") == 0)
 		{
 		DialogMode = DIALOG_MODE_IGNORE;
 		SetActorFlag( ACTOR_FLAG_ALLOW_TALK, 0 );
@@ -9532,32 +9535,36 @@ qboolean Actor::checkpartflag( Conditional &condition )
 
 	part_name  = condition.getParm( 1 );
 	flag_name  = condition.getParm( 2 );
-
-	if ( stricmp( flag_name, "pain" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// 7 Times replaced stricmp with Q_stricmp
+	//--------------------------------------------------------------
+	if ( Q_stricmp( flag_name, "pain" ) == 0 )
       {
 		flag = STATE_FLAG_IN_PAIN;
       }
-	else if ( stricmp( flag_name, "small_pain" ) == 0 )
+	else if (Q_stricmp( flag_name, "small_pain" ) == 0 )
       {
 		flag = STATE_FLAG_SMALL_PAIN;
       }
-	else if ( stricmp( flag_name, "melee_hit" ) == 0 )
+	else if (Q_stricmp( flag_name, "melee_hit" ) == 0 )
       {
 		flag = STATE_FLAG_MELEE_HIT;
       }
-	else if ( stricmp( flag_name, "touched" ) == 0 )
+	else if (Q_stricmp( flag_name, "touched" ) == 0 )
       {
 		flag = STATE_FLAG_TOUCHED;
       }
-	else if ( stricmp( flag_name, "activated" ) == 0 )
+	else if (Q_stricmp( flag_name, "activated" ) == 0 )
       {
 		flag = STATE_FLAG_ACTIVATED;
       }
-	else if ( stricmp( flag_name, "used" ) == 0 )
+	else if (Q_stricmp( flag_name, "used" ) == 0 )
       {
 		flag = STATE_FLAG_USED;
       }
-	else if ( stricmp( flag_name, "twitch" ) == 0 )
+	else if (Q_stricmp( flag_name, "twitch" ) == 0 )
       {
 		flag = STATE_FLAG_TWITCH;
       }
@@ -9967,7 +9974,10 @@ qboolean Actor::checkVar( Conditional &condition )
 	for (int i = 1; i <= stateVarList.NumObjects() ; i++ )
 		{
 		checkVar = stateVarList.ObjectAt( i );
-		if( !stricmp ( checkVar->varName, varName ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if( !Q_stricmp ( checkVar->varName, varName ) )
 			{
 			if (checkVar->varValue == varValue ) 
 				return true;
@@ -10003,7 +10013,10 @@ qboolean Actor::checkVarTimeDifference( Conditional &condition )
 	for (int i = 1; i <= stateVarList.NumObjects() ; i++ )
 		{
 		checkVar = stateVarList.ObjectAt( i );
-		if( !stricmp ( checkVar->varName, varName ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if( !Q_stricmp ( checkVar->varName, varName ) )
 			{
 			if ( level.time - checkVar->varTime >= varTime )
 				return true;
@@ -10742,7 +10755,10 @@ qboolean Actor::DialogExists( const str &aliasName	)
 
 	while(dialog_node != NULL)
 		{
-			if ( stricmp(dialog_node->alias_name, aliasName.c_str()) == 0)
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( Q_stricmp(dialog_node->alias_name, aliasName.c_str()) == 0)
 				return true;
 
 			dialog_node = dialog_node->next;			
@@ -10831,33 +10847,38 @@ void Actor::AddDialogParms( DialogNode_t *dialog_node, Event *ev )
 
 		parm_type = DIALOG_PARM_TYPE_NONE;
 
-		if (stricmp(token, "randompick") == 0)
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//
+		// 14 Times replaced stricmp with Q_stricmp
+		//--------------------------------------------------------------
+		if (Q_stricmp(token, "randompick") == 0)
 			dialog_node->random_flag = true;
-		else if (stricmp(token, "radiusdialog" ) == 0)
+		else if (Q_stricmp(token, "radiusdialog" ) == 0)
 			dialog_node->dType = DIALOG_TYPE_RADIUS;
-		else if (stricmp(token, "greetingdialog" ) == 0)
+		else if (Q_stricmp(token, "greetingdialog" ) == 0)
 			dialog_node->dType = DIALOG_TYPE_GREETING;
-		else if (stricmp(token, "combatdialog" ) == 0)
+		else if (Q_stricmp(token, "combatdialog" ) == 0)
 			dialog_node->dType = DIALOG_TYPE_COMBAT;
-		else if (stricmp(token, "playerhas") == 0)
+		else if (Q_stricmp(token, "playerhas") == 0)
 			parm_type = DIALOG_PARM_TYPE_PLAYERHAS;
-		else if (stricmp(token, "playerhasnot") == 0)
+		else if (Q_stricmp(token, "playerhasnot") == 0)
 			parm_type = DIALOG_PARM_TYPE_PLAYERHASNOT;
-		else if (stricmp(token, "has") == 0)
+		else if (Q_stricmp(token, "has") == 0)
 			parm_type = DIALOG_PARM_TYPE_HAS;
-		else if (stricmp(token, "has_not") == 0)
+		else if (Q_stricmp(token, "has_not") == 0)
 			parm_type = DIALOG_PARM_TYPE_HASNOT;
-		else if (stricmp(token, "depends") == 0)
+		else if (Q_stricmp(token, "depends") == 0)
 			parm_type = DIALOG_PARM_TYPE_DEPENDS;
-		else if (stricmp(token, "dependsnot") == 0)
+		else if (Q_stricmp(token, "dependsnot") == 0)
 			parm_type = DIALOG_PARM_TYPE_DEPENDSNOT;
-		else if (stricmp(token, "dependsint") == 0)
+		else if (Q_stricmp(token, "dependsint") == 0)
 			parm_type = DIALOG_PARM_TYPE_DEPENDSINT;
-		else if (stricmp(token, "contextinitiator" ) == 0)
+		else if (Q_stricmp(token, "contextinitiator" ) == 0)
 			parm_type = DIALOG_PARM_TYPE_CONTEXT_INITIATOR;
-		else if (stricmp(token, "contextresponse" ) == 0)
+		else if (Q_stricmp(token, "contextresponse" ) == 0)
 			parm_type = DIALOG_PARM_TYPE_CONTEXT_RESPONSE;	
-		else if (stricmp(token, "random") == 0)
+		else if (Q_stricmp(token, "random") == 0)
 			{
 			if ( current_parm > num_parms )
 				break;
@@ -10937,7 +10958,10 @@ void Actor::PlayDialog(	Event *ev )
 
 		minDistString = ev->GetString( 3 );
 
-		if ( stricmp( minDistString.c_str(), LEVEL_WIDE_STRING ) == 0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( Q_stricmp( minDistString.c_str(), LEVEL_WIDE_STRING ) == 0 )
 			min_dist = LEVEL_WIDE_MIN_DIST;
 		else
 			min_dist = ev->GetFloat( 3 );
@@ -12604,7 +12628,10 @@ void Actor::SetVar( Event *ev	)
 	for (int i = 1; i <= stateVarList.NumObjects(); i++ )
 		{
 		checkVar = stateVarList.ObjectAt(i);
-		if( !stricmp( checkVar->varName, varName ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if( !Q_stricmp( checkVar->varName, varName ) )
 			{
 			checkVar->varValue = varValue;
 			return;
@@ -12640,7 +12667,10 @@ void Actor::SetVarTime( Event *ev )
 	for (int i = 1; i <= stateVarList.NumObjects(); i++ )
 		{
 		checkVar = stateVarList.ObjectAt(i);
-		if( !stricmp( checkVar->varName, varName ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if( !Q_stricmp( checkVar->varName, varName ) )
 			{
 			checkVar->varTime = level.time;
 			return;
@@ -13904,13 +13934,18 @@ void Actor::UseActorWeapon( Event *ev )
 		{
 		handToUse = ev->GetString( 2 );
 
-		if ( !stricmp( handToUse.c_str() , "right" ) )		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// 3 Times replaced stricmp with Q_stricmp
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( handToUse.c_str() , "right" ) )		
 			hand = WEAPON_RIGHT;
 
-		if ( !stricmp( handToUse.c_str() , "left" ) )
+		if ( !Q_stricmp( handToUse.c_str() , "left" ) )
 			hand = WEAPON_LEFT;
 
-		if ( !stricmp( handToUse.c_str() , "dual" ) )
+		if ( !Q_stricmp( handToUse.c_str() , "dual" ) )
 			hand = WEAPON_DUAL;
 		}
 		
@@ -16859,7 +16894,10 @@ void Actor::InContext( const str &theContext , bool useDefaultMinDist )
 
    if ( _ignoreNextContext )
 	{
-	   if ( !stricmp( theContext.c_str() , _nextContextToIgnore.c_str() ) )
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	   //--------------------------------------------------------------
+	   if ( !Q_stricmp( theContext.c_str() , _nextContextToIgnore.c_str() ) )
 		{
 		_ignoreNextContext = false;		
 		_nextContextToIgnore = "";
@@ -17010,8 +17048,10 @@ qboolean Actor::checkGroupMememberRange( Conditional &condition )
 qboolean Actor::checkActorType( Conditional &condition )
 {
 	str aType = condition.getParm( 1 );
-	
-	if ( !stricmp( aType.c_str() , "inanimate" ) )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( !Q_stricmp( aType.c_str() , "inanimate" ) )
 		{
 		if ( actortype == IS_INANIMATE )
 			return true;
@@ -17299,7 +17339,10 @@ void Actor::SetBehaviorPackage( const str &packageName )
 	return;
 	}
 
-	if ( !stricmp( packageName.c_str() , "auto" ) )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( !Q_stricmp( packageName.c_str() , "auto" ) )
 		{
 		SetMasterState( "START" );
 		}
@@ -17390,7 +17433,10 @@ Actor* Actor::GetAttachedChildActor( const str& childName )
 
 		child = ( Entity * )G_GetEntity( bind_info->children[i] );
 
-		if ( !stricmp(child->TargetName() , childName.c_str() ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( !Q_stricmp(child->TargetName() , childName.c_str() ) )
 			{
 			if ( child->isSubclassOf(Actor) )
 				childActor = (Actor*)child;
@@ -19095,7 +19141,10 @@ const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str
 						if ( dialogType != DIALOG_TYPE_CONTEXT_INITIATOR )
 							good_dialog = false;
 
-						if ( stricmp( dialog_node->parms[i].parm , context.c_str() ) )
+						//--------------------------------------------------------------
+						// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+						//--------------------------------------------------------------
+						if ( Q_stricmp( dialog_node->parms[i].parm , context.c_str() ) )
 							good_dialog = false;
 
 						usingContext = true;
@@ -19105,7 +19154,10 @@ const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str
 						if ( dialogType != DIALOG_TYPE_CONTEXT_RESPONSE )
 							good_dialog = false;
 
-						if ( stricmp( dialog_node->parms[i].parm , context.c_str() ) )
+						//--------------------------------------------------------------
+						// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+						//--------------------------------------------------------------
+						if ( Q_stricmp( dialog_node->parms[i].parm , context.c_str() ) )
 							good_dialog = false;
 
 						usingContext = true;
@@ -19558,7 +19610,10 @@ void Actor::AddCustomThread( const str& threadType , const str& threadName )
 		for ( int i = 1; i <= threadList.NumObjects() ; i++ )
 			{
 			threadListEntry = threadList.ObjectAt( i );
-			if ( !stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
 				{
 				threadListEntry->threadName = threadName;
 				return;
@@ -19587,7 +19642,10 @@ bool Actor::HaveCustomThread( const str& threadType )
 		for ( int i = 1; i <= threadList.NumObjects() ; i++ )
 			{
 			threadListEntry = threadList.ObjectAt( i );
-			if ( !stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
 				{
 				return true;
 				}
@@ -19610,7 +19668,10 @@ void Actor::RunCustomThread( const str& threadType )
 		for ( int i = 1; i <= threadList.NumObjects() ; i++ )
 			{
 			threadListEntry = threadList.ObjectAt( i );
-			if ( !stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
 				{
 				threadName = threadListEntry->threadName;
 				if ( threadName.length() )
@@ -19634,7 +19695,10 @@ const str Actor::GetCustomThread( const str& threadType )
 		for ( int i = 1; i <= threadList.NumObjects() ; i++ )
 			{
 			threadListEntry = threadList.ObjectAt( i );
-			if ( !stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Waning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp(threadListEntry->threadType.c_str() , threadType.c_str() ) )
 				{
 				return threadListEntry->threadName;
 				}
