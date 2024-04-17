@@ -1793,14 +1793,18 @@ void TargetList::RemoveEntity( Entity * ent )
 
 Entity * TargetList::GetNextEntity( Entity * ent )
 {
-	int index;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of index hides class member. Renamed to: temp_index - chrissstrahl
+	//--------------------------------------------------------------
+	int temp_index;
 
-	index = 0;
+
+	temp_index = 0;
 	if ( ent )
-		index = list.IndexOfObject( ent );
-	index++;
-	if ( index > list.NumObjects() )
+		temp_index = list.IndexOfObject( ent );
+	temp_index++;
+	if ( temp_index > list.NumObjects() )
 		return NULL;
 	else
-		return list.ObjectAt( index );
+		return list.ObjectAt( temp_index );
 }
