@@ -449,7 +449,11 @@ qboolean Player::LargeShieldActive( void )
 	if ( weapon && !str::icmp( weapon->item_name, "LargeShield" ) )
 		large_shield_active = true;
 	
-	return shield_active && large_shield_active;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return (shield_active == qboolean(qtrue) && large_shield_active == qboolean(qtrue));
 }
 
 void Player::AcquireHeadTarget( void )
