@@ -6646,14 +6646,18 @@ void FlySplinePath::Begin
 		
 		if ( currentNode->triggertarget != "" )
 			{
-			Entity	*ent;
-			Event		*event;
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4458: declaration of ent hides class member. Renamed to: temp_ent - chrissstrahl
+			//--------------------------------------------------------------
+			Entity	*temp_ent = nullptr;
 
-			ent = NULL;
+
+			Event		*event;
+			
 			do
 				{
-				ent = G_FindTarget( ent, currentNode->triggertarget.c_str() );
-				if ( !ent )
+				temp_ent = G_FindTarget( temp_ent, currentNode->triggertarget.c_str() );
+				if ( !temp_ent )
 					{
 					break;
 					}
@@ -6662,7 +6666,7 @@ void FlySplinePath::Begin
 				Actor* actorPtr = &self;
 				Entity* entPtr = (Entity*)actorPtr;
 				event->AddEntity( entPtr );
-				ent->PostEvent( event, 0.0f );
+				temp_ent->PostEvent( event, 0.0f );
 				}
 			while ( 1 );
 			}
