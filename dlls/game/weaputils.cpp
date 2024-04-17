@@ -2411,8 +2411,13 @@ float BulletAttack(
 	{
 		if ( owner && owner->isSubclassOf( Player ) )
 		{
-			Player *player = (Player *)owner;
-			player->shotHit();
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4456: Declaration of player hides previous local declaration. - chrissstrahl
+			//--------------------------------------------------------------
+			Player *temp_player = (Player *)owner;
+
+
+			temp_player->shotHit();
 		}
 		
 		return damage_total;
