@@ -67,10 +67,16 @@ class Quaternion
 	// Member variables
 	//---------------------------------------------------------------------------
 private:
-	float _x; // coefficient for the i imaginary term
-	float _y; // coefficient for the j imaginary term
-	float _z; // coefficient for the k imaginary term
-	float _w; // coefficient for the real term
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable _w/_x/_y/_z was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------		
+	float _x = 0.0f; // coefficient for the i imaginary term
+	float _y = 0.0f; // coefficient for the j imaginary term
+	float _z = 0.0f; // coefficient for the k imaginary term
+	float _w = 0.0f; // coefficient for the real term
+
 
 	//---------------------------------------------------------------------------
 	// Accessors / Mutators
