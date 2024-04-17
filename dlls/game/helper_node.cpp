@@ -2317,16 +2317,7 @@ HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , 
 			//--------------------------------------------------------------
 			// GAMEFIX - check with all players - grab any player on server - chrissstrahl
 			//--------------------------------------------------------------
-			Player* playerChosen = GetPlayer(0);
-			if (!playerChosen) {
-				for (int i = 1; i < maxclients->integer; i++) {
-					player = GetPlayer(i);
-					if (player) {
-						playerChosen = player;
-					}
-				}
-			}
-			player = playerChosen;
+			player = gamefix_getAnyPlayerPreferably();
 
 
 			//--------------------------------------------------------------
