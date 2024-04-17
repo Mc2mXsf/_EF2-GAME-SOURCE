@@ -4378,14 +4378,16 @@ void Actor::ThrowEnt( Event *ev )
 //
 void Actor::AttackEntity( Event *ev	)
 	{
-	Entity *target = ev->GetEntity( 1 );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: targetEntity - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *targetEntity = ev->GetEntity( 1 );
 
-	//[b60011] chrissstrahl - gamefix - if given entity does not exist, give us at least something man! Don't you just crash
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Crash if $actor.attack($entity) is used but $entity does not exist - chrissstrahl
 	//--------------------------------------------------------------
-	if (!target) {
+	if (!targetEntity) {
 		gi.Printf(va("Actor::AttackEntity - $%s.attack($entity) failed, entity does not exist\n", this->targetname.c_str()));
 		return;
 	}
@@ -4402,21 +4404,21 @@ void Actor::AttackEntity( Event *ev	)
 		forceEnemy = ev->GetBoolean( 2 );
 
 	if ( forceEnemy )
-		forcedEnemy = target;
+		forcedEnemy = targetEntity;
 
 
 	if ( forceEnemy )
 		{
-		enemyManager->SetCurrentEnemy( target );
+		enemyManager->SetCurrentEnemy(targetEntity);
 		enemyManager->LockOnCurrentEnemy( true );
 		return;
 		}
 
-	sensoryPerception->Stimuli( STIMULI_SIGHT, target );
+	sensoryPerception->Stimuli( STIMULI_SIGHT, targetEntity);
 				
-	if ( enemyManager->IsInHateList( target ) )
+	if ( enemyManager->IsInHateList(targetEntity) )
 		{
-		enemyManager->SetCurrentEnemy( target );
+		enemyManager->SetCurrentEnemy(targetEntity);
 		}
 	}
 
@@ -13021,7 +13023,10 @@ void Actor::Think( void	)
 	*/
 	}
 
-qboolean Actor::GetClosestTag( const str &tag_name, int number_of_tags, const Vector &target, Vector *orig )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: targetVec - chrissstrahl
+//--------------------------------------------------------------
+qboolean Actor::GetClosestTag( const str &tag_name, int number_of_tags, const Vector &targetVec, Vector *orig )
 	{
 	str temp_tag_name;
 	Vector temp_orig;
@@ -13045,7 +13050,7 @@ qboolean Actor::GetClosestTag( const str &tag_name, int number_of_tags, const Ve
 
 		if ( GetTag( temp_tag_name.c_str(), &temp_orig ) )
 			{
-			diff = target - temp_orig;
+			diff = targetVec - temp_orig;
 			dist = diff * diff;
 
 			if ( ( dist < best_dist ) || ( best_dist < 0 ) )
@@ -16404,7 +16409,10 @@ void Actor::SetFuzzyEngineActive( Event *ev )
 
 qboolean Actor::_isWorkNodeValid( PathNode *node )
    {
-   WorkTrigger *target = NULL;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of target hides class member. Renamed to: targetTrigger - chrissstrahl
+	//--------------------------------------------------------------
+	WorkTrigger *targetTrigger = NULL;
 
 	if ( node->targetEntity )
 		{
@@ -16412,13 +16420,13 @@ qboolean Actor::_isWorkNodeValid( PathNode *node )
 
 		if( entity->isSubclassOf( WorkTrigger ) )
 		   {
-			target = (WorkTrigger*)entity;
+			targetTrigger = (WorkTrigger*)entity;
          
          //If it's not reserved, but still marked as occupied -- Don't go
-         if ( node->occupiedTime > level.time && !target->isReserved() )
+         if ( node->occupiedTime > level.time && !targetTrigger->isReserved() )
             return false;
 
-         if ( target->isAllowedToWork( targetname , entnum ) )
+         if (targetTrigger->isAllowedToWork( targetname , entnum ) )
             return true;
 		   }
 		}
@@ -16449,13 +16457,13 @@ qboolean Actor::_isWorkNodeValid( PathNode *node )
 		         {
 		         if (!Q_stricmp(ent_in_range->targetname.c_str() , targetName.c_str() ))
 			         {
-			         target = (WorkTrigger*)ent_in_range;
+			         targetTrigger = (WorkTrigger*)ent_in_range;
                   
                   //If it's not reserved, but still marked as occupied -- Don't go
-                  if ( node->occupiedTime > level.time && !target->isReserved() )
+                  if ( node->occupiedTime > level.time && !targetTrigger->isReserved() )
                      return false;
 
-                  if ( target->isAllowedToWork( targetname , entnum ) )
+                  if ( targetTrigger->isAllowedToWork( targetname , entnum ) )
                      return true;
 
 			         }
