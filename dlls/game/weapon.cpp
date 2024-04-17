@@ -2598,9 +2598,12 @@ void Weapon::DetachFromOwner( void )
 //======================
 //Weapon::AttachToOwner
 //======================
-void Weapon::AttachToOwner( weaponhand_t hand )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of hand hides class member. Renamed to: temp_hand - chrissstrahl
+//--------------------------------------------------------------
+void Weapon::AttachToOwner( weaponhand_t temp_hand )
 {
-	AttachGun( hand , false );
+	AttachGun( temp_hand , false );
 	
 	if ( targetidle )
 		PostEvent(EV_Weapon_TargetIdleThink, TargetIdleTime);
@@ -2611,9 +2614,12 @@ void Weapon::AttachToOwner( weaponhand_t hand )
 //======================
 //Weapon::AttachToHolster
 //======================
-void Weapon::AttachToHolster( weaponhand_t hand )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of hand hides class member. Renamed to: temp_hand - chrissstrahl
+//--------------------------------------------------------------
+void Weapon::AttachToHolster( weaponhand_t temp_hand )
 {
-	AttachGun( hand, true );
+	AttachGun( temp_hand, true );
 	animate->RandomAnimate( "holster", EV_Weapon_Idle );
 }
 
@@ -2948,6 +2954,9 @@ void Weapon::DetachGun( void )
 //======================
 //Weapon::AttachGun
 //======================
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of hand hides class member. Renamed to: temp_hand - chrissstrahl
+//--------------------------------------------------------------
 void Weapon::AttachGun( weaponhand_t hand, qboolean holstering )
 {
 	int tag_num = 0;

@@ -458,10 +458,14 @@ void Equipment::ProcessTargetedEntity(EntityPtr entity)
 	}	
 }
 
-void Equipment::AttachToOwner(weaponhand_t hand)
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of hand hides class member. Renamed to: temp_hand - chrissstrahl
+//--------------------------------------------------------------
+void Equipment::AttachToOwner(weaponhand_t temp_hand)
 {
 	_active = true;
-	Weapon::AttachToOwner(hand);
+	Weapon::AttachToOwner(temp_hand);
 
 	if ( _lastMode > 1 )
 	{

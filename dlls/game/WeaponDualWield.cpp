@@ -47,7 +47,10 @@ WeaponDualWield::~WeaponDualWield()
 // Returns:			None
 //
 //--------------------------------------------------------------
-void WeaponDualWield::AttachToOwner( weaponhand_t hand )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of hand hides class member. Renamed to: temp_hand - chrissstrahl
+//--------------------------------------------------------------
+void WeaponDualWield::AttachToOwner( weaponhand_t temp_hand )
 {
 	_leftweapon->SetOwner(owner);
 	_rightweapon->SetOwner(owner);
