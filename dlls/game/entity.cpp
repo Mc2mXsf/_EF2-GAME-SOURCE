@@ -4434,10 +4434,14 @@ Vector Entity::GetControllerAngles
    return controller_angles;
    }
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+//--------------------------------------------------------------
 void Entity::SetControllerAngles
 	(
 	int num,
-   vec3_t angles
+   vec3_t temp_angles
 	)
 
 	{
@@ -4449,7 +4453,7 @@ void Entity::SetControllerAngles
       return;
       }
 
-   VectorCopy( angles, edict->s.bone_angles[ num ] );
+   VectorCopy( temp_angles, edict->s.bone_angles[ num ] );
    EulerToQuat( edict->s.bone_angles[ num ], edict->s.bone_quat[ num ] );
    }
 
@@ -4460,15 +4464,21 @@ void Entity::SetControllerAngles
 
 	{
 	int num;
-   Vector angles;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_angles;
+
 
 	if ( ev->NumArgs() < 2 )
 		return;
 
 	num = ev->GetInteger( 1 );
-	angles = ev->GetVector( 2 );
+	temp_angles = ev->GetVector( 2 );
 
-	SetControllerAngles( num, angles );
+	SetControllerAngles( num, temp_angles );
    }
 
 void Entity::SetControllerTag
@@ -9107,7 +9117,11 @@ void Entity::SpawnEffect( Event *ev )
 	SpawnEffect( modelName, tagPos, tagAngles, removeTime );
 	}
 
-Entity *Entity::SpawnEffect( const str &name, const Vector &origin, const Vector &angles, float removeTime )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+//--------------------------------------------------------------
+Entity *Entity::SpawnEffect( const str &name, const Vector &origin, const Vector &temp_angles, float removeTime )
 {
 	Entity *newEntity;
 	str modelName;
@@ -9166,7 +9180,7 @@ Entity *Entity::SpawnEffect( const str &name, const Vector &origin, const Vector
 
 	newEntity->setModel( modelName );
 
-	newEntity->angles = angles;
+	newEntity->angles = temp_angles;
 	newEntity->setAngles();
 
 	newEntity->setOrigin( origin );

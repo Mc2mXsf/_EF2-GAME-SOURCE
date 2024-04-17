@@ -76,8 +76,15 @@ void ShrapnelBomb::Explode( void )
 {
 	Vector dir;
 	int i;
-	Vector angles;
+	
 	Vector left;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_angles;
+	
 	
 	//Spawn shrapnel
 	for ( i = 0 ; i < shrapnelCount ; i++ )
@@ -85,9 +92,9 @@ void ShrapnelBomb::Explode( void )
 		dir = velocity;
 		dir.normalize();
 		
-		angles = dir.toAngles();
+		temp_angles = dir.toAngles();
 		
-		angles.AngleVectors( NULL, &left, NULL );
+		temp_angles.AngleVectors( NULL, &left, NULL );
 		
 		if ( _randomSpread )
 		{

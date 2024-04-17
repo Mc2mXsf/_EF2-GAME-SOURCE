@@ -1319,7 +1319,11 @@ bool UseAnim::canBeUsed( Entity * activator )
 	return true;
 }
 
-bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *angles, str *animation, int *loopcount,
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+//--------------------------------------------------------------
+bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *temp_angles, str *animation, int *loopcount,
 		str *state, str *camera )
 {
 	Entity		         *dest;
@@ -1339,7 +1343,7 @@ bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *angl
 		// set the destination origin
 		*org = origin;
 		// set the destination angles
-		*angles = this->angles;
+		*temp_angles = this->angles;
 		// set the desination animation
 		*animation = anim;
 		// set the number of loops
@@ -1356,7 +1360,7 @@ bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *angl
 		// set the destination origin
 		*org = uadest->origin;
 		// set the destination angles
-		*angles = uadest->angles;
+		*temp_angles = uadest->angles;
 		// set the desination animation
 		*animation = uadest->GetAnim();
 		// set the number of loops

@@ -4196,7 +4196,13 @@ Actor *Player::getBestActorToUse( int *entityList, int count )
 	Actor *currentActor;
 	gentity_t *edict;
 	Vector dir;
-	Vector angles;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_angles;
+
 
 	for ( i = 0 ; i < count ; i++ )
 	{
@@ -4209,9 +4215,9 @@ Actor *Player::getBestActorToUse( int *entityList, int count )
 
 		dir = currentActor->centroid - centroid;
 		dir.normalize();
-		angles = dir.toAngles();
+		temp_angles = dir.toAngles();
 
-		yawDiff = AngleNormalize180( AngleNormalize180( v_angle[ YAW ] ) - AngleNormalize180( angles[ YAW ] ) );
+		yawDiff = AngleNormalize180( AngleNormalize180( v_angle[ YAW ] ) - AngleNormalize180( temp_angles[ YAW ] ) );
 		yawDiff = abs( (int)yawDiff );
 
 		if ( yawDiff < bestYawDiff )
@@ -6136,10 +6142,16 @@ void Player::turnTowardsEntity( Event *ev )
 {
 	Entity *entity;
 	Vector dir;
-	Vector angles;
 	Event *turnEvent;
 	float currentYaw;
 	float yawDiff;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_angles;
+
 
 	entity = ev->GetEntity( 1 );
 
@@ -6151,13 +6163,13 @@ void Player::turnTowardsEntity( Event *ev )
 	dir = entity->origin - origin;
 	dir.normalize();
 
-	angles = dir.toAngles();
+	temp_angles = dir.toAngles();
 
 	// Get the yaw difference
 
 	currentYaw = anglemod( v_angle[ YAW ] );
 
-	yawDiff = angles[ YAW ] - currentYaw;
+	yawDiff = temp_angles[ YAW ] - currentYaw;
 
 	yawDiff = AngleNormalize180( yawDiff );
 

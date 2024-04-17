@@ -373,13 +373,17 @@ void FuncBeam::SetAngles( Event *ev )
 	setAngles( ev->GetVector( 1 ) );
 }
 
+
 // Override setAngles to update the endpoint of the beam if it's rotated
-void FuncBeam::setAngles( const Vector &angles )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+//--------------------------------------------------------------
+void FuncBeam::setAngles( const Vector &temp_angles )
 {
 	trace_t  trace;
 	Vector   endpoint;
 	
-	ScriptSlave::setAngles( angles );
+	ScriptSlave::setAngles( temp_angles );
 	
 	// If there is no target, then use the angles to determine where to put the
 	// endpoint

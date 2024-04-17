@@ -547,7 +547,11 @@ qboolean Vehicle::ShowWeapon( void )
 	return showweapon;
 }
 
-void Vehicle::SetDriverAngles( const Vector &angles )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+//--------------------------------------------------------------
+void Vehicle::SetDriverAngles( const Vector &temp_angles )
 {
 	int i;
 	
@@ -556,7 +560,7 @@ void Vehicle::SetDriverAngles( const Vector &angles )
 	
 	for( i = 0; i < 3; i++ )
 	{
-		driver->client->ps.delta_angles[ i ] = ANGLE2SHORT( angles[ i ] - driver->client->cmd_angles[ i ] );
+		driver->client->ps.delta_angles[ i ] = ANGLE2SHORT( temp_angles[ i ] - driver->client->cmd_angles[ i ] );
 	}
 }
 
@@ -687,11 +691,18 @@ void Vehicle::DriverUse( Event *ev )
 	{
 //		int height;
 //		int ang;
-		Vector angles;
+		
 		Vector forward;
 		Vector pos;
 //		float ofs;
 //		trace_t trace;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+		//--------------------------------------------------------------
+		Vector temp_angles;
+
 		
 		if ( other != driver )
 		{
@@ -1663,11 +1674,17 @@ void HorseVehicle::DriverUse( Event *ev )
 	{
 		int height;
 		int ang;
-		Vector angles;
 		Vector forward;
 		Vector pos;
 		float ofs;
 		trace_t trace;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+		//--------------------------------------------------------------
+		Vector temp_angles;
+
 		
 		if ( other != driver )
 		{
@@ -1689,8 +1706,8 @@ void HorseVehicle::DriverUse( Event *ev )
 		{
 			for ( ang = 0; ang < 360; ang += 30 )
             {
-				angles[ 1 ] = driver->angles[ 1 ] + ang + 90.0f;
-				angles.AngleVectors( &forward, NULL, NULL );
+				temp_angles[ 1 ] = driver->angles[ 1 ] + ang + 90.0f;
+				temp_angles.AngleVectors( &forward, NULL, NULL );
 				pos = origin + (forward * ofs);
 				pos[2] += height;
 				trace = G_Trace( pos, driver->mins, driver->maxs, pos, NULL, MASK_PLAYERSOLID, false, "Vehicle::DriverUse 1" );

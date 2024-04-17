@@ -344,10 +344,16 @@ Door::Door()
 void Door::SetDir( Event *ev )
 {
 	float t;
-	float angle;
+	
 
-	angle = ev->GetFloat( 1 );
-	dir = G_GetMovedir( angle );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angle hides class member. Renamed to: temp_angle - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_angle;
+
+
+	temp_angle = ev->GetFloat( 1 );
+	dir = G_GetMovedir( temp_angle );
 	t = dir[ 0 ];
 	dir[ 0 ] = -dir[ 1 ];
 	dir[ 1 ] = t;
@@ -1289,10 +1295,16 @@ CLASS_DECLARATION( Door, SlidingDoor, "func_door" )
 void SlidingDoor::SetMoveDir( Event *ev )
 {
 	float t;
-	float angle;
 
-	angle = ev->GetFloat( 1 );
-	movedir = G_GetMovedir( angle );
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angle hides class member. Renamed to: temp_angle - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_angle;
+
+
+	temp_angle = ev->GetFloat( 1 );
+	movedir = G_GetMovedir( temp_angle );
 	dir = movedir;
 	t = dir[ 0 ];
 	dir[ 0 ] = -dir[ 1 ];
@@ -1568,10 +1580,16 @@ void ScriptDoor::SetMoveDir( Event *ev )
 void ScriptDoor::SetMoveDir( float moveDir )
 {
 	float t;
-	float angle;
 
-	angle = moveDir;
-	_moveDir = G_GetMovedir( angle );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angle hides class member. Renamed to: temp_angle - chrissstrahl
+	//--------------------------------------------------------------
+	float temp_angle;
+
+
+	temp_angle = moveDir;
+	_moveDir = G_GetMovedir( temp_angle );
 	dir = _moveDir;
 	t = dir[ 0 ];
 	dir[ 0 ] = -dir[ 1 ];

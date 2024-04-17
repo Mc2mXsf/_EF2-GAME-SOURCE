@@ -60,7 +60,12 @@ class PowerupBase : public Item
 
 		virtual meansOfDeath_t	changetMeansOfDeath( meansOfDeath_t meansOfDeath ) { return meansOfDeath; };
 
-		virtual void			spawn( const Vector &origin ) {};
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin - chrissstrahl
+		//--------------------------------------------------------------
+		virtual void			spawn( const Vector &temp_origin ) {};
+
 
 		/* virtual */ Item *	ItemPickup( Entity *other, qboolean add_to_inventory, qboolean );
 

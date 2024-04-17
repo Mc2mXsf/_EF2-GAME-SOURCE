@@ -240,7 +240,6 @@ void Equipment::airStrike(Event *ev)
 	Vector forward,right;
 	Vector end;
 	int i;
-	Vector angles;
 	Vector dir;
 	bool hitSky;
 	Vector mins;
@@ -248,6 +247,13 @@ void Equipment::airStrike(Event *ev)
 	float bestFraction = 0.0f;
 	Vector skyPosition;
 	Vector bestSkyPosition;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_angles;
+
 
 	player->GetViewTrace( trace, MASK_PROJECTILE, 5000.0f );
 
@@ -263,9 +269,9 @@ void Equipment::airStrike(Event *ev)
 
 		if ( i != 360 )
 		{
-			angles = vec_zero;
-			angles[ YAW ] = i;
-			angles.AngleVectors( &dir );
+			temp_angles = vec_zero;
+			temp_angles[ YAW ] = i;
+			temp_angles.AngleVectors( &dir );
 
 			end += dir * 7500.0f;
 		}
