@@ -600,7 +600,11 @@ void PuzzleObject::useEvent(Event* event)
 
 		// Make sure this is the correct item
 
-		if ( stricmp( equipment->getTypeName().c_str(), _itemToUse.c_str() ) != 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if (Q_stricmp( equipment->getTypeName().c_str(), _itemToUse.c_str() ) != 0 )
 			return;
 	}
 	else
