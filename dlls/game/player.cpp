@@ -9033,13 +9033,17 @@ void Player::UpdateStats( void )
 	//--------------------------------------------------------------
 	for (int i=1; i<=count; i++ )
 	{
-		Ammo *ammo = ammo_inventory.ObjectAt( i );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of ammo hides class member. Renamed to: temp_ammo - chrissstrahl
+		//--------------------------------------------------------------
+		Ammo *temp_ammo = ammo_inventory.ObjectAt( i );
 		
-		if ( ammo )
+
+		if ( temp_ammo )
 		{
-			client->ps.ammo_amount[i-1]     = ammo->getAmount();
-			client->ps.max_ammo_amount[i-1] = ammo->getMaxAmount();
-			client->ps.ammo_name_index[i-1] = ammo->getIndex();
+			client->ps.ammo_amount[i-1]     = temp_ammo->getAmount();
+			client->ps.max_ammo_amount[i-1] = temp_ammo->getMaxAmount();
+			client->ps.ammo_name_index[i-1] = temp_ammo->getIndex();
 		}
 	}
 	
