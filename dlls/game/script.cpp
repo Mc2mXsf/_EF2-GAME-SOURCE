@@ -1057,15 +1057,17 @@ int Script::LinesInFile( void )
 =
 ==============
 */
-
-void Script::Parse( const char *data, int length, const char *name )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of length hides class member. Renamed to: temp_length - chrissstrahl
+//--------------------------------------------------------------
+void Script::Parse( const char *data, int temp_length, const char *name )
 {
 	Close();
 	
 	buffer = data;
 	Reset();
-	end_p = script_p + length;
-	this->length = length;
+	end_p = script_p + temp_length;
+	this->length = temp_length;
 	filename = name;
 }
 
@@ -1079,15 +1081,16 @@ void Script::Parse( const char *data, int length, const char *name )
 
 void Script::LoadFile( const char *name )
 {
-	int			length;
 	byte        *tempbuf;
 	const char  *const_buffer;
 
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C4458: declaration of buffer hides class member. Renamed to: temp_buffer - chrissstrahl
+	// GAMEFIX - Fixed: Warning C4458: declaration of length hides class member. Renamed to: temp_length - chrissstrahl
 	//--------------------------------------------------------------
 	byte        *temp_buffer;
+	int			length;
 
 	
 	Close();
