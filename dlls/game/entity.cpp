@@ -5262,19 +5262,25 @@ void Entity::SurfaceCommand
    // to match this function, if flags are added or
    // deleted the event must be updated.
    //
-   if (!stricmp( token, "skin1"))
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//
+	// Replaced: 4 Times
+	//--------------------------------------------------------------
+   if (!Q_stricmp( token, "skin1"))
       {
       mask = MDL_SURFACE_SKINOFFSET_BIT0;
       }
-   else if (!strcmpi (token, "skin2"))
+   else if (!Q_stricmp(token, "skin2"))
       {
       mask = MDL_SURFACE_SKINOFFSET_BIT1;
       }
-   else if (!strcmpi (token, "nodraw"))
+   else if (!Q_stricmp(token, "nodraw"))
       {
       mask = MDL_SURFACE_NODRAW;
       }
-   else if (!strcmpi (token, "crossfade"))
+   else if (!Q_stricmp(token, "crossfade"))
       {
       mask = MDL_SURFACE_CROSSFADE_SKINS;
       }
@@ -5867,7 +5873,12 @@ void Entity::Shader
    // to match this function, if flags are added or
    // deleted the event must be updated.
    //
-   if (!strcmpi( token, "translation"))
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//
+	// Replaced: 8 Times
+	//--------------------------------------------------------------
+   if (!Q_stricmp( token, "translation"))
       {
       float x, y;
 
@@ -5876,7 +5887,7 @@ void Entity::Shader
       TRANSLATION_TO_PKT( (int)x, edict->s.tag_num );
       TRANSLATION_TO_PKT( (int)y, edict->s.skinNum );
       }
-   else if (!strcmpi( token, "offset"))
+   else if (!Q_stricmp( token, "offset"))
       {
       float x, y;
 
@@ -5885,39 +5896,39 @@ void Entity::Shader
       OFFSET_TO_PKT( x, edict->s.tag_num );
       OFFSET_TO_PKT( y, edict->s.skinNum );
       }
-   else if (!strcmpi (token, "rotation"))
+   else if (!Q_stricmp(token, "rotation"))
       {
       float rot;
 
       rot = ev->GetFloat( 2 );
       ROTATE_TO_PKT( rot, edict->s.tag_num );
       }
-   else if (!strcmpi (token, "frame"))
+   else if (!Q_stricmp(token, "frame"))
       {
       edict->s.frame = ev->GetInteger( 2 );
       }
-   else if (!strcmpi (token, "wavebase"))
+   else if (!Q_stricmp(token, "wavebase"))
       {
       float base;
 
       base = ev->GetFloat( 2 );
       BASE_TO_PKT( base, edict->s.surfaces[ 0 ] );
       }
-   else if (!strcmpi (token, "waveamp"))
+   else if (!Q_stricmp(token, "waveamp"))
       {
       float amp;
 
       amp = ev->GetFloat( 2 );
       AMPLITUDE_TO_PKT( amp, edict->s.surfaces[ 1 ] );
       }
-   else if (!strcmpi (token, "wavephase"))
+   else if (!Q_stricmp(token, "wavephase"))
       {
       float phase;
 
       phase = ev->GetFloat( 2 );
       PHASE_TO_PKT( phase, edict->s.surfaces[ 2 ] );
       }
-   else if (!strcmpi (token, "wavefreq"))
+   else if (!Q_stricmp(token, "wavefreq"))
       {
       float freq;
 
