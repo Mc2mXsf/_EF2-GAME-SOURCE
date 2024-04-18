@@ -1322,9 +1322,10 @@ bool UseAnim::canBeUsed( Entity * activator )
 
 //--------------------------------------------------------------
 // GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+// GAMEFIX - Fixed: Warning C4458: declaration of state hides class member. Renamed to: temp_state - chrissstrahl
 //--------------------------------------------------------------
 bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *temp_angles, str *animation, int *loopcount,
-		str *state, str *camera )
+		str *temp_state, str *camera )
 {
 	Entity		         *dest;
 	UseAnimDestination   *uadest;
@@ -1349,7 +1350,7 @@ bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *temp
 		// set the number of loops
 		*loopcount = num_loops;
 		// get the state if necessary
-		*state = this->state;
+		*temp_state = this->state;
 		// set the camera
 		*camera = this->camera;
 	}
@@ -1366,7 +1367,7 @@ bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *temp
 		// set the number of loops
 		*loopcount = uadest->GetNumLoops();
 		// get the state if necessary
-		*state = uadest->GetState();
+		*temp_state = uadest->GetState();
 		// set the camera
 		*camera = this->camera;
 	}
