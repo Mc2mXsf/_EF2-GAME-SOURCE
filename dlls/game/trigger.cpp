@@ -1280,7 +1280,11 @@ TouchField::TouchField()
 	ontouch = NULL;
 }
 
-void TouchField::Setup( Entity *ownerentity, const Event &touchevent, const Vector &min, const Vector &max, int respondto )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of respondto hides class member. Renamed to: temp_respondto - chrissstrahl
+//--------------------------------------------------------------
+void TouchField::Setup( Entity *ownerentity, const Event &touchevent, const Vector &min, const Vector &max, int temp_respondto )
 {
 	assert( ownerentity );
 	if ( !ownerentity )
@@ -1300,7 +1304,7 @@ void TouchField::Setup( Entity *ownerentity, const Event &touchevent, const Vect
 	setSolidType( SOLID_TRIGGER );
 	link();
 	
-	this->respondto = respondto;
+	this->respondto = temp_respondto;
 }
 
 void TouchField::SendEvent( Event *ev )
