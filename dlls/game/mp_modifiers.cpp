@@ -445,9 +445,15 @@ void ModifierDestruction::itemDestroyed( Player *player, MultiplayerItem *item )
 			item->animate->RandomAnimate( "idle" );
 		}
 
-		if ( stricmp( item->getName().c_str(), "DestructionObject-red" ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( item->getName().c_str(), "DestructionObject-red" ) == 0 )
 			_redObjectLasthealth = item->health;
-		else if ( stricmp( item->getName().c_str(), "DestructionObject-blue" ) == 0 )
+		else if ( Q_stricmp( item->getName().c_str(), "DestructionObject-blue" ) == 0 )
 			_blueObjectLasthealth = item->health;
 
 		item->SpawnEffect( "models/fx/fx-explosion-singularity.tik", item->origin, item->angles, 1.0f ); 
@@ -525,7 +531,11 @@ void ModifierDestruction::itemUsed( Entity *entity, MultiplayerItem *item )
 
 	equipment = (Equipment *)entity;
 
-	if ( stricmp( equipment->getTypeName().c_str(), "tricorder" ) != 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( equipment->getTypeName().c_str(), "tricorder" ) != 0 )
 	{
 		return;
 	}
@@ -734,10 +744,16 @@ int	ModifierDestruction::getStage( float health, float maxHealth )
 bool ModifierDestruction::checkRule( const char *rule, bool defaultValue, Player *player )
 {
 	// We want team spawnpoints
-
-	if ( stricmp( rule, "spawnpoints-team" ) == 0 )
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( rule, "spawnpoints-team" ) == 0 )
 		return true;
-	else if ( stricmp( rule, "keepflags" ) == 0 )
+	else if ( Q_stricmp( rule, "keepflags" ) == 0 )
 		return false;
 	else
 		return defaultValue;
@@ -745,7 +761,10 @@ bool ModifierDestruction::checkRule( const char *rule, bool defaultValue, Player
 
 bool ModifierDestruction::checkGameType( const char *gameType )
 {
-	if ( stricmp( gameType, "destruction" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( gameType, "destruction" ) == 0 )
 		return true;
 	else
 		return false;
@@ -754,9 +773,15 @@ bool ModifierDestruction::checkGameType( const char *gameType )
 bool ModifierOneFlag::shouldKeepItem( MultiplayerItem *item )
 {
 	// We need to keep the one flag
+	
 
-	if ( ( stricmp( item->getName().c_str(), "ctfflag-one" ) == 0 ) ||
-		 ( stricmp( item->getName().c_str(), "ctfflag-baseone" ) == 0 ) )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( ( Q_stricmp( item->getName().c_str(), "ctfflag-one" ) == 0 ) ||
+		 ( Q_stricmp( item->getName().c_str(), "ctfflag-baseone" ) == 0 ) )
 	{
 		if ( !multiplayerManager.checkRule ( "keepflags", true ) )
 			return false;
@@ -772,23 +797,34 @@ bool ModifierOneFlag::shouldKeepItem( MultiplayerItem *item )
 bool ModifierOneFlag::checkRule( const char *rule, bool defaultValue, Player *player )
 {
 	// Check to see if we care about this rule
-
 	if ( strnicmp( rule, "flagscore-", sizeof( "flagscore-" ) - 1 ) == 0 )
 	{
 		// See if this flag touch should generate a flag score
+		
 
-		if ( stricmp( rule, "flagscore-teamflag" ) == 0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( rule, "flagscore-teamflag" ) == 0 )
 			return false;
-		else if ( stricmp( rule, "flagscore-enemyflag" ) == 0 )
+		else if ( Q_stricmp( rule, "flagscore-enemyflag" ) == 0 )
 			return true;
 	}
 	else if ( strnicmp( rule, "flagpickup-", sizeof( "flagpickup-" ) - 1 ) == 0 )
 	{
 		// See if this flag touch should generate a flag pickup
-
-		if ( stricmp( rule, "flagpickup-enemyflag" ) == 0 )
+		
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( rule, "flagpickup-enemyflag" ) == 0 )
 			return false;
-		else if ( stricmp( rule, "flagpickup-otherflag-ctfflag-one" ) == 0 )
+		else if ( Q_stricmp( rule, "flagpickup-otherflag-ctfflag-one" ) == 0 )
 			return true;
 	}
 
@@ -797,7 +833,10 @@ bool ModifierOneFlag::checkRule( const char *rule, bool defaultValue, Player *pl
 
 bool ModifierOneFlag::checkGameType( const char *gameType )
 {
-	if ( stricmp( gameType, "oneflag" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( gameType, "oneflag" ) == 0 )
 		return true;
 	else
 		return false;
@@ -854,13 +893,19 @@ void ModifierElimination::reset( void )
 bool ModifierElimination::checkRule( const char *rule, bool defaultValue, Player *player )
 {
 	// Only let players respawn between matches
-
-	if ( ( stricmp( rule, "respawnPlayer" ) == 0 ) )
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//
+	// Replaced 3 times
+	//--------------------------------------------------------------
+	if ( ( Q_stricmp( rule, "respawnPlayer" ) == 0 ) )
 	{
 		if ( !player || _playerEliminationData[ player->entnum ]._eliminated )
 			return false;
 	}
-	else if ( ( stricmp( rule, "spawnPlayer" ) == 0 ) || ( stricmp( rule, "changeTeams" ) == 0 ) )
+	else if ( ( Q_stricmp( rule, "spawnPlayer" ) == 0 ) || ( Q_stricmp( rule, "changeTeams" ) == 0 ) )
 	{
 		// Don't spawn him if he has been eliminated
 
@@ -1121,13 +1166,18 @@ void ModifierElimination::update( float frameTime )
 		blueTeam = false;
 
 		if ( team )
-		{			 
-			if ( stricmp( team->getName().c_str(), "red" ) == 0 )
+		{
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+			// 
+			// Replaced 2 times
+			//--------------------------------------------------------------
+			if ( Q_stricmp( team->getName().c_str(), "red" ) == 0 )
 			{
 				redTeam = true;
 				usingTeams = true;
 			}
-			else if ( stricmp( team->getName().c_str(), "blue" ) == 0 )
+			else if ( Q_stricmp( team->getName().c_str(), "blue" ) == 0 )
 			{
 				blueTeam = true;
 				usingTeams = true;
@@ -1350,9 +1400,14 @@ void ModifierDiffusion::playerSpawned( Player *player )
 
 void ModifierDiffusion::playerEventNotification( const char *eventName, const char *eventItemName, Player *eventPlayer )
 {
-	if ( stricmp( eventName, "use-HoldableItem" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( eventName, "use-HoldableItem" ) == 0 )
 	{
-		if ( stricmp( eventItemName, "Transporter" ) == 0 )
+		if ( Q_stricmp( eventItemName, "Transporter" ) == 0 )
 		{
 			dropBomb( eventPlayer );
 		}
@@ -1362,8 +1417,12 @@ void ModifierDiffusion::playerEventNotification( const char *eventName, const ch
 bool ModifierDiffusion::checkRule( const char *rule, bool defaultValue, Player *player )
 {
 	// We want team spawnpoints
-
-	if ( stricmp( rule, "spawnpoints-team" ) == 0 )
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( rule, "spawnpoints-team" ) == 0 )
 	{
 		return true;
 	}
@@ -1377,11 +1436,17 @@ bool ModifierDiffusion::shouldKeepItem( MultiplayerItem *item )
 	{
 		// This is a diffusion item so keep track of it
 
-		if ( stricmp( item->getName().c_str(), "Diffusion-bombplace-red" ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( item->getName().c_str(), "Diffusion-bombplace-red" ) == 0 )
 			_redBombPlace._item = item;
-		else if ( stricmp( item->getName().c_str(), "Diffusion-bombplace-blue" ) == 0 )
+		else if ( Q_stricmp( item->getName().c_str(), "Diffusion-bombplace-blue" ) == 0 )
 			_blueBombPlace._item = item;
-		else if ( stricmp( item->getName().c_str(), "Diffusion-bomb" ) == 0 )
+		else if ( Q_stricmp( item->getName().c_str(), "Diffusion-bomb" ) == 0 )
 			_bomb = item;
 		else
 			return false;
@@ -1565,7 +1630,11 @@ void ModifierDiffusion::itemUsed( Entity *entity, MultiplayerItem *item )
 
 	player = (Player *)owner;
 
-	if ( stricmp( equipment->getTypeName().c_str(), "tricorder" ) != 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( equipment->getTypeName().c_str(), "tricorder" ) != 0 )
 	{
 		return;
 	}
@@ -2015,7 +2084,10 @@ bool ModifierDiffusion::withinGuardDistance( const Vector &origin1, const Vector
 
 void ModifierDiffusion::playerCommand( Player *player, const char *command, const char *parm )
 {
-	if ( stricmp( command, "dropItem" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( command, "dropItem" ) == 0 )
 	{
 		if ( player == getBomber() )
 		{
@@ -2341,11 +2413,17 @@ bool ModifierSpecialties::checkRule( const char *rule, bool defaultValue, Player
 {
 	// We want team spawn points
 
-	if ( stricmp( rule, "spawnpoints-team" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 3 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( rule, "spawnpoints-team" ) == 0 )
 		return true;
-	else if ( stricmp( rule, "dropWeapons" ) == 0 )
+	else if ( Q_stricmp( rule, "dropWeapons" ) == 0 )
 		return false;
-	else if ( stricmp( rule, "spawnpoints-special" ) == 0 )
+	else if ( Q_stricmp( rule, "spawnpoints-special" ) == 0 )
 	{
 		// We want special spawnpoints in this mode but not for bots
 
@@ -2374,23 +2452,32 @@ str ModifierSpecialties::getSpawnPointType( Player *player )
 
 void ModifierSpecialties::playerCommand( Player *player, const char *command, const char *parm )
 {
-	if ( stricmp( command, "setSpecialty" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( command, "setSpecialty" ) == 0 )
 	{
 		SpecialtyType specialty;
 
 		// Figure out which specialty we want to set
 
-		if ( stricmp( parm, "infiltrator" ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 7 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( parm, "infiltrator" ) == 0 )
 			specialty = SPECIALTY_INFILTRATOR;
-		else if ( stricmp( parm, "medic" ) == 0 )
+		else if ( Q_stricmp( parm, "medic" ) == 0 )
 			specialty = SPECIALTY_MEDIC;
-		else if ( stricmp( parm, "technician" ) == 0 )
+		else if ( Q_stricmp( parm, "technician" ) == 0 )
 			specialty = SPECIALTY_TECHNICIAN;
-		else if ( stricmp( parm, "demolitionist" ) == 0 )
+		else if ( Q_stricmp( parm, "demolitionist" ) == 0 )
 			specialty = SPECIALTY_DEMOLITIONIST;
-		else if ( ( stricmp( parm, "heavyweapons" ) == 0 ) || ( stricmp( parm, "heavy" ) == 0 ) )
+		else if ( ( Q_stricmp( parm, "heavyweapons" ) == 0 ) || ( Q_stricmp( parm, "heavy" ) == 0 ) )
 			specialty = SPECIALTY_HEAVY_WEAPONS;
-		else if ( stricmp( parm, "sniper" ) == 0 )
+		else if ( Q_stricmp( parm, "sniper" ) == 0 )
 			specialty = SPECIALTY_SNIPER;
 		else
 			specialty = SPECIALTY_NONE;
@@ -2574,7 +2661,11 @@ void ModifierSpecialties::itemTouched( Player *player, MultiplayerItem *item )
 
 	teamName = team->getName().c_str();
 
-	if ( stricmp( teamName, specialtyItem->_teamName ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( teamName, specialtyItem->_teamName ) == 0 )
 		sameTeam = true;
 
 	if ( !sameTeam )
@@ -2930,7 +3021,12 @@ void ModifierSpecialties::playerUsed( Player *usedPlayer, Player *usingPlayer, E
 	if ( ( _playerSpecialtyData[ usingPlayer->entnum ]._specialty == SPECIALTY_MEDIC ) &&
 		 ( _playerSpecialtyData[ usingPlayer->entnum ]._lastUseTime < multiplayerManager.getTime() ) &&
 		 ( multiplayerManager.getPlayersTeam( usedPlayer ) == multiplayerManager.getPlayersTeam( usingPlayer ) ) &&
-		 ( stricmp( equipment->getTypeName().c_str(), "tricorder" ) == 0 ) &&
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		 ( Q_stricmp( equipment->getTypeName().c_str(), "tricorder" ) == 0 ) &&
 		 ( usedPlayer != usingPlayer ) )
 	{
 		float healthToAdd;
@@ -3163,7 +3259,7 @@ bool ModifierSpecialties::canPickup( Player *player, MultiplayerItemType itemTyp
 	{
 		/* if ( _playerSpecialtyData[ player->entnum ]._specialty == SPECIALTY_INFILTRATOR )
 		{
-			if ( stricmp( item_name, "Speed" ) == 0 )
+			if ( Q_stricmp( item_name, "Speed" ) == 0 )
 			{
 				return false;
 			}
@@ -3171,7 +3267,7 @@ bool ModifierSpecialties::canPickup( Player *player, MultiplayerItemType itemTyp
 
 		// No one can pickup the strength powerup except the heavy weapons class
 
-		if ( stricmp( item_name, "Strength" ) == 0 )
+		if ( Q_stricmp( item_name, "Strength" ) == 0 )
 		{
 			if ( _playerSpecialtyData[ player->entnum ]._specialty != SPECIALTY_HEAVY_WEAPONS )
 			{
@@ -3409,7 +3505,10 @@ str ModifierControlPoints::getSpawnPointType( Player *player )
 
 bool ModifierControlPoints::checkRule( const char *rule, bool defaultValue, Player *player )
 {
-	if ( stricmp( rule, "spawnpoints-special" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( rule, "spawnpoints-special" ) == 0 )
 		return true;
 	else
 		return defaultValue;
@@ -4063,7 +4162,13 @@ bool ModifierPointsPerWeapon::parseConfigToken( const char *key, Script *buffer 
 {
 	PointsPerWeaponData pointsPerWeaponData;
 
-	if ( stricmp( key, "projectile" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( key, "projectile" ) == 0 )
 	{
 		// Get projectile name
 
@@ -4085,7 +4190,7 @@ bool ModifierPointsPerWeapon::parseConfigToken( const char *key, Script *buffer 
 
 		return true;
 	}
-	else if ( stricmp( key, "weapon" ) == 0 )
+	else if ( Q_stricmp( key, "weapon" ) == 0 )
 	{
 		// Get weapon name
 
@@ -4137,8 +4242,10 @@ int ModifierPointsPerWeapon::getPointsForKill( Player *killedPlayer, Player *att
 		for ( i = 1 ; i <= _projectiles.NumObjects() ; i++ )
 		{
 			pointsPerWeaponData = &_projectiles.ObjectAt( i );
-
-			if ( stricmp( proj->model.c_str(), pointsPerWeaponData->_name.c_str() ) == 0 )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+			//--------------------------------------------------------------
+			if ( Q_stricmp( proj->model.c_str(), pointsPerWeaponData->_name.c_str() ) == 0 )
 				return pointsPerWeaponData->_points;
 		}
 
@@ -4160,7 +4267,11 @@ int ModifierPointsPerWeapon::getPointsForKill( Player *killedPlayer, Player *att
 		{
 			pointsPerWeaponData = &_weapons.ObjectAt( i );
 
-			if ( stricmp( weaponName.c_str(), pointsPerWeaponData->_name.c_str() ) == 0 )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C4996 stricmp : The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+			//--------------------------------------------------------------
+			if ( Q_stricmp( weaponName.c_str(), pointsPerWeaponData->_name.c_str() ) == 0 )
 				return pointsPerWeaponData->_points;
 		}
 
