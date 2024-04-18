@@ -156,8 +156,14 @@ void Gib::Splat( Event *ev )
 void Gib::Damage( Event *ev )
 {
 	Vector direction;
-	Entity *blood;
 	Vector dir;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of blood hides class member. Renamed to: temp_blood - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *temp_blood;
+
 	
 	if ( next_bleed_time > level.time )
 		return;
@@ -168,21 +174,21 @@ void Gib::Damage( Event *ev )
 	
 	if ( blood_spurt_name.length() > 0 )
 	{
-		blood = new Entity( ENTITY_CREATE_FLAG_ANIMATE );
-		blood->setModel( blood_spurt_name.c_str() );
+		temp_blood = new Entity( ENTITY_CREATE_FLAG_ANIMATE );
+		temp_blood->setModel( blood_spurt_name.c_str() );
 		
 		dir[0] = -direction[0];
 		dir[1] = -direction[1];
 		dir[2] = -direction[2];
 		
-		blood->angles = dir.toAngles();
-		blood->setAngles( blood->angles );
+		temp_blood->angles = dir.toAngles();
+		temp_blood->setAngles( temp_blood->angles );
 		
-		blood->setOrigin( centroid );
-		blood->origin.copyTo( blood->edict->s.origin2 );
-		blood->setSolidType( SOLID_NOT );
+		temp_blood->setOrigin( centroid );
+		temp_blood->origin.copyTo( temp_blood->edict->s.origin2 );
+		temp_blood->setSolidType( SOLID_NOT );
 		
-		blood->PostEvent( EV_Remove, 1.0f );
+		temp_blood->PostEvent( EV_Remove, 1.0f );
 		
 		next_bleed_time = level.time + 0.5f;
 	}
