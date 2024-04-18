@@ -1422,10 +1422,13 @@ int Weapon::GetOrder( void )
 //======================
 //Weapon::SetRank
 //======================
-void Weapon::SetRank( int order, int rank )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of rank hides class member. Renamed to: temp_rank - chrissstrahl
+//--------------------------------------------------------------
+void Weapon::SetRank( int order, int temp_rank )
 {
 	this->order = order;
-	this->rank = rank;
+	this->rank = temp_rank;
 }
 
 //======================
