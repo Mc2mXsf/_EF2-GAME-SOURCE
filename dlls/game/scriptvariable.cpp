@@ -452,13 +452,17 @@ ScriptVariable::ScriptVariable()
 	value = 0;
 }
 
-qboolean ScriptVariable::isVariableCommand( const char *name )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: temp_name - chrissstrahl
+//--------------------------------------------------------------
+qboolean ScriptVariable::isVariableCommand( const char *temp_name )
 {
 	int i;
 	
 	for( i = 0; ScriptVariable::Responses[ i ].event != NULL; i++ )
 	{
-		if ( ScriptVariable::Responses[ i ].event->getName() == name )
+		if ( ScriptVariable::Responses[ i ].event->getName() == temp_name )
 		{
 			return true;
 		}

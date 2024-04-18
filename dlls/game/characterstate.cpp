@@ -250,20 +250,26 @@ void State::readNextState( Script &script )
 void State::readMoveType( Script &script )
 {
 	str token;
-	const char **name;
 	int i;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: temp_name - chrissstrahl
+	//--------------------------------------------------------------
+	const char **temp_name;
+
 	
 	token = script.GetToken( false );
 	
-	for( i = 0, name = MoveControl_Names; *name != NULL; name++, i++ )
+	for( i = 0, temp_name = MoveControl_Names; *temp_name != NULL; temp_name++, i++ )
 	{
-		if ( !token.icmp( *name ) )
+		if ( !token.icmp( *temp_name ) )
 		{
 			break;
 		}
 	}
 	
-	if ( *name == NULL )
+	if ( *temp_name == NULL )
 	{
 		gi.Error( ERR_DROP, "%s: Unknown movetype '%s' on line %d.\n", script.Filename(), token.c_str(), script.GetLineNumber() );
 	}
@@ -275,12 +281,17 @@ void State::readMoveType( Script &script )
 
 qboolean State::setCameraType( const str &ctype )
 {
-	const char **name;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: temp_name - chrissstrahl
+	//--------------------------------------------------------------
+	const char **temp_name;
+
+
 	int i;
 	
-	for( i = 0, name = Camera_Names; *name != NULL; name++, i++ )
+	for(i = 0, temp_name = Camera_Names; *temp_name != NULL; temp_name++, i++ )
 	{
-		if ( !ctype.icmp( *name ) )
+		if ( !ctype.icmp( *temp_name ) )
 		{
 			cameratype = ( cameratype_t )i;
 			return true;
@@ -873,7 +884,11 @@ float State::getMaxTime( void )
 	return maxTime;
 }
 
-int State::addCondition( const char *name, Script &script )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: temp_name - chrissstrahl
+//--------------------------------------------------------------
+int State::addCondition( const char *temp_name, Script &script )
 {
 	Conditional       *condition;
 	Condition<Class>  *cond;
@@ -882,7 +897,7 @@ int State::addCondition( const char *name, Script &script )
 	str token;
 	
 	condition = NULL;
-	cond = statemap.getCondition( name );
+	cond = statemap.getCondition( temp_name );
 	if ( !cond )
 	{
 		return 0;

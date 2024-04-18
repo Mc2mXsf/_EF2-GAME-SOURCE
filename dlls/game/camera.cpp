@@ -2930,28 +2930,31 @@ void CameraManager::RenamePath( Event* ev )
 //---------------------------------------------------------------------------
 // CameraManager::SetPath
 //---------------------------------------------------------------------------
-void CameraManager::SetPath( const str& pathName )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of pathName hides class member. Renamed to: temp_rank - chrissstrahl
+//--------------------------------------------------------------
+void CameraManager::SetPath( const str& temp_pathName )
 {
 	Entity * ent;
 	SplinePath *node;
 
-	ent = G_FindTarget( NULL, pathName );
+	ent = G_FindTarget( NULL, temp_pathName );
 
 	if ( !ent )
 	{
-		warning( "SetPath", "Could not find path named '%s'.", pathName.c_str() );
+		warning( "SetPath", "Could not find path named '%s'.", temp_pathName.c_str() );
 		return;
 	}
 
 	if ( !ent->isSubclassOf( SplinePath ) )
 	{
-		warning( "SetPath", "'%s' is not a camera path.", pathName.c_str() );
+		warning( "SetPath", "'%s' is not a camera path.", temp_pathName.c_str() );
 		return;
 	}
 
 	node = ( SplinePath * )ent;
 
-	SetPathName( pathName );
+	SetPathName( temp_pathName );
 	cameraPath_dirty = true;
 	path = node;
 	current = node;

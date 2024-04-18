@@ -2211,17 +2211,23 @@ qboolean Event::IsNumericAt( int pos )
 #ifdef GAME_DLL
 void Event::Archive( Archiver &arc )
 {
-	str name;
 	int num;
 	int i;
 	EventVar var;
 	EventArgDef def;
-	
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of name hides class member. Renamed to: temp_name - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_name;
+
+
 	if ( arc.Saving() )
 	{
-		name = getName();
+		temp_name = getName();
 	}
-	arc.ArchiveString( &name );
+	arc.ArchiveString( &temp_name );
 	if ( arc.Loading() )
 	{
 		if ( data )
@@ -2229,7 +2235,7 @@ void Event::Archive( Archiver &arc )
 			delete data;
 			data = NULL;
 		}
-		*this = Event( name );
+		*this = Event( temp_name );
 	}
 	
 	arc.ArchiveRaw( &info, sizeof( info ) );
