@@ -11,6 +11,392 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+Fixed: Warning C4458: declaration of mins hides class member. Renamed to: temp_mins
+void ExplodingWall::Explode( Event *ev )
+
+Fixed: Warning C4458: declaration of maxs hides class member. Renamed to: temp_maxs
+void ExplodingWall::Explode( Event *ev )
+
+Fixed: Warning C4458: declaration of camera hides class member. Renamed to: temp_camera
+bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *temp_angles, str *animation, int *loopcount, str *temp_state, str *temp_camera )
+
+Fixed: Warning C4458: declaration of name hides class member. Renamed to: temp_name
+int State::addCondition( const char *temp_name, Script &script )
+qboolean ScriptVariable::isVariableCommand( const char *temp_name )
+qboolean State::setCameraType( const str &ctype )
+void State::readMoveType( Script &script )
+void Event::Archive( Archiver &arc )
+
+Fixed: Warning C4458: declaration of pathName hides class member. Renamed to: temp_rank
+void CameraManager::SavePath( const str& temp_pathName )
+void CameraManager::SetPath( const str& temp_pathName )
+
+Fixed: Warning C4456: Declaration of printString previous local declaration.
+void ModeCaptureTheFlag::playerKilled( Player *killedPlayer, Player *attackingPlayer, Entity *inflictor, int meansOfDeath )
+
+Fixed: Warning C4458: declaration of rank hides class member. Renamed to: temp_rank
+void Weapon::SetRank( int order, int temp_rank )
+
+Fixed: Warning C4458: declaration of respondto hides class member. Renamed to: temp_respondto
+void TouchField::Setup( Entity *ownerentity, const Event &touchevent, const Vector &min, const Vector &max, int temp_respondto )
+
+Fixed: Warning C4458: declaration of restart hides class member. Renamed to: temp_restart
+void Level::CleanUp( qboolean temp_restart )
+
+Fixed: Warning C4458: declaration of size hides class member. Renamed to: temp_size
+float Camera::CalculateFov( void )
+
+Fixed: Warning C4458: declaration of speed hides class member. Renamed to: temp_speed
+void Vehicle::VehicleTouched( Event *ev )
+
+Fixed: Warning C4458: declaration of state hides class member. Renamed to: temp_state
+bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *temp_angles, str *animation, int *loopcount, str *temp_state, str *camera )
+
+Fixed: Warning C4456: Declaration of player team previous local declaration.
+bool ModeTeamBase::canJoinTeam( Player *player, const str &teamName )
+
+Fixed: Warning C4459: declaration of program hides global definition.
+CThread *ScriptMaster::CreateThread( Program *temp_program )
+CThread *ScriptMaster::CreateThread( const char *label, Program *temp_program )
+
+Fixed: Warning C4458: declaration of buffer hides class member. Renamed to: temp_buffer
+char *Script::EvaluateMacroString( const char *theMacroString )
+void Script::LoadFile( const char *name )
+
+Fixed: Warning C4458: declaration of client hides class member. Renamed to: temp_client
+void Camera::Cut( Event* ev )
+void TriggerCameraUse::TriggerCamera( Event *ev )
+void TriggerReverb::ChangeReverb( Event *ev )
+void TriggerReverb::AltChangeReverb( Event *ev )
+
+
+Fixed: Warning C4458: declaration of hand hides class member. Renamed to: temp_hand
+void Weapon::AttachGun( weaponhand_t temp_hand, qboolean holstering )
+void Weapon::AttachToHolster( weaponhand_t temp_hand )
+void Weapon::AttachToOwner( weaponhand_t temp_hand )
+void Equipment::AttachToOwner(weaponhand_t temp_hand)
+void WeaponDualWield::AttachToOwner( weaponhand_t temp_hand )
+
+Fixed: Warning C4458: declaration of ent hides class member. Renamed to: temp_ent
+void FlySplinePath::Begin(Actor &self)
+void ScriptSlave::FollowPath( Event *ev )
+
+Fixed: Warning C4458: declaration of entnum hides class member. Renamed to: temp_entnum
+void Player::UpdateStats( void )
+int Sentient::GiveAmmo( const str &type, int amount, bool pickedUp, int maxamount )
+void Sentient::ListInventory( void )
+
+Fixed: Warning C4458: declaration of edict hides class member. Renamed to: temp_edict
+Actor *Player::getBestActorToUse( int *entityList, int count )
+bool HoldableItemExplosive::isPlayerInRange( const Vector &position, float maxDistance )
+
+Fixed: Warning C4458: declaration of fov hides class member. Renamed to: temp_fov
+Entity* Player::FindHeadTarget( const Vector &temp_origin, const Vector &forward, const float temp_fov, const float maxdist ) 
+
+Fixed: Warning C4459: declaration of level hides global definition.
+void Player::SetReverb( int type, float temp_level )
+void Player::SetReverb( const str &type, float temp_level )
+int Player::AwardPoints(int numPoints)
+void TriggerReverb::SetReverb( int type, float temp_level )
+void TriggerReverb::SetAltReverb( int type, float temp_level )
+void G_Error( int temp_level, const char *fmt, ... )
+void Com_Error ( int temp_level, const char *error, ... ) 
+
+Fixed: Warning C4456: Declaration of player hides previous local declaration.
+float BulletAttack( ... )
+
+Fixed: Warning C4458: declaration of index hides class member. Renamed to: temp_index
+Entity * TargetList::GetNextEntity( Entity * ent )
+
+Fixed: Warning C4458: declaration of owner hides class member. Renamed to: temp_owner
+void Projectile::Explode( Event *ev )
+void Projectile::didDamage( void )
+void Weapon::GetActorMuzzlePosition( Vector *position, Vector *forward, Vector *right, Vector *up, const char* tagname )
+void Weapon::GetMuzzlePosition( Vector *position, Vector *forward, Vector *right, Vector *up )
+void Weapon::Shoot( Event *ev )
+void Weapon::SetAimType( Event *ev )
+void Weapon::TargetIdleThink( Event *ev )
+void Weapon::AdvancedMeleeAttack(const char* tag1, const char* tag2, bool criticalHit)
+void ThrowObject::Throw( const Entity *temp_owner, float speed, const Sentient *targetent, float gravity, float throw_damage )
+void ThrowObject::Throw( Event *ev )
+void GooDebris::Touch( Event *ev )
+void GooProjectile::Explode( Event *ev )
+void PowerupBase::init( const str &modelName, Sentient *temp_owner )
+
+Fixed: Warning C26495: The Variable _w/_x/_y/_z was not initialized. A Membervariable needs always to be initialized (type.6)
+class Quaternion
+
+Fixed: Warning C4459: declaration of p hides global definition.
+int BoxOnPlaneSide2 ( const vec3_t emins, const vec3_t emaxs, const struct cplane_s *temp_p )
+
+Fixed: Warning C4458: declaration of origin hides class member. Renamed to: temp_origin
+virtual void spawn( const Vector &origin ) {};
+inline void Cinematic::Archive(Archiver &arc)
+void Cinematic::startAtNamedOrigin( const str &originName, bool callStartThread )
+void Cinematic::startAtOrigin( const Vector &temp_origin, float yaw, bool callStartThread )
+void Cinematic::handleBeginAtEvent( Event *ev )
+void Powerup::spawn( const Vector &temp_origin )
+void Rune::spawn( const Vector &temp_origin )
+Entity *Entity::SpawnEffect( const str &name, const Vector &temp_origin, const Vector &temp_angles, float removeTime )
+Entity* Player::FindHeadTarget( const Vector &temp_origin, const Vector &forward, const float fov, const float maxdist )
+void Weapon::WorldHitSpawn( firemode_t mode, const Vector &temp_origin, const Vector &temp_angles, float life )
+
+Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles
+void FuncBeam::setAngles( const Vector &temp_angles )
+void Entity::SetControllerAngles(int num,vec3_t temp_angles)
+void Entity::SetControllerAngles(Event *ev)
+Entity *Entity::SpawnEffect( const str &name, const Vector &origin, const Vector &temp_angles, float removeTime )
+void Equipment::airStrike(Event *ev)
+bool UseAnim::GetInformation( const Entity *activator, Vector *org, Vector *temp_angles, str *animation, int *loopcount, str *state, str *camera )
+Actor *Player::getBestActorToUse( int *entityList, int count )
+void Player::turnTowardsEntity( Event *ev )
+void ShrapnelBomb::Explode( void )
+void Vehicle::SetDriverAngles( const Vector &temp_angles )
+void Vehicle::DriverUse( Event *ev )
+void HorseVehicle::DriverUse( Event *ev )
+void Weapon::WorldHitSpawn( firemode_t mode, const Vector &origin, const Vector &temp_angles, float life )
+
+Fixed: Warning C4458: declaration of angle hides class member. Renamed to: temp_angle
+void Door::SetDir( Event *ev )
+void SlidingDoor::SetMoveDir( Event *ev )
+void ScriptDoor::SetMoveDir( float moveDir )
+
+Fixed: Warning C4456: Declaration of pos hides previous local declaration.
+qboolean PathNode::TestMove( Entity *ent, const Vector &original_start, const Vector &original_end, const Vector &min, const Vector &max, qboolean allowdoors, qboolean fulltest )
+void ViewMaster::Spawn( Event *ev )
+
+Fixed: Warning C4457: declaration of pos hides function parameter. Renamed to: temp_pos2
+qboolean MeleeAttack(...)
+
+Fixed: Warning C4458: declaration of target hides class member. Renamed to: temp_target
+void SplinePath::CreatePath( Event *ev )
+void SplinePath::OffsetSpline( Event *ev )
+void SplinePath::TurnSpline( Event *ev )
+qboolean Entity::CanDamage( const Entity *temp_target, const Entity *skip_ent )
+void Entity::FadeNoRemove( Event *ev )
+void Entity::FadeIn( Event *ev )
+void Entity::Fade( Event *ev )
+void Entity::ProjectileAttackEntity( Event *ev )
+void GravPathNode::Activate( Event *ev )
+void GravPathNode::Deactivate(Event *ev)
+void GravPathNode::CreatePath(Event *ev)
+void ThrowObject::Throw( const Entity *owner, float speed, const Sentient *targetent, float gravity, float throw_damage )
+bool Player::GetProjectileLaunchAngles( Vector &launchAngles, const Vector &launchPoint, const float initialSpeed, const float gravity ) const
+void PortalSurface::LocateCamera( Event *ev )
+
+Fixed: Warning C4458: declaration of targetname hides class member. Renamed to: temp_targetname
+TargetList * World::GetTargetList( const str &temp_targetname, qboolean createnew )
+void World::AddTargetEntity( const str &temp_targetname, Entity * ent )
+void World::RemoveTargetEntity( const str &temp_targetname, Entity * ent )
+Entity * World::GetNextEntity( const str &temp_targetname, Entity * ent )
+
+Fixed: Warning C4458: declaration of thread hides class member. Renamed to: temp_thread
+void ScriptSlave::DoMove( Event *ev )
+
+Fixed: Warning C4458: declaration of time hides class member. Renamed to: temp_time
+void Level::SetIntermissionAdvanceTime(float temp_time)
+
+Fixed: Warning C4458: declaration of vec hides class member. Renamed to: temp_vec
+void ScriptVariable::Var_Vector_Normalize( Event *ev )
+
+Fixed: Warning C4458: declaration of value hides class member. Renamed to: temp_value
+void ScriptVariable::setString( const char *temp_value )
+
+Fixed: Warning C4458: declaration of amount hides class member. Renamed to: temp_amount
+void Weapon::SetAmmoAmount( int temp_amount, firemode_t mode )
+void Weapon::UseAmmo( int temp_amount, firemode_t mode )
+void Weapon::DoneReloading( Event *ev )
+
+Fixed: Warning C4458: declaration of ammo hides class member. Renamed to: temp_ammo
+void Player::UpdateStats( void )
+
+Fixed: Warning C4458: declaration of activator hides class member. Renamed to: temp_activator
+void Trigger::TriggerStuff( Event *ev )
+
+Fixed: Warning C6011 Dereferencing NULL-Pointer current_ucmd.
+void Player::ClientThink( Event *ev )
+
+Fixed: Warning C6011 Dereferencing NULL-Pointer client.
+void Player::LevelCleanup( void )
+
+Fixed: Warning C6011 Dereferencing NULL-Pointer camera.
+void Player::SetPlayerViewUsingActorController( Camera *camera )
+
+Fixed: Warning C4389 ==: Conflict between signed and unsigned
+void Team::AddPlayer( Player* player )
+qboolean Archiver::Read( const char *name, qboolean file_harderror )
+void AdaptiveArmor::LoadAdaptionData( const str &name )
+
+Fixed: Warning C4456: Declaration of i hides previous local declaration.
+inline void Weapon::Archive( Archiver &arc )
+inline void Player::Archive( Archiver &arc )
+void AdaptiveArmor::_UpdateAdaption( int MeansOfDeath , float damage )
+void Player::UpdateStats( void )
+
+Fixed: Warning C26495: The Variable scriptmarker was not initialized. A Membervariable needs always to be initialized (type.6)
+class GameScriptMarker : public Class
+
+Fixed: Warning C26495: The Variable _damagetype was not initialized. A Membervariable needs always to be initialized (type.6)
+class DamageModifierDamageType : public DamageModifier
+
+Fixed: Warning C26495: The Variable _group was not initialized. A Membervariable needs always to be initialized (type.6)
+class DamageModifierGroup : public DamageModifier
+
+Fixed: Warning C26495: The Variable _actortype was not initialized. A Membervariable needs always to be initialized (type.6)
+class DamageModifierActorType : public DamageModifier
+
+Fixed: Warning C26495: The Variable _multiplier/_chance/_painBaseLine was not initialized. A Membervariable needs always to be initialized (type.6)
+class DamageModifier : public Class
+
+Fixed: Warning C26495: The Variable _sightBasedHate/_nextEvaluateTime/_evaluateInterval was not initialized. A Membervariable needs always to be initialized (type.6)
+class Strategos
+
+Fixed: Warning C26495: The Variable str::buffer was not initialized. A Membervariable needs always to be initialized (type.6)
+class __declspec( dllexport ) str
+
+Fixed: Warning C4458: declaration of count hides class member. Renamed to: temp_count
+inline void ScriptSlave::Archive( Archiver &arc )
+
+Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead.
+qboolean Actor::checkpartstate( Conditional &condition )
+void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char *dialog_name, const char *state_name, qboolean headDisplay , bool useTalk , bool important )
+const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str& context )
+
+Fixed: Warning C4996 strncpy: This function or variable may be unsafe. Using Q_strncpyz instead.
+void str::EnsureAlloced( int amount, bool keepold )
+void str::snprintf( char *dst, int size, const char *fmt, ... )
+
+Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead.
+void PuzzleObject::useEvent(Event* event)
+
+Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead.
+int World::findBrokenThing( const char *name )
+int World::worldPhysicsVarNameToIndex( const char *varName )
+
+Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead.
+void Actor::SetDialogMode( Event *ev )
+qboolean Actor::checkpartflag( Conditional &condition )
+qboolean Actor::checkVar( Conditional &condition )
+qboolean Actor::checkVarTimeDifference( Conditional &condition )
+qboolean Actor::DialogExists( const str &aliasName	)
+void Actor::AddDialogParms( DialogNode_t *dialog_node, Event *ev )
+void Actor::PlayDialog(	Event *ev )
+void Actor::SetVar( Event *ev	)
+void Actor::SetVarTime( Event *ev )
+void Actor::UseActorWeapon( Event *ev )
+void Actor::InContext( const str &theContext , bool useDefaultMinDist )
+qboolean Actor::checkGroupMememberRange( Conditional &condition )
+void Actor::SetBehaviorPackage( const str &packageName )
+Actor* Actor::GetAttachedChildActor( const str& childName )
+const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str& context )
+void Actor::AddCustomThread( const str& threadType , const str& threadName )
+bool Actor::HaveCustomThread( const str& threadType )
+void Actor::RunCustomThread( const str& threadType )
+const str Actor::GetCustomThread( const str& threadType )
+
+Fixed: Warning:	C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp
+int PlayerStat_NameToNum( const char *name )
+int EAXMode_NameToNum( const char * name )
+int MusicMood_NameToNum( const char * name )
+
+Fixed: Warning lnt-logical-bitwise-mismatch
+qboolean Player::checkatdoor( Conditional &condition )
+qboolean Player::checkputawayleft( Conditional &condition )
+qboolean Player::checkputawayright( Conditional &condition )
+qboolean Player::checkputawayboth( Conditional &condition )
+qboolean Player::checkstatename( Conditional &condition )
+void Player::GibEvent( Event *ev )
+qboolean Player::LargeShieldActive( void )
+extern "C" void G_RunFrame( int levelTime, int frameTime )
+
+Fixed: Warning lnt-logical-bitwise-mismatch
+qboolean Actor::checkcanseeenemy( Conditional &condition )
+qboolean Actor::checkcanseeplayer( Conditional &condition )
+qboolean Actor::CanJump( void )
+qboolean Actor::checkdone ( Conditional &condition )
+qboolean Actor::checkpartdead( Conditional &condition )
+qboolean Actor::checkenemyranged( Conditional &condition )
+qboolean Actor::checkplayerranged()
+
+Fixed: Warning C4458: declaration of mode hides class member. Renamed to: temp_mode
+void Actor::SetTalkWatchMode( Event *ev )
+
+Fixed: Warning C4458: declaration of currentState hides class member. Renamed to: temp_currentState
+void Actor::_printDebugInfo(const str &laststate , const str &temp_currentState , const str &legAnim , const str &torsoAnim )
+
+Fixed: Warning C4458: declaration of gravity hides class member. Renamed to: temp_gravity
+void Actor::TossThrowObject( Event *ev	)
+void World::Think( void )
+bool Player::GetProjectileLaunchAngles( Vector &launchAngles, const Vector &launchPoint, const float initialSpeed, const float temp_gravity ) const
+void ThrowObject::Throw( const Entity *temp_owner, float speed, const Sentient *targetent, float temp_gravity, float throw_damage )
+
+Fixed: Warning C4458: declaration of command hides class member. Renamed to: temp_command
+void Actor::SendCommand( Event *ev )
+
+Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles
+void Actor::MeleeEvent( Event *ev )
+qboolean Actor::checkForwardDirectionClear(float dist)
+qboolean Actor::checkRearDirectionClear(float dist)
+qboolean Actor::checkLeftDirectionClear(float dist)
+qboolean Actor::checkRightDirectionClear(float dist)
+
+Fixed: Warning C4458: declaration of flags hides class member. Renamed to: temp_flags
+void Actor::SetActorFlag( int flag, qboolean flag_value )
+qboolean Actor::GetActorFlag( int flag ) const
+void Actor::SetNotifyFlag( int flag, qboolean flag_value )
+qboolean Actor::GetNotifyFlag( int flag )
+
+Fixed: Warning C4458: declaration of part_name hides class member. Renamed to: temp_part_name
+qboolean Actor::checkpartstate( Conditional &condition )
+qboolean Actor::checkpartflag( Conditional &condition )
+qboolean Actor::checkpartdead( Conditional &condition )
+
+Fixed: Warning C4458: declaration of name hides class member. Renamed to: weaponNameOfPlayer
+qboolean Actor::checkPlayerWeaponNamed( const str& weaponNameOfPlayer )
+
+Fixed: Warning C4458: declaration of name hides class member. Renamed to: weaponNameOfEnemy
+qboolean Actor::checkEnemyWeaponNamed( const str& weaponNameOfEnemy )
+
+Fixed: Warning C4458: declaration of name hides class member. Renamed to: nameOfPart
+Actor *Actor::FindPartActor( const char *nameOfPart )
+
+Fixed: Warning C4458: declaration of name hides class member. Renamed to: weaponName
+qboolean Actor::checkUsingWeaponNamed ( const str &weaponName )
+
+Fixed: Warning C4458: declaration of name hides class member. Renamed to: nameOfOther
+void Actor::IfNearEvent( Event *ev )
+
+Fixed: Warning C4458: declaration of target hides class member. Renamed to: targetVec
+qboolean Actor::GetClosestTag( const str &tag_name, int number_of_tags, const Vector &targetVec, Vector *orig )
+
+Fixed: Warning C4458: declaration of target hides class member. Renamed to: targetEntity
+void Actor::AttackEntity( Event *ev	)
+
+Fixed: Warning C4458: declaration of target hides class member. Renamed to: targetTrigger
+qboolean Actor::_isWorkNodeValid( PathNode *node )
+
+Fixed: Warning C4459: declaration of skill hides global definition.
+void G_AddRandomBot( int team ) 
+static void G_AddBot( char *name, float skill, const char *team, const char *specialty, char *altname)
+void SV_AddBot_f( void )
+static void G_SpawnBots( char *botList, int baseDelay )
+void Player::setSkill( int temp_skill )
+
+Fixed: Warning C4458: declaration of ptr hides class member.
+inline void SafePtrBase::AddReference(Class *ptr) -> inline void SafePtrBase::AddReference(Class *temp_ptr)
+inline void SafePtrBase::RemoveReference(Class *ptr) -> inline void SafePtrBase::RemoveReference(Class *temp_ptr)
+
+Changed: Moved int inside its for loop.
+inline str::str(const str text,int start,int end)
+
+Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch.
+inline str::str(const char *text)
+inline str::str(const float num)
+inline str::str(const int num)
+inline str::str(const unsigned num)
+inline void str::append(const char *text)
+inline str& str::operator=(const char *text)
+
 Added: Suppression of warnings on windows for sscanf, strcpy, strcat
 q_shared.h -> #define _CRT_SECURE_NO_WARNINGS
 
