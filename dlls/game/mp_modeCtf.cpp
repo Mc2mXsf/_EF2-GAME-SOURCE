@@ -250,15 +250,21 @@ void ModeCaptureTheFlag::playerKilled( Player *killedPlayer, Player *attackingPl
 		if ( _playerGameData[ killedPlayer->entnum ]._currentTeam != _playerGameData[ attackingPlayer->entnum ]._currentTeam )
 		{
 			CtfFlag *ctfFlag;
-			str printString;
 
-			printString = "$$FlagCarrierKilled$$ ";
-			printString += attackingPlayer->client->pers.netname;
-			printString += " ($$";
-			printString += _playerGameData[ attackingPlayer->entnum ]._currentTeam->getName();
-			printString += "$$ $$Team$$)!";
 
-			multiplayerManager.centerPrintAllClients( printString, CENTERPRINT_IMPORTANCE_NORMAL );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4456: Declaration of printString previous local declaration. - chrissstrahl
+			//--------------------------------------------------------------
+			str temp_printString;
+			
+
+			temp_printString = "$$FlagCarrierKilled$$ ";
+			temp_printString += attackingPlayer->client->pers.netname;
+			temp_printString += " ($$";
+			temp_printString += _playerGameData[ attackingPlayer->entnum ]._currentTeam->getName();
+			temp_printString += "$$ $$Team$$)!";
+
+			multiplayerManager.centerPrintAllClients( temp_printString, CENTERPRINT_IMPORTANCE_NORMAL );
 
 			ctfFlag = findFlag( _playerCtfData[ killedPlayer->entnum ]._flag );
 
