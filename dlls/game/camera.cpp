@@ -1135,19 +1135,26 @@ float Camera::CalculateFov( void )
 		if ( currentstate.watch.watchEnt )
 		{
 			float distance;
-			float size;
+			
 			float new_fov;
 			Entity * ent;
 
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4458: declaration of size hides class member. Renamed to: temp_size - chrissstrahl
+			//--------------------------------------------------------------
+			float temp_size;
+
+
 			ent = currentstate.watch.watchEnt;
-			size = ent->maxs[ 2 ] - ent->mins[ 2 ];
-			size = ent->edict->radius / 2.0f;
+			temp_size = ent->maxs[ 2 ] - ent->mins[ 2 ];
+			temp_size = ent->edict->radius / 2.0f;
 			// cap the size
-			if ( size < 16.0f )
-				size = 16.0f;
+			if ( temp_size < 16.0f )
+				temp_size = 16.0f;
 
 			distance = Vector( ent->centroid - origin ).length();
-			new_fov = RAD2DEG( 2.0f * atan2( size, distance * auto_fov ) );
+			new_fov = RAD2DEG( 2.0f * atan2( temp_size, distance * auto_fov ) );
 			if ( new_fov > automatic_maxFOV )
 				new_fov = automatic_maxFOV;
 			else if ( new_fov < 5.0f )
