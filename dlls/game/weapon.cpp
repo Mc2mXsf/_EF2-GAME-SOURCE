@@ -2210,14 +2210,18 @@ void Weapon::Shoot( Event *ev )
 		
 		if ( temp_owner->isSubclassOf( Player ) )
 		{
-			Vector forward;
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4456: Declaration of forward hides previous local declaration. - chrissstrahl
+			//--------------------------------------------------------------
+			Vector temp_forward;
+
 
 			Player *player = (Player *)temp_owner;
 			melee_pos = player->origin + Vector( 0.0f, 0.0f, player->client->ps.viewheight );
 
-			player->GetVAngles().AngleVectors( &forward );
+			player->GetVAngles().AngleVectors( &temp_forward );
 
-			melee_end = melee_pos + forward * _meleeLength[ mode ];
+			melee_end = melee_pos + temp_forward * _meleeLength[ mode ];
 		}
 		else
 		{
