@@ -3826,7 +3826,7 @@ void CameraManager::Load( Event* ev )
 	if ( show )
 	{
 		//--------------------------------------------------------------
-		// GAMEFIX - Fixed: Warning C4458: declaration of end hides class member. Renamed to: temp_end - chrissstrahl
+		// GAMEFIX - Fixed: Warning C4458: declaration of ev hides class member. Renamed to: temp_ev - chrissstrahl
 		//--------------------------------------------------------------
 		Event * temp_ev;
 
