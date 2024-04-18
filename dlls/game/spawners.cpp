@@ -524,13 +524,18 @@ bool Spawn::checkStuck( Entity *spawn )
 
 void Spawn::setSpawnKeyValue( Event *ev )
 {
-	str key;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of key hides class member. Renamed to: temp_key - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_key;
+
+
 	str value;
 
-	key = ev->GetString( 1 );
+	temp_key = ev->GetString( 1 );
 	value = ev->GetString( 2 );
 
-	_keys.AddObject( key );
+	_keys.AddObject( temp_key );
 	_values.AddObject( value );
 }
 
