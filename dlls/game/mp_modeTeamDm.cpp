@@ -226,7 +226,10 @@ void ModeTeamDeathmatch::score( const Player *player )
 
 bool ModeTeamDeathmatch::checkGameType( const char *gameType )
 {
-	if ( stricmp( gameType, "teamdm" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( gameType, "teamdm" ) == 0 )
 		return true;
 	else
 		return false;

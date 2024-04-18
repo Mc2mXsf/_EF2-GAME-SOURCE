@@ -871,7 +871,11 @@ bool MultiplayerModeBase::parseConfigToken( const char *key, Script *buffer )
 {
 	const char *token;
 
-	if ( stricmp( key, "giveWeapon" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( key, "giveWeapon" ) == 0 )
 	{
 		if ( buffer->TokenAvailable( false ) )
 		{
@@ -882,7 +886,12 @@ bool MultiplayerModeBase::parseConfigToken( const char *key, Script *buffer )
 			return true;
 		}
 	}
-	else if ( stricmp( key, "startingWeapon" ) == 0 )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	else if ( Q_stricmp( key, "startingWeapon" ) == 0 )
 	{
 		if ( buffer->TokenAvailable( false ) )
 		{

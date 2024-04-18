@@ -1856,12 +1856,13 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 
 	//--------------------------------------------------------------
 	// GAMEFIX - g_gametype changed to correct mp_gametype - chrissstrahl
+	// GAMEFIX - Replaced 5 times - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
 	//--------------------------------------------------------------
-	if ( ( stricmp( command.c_str(), "restart" )    != 0 ) &&
-		 ( stricmp( command.c_str(), "nextmap" )    != 0 ) &&
-		 ( stricmp( command.c_str(), "map" )        != 0 ) &&
-		 ( stricmp( command.c_str(), "mp_gametype" ) != 0 ) && //was g_gametype
-		 ( stricmp( command.c_str(), "kick" )       != 0 ) )
+	if ( ( Q_stricmp( command.c_str(), "restart" )    != 0 ) &&
+		 ( Q_stricmp( command.c_str(), "nextmap" )    != 0 ) &&
+		 ( Q_stricmp( command.c_str(), "map" )        != 0 ) &&
+		 ( Q_stricmp( command.c_str(), "mp_gametype" ) != 0 ) && //was g_gametype
+		 ( Q_stricmp( command.c_str(), "kick" )       != 0 ) )
 	{
 		HUDPrint( player->entnum, "$$InvalidVote$$\n" );
 		HUDPrint( player->entnum, "$$VoteCommands$$: restart, nextmap, map <mapname>, mp_gametype <n> and kick <player>.\n" );
@@ -1872,8 +1873,9 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	
 	//--------------------------------------------------------------
 	// GAMEFIX - check for nextmap - chrissstrahl
+	// GAMEFIX - Replaced 2 times - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
 	//--------------------------------------------------------------
-	if ( stricmp( command.c_str(), "map" ) == 0 || stricmp(command.c_str(), "nextmap") == 0)
+	if ( Q_stricmp( command.c_str(), "map" ) == 0 || Q_stricmp(command.c_str(), "nextmap") == 0)
 	{
 		str fullMapName;
 		str printString;
@@ -1891,8 +1893,12 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	}
 
 	// Build the vote string for later use and to tell all clients about
-
-	if ( stricmp( command.c_str(), "map" ) == 0 )
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( command.c_str(), "map" ) == 0 )
 	{
 		// If a map command was issued, preserve the nextmap cvar so we don't lose it
 		if ( strlen( sv_nextmap->string ) )
@@ -2076,9 +2082,14 @@ void MultiplayerManager::joinTeam( Player *player, const str &teamName )
 
 	// Fix up the teamName
 
-	if ( stricmp( teamName.c_str(), "Blue" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( teamName.c_str(), "Blue" ) == 0 )
 		realTeamName = "Blue";
-	else if ( stricmp( teamName.c_str(), "Red" ) == 0 )
+	else if ( Q_stricmp( teamName.c_str(), "Red" ) == 0 )
 		realTeamName = "Red";
 	else
 		realTeamName = teamName;
@@ -3630,7 +3641,10 @@ bool MultiplayerManager::isValidPlayerModel( Player *player, str modelToUse )
 	{
 		for( i = 0; i < tikicmds.num_cmds; i++ )
 		{
-			if ( stricmp( tikicmds.cmds[ i ].args[ 0 ], "validPlayerModel" ) == 0 )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+			//--------------------------------------------------------------
+			if (Q_stricmp( tikicmds.cmds[ i ].args[ 0 ], "validPlayerModel" ) == 0 )
 			{
 				validPlayerModel = true;
 				break;

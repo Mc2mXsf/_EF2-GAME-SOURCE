@@ -355,7 +355,11 @@ void AwardSystem::awardTeamAward( AfterMatchTeamAwardType teamAward, const char 
 
 		// Make sure this player is on the correct team
 
-		if ( stricmp( team->getName().c_str(), teamName ) != 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		if (Q_stricmp( team->getName().c_str(), teamName ) != 0 )
 			continue;
 
 		// Get the number to use for comparision purposes
@@ -431,15 +435,21 @@ void AwardSystem::playerEventNotification( const char *eventName, const char *ev
 {
 	// See if we care about this player notification
 
-	if ( stricmp( eventName, "flag-captured" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 3 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( eventName, "flag-captured" ) == 0 )
 	{
 		_playerAwardData[ eventPlayer->entnum ]._numFlagCaptures++;
 	}
-	else if ( stricmp( eventName, "flag-returned" ) == 0 )
+	else if ( Q_stricmp( eventName, "flag-returned" ) == 0 )
 	{
 		_playerAwardData[ eventPlayer->entnum ]._numFlagReturns++;
 	}
-	else if ( stricmp( eventName, "flag-guarded" ) == 0 )
+	else if ( Q_stricmp( eventName, "flag-guarded" ) == 0 )
 	{
 		_playerAwardData[ eventPlayer->entnum ]._numFlagGuardingKills++;
 	}

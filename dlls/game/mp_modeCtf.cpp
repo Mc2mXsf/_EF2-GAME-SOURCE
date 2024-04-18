@@ -128,9 +128,15 @@ bool ModeCaptureTheFlag::shouldKeepItem( MultiplayerItem *item )
 		if ( !multiplayerManager.checkRule ( "keepflags", true ) )
 			return false;
 
-		if ( ( stricmp( item->getName().c_str() + 8, "red" ) == 0 ) ||
-			 ( stricmp( item->getName().c_str() + 8, "blue" ) == 0 ) || 
-			 ( stricmp( item->getName().c_str() + 8, "base" ) == 0 ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
+		if (( Q_stricmp( item->getName().c_str() + 8, "red" ) == 0 ) ||
+			( Q_stricmp( item->getName().c_str() + 8, "blue" ) == 0 ) ||
+			( Q_stricmp( item->getName().c_str() + 8, "base" ) == 0 ) )
 		{
 			// It is a red or blue flag so keep it
 
@@ -1035,7 +1041,10 @@ void ModeCaptureTheFlag::score( const Player *player )
 
 bool ModeCaptureTheFlag::checkGameType( const char *gameType )
 {
-	if ( stricmp( gameType, "ctf" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( gameType, "ctf" ) == 0 )
 		return true;
 	else
 		return false;
@@ -1064,7 +1073,11 @@ bool ModeCaptureTheFlag::doesPlayerHaveItem( Player *player, const char *itemNam
 			{
 				// See if this is the flag in question
 
-				if ( stricmp( ctfFlag->_realFlag->getName().c_str(), itemName ) == 0 )
+
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+				//--------------------------------------------------------------
+				if ( Q_stricmp( ctfFlag->_realFlag->getName().c_str(), itemName ) == 0 )
 				{
 					return true;
 				}
@@ -1147,9 +1160,14 @@ int ModeCaptureTheFlag::getStat( Player *player, int statNum, int value )
 
 void ModeCaptureTheFlag::playerEventNotification( const char *eventName, const char *eventItemName, Player *eventPlayer )
 {
-	if ( stricmp( eventName, "use-HoldableItem" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( eventName, "use-HoldableItem" ) == 0 )
 	{
-		if ( stricmp( eventItemName, "Transporter" ) == 0 )
+		if ( Q_stricmp( eventItemName, "Transporter" ) == 0 )
 		{
 			dropFlag( eventPlayer );
 		}

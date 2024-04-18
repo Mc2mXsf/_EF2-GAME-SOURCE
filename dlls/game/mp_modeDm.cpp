@@ -197,7 +197,10 @@ void ModeDeathmatch::init( int maxPlayers )
 
 bool ModeDeathmatch::checkGameType( const char *gameType )
 {
-	if ( stricmp( gameType, "dm" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( gameType, "dm" ) == 0 )
 		return true;
 	else
 		return false;
@@ -224,7 +227,10 @@ int ModeDeathmatch::getHighestPoints( int entnum )
 
 bool ModeDeathmatch::checkRule( const char *rule, bool defaultValue, Player *player )
 {
-	if ( stricmp( rule, "usingIndividualScore" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( rule, "usingIndividualScore" ) == 0 )
 		return true;
 	else
 		return defaultValue;

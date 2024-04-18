@@ -399,7 +399,10 @@ Entity *ModeTeamBase::getSpawnPoint( Player *player )
 
 	if ( !numSpawnPoints && multiplayerManager.checkRule( "spawnpoints-team", _useTeamSpawnpoints ) && _playerGameData[ player->entnum ]._currentTeam )
 	{
-		if ( stricmp( _playerGameData[ player->entnum ]._currentTeam->getName(), "red" ) == 0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		if ( Q_stricmp( _playerGameData[ player->entnum ]._currentTeam->getName(), "red" ) == 0 )
 			spawnpointName = "red";
 		else
 			spawnpointName = "blue";
@@ -856,7 +859,12 @@ Team* ModeTeamBase::_findTeamByName( const str& teamName )
 	for (int idx = 1; idx <= _teamList.NumObjects(); idx++)
 	{
 		team = _teamList.ObjectAt(idx);
-		if ( stricmp( team->getName().c_str(), teamName.c_str() ) == 0 )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		if ( Q_stricmp( team->getName().c_str(), teamName.c_str() ) == 0 )
 		{
 			return team ;
 		}

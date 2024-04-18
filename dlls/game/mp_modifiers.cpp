@@ -79,7 +79,10 @@ bool ModifierInstantKill::canGivePlayerItem( int entnum, const str &itemName )
 
 bool ModifierInstantKill::checkRule( const char *rule, bool defaultValue, Player *player )
 {
-	if ( stricmp( rule, "dropWeapons" ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( rule, "dropWeapons" ) == 0 )
 		return false;
 	else
 		return defaultValue;
@@ -322,14 +325,19 @@ bool ModifierDestruction::shouldKeepItem( MultiplayerItem *item )
 	Event *event;
 
 	// See if we care about this item
-
 	if ( strnicmp( item->getName().c_str(), "DestructionObject", sizeof( "DestructionObject" ) - 1 ) == 0 )
 	{
 		// It's a destruction object
 
-		if ( stricmp( item->getName().c_str(), "DestructionObject-red" ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( item->getName().c_str(), "DestructionObject-red" ) == 0 )
 			_redDestructionObject = item;
-		else if ( stricmp( item->getName().c_str(), "DestructionObject-blue" ) == 0 )
+		else if ( Q_stricmp( item->getName().c_str(), "DestructionObject-blue" ) == 0 )
 			_blueDestructionObject = item;
 
 		// Change the multiplayer item to suit our needs
@@ -348,9 +356,15 @@ bool ModifierDestruction::shouldKeepItem( MultiplayerItem *item )
 			item->setHealth( _defaultObjectHealth );
 		}
 
-		if ( stricmp( item->getName().c_str(), "DestructionObject-red" ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( item->getName().c_str(), "DestructionObject-red" ) == 0 )
 			_redObjectLasthealth = item->health;
-		else if ( stricmp( item->getName().c_str(), "DestructionObject-blue" ) == 0 )
+		else if ( Q_stricmp( item->getName().c_str(), "DestructionObject-blue" ) == 0 )
 			_blueObjectLasthealth = item->health;
 
 
