@@ -1284,7 +1284,7 @@ void DrivableVehicle::Killed(Event *ev)
 	{
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C4458: declaration of dir hides class member. Renamed to: temp_dir - chrissstrahl
-		// GAMEFIX - Fixed: Warning C4458: declaration of event hides class member. Renamed to: temp_event - chrissstrahl
+		// GAMEFIX - Fixed: Warning C4456: Declaration of event hides previous local declaration. - chrissstrahl
 		//--------------------------------------------------------------
 		Vector temp_dir;
 		Event * temp_event;
