@@ -2904,14 +2904,18 @@ void ModifierSpecialties::setupSpecialty( Player *player, SpecialtyType specialt
 
 	if ( armorToGive > 0.0f )
 	{
-		Event *armorEvent;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4456: Declaration of armorEvent previous local declaration. - chrissstrahl
+		//--------------------------------------------------------------
+		Event *temp_armorEvent;
 
-		armorEvent = new Event( EV_Sentient_GiveArmor );
-		armorEvent->AddString( "BasicArmor" );
-		armorEvent->AddFloat( armorToGive );
-		armorEvent->AddInteger( false );
 
-		player->ProcessEvent( armorEvent );	
+		temp_armorEvent = new Event( EV_Sentient_GiveArmor );
+		temp_armorEvent->AddString( "BasicArmor" );
+		temp_armorEvent->AddFloat( armorToGive );
+		temp_armorEvent->AddInteger( false );
+
+		player->ProcessEvent(temp_armorEvent);
 	}
 
 	// Tell the player his specialty
