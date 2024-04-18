@@ -1090,26 +1090,26 @@ void Script::LoadFile( const char *name )
 	// GAMEFIX - Fixed: Warning C4458: declaration of length hides class member. Renamed to: temp_length - chrissstrahl
 	//--------------------------------------------------------------
 	byte        *temp_buffer;
-	int			length;
+	int			temp_length;
 
 	
 	Close();
 	
-	length = gi.FS_ReadFile( name, ( void ** )&tempbuf, true );
-	if ( length < 0 )
+	temp_length = gi.FS_ReadFile( name, ( void ** )&tempbuf, true );
+	if ( temp_length < 0 )
 	{
 		error( "LoadFile", "Couldn't load %s\n", name );
 	}
 	// create our own space
-	temp_buffer = ( byte * )gi.Malloc( length );
+	temp_buffer = ( byte * )gi.Malloc( temp_length );
 	// copy the file over to our space
-	memcpy( temp_buffer, tempbuf, length );
+	memcpy( temp_buffer, tempbuf, temp_length );
 	// free the file
 	gi.FS_FreeFile( tempbuf );
 	
 	const_buffer = ( char * )temp_buffer;
 	
-	Parse( const_buffer, length, name );
+	Parse( const_buffer, temp_length, name );
 	releaseBuffer = true;
 }
 
