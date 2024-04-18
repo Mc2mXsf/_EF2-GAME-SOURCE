@@ -460,12 +460,15 @@ int Interpreter::EnterFunction( dfunction_t *f )
 CleanupStack
 ====================
 */
-void Interpreter::CleanupStack( int localstack_used, int oldstacktop )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of localstack_used hides class member. Renamed to: temp_localstack_used - chrissstrahl
+//--------------------------------------------------------------
+void Interpreter::CleanupStack( int temp_localstack_used, int oldstacktop )
 {
 	int i;
 	
 	// delete any strings that were on the stack
-	for( i = localstack_used; i < oldstacktop; i++ ) 
+	for( i = temp_localstack_used; i < oldstacktop; i++ ) 
 	{
 		if ( localstack_type[ i ] == ev_string )
 			program->FreeString( localstack[ i ] );
