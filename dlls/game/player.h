@@ -122,11 +122,18 @@ class FinishingMove : public Class
 		~FinishingMove() { }
 
 		str statename;
-		int direction;
-		float coneangle;
-		float distance;
-		float chance;
-		float enemyyaw;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int direction = 0;
+		float coneangle = 0.0f;
+		float distance = 0.0f;
+		float chance = 0.0f;
+		float enemyyaw = 0.0f;
+
+
 		void Archive( Archiver &arc );
 	};
 

@@ -456,7 +456,14 @@ protected:
 	str				pathName;
 	CameraPtr		cam;
 	qboolean		cameraPath_dirty;
-	float			playbackStartTime;
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float			playbackStartTime = 0.0f;
+
+
 	qboolean		isPreviewPlaybackRunning;
 
 	void			NewPath( Event* ev );

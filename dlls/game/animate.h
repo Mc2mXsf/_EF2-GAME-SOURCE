@@ -40,6 +40,12 @@ typedef SafePtr<Animate> AnimatePtr;
 class Animate : public Listener
 	{
    private:
+
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       // 
+       // pretty much all vars except the str
+       //--------------------------------------------------------------
 		Event					*animDoneEvent = nullptr;
 		Event					*torso_animDoneEvent = nullptr;
 
@@ -52,8 +58,8 @@ class Animate : public Listener
       float             legs_frametime = 0.0f;
       float             torso_frametime = 0.0f;
 
-      int               legs_numframes = 0.0f;
-      int               torso_numframes = 0.0f;
+      int               legs_numframes = 0;
+      int               torso_numframes = 0;
 
       str               currentAnim;
 	  float				oldAnimationRate = 0.0f;
@@ -74,7 +80,7 @@ class Animate : public Listener
 	public:
 
 		// Animation variables
-      Vector            frame_delta;   // current movement from this frame
+      Vector            frame_delta = Vector( 0.0f, 0.0f, 0.0f );   // current movement from this frame
       CLASS_PROTOTYPE( Animate );
 							   Animate();
 								Animate( Entity * ent );

@@ -165,9 +165,15 @@ class Weapon : public Item
 		friend			class Player;
 		friend			class WeaponDualWield;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//
+		// Initialized all vars exect:  str
+		//--------------------------------------------------------------
 	private:
-		qboolean		attached;					// Is this weapon attached to something?
-		float			nextweaponsoundtime;		// The next time this weapon should sound off
+		qboolean		attached = qtrue;					// Is this weapon attached to something?
+		float			nextweaponsoundtime = 0.0f;		// The next time this weapon should sound off
 		str				current_attachToTag;		// The current name of the tag to attach itself to on the owner
 		str				left_attachToTag;			// Tag to use when weapon is wielded in the left hand
 		str				right_attachToTag;			// ...right hand
@@ -175,156 +181,156 @@ class Weapon : public Item
 		str				leftholster_attachToTag;	// Tag to use when weapon is put away from left hand
 		str				rightholster_attachToTag;	// ...right hand
 		str				dualholster_attachToTag;	// ...dual handed
-		float			lastScale;					// Used for attaching to holster
-		Vector			lastAngles;					// Used for attaching to holster
-		qboolean		lastValid;					// Used for attaching to holster
-		qboolean		auto_putaway;				// Weapon will put itself away when out of ammo
-		qboolean		use_no_ammo;				// Weapon will be able to be used when it has no ammo
-		qboolean		crosshair;					// Whether or not to display a crosshair with this weapon
-		qboolean		torsoaim;					// Whether or not to torso aim with this weapon
-		qboolean		special_move;				// Allows special movement or not
-		EntityPtr		aim_target;					// Current target of the weapon
-		firemode_t		curmode;					// The current weapon mode
-		firemode_t		maxmode;					// The maximum valid mode for this weapon
-		qboolean		switchmode;					// Speicifies that this is a switch mode weapon
-		qboolean		targetidleflag;				// Flag to specify if we have just left a target idle
-		int				chx;						// x screen coord crosshair offset
-		int				chy;						// y screen coord crosshair offset
-		Vector			realvieworg;				// real view origin (third person camera loc)
-		qboolean		thirdperson;				// whether or not the player is in 3rd person
-		bool			useActorAiming;
-		float           _powerRating;              // how much damage per second the weapon will do
-		float           _projectileDamage;         // how much the projectile launched from this weapon will do -- needs to match the damage in the projectile .tik file ( used by AI )
-		float           _projectileSpeed;          // how fast the projectile launched from the weapon will move -- needs to match the damage in the projectile .tik file ( used by AI )
-		bool			_arcProjectile;			   // whether or not to arc the projectile
-		float			_lowArcRange;				// range at which the projectile will switch from high trajectory to normal
-		bool			_playMissSound;				//Play snd_ricochet if the bullet impact hits a non-damagable entity
+		float			lastScale = 0.0f;			// Used for attaching to holster
+		Vector			lastAngles = Vector(0.0f, 0.0f, 0.0f); // Used for attaching to holster
+		qboolean		lastValid = qfalse;			// Used for attaching to holster
+		qboolean		auto_putaway = qfalse;		// Weapon will put itself away when out of ammo
+		qboolean		use_no_ammo = qfalse;		// Weapon will be able to be used when it has no ammo
+		qboolean		crosshair = qtrue;			// Whether or not to display a crosshair with this weapon
+		qboolean		torsoaim = qtrue;			// Whether or not to torso aim with this weapon
+		qboolean		special_move = qfalse;		// Allows special movement or not
+		EntityPtr		aim_target = nullptr;		// Current target of the weapon
+		firemode_t		curmode = FIRE_MODE1;		// The current weapon mode
+		firemode_t		maxmode = FIRE_MODE1;		// The maximum valid mode for this weapon
+		qboolean		switchmode = qfalse;		// Speicifies that this is a switch mode weapon
+		qboolean		targetidleflag = qfalse;	// Flag to specify if we have just left a target idle
+		int				chx = 0;					// x screen coord crosshair offset
+		int				chy = 0;					// y screen coord crosshair offset
+		Vector			realvieworg = Vector(0.0f, 0.0f, 0.0f); // real view origin (third person camera loc)
+		qboolean		thirdperson = qfalse;		// whether or not the player is in 3rd person
+		bool			useActorAiming = false;
+		float           _powerRating = 0.0f;       // how much damage per second the weapon will do
+		float           _projectileDamage = 0.0f;  // how much the projectile launched from this weapon will do -- needs to match the damage in the projectile .tik file ( used by AI )
+		float           _projectileSpeed = 0.0f;   // how fast the projectile launched from the weapon will move -- needs to match the damage in the projectile .tik file ( used by AI )
+		bool			_arcProjectile = false;			   // whether or not to arc the projectile
+		float			_lowArcRange = 0.0f;		// range at which the projectile will switch from high trajectory to normal
+		bool			_playMissSound = true;	    //Play snd_ricochet if the bullet impact hits a non-damagable entity
 
 		Container<EntityPtr> meleeVictims;			// Melee victim list
 
 	protected:
-		float			maxrange;					// maximum effective firing distance (for AI)
-		float			minrange;					// minimum safe firing distance (for AI)
+		float			maxrange = 0.0f;			// maximum effective firing distance (for AI)
+		float			minrange = 0.0f;			// minimum safe firing distance (for AI)
 		str 			viewmodel;					// the viewmodel of the weapon
-		weaponstate_t	weaponstate;				// current state of the weapon
-		int 			rank;						// rank of the weapon (relative to other weapons)
-		int 			order;						// The order of this weapon in the inventory
-		SentientPtr 	last_owner; 				// The last owner of the weapon
-		float			last_owner_trigger_time;	// The time when the last owner may re-pickup this weapon
-		qboolean		notdroppable;				// makes the weapon not able to be dropped
-		int 			aimanim;					// The aim animation to use for this weapon (so it shoots straight)
-		int 			aimframe;					// The aim frame to use for this weapon (so it shoots straight)
-		Vector			leftHolsterAngles;			// Angles to set the weapon to when it's holstered
-		Vector			rightHolsterAngles; 		// Angles to set the weapon to when it's holstered
-		Vector			dualHolsterAngles;			// Angles to set the weapon to when it's holstered
-		float			holsterScale;				// Scale the weapon should be set to when it's holstered
-		float			_weildedScale;
-		qboolean		quiet;						// Makes the weapon not alert actors
-		float			next_noise_time;			// next time weapon will alert actors
-		float			next_noammo_time;			// next time we can play out of ammo sound
-		int 			burstcount; 				// The current amount of burst ammo used
-		int 			burstcountmax;				// Max amount of ammo for a burst
+		weaponstate_t	weaponstate = WEAPON_ANIMATING; // current state of the weapon
+		int 			rank = 0;					// rank of the weapon (relative to other weapons)
+		int 			order = 0;					// The order of this weapon in the inventory
+		SentientPtr 	last_owner = nullptr;		// The last owner of the weapon
+		float			last_owner_trigger_time = 0.0f;	// The time when the last owner may re-pickup this weapon
+		qboolean		notdroppable = qfalse;      // makes the weapon not able to be dropped
+		int 			aimanim = 0;				// The aim animation to use for this weapon (so it shoots straight)
+		int 			aimframe = 0;				// The aim frame to use for this weapon (so it shoots straight)
+		Vector			leftHolsterAngles = Vector(0.0f, 0.0f, 0.0f); // Angles to set the weapon to when it's holstered
+		Vector			rightHolsterAngles = Vector(0.0f, 0.0f, 0.0f); // Angles to set the weapon to when it's holstered
+		Vector			dualHolsterAngles = Vector(0.0f, 0.0f, 0.0f); // Angles to set the weapon to when it's holstered
+		float			holsterScale = 0.0f;		// Scale the weapon should be set to when it's holstered
+		float			_weildedScale = 0.0f;
+		qboolean		quiet = qfalse;				// Makes the weapon not alert actors
+		float			next_noise_time = 0.0f;		// next time weapon will alert actors
+		float			next_noammo_time = 0.0f;	// next time we can play out of ammo sound
+		int 			burstcount = 0;				// The current amount of burst ammo used
+		int 			burstcountmax = 0;			// Max amount of ammo for a burst
 
 		// Each of these arrays is used to describe the properties of the weapon
 		// in its primary(index 0) and alternate(index 1) mode
 
 		str 			ammo_type[MAX_FIREMODES];					// The type of ammo used
-		int 			ammorequired[MAX_FIREMODES];				// The amount of ammo required to fire this weapon
-		int 			startammo[MAX_FIREMODES];					// The starting amount of ammo when the weapon is picked up
-		int 			_ammoBoost[ MAX_FIREMODES ];
+		int 			ammorequired[MAX_FIREMODES] = { 0 };	    // The amount of ammo required to fire this weapon
+		int 			startammo[MAX_FIREMODES] = { 0 };			// The starting amount of ammo when the weapon is picked up
+		int 			_ammoBoost[ MAX_FIREMODES ] = { 0 };
 		str 			projectileModel[MAX_FIREMODES];				// The model of the projectile fired
-		float			bulletdamage[MAX_FIREMODES];				// The amount of damate a single bullet causes
-		float			bulletcount[MAX_FIREMODES];					// The number of bullets the weapon fires
-		float			bulletrange[MAX_FIREMODES];					// The range of the bullet
-		float			bulletknockback[MAX_FIREMODES];				// The amount of knockback a bullet causes
-		float			projectilespeed[MAX_FIREMODES];				// The speed of the projectile fired
-		Vector			bulletspread[MAX_FIREMODES];				// The amount of spread bullets can have
-		Vector			endbulletspread[MAX_FIREMODES];				// The final bullet spread (if different from initial) and time interval (in .z)
-		firetype_t		firetype[MAX_FIREMODES];					// The type of fire (projectile or bullet)
-		int 			ammo_clip_size[MAX_FIREMODES];				// The amount of rounds the clip can hold
-		int 			ammo_in_clip[MAX_FIREMODES];				// The current amount of ammo in the clip
-		float			max_charge_time[MAX_FIREMODES];				// The max amount of time the weapon may be charged.
-		meansOfDeath_t	meansofdeath[MAX_FIREMODES];				// The means of death for this mode
-		qboolean		loopfire[MAX_FIREMODES];					// The weapon loopfires and will not idle when shooting
+		float			bulletdamage[MAX_FIREMODES] = { 0.0f };		// The amount of damate a single bullet causes
+		float			bulletcount[MAX_FIREMODES] = { 0.0f };		// The number of bullets the weapon fires
+		float			bulletrange[MAX_FIREMODES] = { 0.0f };		// The range of the bullet
+		float			bulletknockback[MAX_FIREMODES] = { 0.0f };	// The amount of knockback a bullet causes
+		float			projectilespeed[MAX_FIREMODES] = { 0.0f };	// The speed of the projectile fired
+		Vector			bulletspread[MAX_FIREMODES] = { Vector(0.0f, 0.0f, 0.0f) }; // The amount of spread bullets can have
+		Vector			endbulletspread[MAX_FIREMODES] = { Vector(0.0f, 0.0f, 0.0f) }; // The final bullet spread (if different from initial) and time interval (in .z)
+		firetype_t		firetype[MAX_FIREMODES] = { FT_NONE };		// The type of fire (projectile or bullet)
+		int 			ammo_clip_size[MAX_FIREMODES] = { 0 };		// The amount of rounds the clip can hold
+		int 			ammo_in_clip[MAX_FIREMODES] = { 0 };		// The current amount of ammo in the clip
+		float			max_charge_time[MAX_FIREMODES] = { 0.0f };	// The max amount of time the weapon may be charged.
+		meansOfDeath_t	meansofdeath[MAX_FIREMODES] = { MOD_LIGHTSWORD }; // The means of death for this mode
+		qboolean		loopfire[MAX_FIREMODES] = { qfalse };		// The weapon loopfires and will not idle when shooting
 		//qboolean		fullanimfire[MAX_FIREMODES];				// The weapon will play full fire anim even if key is released
-		int 			action_level_increment[MAX_FIREMODES];		// Increments the action level everytime the weapon is fired
+		int 			action_level_increment[MAX_FIREMODES] = { 0 }; // Increments the action level everytime the weapon is fired
 		str 			worldhitspawn[MAX_FIREMODES];				// The models to spawn when the weapon strikes the world
-		float			next_fire_time[MAX_FIREMODES];				// The next time the weapon can fire
-		float			fire_timer[MAX_FIREMODES];					// The times for each fire mode
-		float			accuracy[MAX_FIREMODES][MAX_ACCURACYTYPES]; // Accuracy values for this weapon
-		qboolean		burstmode[MAX_FIREMODES];					// This mode is a burst fire mode
-		float			_burstModeDelay[MAX_FIREMODES];
-		float			shootingMoveSpeedModifier[MAX_FIREMODES];	// Move speed modifier while shooting
+		float			next_fire_time[MAX_FIREMODES] = { 0.0f };	// The next time the weapon can fire
+		float			fire_timer[MAX_FIREMODES] = { 0.0f };		// The times for each fire mode
+		float			accuracy[MAX_FIREMODES][MAX_ACCURACYTYPES] = { 0.0f }; // Accuracy values for this weapon
+		qboolean		burstmode[MAX_FIREMODES] = { qfalse };		// This mode is a burst fire mode
+		float			_burstModeDelay[MAX_FIREMODES] = { 0.0f };
+		float			shootingMoveSpeedModifier[MAX_FIREMODES] = { 0.0f }; // Move speed modifier while shooting
 
-		float			_viewShakeMagnitude[MAX_FIREMODES];
-		float			_viewShakeDuration[MAX_FIREMODES];
-		Vector			_viewMinShake[MAX_FIREMODES];
-		Vector			_viewMaxShake[MAX_FIREMODES];
-		bool			_viewShakeOverride[ MAX_FIREMODES ];
-		bool			_noAmmoMode[MAX_FIREMODES];
+		float			_viewShakeMagnitude[MAX_FIREMODES] = { 0.0f };
+		float			_viewShakeDuration[MAX_FIREMODES] = { 0.0f };
+		Vector			_viewMinShake[MAX_FIREMODES] = { Vector(0.0f, 0.0f, 0.0f) };
+		Vector			_viewMaxShake[MAX_FIREMODES] = { Vector(0.0f, 0.0f, 0.0f) };
+		bool			_viewShakeOverride[ MAX_FIREMODES ] = { false };
+		bool			_noAmmoMode[MAX_FIREMODES] = { false };
 
-		bool			_noDelay[MAX_FIREMODES];
-		int				_chargedModels[MAX_FIREMODES];
+		bool			_noDelay[MAX_FIREMODES] = { false };
+		int				_chargedModels[MAX_FIREMODES] = { 0 };
 
 		int				_spreadAnims[ MAX_FIREMODES ];
-		float			_spreadTime[ MAX_FIREMODES ];
+		float			_spreadTime[ MAX_FIREMODES ] = { 0.0f };
 
-		float			_meleeWidth[ MAX_FIREMODES ];
-		float			_meleeHeight[ MAX_FIREMODES ];
-		float			_meleeLength[ MAX_FIREMODES ];
+		float			_meleeWidth[ MAX_FIREMODES ] = { 0.0f };
+		float			_meleeHeight[ MAX_FIREMODES ] = { 0.0f };
+		float			_meleeLength[ MAX_FIREMODES ] = { 0.0f };
 
-		Vector			_fireOffset[ MAX_FIREMODES ];
+		Vector			_fireOffset[ MAX_FIREMODES ] = { Vector(0.0f, 0.0f, 0.0f) };
 
-		int				_regenAmount[ MAX_FIREMODES ];
-		float			_regenTime[ MAX_FIREMODES ];
-		bool			_regenOnlyWhenIdle[ MAX_FIREMODES ];
-		float			_nextRegenTime[ MAX_FIREMODES ];
+		int				_regenAmount[ MAX_FIREMODES ] = { 0 };
+		float			_regenTime[ MAX_FIREMODES ] = { 0.0f };
+		bool			_regenOnlyWhenIdle[MAX_FIREMODES] = { false };
+		float			_nextRegenTime[ MAX_FIREMODES ] = { 0.0f };
      
-		float			_maxViewShakeChange;
+		float			_maxViewShakeChange = 0.0f;
 
-		float			startfiretime;								// The time that the trigger was first depressed in an anim
+		float			startfiretime = 0.0f;						// The time that the trigger was first depressed in an anim
 		int				autoAimTargetSelectionAngle;				// Whether or not the weapon will autoaim ( and the angle used to determine autoaiming)
 		int				autoAimLockonAngle;							// Angle within which a target will be locked on to, allowing 
-		float			charge_fraction;	// Fraction of a charge up time
+		float			charge_fraction = 0.0f;	// Fraction of a charge up time
 		qboolean		putaway;			// This is set to true by the state system to signal a weapon to be putaway
 		firemode_t		firemodeindex; 		// This is used as an internal index to indicate which mode to apply commands to
 		weaponhand_t	hand;				// which hand the weapon may be wielded in
 
-		float			reticuletime;		// Time it takes the reticule to settle.
-		float			zoomfov;			// zoomfov for this weapon
-		float			_lastZoomFov;
-		float			startzoom;			// the zoom fov to start at.
-		float			endzoom;			// the zoom fov to end at
-		float			zoomtime;			// the amount of time to go from start zoom to end zoom
-		float			startzoomtime;		// the start time of the zoom
-		int 			aimtype;			// What accuracy modifiers we are using
-		qboolean		usesameclip;		// Use the same clip for both fire modes
-		float			chargetime; 		// Current charge time
-		qboolean		targetidle; 		// Weapon has a specific target idle anim
-		qboolean		donefiring;			// Whether or not the weapon is done firing;
+		float			reticuletime = 0.0f;// Time it takes the reticule to settle.
+		float			zoomfov = 0.0f;		// zoomfov for this weapon
+		float			_lastZoomFov = 0.0f;
+		float			startzoom = 0.0f;	// the zoom fov to start at.
+		float			endzoom = 0.0f;		// the zoom fov to end at
+		float			zoomtime = 0.0f;	// the amount of time to go from start zoom to end zoom
+		float			startzoomtime = 0.0f;// the start time of the zoom
+		int 			aimtype = 0;		// What accuracy modifiers we are using
+		qboolean		usesameclip = qfalse; // Use the same clip for both fire modes
+		float			chargetime = 0.0f;	// Current charge time
+		qboolean		targetidle = qfalse;// Weapon has a specific target idle anim
+		qboolean		donefiring = qfalse;// Whether or not the weapon is done firing;
 
-		qboolean		zoomed;
-		int 			targetingSkin;
-		int 			shootingSkin;
-		int 			_fullAmmoSkin;
-		firemode_t		_fullAmmoMode;
-		float			defaultMoveSpeedModifier;
+		qboolean		zoomed = qfalse;
+		int 			targetingSkin = 0;
+		int 			shootingSkin = 0;
+		int 			_fullAmmoSkin = 0;
+		firemode_t		_fullAmmoMode = FIRE_ERROR;
+		float			defaultMoveSpeedModifier = 0.0f;
 
-		Vector			viewShake;
+		Vector			viewShake = Vector(0.0f, 0.0f, 0.0f);
 
-		bool			_controllingProjectile;
-		bool			_controllingProjectileHidden;
+		bool			_controllingProjectile = false;
+		bool			_controllingProjectileHidden = false;
 		str				_controlEmitterName;
 		str				_controlSoundName;
-		bool			_canInterruptFiringState;
+		bool			_canInterruptFiringState = false;
 
-		ZoomStage		_zoomStage;
+		ZoomStage		_zoomStage = ZOOM_NORMAL_FOV;
 
-		bool			_autoReload;
+		bool			_autoReload = false;
 
-		bool			_allowAutoSwitch;
+		bool			_allowAutoSwitch = false;
 
-		float			_nextSwitchTime;
+		float			_nextSwitchTime = 0.0f;
 
 
 		void			SetMaxRangeEvent( Event *ev );

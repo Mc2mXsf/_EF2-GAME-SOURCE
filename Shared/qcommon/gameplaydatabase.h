@@ -72,9 +72,15 @@ private:
 	str					_objName ;
 	str					_propName ;
 	str					_stringValue ;
-	float				_floatValue ;
-	Vector				_vectorValue ;
-	GameplayValueType	_type ;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float				_floatValue = 0.0f;
+	Vector				_vectorValue = Vector(0.0f, 0.0f, 0.0f);
+	GameplayValueType	_type = GameplayValueType::GAMEPLAY_VALUE_UNSPECIFIED;
+	
 	
 public:
 
