@@ -411,44 +411,45 @@ class HorseVehicle : public DrivableVehicle
 		
 	
 	//Member Vars
-	private:		
+	private:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		// Initialized all variables with some base values, before all where empty
+		//--------------------------------------------------------------
+		float            _baseYaw = 0.0f;
+
+		float				  _driverYaw = 0.0f;
+		float				  _lastYaw = 0.0f;
+		float				  _minYawThreshold = 0.0f;
+		float				  _maxYawThreshold = 0.0f;
 		
-		float            _baseYaw;
+		float				  _driverPitch = 0.0f;
+		float				  _lastPitch = 0.0f;
+		float				  _minPitchThreshold = 0.0f;
+		float				  _maxPitchThreshold = 0.0f;
 
-		float				  _driverYaw;
-		float				  _lastYaw;
-		float				  _minYawThreshold;
-		float				  _maxYawThreshold;
+		float				  _forcedForwardSpeed = 0.0f;
+		float				  _jumptime = 0.0f;
 		
-		float				  _driverPitch;
-		float				  _lastPitch;
-		float				  _minPitchThreshold;
-		float				  _maxPitchThreshold;
+		qboolean			  _jumpflag = qfalse;
+		qboolean			  _jumped = qfalse;
+		float				  _jumpSpeed = 0.0f;
 
-		float				  _forcedForwardSpeed;
-		float				  _jumptime;
-		
-		qboolean			  _jumpflag;
-		qboolean			  _jumped;
-		float				  _jumpSpeed;
+		qboolean         _animDone = qfalse;
+		qboolean         _driverAnimDone = qfalse;
 
-		qboolean         _animDone;
-		qboolean         _driverAnimDone;
-
-		float            _holdtime;
-		jumpMode_t       _jumpmode;
-		duckMode_t       _duckmode;
+		float            _holdtime = 0.0f;
+		jumpMode_t       _jumpmode = JUMPMODE_DONE;
+		duckMode_t       _duckmode = DUCKMODE_DONE;
 	
-		qboolean         _duckflag;
-		qboolean         _ducked;
-		qboolean         _duckheld;
+		qboolean         _duckflag = qfalse;
+		qboolean         _ducked = qfalse;
+		qboolean         _duckheld = qfalse;
 
-		crosshairMode_t  _currentCrosshairMode;
-		crosshairMode_t  _newCrosshairMode;
+		crosshairMode_t  _currentCrosshairMode = CROSSHAIR_MODE_STRAIGHT;
+		crosshairMode_t  _newCrosshairMode = CROSSHAIR_MODE_STRAIGHT;
 
-
-		
-		VehicleMoveMode* _moveMode;
+		VehicleMoveMode* _moveMode = nullptr;
 
 	};
 
