@@ -3491,9 +3491,14 @@ void CameraManager::PlayKFCPath( Event* ev )
 //---------------------------------------------------------------------------
 void CameraManager::DestroyKFCPath( Event* ev )
 {
-	Camera* cam;
-	cam = (Camera*) ev->GetEntity( 1 );
-	delete cam;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of cam hides class member. Renamed to: temp_cam - chrissstrahl
+	//--------------------------------------------------------------
+	Camera* temp_cam;
+
+
+	temp_cam = (Camera*) ev->GetEntity( 1 );
+	delete temp_cam;
 	SetCamera( NULL, 0.0f );
 }
 
