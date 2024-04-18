@@ -470,21 +470,25 @@ void Level::postSublevelLoad( const char *spawnPosName )
 	G_ClearFade();
 }
 
-qboolean Level::inhibitEntity( int spawnflags )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+//--------------------------------------------------------------
+qboolean Level::inhibitEntity( int temp_spawnflags )
 {
-	if ( !developer->integer && ( spawnflags & SPAWNFLAG_DEVELOPMENT ) )
+	if ( !developer->integer && ( temp_spawnflags & SPAWNFLAG_DEVELOPMENT ) )
 	{
 		return true;
 	}
 	
-	if ( !detail->integer && ( spawnflags & SPAWNFLAG_DETAIL ) )
+	if ( !detail->integer && ( temp_spawnflags & SPAWNFLAG_DETAIL ) )
 	{
 		return true;
 	}
 	
 	if ( multiplayerManager.inMultiplayer() )
 	{
-		if ( spawnflags & SPAWNFLAG_NOT_DEATHMATCH )
+		if ( temp_spawnflags & SPAWNFLAG_NOT_DEATHMATCH )
 		{
 			return true;
 		}
@@ -495,16 +499,16 @@ qboolean Level::inhibitEntity( int spawnflags )
 	switch( skill->integer )
 	{
 	case 0 :
-		return ( spawnflags & SPAWNFLAG_NOT_EASY ) != 0;
+		return ( temp_spawnflags & SPAWNFLAG_NOT_EASY ) != 0;
 		break;
 		
 	case 1 :
-		return ( spawnflags & SPAWNFLAG_NOT_MEDIUM ) != 0;
+		return ( temp_spawnflags & SPAWNFLAG_NOT_MEDIUM ) != 0;
 		break;
 		
 	case 2 :
 	case 3 :
-		return ( spawnflags & SPAWNFLAG_NOT_HARD );
+		return ( temp_spawnflags & SPAWNFLAG_NOT_HARD );
 		break;
 	}
 	

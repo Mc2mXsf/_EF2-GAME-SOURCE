@@ -6561,10 +6561,16 @@ void Entity::DetachAllChildren(Event *ev)
 
 inline void Entity::Archive( Archiver &arc )
 {
-	int tempInt;
+	
 	qboolean is_archived;
 	qboolean true_bool = true;
 	qboolean false_bool = false;
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	int temp_tempInt;
 
 
 	Listener::Archive( arc );
@@ -6630,25 +6636,25 @@ inline void Entity::Archive( Archiver &arc )
 	{
 		if ( groundentity )
 		{
-			tempInt = groundentity - g_entities;
+			temp_tempInt = groundentity - g_entities;
 		}
 		else
 		{
-			tempInt = -1;
+			temp_tempInt = -1;
 		}
 	}
 
-	arc.ArchiveInteger( &tempInt );
+	arc.ArchiveInteger( &temp_tempInt );
 
 	if ( arc.Loading() )
 	{
-		if ( tempInt == -1 )
+		if ( temp_tempInt == -1 )
 		{
 			groundentity = NULL;
 		}
 		else
 		{
-		groundentity = &g_entities[ tempInt ];
+		groundentity = &g_entities[ temp_tempInt ];
 		}
 	}
 
@@ -6807,9 +6813,9 @@ inline void Entity::Archive( Archiver &arc )
 
 			int numobj = damageModSystem->getModifierList().NumObjects();
 			arc.ArchiveInteger( &numobj );
-			for ( tempInt = 1; tempInt <= numobj; tempInt++ )
+			for ( temp_tempInt = 1; temp_tempInt <= numobj; temp_tempInt++ )
 				{
-				DamageModifier *dmod = damageModSystem->getModifierList().ObjectAt ( tempInt );
+				DamageModifier *dmod = damageModSystem->getModifierList().ObjectAt ( temp_tempInt );
 				if ( dmod )
 					{
 					type = (int)dmod->getType();
@@ -6838,7 +6844,7 @@ inline void Entity::Archive( Archiver &arc )
 		{
 			damageModSystem = new DamageModificationSystem();
 			arc.ArchiveInteger( &numobj );
-			for ( tempInt = 1; tempInt <= numobj; tempInt++ )
+			for ( temp_tempInt = 1; temp_tempInt <= numobj; temp_tempInt++ )
 			{
 				arc.ArchiveInteger( &type );
 				DamageModifier *newMod = 0;

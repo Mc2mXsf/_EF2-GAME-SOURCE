@@ -3335,9 +3335,14 @@ Player::Player()
 	
 	_doDamageScreenFlash = false;
 	
-	Vector maxs(MAXS_X,MAXS_Y,MAXS_Z),mins(MINS_X,MINS_Y,MINS_Z);
 
-	setSize( mins, maxs );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_maxs(MAXS_X,MAXS_Y,MAXS_Z),temp_mins(MINS_X,MINS_Y,MINS_Z);
+
+
+	setSize( temp_mins, temp_maxs );
 	
 	// Setup ladder stuff
 	
@@ -6562,8 +6567,15 @@ void Player::EventUseItem( Event *ev )
 			return;
 		
 		// Give the model, decrement the quantity
-		str model = gpm->getStringValue(name, "model");
-		giveItem(model);
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+		//--------------------------------------------------------------
+		str temp_model = gpm->getStringValue(name, "model");
+
+
+		giveItem(temp_model);
 		gpm->setFloatValue(slotname, "quantity", quantity-1.0f);
 	}
 	
@@ -10336,15 +10348,19 @@ void Player::PlayerDone( Event *ev )
 	Director.PlayerSpawned();
 }
 
-painDirection_t Player::Pain_string_to_int( const str &pain )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+//--------------------------------------------------------------
+painDirection_t Player::Pain_string_to_int( const str &temp_pain )
 {
-	if ( !pain.icmp( pain, "Front" ) )
+	if ( !temp_pain.icmp( temp_pain, "Front" ) )
 		return PAIN_FRONT;
-	else if ( !pain.icmp( pain, "Left" ) )
+	else if ( !temp_pain.icmp( temp_pain, "Left" ) )
 		return PAIN_LEFT;
-	else if ( !pain.icmp( pain, "Right" ) )
+	else if ( !temp_pain.icmp( temp_pain, "Right" ) )
 		return PAIN_RIGHT;
-	else if ( !pain.icmp( pain, "Rear" ) )
+	else if ( !temp_pain.icmp( temp_pain, "Rear" ) )
 		return PAIN_REAR;
 	else
 		return PAIN_NONE;

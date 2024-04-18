@@ -852,7 +852,7 @@ class Player : public Sentient
 		void				StopWatchingEntity(	Event *ev );
 		void				WeaponCommand( Event *ev );
 		void				PlayerDone( Event *ev );
-		painDirection_t		Pain_string_to_int( const str &pain );
+		painDirection_t		Pain_string_to_int( const str &temp_pain );
 		inline Vector 		GetTorsoAngles( void ) { return torsoAngles; };
 		inline Vector 		GetVAngles( void ){ return v_angle; }
 

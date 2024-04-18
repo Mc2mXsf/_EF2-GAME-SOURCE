@@ -1424,10 +1424,11 @@ int Weapon::GetOrder( void )
 //======================
 //--------------------------------------------------------------
 // GAMEFIX - Fixed: Warning C4458: declaration of rank hides class member. Renamed to: temp_rank - chrissstrahl
+// GAMEFIX - Fixed: Warning C4458: declaration of order hides class member. Renamed to: temp_order - chrissstrahl
 //--------------------------------------------------------------
-void Weapon::SetRank( int order, int temp_rank )
+void Weapon::SetRank( int temp_order, int temp_rank )
 {
-	this->order = order;
+	this->order = temp_order;
 	this->rank = temp_rank;
 }
 
@@ -2205,8 +2206,15 @@ void Weapon::Shoot( Event *ev )
 		Vector melee_pos, melee_end;
 		Vector dir;
 		float damage;
-		meansOfDeath_t meansofdeath;
+		
 		float knockback;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+		//--------------------------------------------------------------
+		meansOfDeath_t temp_meansofdeath;
+
 		
 		if ( temp_owner->isSubclassOf( Player ) )
 		{
@@ -2232,21 +2240,21 @@ void Weapon::Shoot( Event *ev )
 		damage = bulletdamage[mode];
 		knockback = bulletknockback[mode];
 		
-		meansofdeath = GetMeansOfDeath( mode );
+		temp_meansofdeath = GetMeansOfDeath( mode );
 		
 		if ( temp_owner->isSubclassOf( Player ) )
 		{
 			Player *player = (Player *)(Sentient *)temp_owner;
 			
-			meansofdeath = player->changetMeansOfDeath( meansofdeath );
-			damage = player->getDamageDone( damage, meansofdeath, true );
+			temp_meansofdeath = player->changetMeansOfDeath( temp_meansofdeath );
+			damage = player->getDamageDone( damage, temp_meansofdeath, true );
 			
 			knockback = (knockback + player->GetPlayerKnockback()) * player->GetKnockbackMultiplier();
 		}
 		
 		Container<EntityPtr>victimlist;
 		
-		if ( MeleeAttack( melee_pos, melee_end, damage, temp_owner, meansofdeath, _meleeWidth[ mode ], -_meleeHeight[ mode ], 
+		if ( MeleeAttack( melee_pos, melee_end, damage, temp_owner, temp_meansofdeath, _meleeWidth[ mode ], -_meleeHeight[ mode ], 
 			 _meleeHeight[ mode ], knockback, true, &victimlist ) )
 		{
 			// Hit something
@@ -5492,8 +5500,14 @@ void Weapon::AdvancedMeleeAttack(const char* tag1, const char* tag2, bool critic
 	Vector startpoint, endpoint;
 	Vector tagpos, tagpos2, vect;
 	float damage, knockback;
-	meansOfDeath_t meansofdeath;
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	meansOfDeath_t temp_meansofdeath;
+	
+
 	// New Melee Combat code
 	GetActorMuzzlePosition(&tagpos, NULL, NULL, NULL, tag1); // Get the position of the first tag
 	GetActorMuzzlePosition(&tagpos2, NULL, NULL, NULL, tag2); // Get the position of the second tag
@@ -5509,15 +5523,15 @@ void Weapon::AdvancedMeleeAttack(const char* tag1, const char* tag2, bool critic
 	damage = bulletdamage[FIRE_MODE1];
 	knockback = bulletknockback[FIRE_MODE1];
 	
-	meansofdeath = GetMeansOfDeath( FIRE_MODE1 );
+	temp_meansofdeath = GetMeansOfDeath( FIRE_MODE1 );
 	
 	if ( owner->isSubclassOf( Player ) )
 	{
 		Player *player = (Player *)(Sentient *)owner;
 		
-		meansofdeath = player->changetMeansOfDeath( meansofdeath );
+		temp_meansofdeath = player->changetMeansOfDeath( temp_meansofdeath );
 		
-		damage = player->getDamageDone( damage, meansofdeath, true );
+		damage = player->getDamageDone( damage, temp_meansofdeath, true );
 		
 		knockback = (knockback + player->GetPlayerKnockback()) * player->GetKnockbackMultiplier();
 	}
@@ -5539,7 +5553,7 @@ void Weapon::AdvancedMeleeAttack(const char* tag1, const char* tag2, bool critic
 			meleeVictims.ClearObjectList();
 	}
 	
-	if ( !MeleeAttack( startpoint, endpoint, damage, temp_owner, meansofdeath, 15.0f, -45.0f, 45.0f, knockback, true, &meleeVictims, this, criticalHit ) )
+	if ( !MeleeAttack( startpoint, endpoint, damage, temp_owner, temp_meansofdeath, 15.0f, -45.0f, 45.0f, knockback, true, &meleeVictims, this, criticalHit ) )
 	{
 		// Try to hit the world since we didn't do any damage to anything
 		trace_t trace = G_Trace( startpoint, Vector( -8.0f, -8.0f, -8.0f ), Vector( 8.0f, 8.0f, 8.0f ), endpoint, temp_owner, MASK_MELEE, false, "Weapon::Shoot" );

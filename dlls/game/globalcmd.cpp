@@ -2074,14 +2074,18 @@ void CThread::Spawn( Event *ev )
 		
 		if ( !cls )
 		{
-			str n;
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4456: Declaration of ? hides previous local declaration. - chrissstrahl
+			//--------------------------------------------------------------
+			str temp_n;
 			
-			n = name;
-			if ( !strstr( n.c_str(), ".tik" ) )
+
+			temp_n = name;
+			if ( !strstr( temp_n.c_str(), ".tik" ) )
             {
-				n += ".tik";
+				temp_n += ".tik";
             }
-			args.setArg( "model", n.c_str() );
+			args.setArg( "model", temp_n.c_str() );
 		}
 		else
 		{

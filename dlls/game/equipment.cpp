@@ -242,17 +242,17 @@ void Equipment::airStrike(Event *ev)
 	int i;
 	Vector dir;
 	bool hitSky;
-	Vector mins;
-	Vector maxs;
 	float bestFraction = 0.0f;
 	Vector skyPosition;
 	Vector bestSkyPosition;
 
 
 	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: Warning C4458: declaration of angles hides class member. Renamed to: temp_angles - chrissstrahl
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
 	//--------------------------------------------------------------
 	Vector temp_angles;
+	Vector temp_mins;
+	Vector temp_maxs;
 
 
 	player->GetViewTrace( trace, MASK_PROJECTILE, 5000.0f );
@@ -260,8 +260,8 @@ void Equipment::airStrike(Event *ev)
 	start = trace.endpos;
 	hitSky = false;
 
-	mins = Vector( -5.0f, -5.0f, -5.0f );
-	maxs = Vector( 5.0f, 5.0f, 5.0f );
+	temp_mins = Vector( -5.0f, -5.0f, -5.0f );
+	temp_maxs = Vector( 5.0f, 5.0f, 5.0f );
 
 	for ( i = 0 ; i <= 360 ; i += 45 )
 	{
@@ -295,7 +295,7 @@ void Equipment::airStrike(Event *ev)
 		{
 			skyPosition = trace.endpos;
 
-			trace = G_Trace( skyPosition, mins, maxs, start, player, MASK_PROJECTILE, false, "airStrike::skyspot2" );
+			trace = G_Trace( skyPosition, temp_mins, temp_maxs, start, player, MASK_PROJECTILE, false, "airStrike::skyspot2" );
 
 			if ( ( bestFraction == 0.0f ) || ( trace.fraction > bestFraction ) )
 			{

@@ -875,9 +875,16 @@ void SpawnChain::DoSpawn( Event *ev )
 	}
 	
 	// Couldn't spawn anything, so activate targets
-	Vector mins(-64,-64,16);
-	Vector maxs(64,64,112);
-	trace_t trace = G_Trace( origin, mins, maxs, origin, NULL, MASK_MONSTERSOLID, false, "spawnchain" );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_mins(-64,-64,16);
+	Vector temp_maxs(64,64,112);
+
+
+	trace_t trace = G_Trace( origin, temp_mins, temp_maxs, origin, NULL, MASK_MONSTERSOLID, false, "spawnchain" );
 	
 	if ( trace.fraction != 1.0f || trace.startsolid || seen )
 	{

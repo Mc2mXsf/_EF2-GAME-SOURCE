@@ -221,9 +221,14 @@ PuzzleObject::PuzzleObject()
 	// setup default bounding box if there is no model
 	if( model.length() == 0 )
 	{
-		Vector mins( -16, -16, 0 );
-		Vector maxs( 16, 16, 32 );
-		this->setSize( mins, maxs );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+		//--------------------------------------------------------------
+		Vector temp_mins( -16, -16, 0 );
+		Vector temp_maxs( 16, 16, 32 );
+
+
+		this->setSize( temp_mins, temp_maxs );
 	}
 
 	_timed = false;

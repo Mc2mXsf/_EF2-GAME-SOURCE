@@ -3859,15 +3859,22 @@ void Sentient::MeleeAttackStart( Event *ev )
 {
 	int i;
 	Entity *victim;
-	Vector mins, maxs, pos, end;
+	Vector pos, end;
 	Container<Entity *> potential_victimlist;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_mins, temp_maxs;
+
 	
-	mins = Vector( -8, -8, -8 );
-	maxs = Vector( 8, 8, 8 );
+	temp_mins = Vector( -8, -8, -8 );
+	temp_maxs = Vector( 8, 8, 8 );
 	pos = centroid;
 	end = centroid + Vector( orientation[0] ) * 96.0f;
 	
-	G_TraceEntities( pos, mins, maxs, end, &potential_victimlist, MASK_MELEE );
+	G_TraceEntities( pos, temp_mins, temp_maxs, end, &potential_victimlist, MASK_MELEE );
 	
 	for( i = 1 ; i <= potential_victimlist.NumObjects() ; i++ )
 	{
@@ -4929,25 +4936,29 @@ void Sentient::DropItemsOnDeath()
 
 		if ( gpm->hasProperty(getArchetype(), "potionchance") )
 		{
-			str model;
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+			//--------------------------------------------------------------
+			str temp_model;
+
 
 			float potionchance = gpm->getFloatValue(getArchetype(), "potionchance");
 			if ( G_Random() < potionchance )
 			{
-				model = gpm->getStringValue( "HealthPotion", "model");
+				temp_model = gpm->getStringValue( "HealthPotion", "model");
 			}
 			else if ( G_Random() < potionchance * 2.0f )
 			{
-				model = gpm->getStringValue( "RedPotion", "model" );
+				temp_model = gpm->getStringValue( "RedPotion", "model" );
 			}
 
-			if ( model.length() )
+			if ( temp_model.length() )
 			{
 				// Spawn the potion
 				SpawnArgs args;
 				Entity *ent;
 				Item *item;
-				args.setArg( "model", model );
+				args.setArg( "model", temp_model );
 				ent = args.Spawn();
 				if ( !ent || !ent->isSubclassOf( Item ) )
 					return;
