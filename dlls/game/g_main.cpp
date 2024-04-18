@@ -1525,9 +1525,13 @@ extern "C" void G_RunFrame( int levelTime, int frameTime )
 		AI_DisplayInfo();
 		
 		// don't show entnums during deathmatch
-		showentnums = ( sv_showentnums->integer && ( !multiplayerManager.inMultiplayer() || sv_cheats->integer ) );
-		showactnums = ( sv_showactnums->integer && ( !multiplayerManager.inMultiplayer() || sv_cheats->integer ) );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+		//--------------------------------------------------------------
+		showentnums = ( sv_showentnums->integer > 0 && ( !multiplayerManager.inMultiplayer() || sv_cheats->integer > 0 ) );
+		showactnums = ( sv_showactnums->integer > 0 && ( !multiplayerManager.inMultiplayer() || sv_cheats->integer > 0 ) );
 		
+
 		// Wake up any monsters in the area
 		AI_SenseEnemies();
 		
