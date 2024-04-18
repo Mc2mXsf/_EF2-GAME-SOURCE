@@ -74,7 +74,10 @@ G_Error
 Abort the server with a game error
 ===============
 */
-void G_Error( int level, const char *fmt, ... )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void G_Error( int temp_level, const char *fmt, ... )
 {
 	va_list	argptr;
 	char		error[ 4096 ];
@@ -2452,7 +2455,10 @@ extern "C" int G_GetTotalGameFrames( void )
 
 #ifndef GAME_HARD_LINKED
 // this is only here so the functions in q_shared.c and q_shwin.c can link
-void Com_Error ( int level, const char *error, ... ) 
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void Com_Error ( int temp_level, const char *error, ... ) 
 {
 	va_list	argptr;
 	char		text[4096];
@@ -2461,7 +2467,7 @@ void Com_Error ( int level, const char *error, ... )
 	vsprintf (text, error, argptr);
 	va_end (argptr);
 
-	gi.Error( level, "%s", text);
+	gi.Error( temp_level, "%s", text);
 }
 
 void Sys_Error( const char *error, ... )

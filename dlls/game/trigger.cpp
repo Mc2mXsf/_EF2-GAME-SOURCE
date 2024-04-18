@@ -3243,16 +3243,24 @@ TriggerReverb::TriggerReverb()
 	altreverblevel = 0.5f;
 }
 
-void TriggerReverb::SetReverb( int type, float level )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void TriggerReverb::SetReverb( int type, float temp_level )
 {
 	reverbtype = type;
-	reverblevel = level;
+	reverblevel = temp_level;
 }
 
-void TriggerReverb::SetAltReverb( int type, float level )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void TriggerReverb::SetAltReverb( int type, float temp_level )
 {
 	altreverbtype = type;
-	altreverblevel = level;
+	altreverblevel = temp_level;
 }
 
 void TriggerReverb::SetReverbType( Event *ev )

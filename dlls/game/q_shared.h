@@ -795,7 +795,14 @@ void        Info_NextPair( const char **s, char key[MAX_INFO_KEY], char value[MA
 void ParseMapName( const char *fullName, char *mapName, char *spawnposName, char *movieName );
 
 // this is only here so the functions in q_shared.c and bg_*.c can link
-void	Com_Error( int level, const char *error, ... );
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of level hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+void	Com_Error( int temp_level, const char *error, ... );
+
+
 void	Com_Printf( const char *msg, ... );
 void	Com_WPrintf( const char *msg, ... );
 
