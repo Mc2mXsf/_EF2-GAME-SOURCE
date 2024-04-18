@@ -337,8 +337,13 @@ void Animate::NewAnim( int animnum, bodypart_t part )
 		float length = totaldelta.length();
 		if ( length > MINIMUM_DELTA_MOVEMENT )
 		{
-			int flags = gi.Anim_Flags( self->edict->s.modelindex, animnum );
-			if ( !( flags & MDL_ANIM_DELTA_DRIVEN ) )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4456: Declaration of flags hides previous local declaration. - chrissstrahl
+			//--------------------------------------------------------------
+			int temp_flags = gi.Anim_Flags( self->edict->s.modelindex, animnum );
+
+
+			if ( !( temp_flags & MDL_ANIM_DELTA_DRIVEN ) )
             {
 				length /= (float)*numframes;
 				if ( length > MINIMUM_DELTA_MOVEMENT_PER_FRAME )
