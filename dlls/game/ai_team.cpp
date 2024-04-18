@@ -70,16 +70,16 @@ int BotNumTeamMates(bot_state_t *bs) {
 
 
 	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	// GAMEFIX - Fixed: Warning C4996: declaration of ? hides global Definit. Renamed to: temp_? - chrissstrahl
 	//--------------------------------------------------------------
-	static int maxclients;
+	static int temp_maxclients;
 
 
-	if (!maxclients)
-		maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
+	if (!temp_maxclients)
+		temp_maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
 
 	numplayers = 0;
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
