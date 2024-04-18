@@ -5973,9 +5973,16 @@ void Player::StartUseAnim( void )
 	Vector   newangles;
 	str      newanim;
 	str      state;
-	str      camera;
-	trace_t  trace;
 	
+	trace_t  trace;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of camera hides class member. Renamed to: temp_camera - chrissstrahl
+	//--------------------------------------------------------------
+	str      temp_camera;
+
+
 	if ( toucheduseanim )
 	{
 		ua = ( UseAnim * )( Entity * )toucheduseanim;
@@ -5993,7 +6000,7 @@ void Player::StartUseAnim( void )
 	toucheduseanim = NULL;
 	atobject = NULL;
 	
-	if ( ua->GetInformation( this, &neworg, &newangles, &newanim, &useanim_numloops, &state, &camera ) )
+	if ( ua->GetInformation( this, &neworg, &newangles, &newanim, &useanim_numloops, &state, &temp_camera ) )
 	{
 		trace = G_Trace( origin, mins, maxs, neworg, this, edict->clipmask, true, "StartUseAnim" );
 		if ( trace.startsolid || ( trace.fraction < 1.0f ) )
@@ -6030,9 +6037,9 @@ void Player::StartUseAnim( void )
 		{
 			if ( currentState_Torso )
             {
-				if ( camera.length() )
+				if ( temp_camera.length() )
 				{
-					currentState_Torso->setCameraType( camera );
+					currentState_Torso->setCameraType( temp_camera );
 				}
 				else
 				{
@@ -7595,15 +7602,19 @@ void Player::SetPlayerViewUsingNoClipController( void )
 	client->ps.camera_flags = client->ps.camera_flags & CF_CAMERA_CUT_BIT;
 }
 
-void Player::SetPlayerViewUsingCinematicController( Camera *camera )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of camera hides class member. Renamed to: temp_camera - chrissstrahl
+//--------------------------------------------------------------
+void Player::SetPlayerViewUsingCinematicController( Camera *temp_camera )
 {
-	client->ps.camera_angles[ 0 ] = camera->angles[ 0 ];
-	client->ps.camera_angles[ 1 ] = camera->angles[ 1 ];
-	client->ps.camera_angles[ 2 ] = camera->angles[ 2 ];
+	client->ps.camera_angles[ 0 ] = temp_camera->angles[ 0 ];
+	client->ps.camera_angles[ 1 ] = temp_camera->angles[ 1 ];
+	client->ps.camera_angles[ 2 ] = temp_camera->angles[ 2 ];
 	
-	client->ps.camera_origin[ 0 ] = camera->origin[ 0 ];
-	client->ps.camera_origin[ 1 ] = camera->origin[ 1 ];
-	client->ps.camera_origin[ 2 ] = camera->origin[ 2 ];
+	client->ps.camera_origin[ 0 ] = temp_camera->origin[ 0 ];
+	client->ps.camera_origin[ 1 ] = temp_camera->origin[ 1 ];
+	client->ps.camera_origin[ 2 ] = temp_camera->origin[ 2 ];
 	client->ps.pm_flags |= PMF_CAMERA_VIEW;
 	
 	//
@@ -7615,7 +7626,10 @@ void Player::SetPlayerViewUsingCinematicController( Camera *camera )
 }
 
 
-void Player::SetPlayerViewUsingActorController( Camera *camera )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of camera hides class member. Renamed to: temp_camera - chrissstrahl
+//--------------------------------------------------------------
+void Player::SetPlayerViewUsingActorController( Camera *temp_camera )
 {
 	if ( actor_camera )
 	{
@@ -7649,7 +7663,7 @@ void Player::SetPlayerViewUsingActorController( Camera *camera )
 		SetCamera( actor_camera, 0.5f );
 
 	}
-	else if ( ( level.automatic_cameras.NumObjects() > 0 ) && ( !camera || camera->IsAutomatic() ) )
+	else if ( ( level.automatic_cameras.NumObjects() > 0 ) && ( !temp_camera || temp_camera->IsAutomatic() ) )
 	{
 		// if we currently are not in a camera or the camera we are looking through is automatic, evaluate our camera choices
 		AutomaticallySelectedNewCamera();
@@ -7659,14 +7673,14 @@ void Player::SetPlayerViewUsingActorController( Camera *camera )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer camera. - chrissstrahl
 	//--------------------------------------------------------------
-	if (camera) {
-		client->ps.camera_angles[0] = camera->angles[0];
-		client->ps.camera_angles[1] = camera->angles[1];
-		client->ps.camera_angles[2] = camera->angles[2];
+	if (temp_camera) {
+		client->ps.camera_angles[0] = temp_camera->angles[0];
+		client->ps.camera_angles[1] = temp_camera->angles[1];
+		client->ps.camera_angles[2] = temp_camera->angles[2];
 
-		client->ps.camera_origin[0] = camera->origin[0];
-		client->ps.camera_origin[1] = camera->origin[1];
-		client->ps.camera_origin[2] = camera->origin[2];
+		client->ps.camera_origin[0] = temp_camera->origin[0];
+		client->ps.camera_origin[1] = temp_camera->origin[1];
+		client->ps.camera_origin[2] = temp_camera->origin[2];
 		client->ps.pm_flags |= PMF_CAMERA_VIEW;
 	}
 	
