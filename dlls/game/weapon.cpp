@@ -4872,10 +4872,14 @@ void Weapon::setBurstModeDelay( Event *ev )
 	_burstModeDelay[ firemodeindex ] = ev->GetFloat( 1 );
 }
 
-void Weapon::SetCHOffset(int chx, int chy)
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of chx/chy hides class member. Renamed to: temp_chx/temp_chy - chrissstrahl
+//--------------------------------------------------------------
+void Weapon::SetCHOffset(int temp_chx, int temp_chy)
 {
-	this->chx = chx;
-	this->chy = chy;
+	this->chx = temp_chx;
+	this->chy = temp_chy;
 }
 
 
