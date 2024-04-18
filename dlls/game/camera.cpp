@@ -3825,11 +3825,15 @@ void CameraManager::Load( Event* ev )
 	pathList.AddUniqueObject( name );
 	if ( show )
 	{
-		Event * ev;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of end hides class member. Renamed to: temp_end - chrissstrahl
+		//--------------------------------------------------------------
+		Event * temp_ev;
 
-		ev = new Event( EV_CameraManager_SetPath );
-		ev->AddString( name );
-		PostEvent( ev, 0.0f );
+
+		temp_ev = new Event( EV_CameraManager_SetPath );
+		temp_ev->AddString( name );
+		PostEvent( temp_ev, 0.0f );
 		ShowPath();
 	}
 }
