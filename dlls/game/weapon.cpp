@@ -2957,7 +2957,7 @@ void Weapon::DetachGun( void )
 //--------------------------------------------------------------
 // GAMEFIX - Fixed: Warning C4458: declaration of hand hides class member. Renamed to: temp_hand - chrissstrahl
 //--------------------------------------------------------------
-void Weapon::AttachGun( weaponhand_t hand, qboolean holstering )
+void Weapon::AttachGun( weaponhand_t temp_hand, qboolean holstering )
 {
 	int tag_num = 0;
 	
@@ -3006,7 +3006,7 @@ void Weapon::AttachGun( weaponhand_t hand, qboolean holstering )
 	} */
 
 	
-	switch( hand )
+	switch( temp_hand )
 	{
 	case WEAPON_LEFT:
 		if ( holstering )
