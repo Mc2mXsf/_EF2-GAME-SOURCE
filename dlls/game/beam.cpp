@@ -530,16 +530,23 @@ void FuncBeam::SetPersist( Event *ev )
 void FuncBeam::Shoot( Event *ev )
 {
 	trace_t  trace;
-	Vector   start, end;
+	Vector   start;
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of end hides class member. Renamed to: temp_end - chrissstrahl
+	//--------------------------------------------------------------
+	Vector temp_end;
+
 	
 	start = edict->s.origin;
-	end   = edict->s.origin2;
+	temp_end   = edict->s.origin2;
 	
-	Vector   dir( end - start );
+	Vector   dir( temp_end - start );
 	Vector   b1( -shootradius, -shootradius, -shootradius );
 	Vector   b2( shootradius, shootradius, shootradius );
 	
-	trace = G_Trace( start, b1, b2, end, this, MASK_SHOT, false, "FuncBeam::Activate" );
+	trace = G_Trace( start, b1, b2, temp_end, this, MASK_SHOT, false, "FuncBeam::Activate" );
 	
 	if ( trace.ent && trace.ent->entity && trace.ent->entity->takedamage )
 	{
