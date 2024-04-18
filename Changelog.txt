@@ -11,6 +11,16 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+
+Fixed: Warning C26495: The Variable parm_types was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+class type_t : public Class
+
+Fixed: Warning C26495: The Variable EventArgDef.? was not initialized. A Membervariable needs always to be initialized (type.6)
+class EventArgDef : public Class
+
+Fixed: Warning C26495: The Variable dfunction_t.? was not initialized. A Membervariable needs always to be initialized (type.6)
+class dfunction_t : public Class
+
 Fixed: Warning C4458: declaration of mins hides class member. Renamed to: temp_mins
 void ExplodingWall::Explode( Event *ev )
 
@@ -261,17 +271,11 @@ Fixed: Warning C4996: strnicmp: The POSIX name for this item is deprecated. Usin
 qboolean Actor::checkpartstate( Conditional &condition )
 void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char *dialog_name, const char *state_name, qboolean headDisplay , bool useTalk , bool important )
 const str Actor::FindDialog( Sentient *user, DialogType_t dialogType , const str& context )
+bool ModeCaptureTheFlag::shouldKeepItem( MultiplayerItem *item )
 
 Fixed: Warning C4996 strncpy: This function or variable may be unsafe. Using Q_strncpyz instead.
 void str::EnsureAlloced( int amount, bool keepold )
 void str::snprintf( char *dst, int size, const char *fmt, ... )
-
-Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead.
-void PuzzleObject::useEvent(Event* event)
-
-Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead.
-int World::findBrokenThing( const char *name )
-int World::worldPhysicsVarNameToIndex( const char *varName )
 
 Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead.
 void Actor::SetDialogMode( Event *ev )
@@ -293,11 +297,59 @@ void Actor::AddCustomThread( const str& threadType , const str& threadName )
 bool Actor::HaveCustomThread( const str& threadType )
 void Actor::RunCustomThread( const str& threadType )
 const str Actor::GetCustomThread( const str& threadType )
+int World::findBrokenThing( const char *name )
+int World::worldPhysicsVarNameToIndex( const char *varName )
+void PuzzleObject::useEvent(Event* event)
+bool ModifierDestruction::shouldKeepItem( MultiplayerItem *item )
+void AwardSystem::playerEventNotification( const char *eventName, const char *eventItemName, Player *eventPlayer )
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+bool MultiplayerManager::isValidPlayerModel( Player *player, str modelToUse )
+void MultiplayerManager::joinTeam( Player *player, const str &teamName )
+bool MultiplayerModeBase::parseConfigToken( const char *key, Script *buffer )
+bool ModeCaptureTheFlag::shouldKeepItem( MultiplayerItem *item )
+bool ModeCaptureTheFlag::checkGameType( const char *gameType )
+bool ModeDeathmatch::checkGameType( const char *gameType )
+bool ModeDeathmatch::checkRule( const char *rule, bool defaultValue, Player *player )
+Entity *ModeTeamBase::getSpawnPoint( Player *player )
+Team* ModeTeamBase::_findTeamByName( const str& teamName )
+bool ModeTeamDeathmatch::checkGameType( const char *gameType )
+bool ModifierInstantKill::checkRule( const char *rule, bool defaultValue, Player *player )
+void ModifierDestruction::itemDestroyed( Player *player, MultiplayerItem *item )
+void ModifierDestruction::itemUsed( Entity *entity, MultiplayerItem *item )
+bool ModifierDestruction::checkRule( const char *rule, bool defaultValue, Player *player )
+bool ModifierDestruction::checkGameType( const char *gameType )
+bool ModifierOneFlag::shouldKeepItem( MultiplayerItem *item )
+bool ModifierOneFlag::checkRule( const char *rule, bool defaultValue, Player *player )
+bool ModifierOneFlag::checkRule( const char *rule, bool defaultValue, Player *player )
+bool ModifierOneFlag::checkGameType( const char *gameType )
+bool ModifierElimination::checkRule( const char *rule, bool defaultValue, Player *player )
+void ModifierElimination::update( float frameTime )
+void ModifierDiffusion::playerEventNotification( const char *eventName, const char *eventItemName, Player *eventPlayer )
+bool ModifierDiffusion::checkRule( const char *rule, bool defaultValue, Player *player )
+bool ModifierDiffusion::shouldKeepItem( MultiplayerItem *item )
+void ModifierDiffusion::itemUsed( Entity *entity, MultiplayerItem *item )
+void ModifierDiffusion::playerCommand( Player *player, const char *command, const char *parm )
+bool ModifierSpecialties::checkRule( const char *rule, bool defaultValue, Player *player )
+void ModifierSpecialties::playerCommand( Player *player, const char *command, const char *parm )
+void ModifierSpecialties::itemTouched( Player *player, MultiplayerItem *item )
+void ModifierSpecialties::playerUsed( Player *usedPlayer, Player *usingPlayer, Equipment *equipment )
+bool ModifierControlPoints::checkRule( const char *rule, bool defaultValue, Player *player )
+bool ModifierPointsPerWeapon::parseConfigToken( const char *key, Script *buffer )
+int ModifierPointsPerWeapon::getPointsForKill( Player *killedPlayer, Player *attackingPlayer, Entity *inflictor, int meansOfDeath, int points )
+void AwardSystem::awardTeamAward( AfterMatchTeamAwardType teamAward, const char *teamName )
+bool ModeCaptureTheFlag::doesPlayerHaveItem( Player *player, const char *itemName )
+void ModeCaptureTheFlag::playerEventNotification( const char *eventName, const char *eventItemName, Player *eventPlayer )
+void ModifierDestruction::itemDestroyed( Player *player, MultiplayerItem *item )
 
-Fixed: Warning:	C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp
+Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp
 int PlayerStat_NameToNum( const char *name )
 int EAXMode_NameToNum( const char * name )
 int MusicMood_NameToNum( const char * name )
+void Entity::SurfaceCommand(const char * surf_name,const char * token)
+void Entity::Shader(Event *ev)
+ClassDef *SpawnArgs::getClassDef( qboolean *tikiWasStatic )
+void PathManager::SetNodeFlagsEvent( Event *ev )
+void ScriptSlave::FollowPath( Event *ev )
 
 Fixed: Warning lnt-logical-bitwise-mismatch
 qboolean Player::checkatdoor( Conditional &condition )
@@ -308,8 +360,6 @@ qboolean Player::checkstatename( Conditional &condition )
 void Player::GibEvent( Event *ev )
 qboolean Player::LargeShieldActive( void )
 extern "C" void G_RunFrame( int levelTime, int frameTime )
-
-Fixed: Warning lnt-logical-bitwise-mismatch
 qboolean Actor::checkcanseeenemy( Conditional &condition )
 qboolean Actor::checkcanseeplayer( Conditional &condition )
 qboolean Actor::CanJump( void )
