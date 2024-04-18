@@ -955,8 +955,6 @@ int ModeTeamBase::getInfoIcon( Player *player )
 
 bool ModeTeamBase::canJoinTeam( Player *player, const str &teamName )
 {
-	Team *team;
-
 	if ( multiplayerManager.checkFlag( MP_FLAG_AUTO_BALANCE_TEAMS ) )
 	{
 		Team *team;
@@ -1000,7 +998,12 @@ bool ModeTeamBase::canJoinTeam( Player *player, const str &teamName )
 		return false;
 	}
 
-	team = _findTeamByName( teamName );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4456: Declaration of player team previous local declaration. - chrissstrahl
+	//--------------------------------------------------------------
+	Team* team = _findTeamByName( teamName );
+
 
 	if ( _playerGameData[ player->entnum ]._currentTeam == team )
 		return false;
