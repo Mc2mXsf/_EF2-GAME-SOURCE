@@ -321,8 +321,15 @@ void ExplodingWall::Explode( Event *ev )
 {
 	Entity		*other;
 	Vector		pos;
-	Vector      mins, maxs;
 	int			i;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of maxs hides class member. Renamed to: temp_maxs - chrissstrahl
+	// GAMEFIX - Fixed: Warning C4458: declaration of mins hides class member. Renamed to: temp_mins - chrissstrahl
+	//--------------------------------------------------------------
+	Vector      temp_mins, temp_maxs;
+
 	
 	if ( spawnflags & INVISIBLE )
 	{
@@ -404,9 +411,9 @@ void ExplodingWall::Explode( Event *ev )
 	
 	if ( land_radius > 0.0f )
 	{
-		mins[0] = mins[1] = mins[2] = -land_radius;
-		maxs[0] = maxs[1] = maxs[2] = land_radius;
-		setSize( mins, maxs );
+		temp_mins[0] = temp_mins[1] = temp_mins[2] = -land_radius;
+		temp_maxs[0] = temp_maxs[1] = temp_maxs[2] = land_radius;
+		setSize( temp_mins, temp_maxs );
 	}
 	
 	attack_finished = 0;
