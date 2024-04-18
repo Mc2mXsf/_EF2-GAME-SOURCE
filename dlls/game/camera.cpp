@@ -3602,7 +3602,10 @@ void CameraManager::Speed( Event* ev )
 //---------------------------------------------------------------------------
 // CameraManager::SavePath
 //---------------------------------------------------------------------------
-void CameraManager::SavePath( const str& pathName )
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of pathName hides class member. Renamed to: temp_rank - chrissstrahl
+//--------------------------------------------------------------
+void CameraManager::SavePath( const str& temp_pathName )
 {
 	SplinePath  *node;
 	str         buf;
@@ -3623,16 +3626,16 @@ void CameraManager::SavePath( const str& pathName )
 	}
 
 	filename = "cams/";
-	filename += pathName;
+	filename += temp_pathName;
 	filename += ".cam";
 
-	path->SetTargetName( pathName );
+	path->SetTargetName( temp_pathName );
 
 	gi.Printf( "Saving camera path to '%s'...\n", filename.c_str() );
 
 	buf = "";
 	buf += va( "//\n" );
-	buf += va( "// Camera Path \"%s\", %d Nodes.\n", pathName.c_str(), num );
+	buf += va( "// Camera Path \"%s\", %d Nodes.\n", temp_pathName.c_str(), num );
 	buf += va( "//\n" );
 
 	index = 0;
@@ -3648,11 +3651,11 @@ void CameraManager::SavePath( const str& pathName )
 		//
 		if ( !index )
 		{
-			buf += va( " targetname %s", pathName.c_str() );
+			buf += va( " targetname %s", temp_pathName.c_str() );
 		}
 		else
 		{
-			buf += va( " targetname camnode_%s_%d", pathName.c_str(), index );
+			buf += va( " targetname camnode_%s_%d", temp_pathName.c_str(), index );
 		}
 
 		//
@@ -3660,7 +3663,7 @@ void CameraManager::SavePath( const str& pathName )
 		//
 		if ( index < ( num - 1 ) )
 		{
-			buf += va( " target camnode_%s_%d", pathName.c_str(), index + 1 );
+			buf += va( " target camnode_%s_%d", temp_pathName.c_str(), index + 1 );
 		}
 
 		//
