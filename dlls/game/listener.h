@@ -255,14 +255,21 @@ class EventVar : public Class
 
 class EventArgDef : public Class
    {
-   private:
-      int                     type;
+   private:  
       str                     name;
-      float                   minRange[ 3 ];
-      qboolean                minRangeDefault[ 3 ];
-      float                   maxRange[ 3 ];
-      qboolean                maxRangeDefault[ 3 ];
-      qboolean                optional;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable EventArgDef.? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int                     type  = 0;
+	float                   minRange[3] = { 0.0f };
+	qboolean                minRangeDefault[ 3 ] = { qfalse };
+	float                   maxRange[ 3 ] = { 0.0f };
+	qboolean                maxRangeDefault[ 3 ] = { qfalse };
+	qboolean                optional = qfalse;
+
+
    public:
 
 		EventArgDef()
