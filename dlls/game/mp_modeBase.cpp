@@ -990,7 +990,13 @@ int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
 	{
 		int numPlayers;
 		int i;
-		Player *player;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4457: declaration of ? hides function parameter. Renamed to: temp_? - chrissstrahl
+		//--------------------------------------------------------------
+		Player *temp_player;
+
 
 		if ( _gameStarted )
 		{
@@ -1009,9 +1015,9 @@ int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
 
 		for ( i = 0 ; i < _maxPlayers ; i++ )
 		{
-			player = multiplayerManager.getPlayer( i );
+			temp_player = multiplayerManager.getPlayer( i );
 
-			if ( player && !multiplayerManager.isPlayerSpectatorByChoice( player ) )
+			if ( temp_player && !multiplayerManager.isPlayerSpectatorByChoice( temp_player ) )
 			{
 				numPlayers++;
 			}
