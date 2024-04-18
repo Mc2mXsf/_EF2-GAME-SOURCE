@@ -132,22 +132,25 @@ public:
 
 	virtual void	Archive( Archiver &arc );
 
-   int      eventnum;
-	int		first_statement;	// negative numbers are builtins
-	int		parm_start;
-   int		parm_total;
-	int		locals;				// total ints of parms + locals
-	
-	int		profile;		      // runtime
-	
-	str      s_name;
-	str      s_file;			   // source file defined in
-
-	int		numparms;
-   int      minparms;
-	byte	   parm_size[ MAX_PARMS ];
-   byte	   parm_type[ MAX_PARMS ];
    };
+
+    //--------------------------------------------------------------
+    // GAMEFIX - Fixed: Warning C26495: The Variable dfunction_t.? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+    //--------------------------------------------------------------
+    int     eventnum = 0;
+    int     first_statement = 0;	// negative numbers are builtins
+    int     parm_start = 0;
+    int     parm_total = 0;
+    int     locals = 0;				// total ints of parms + locals
+    int     profile = 0;		      // runtime
+    int     numparms = 0;
+    int     minparms = 0;
+    byte    parm_size[MAX_PARMS] = { 0 };
+    byte    parm_type[MAX_PARMS] = { 0 };
+
+
+    str      s_name;
+    str      s_file;			   // source file defined in
 
 class localstr_t
 {
