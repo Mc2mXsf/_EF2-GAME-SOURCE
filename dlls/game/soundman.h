@@ -79,11 +79,18 @@ inline void SoundManager::Archive
    {
    int               i;
    int               num;
-   int               currentFacet;
+
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4458: declaration of currentFacet hides class member. Renamed to: temp_currentFacet - chrissstrahl
+   //--------------------------------------------------------------
+   int               temp_currentFacet;
+
 
    Listener::Archive( arc );
 
-   arc.ArchiveInteger( &currentFacet );
+   arc.ArchiveInteger( &temp_currentFacet );
    arc.ArchiveObjectPointer( ( Class ** )&current );
 
    if ( arc.Saving() )
