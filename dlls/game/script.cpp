@@ -661,12 +661,18 @@ void Script::AddMacro(const char *name, const char *value)
 */
 char *Script::EvaluateMacroString( const char *theMacroString )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of buffer hides class member. Renamed to: temp_buffer - chrissstrahl
+	//--------------------------------------------------------------
+	char temp_buffer[255];
+	
+
 	static char evalText[255];
-	char buffer[255], *bufferptr = buffer, oper = '+', newoper = '+';
+	char *bufferptr = temp_buffer, oper = '+', newoper = '+';
 	bool haveoper = false;
 	int i;
 	float value = 0.0f, val = 0.0f;
-	memset(buffer, 0, 255);
+	memset(temp_buffer, 0, 255);
 	
 	for ( i=0;i<=strlen(theMacroString);i++ )
 	{
@@ -678,18 +684,18 @@ char *Script::EvaluateMacroString( const char *theMacroString )
 		
 		if ( haveoper )
 		{ 
-			if ( buffer[0] == '$' )
-				val = atof(GetMacroString(buffer));
+			if ( temp_buffer[0] == '$' )
+				val = atof(GetMacroString(temp_buffer));
 			else
-				val = atof(buffer);
+				val = atof(temp_buffer);
 			
 			value = EvaluateMacroMath(value, val, oper);
 			oper = newoper;
 			
 			// Reset everything
 			haveoper = false;
-			memset(buffer, 0, 255);
-			bufferptr = buffer;
+			memset(temp_buffer, 0, 255);
+			bufferptr = temp_buffer;
 			continue; 
 		}
 		
@@ -1074,9 +1080,15 @@ void Script::Parse( const char *data, int length, const char *name )
 void Script::LoadFile( const char *name )
 {
 	int			length;
-	byte        *buffer;
 	byte        *tempbuf;
 	const char  *const_buffer;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of buffer hides class member. Renamed to: temp_buffer - chrissstrahl
+	//--------------------------------------------------------------
+	byte        *temp_buffer;
+
 	
 	Close();
 	
@@ -1086,13 +1098,13 @@ void Script::LoadFile( const char *name )
 		error( "LoadFile", "Couldn't load %s\n", name );
 	}
 	// create our own space
-	buffer = ( byte * )gi.Malloc( length );
+	temp_buffer = ( byte * )gi.Malloc( length );
 	// copy the file over to our space
-	memcpy( buffer, tempbuf, length );
+	memcpy( temp_buffer, tempbuf, length );
 	// free the file
 	gi.FS_FreeFile( tempbuf );
 	
-	const_buffer = ( char * )buffer;
+	const_buffer = ( char * )temp_buffer;
 	
 	Parse( const_buffer, length, name );
 	releaseBuffer = true;
