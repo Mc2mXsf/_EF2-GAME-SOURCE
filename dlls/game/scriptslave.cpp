@@ -2007,16 +2007,21 @@ void ScriptSlave::FollowPath( Event *ev )
 	splineangles = true;
 	for ( i = argnum; i <= ev->NumArgs() ; i++ )
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
 		token = ev->GetString( i );
-		if (!strcmpi( token, "ignoreangles"))
+		if (!Q_stricmp( token, "ignoreangles"))
 		{
 			ignoreangles = true;
 		}
-		else if (!strcmpi( token, "normalangles"))
+		else if (!Q_stricmp( token, "normalangles"))
 		{
 			splineangles = false;
 		}
-		else if (!strcmpi (token, "loop"))
+		else if (!Q_stricmp(token, "loop"))
 		{
 			clamp = false;
 		}

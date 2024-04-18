@@ -229,7 +229,12 @@ ClassDef *SpawnArgs::getClassDef( qboolean *tikiWasStatic )
 		//
 		// explicitly inhibit lights
 		//
-		if ( !strcmpi( classname, "light" ) )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( classname, "light" ) )
 		{
 			//
 			// HACK HACK HACK
@@ -267,7 +272,12 @@ ClassDef *SpawnArgs::getClassDef( qboolean *tikiWasStatic )
 			//
 			// get handle to def file
 			//
-			if ( ( strlen( model ) >= 3 ) && ( !strcmpi( &model[ strlen(model) - 3 ], "tik" ) ) )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+			//--------------------------------------------------------------
+			if ( ( strlen( model ) >= 3 ) && ( !Q_stricmp( &model[ strlen(model) - 3 ], "tik" ) ) )
             {
 				modelindex = modelIndex( model );
 				
@@ -296,7 +306,10 @@ ClassDef *SpawnArgs::getClassDef( qboolean *tikiWasStatic )
 					{
 						for( i = 0; i < cmds.num_cmds; i++ )
 						{
-							if ( !strcmpi( cmds.cmds[ i ].args[ 0 ], "classname" ) )
+							//--------------------------------------------------------------
+							// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+							//--------------------------------------------------------------
+							if ( !Q_stricmp( cmds.cmds[ i ].args[ 0 ], "classname" ) )
 							{
 								cls = getClass( cmds.cmds[ i ].args[ 1 ] );
 								break;

@@ -1773,40 +1773,46 @@ void PathManager::SetNodeFlagsEvent( Event *ev )
             action = FLAG_ADD;
             break;
 		}
-		
-		if (!strcmpi( token, "flee"))
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C4996 strcmpi: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
+		// 
+		// Replaced 9 times
+		//--------------------------------------------------------------
+		if (!Q_stricmp( token, "flee"))
 		{
 			mask = AI_FLEE;
 		}
-		else if (!strcmpi (token, "duck"))
+		else if (!Q_stricmp(token, "duck"))
 		{
 			mask = AI_DUCK;
 		}
-		else if (!strcmpi (token, "cover"))
+		else if (!Q_stricmp(token, "cover"))
 		{
 			mask = AI_COVER;
 		}
-		else if (!strcmpi (token, "door"))
+		else if (!Q_stricmp(token, "door"))
 		{
 			mask = AI_DOOR;
 		}
-		else if (!strcmpi (token, "jump"))
+		else if (!Q_stricmp(token, "jump"))
 		{
 			mask = AI_JUMP;
 		}
-		else if (!strcmpi (token, "ladder"))
+		else if (!Q_stricmp(token, "ladder"))
 		{
 			mask = AI_LADDER;
 		}
-		else if (!strcmpi (token, "action"))
+		else if (!Q_stricmp(token, "action"))
 		{
 			mask = AI_ACTION;
 		}
-		else if (!strcmpi (token, "work"))
+		else if (!Q_stricmp(token, "work"))
 		{
 			mask = AI_WORK;
 		}
-		else if (!strcmpi (token, "hibernate"))
+		else if (!Q_stricmp(token, "hibernate"))
 		{
 			mask = AI_HIBERNATE;
 		}
