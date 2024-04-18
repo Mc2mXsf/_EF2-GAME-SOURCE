@@ -40,25 +40,25 @@ typedef SafePtr<Animate> AnimatePtr;
 class Animate : public Listener
 	{
    private:
-		Event					*animDoneEvent;
-		Event					*torso_animDoneEvent;
+		Event					*animDoneEvent = nullptr;
+		Event					*torso_animDoneEvent = nullptr;
 
-      float             legs_animtime;
-      float             torso_animtime;
+      float             legs_animtime = 0.0f;
+      float             torso_animtime = 0.0f;
 
-      float             legs_starttime;
-      float             torso_starttime;
+      float             legs_starttime = 0.0f;
+      float             torso_starttime = 0.0f;
 
-      float             legs_frametime;
-      float             torso_frametime;
+      float             legs_frametime = 0.0f;
+      float             torso_frametime = 0.0f;
 
-      int               legs_numframes;
-      int               torso_numframes;
+      int               legs_numframes = 0.0f;
+      int               torso_numframes = 0.0f;
 
       str               currentAnim;
-	  float				oldAnimationRate;
+	  float				oldAnimationRate = 0.0f;
 
-		Entity				*self;
+		Entity				*self = nullptr;
 
       void              FrameDeltaEvent( Event *ev );
       void              EndAnim( bodypart_t part );
