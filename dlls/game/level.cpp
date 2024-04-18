@@ -190,13 +190,17 @@ void Level::EndIntermission()
 	exitintermission = true;
 }
 
-void Level::CleanUp( qboolean restart )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of restart hides class member. Renamed to: temp_restart - chrissstrahl
+//--------------------------------------------------------------
+void Level::CleanUp( qboolean temp_restart )
 {
 	_cleanup = true;
 	
 	if ( multiplayerManager.inMultiplayer() )
 	{
-		multiplayerManager.cleanup( restart );
+		multiplayerManager.cleanup( temp_restart );
 	}
 	else
 	{
