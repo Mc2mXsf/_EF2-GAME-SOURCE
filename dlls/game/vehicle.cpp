@@ -1131,9 +1131,15 @@ void Vehicle::CalculateOrientation( void )
 void Vehicle::VehicleTouched( Event *ev )
 {
 	Entity	*other;
-	float		speed;
 	Vector   delta;
 	Vector	dir;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of speed hides class member. Renamed to: temp_speed - chrissstrahl
+	//--------------------------------------------------------------
+	float		temp_speed;
+
 	
 	other = ev->GetEntity( 1 );
 	if ( other == driver )
@@ -1152,12 +1158,12 @@ void Vehicle::VehicleTouched( Event *ev )
 	}
 	
 	delta = origin - last_origin;
-	speed = delta.length();
-	if ( speed > 2 )
+	temp_speed = delta.length();
+	if ( temp_speed > 2 )
 	{
 		Sound( "vehicle_crash", true );
-		dir = delta * ( 1.0f / speed );
-		other->Damage( this, lastdriver, speed * 8.0f, origin, dir, vec_zero, speed * 15, 0, MOD_VEHICLE );
+		dir = delta * ( 1.0f / temp_speed );
+		other->Damage( this, lastdriver, temp_speed * 8.0f, origin, dir, vec_zero, temp_speed * 15, 0, MOD_VEHICLE );
 	}
 	
 }
