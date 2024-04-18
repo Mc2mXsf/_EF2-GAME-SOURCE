@@ -67,7 +67,13 @@ BotNumTeamMates
 int BotNumTeamMates(bot_state_t *bs) {
 	int i, numplayers;
 	char buf[MAX_INFO_STRING];
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
 	static int maxclients;
+
 
 	if (!maxclients)
 		maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
@@ -111,9 +117,15 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 
 	int i, j, k, numteammates, traveltime;
 	char buf[MAX_INFO_STRING];
-	static int maxclients;
 	int traveltimes[MAX_CLIENTS];
 	bot_goal_t *goal = NULL;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	static int temp_maxclients;
+
 
 	if (gametype == GT_CTF) { //  || gametype == GT_1FCTF) { // FIXME
 		if (BotTeam(bs) == TEAM_RED)
@@ -129,11 +141,11 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 			goal = &blueobelisk;
 	}
 #endif
-	if (!maxclients)
-		maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
+	if (!temp_maxclients)
+		temp_maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
 
 	numteammates = 0;
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
@@ -894,13 +906,19 @@ void BotTeamOrders(bot_state_t *bs) {
 	int teammates[MAX_CLIENTS];
 	int numteammates, i;
 	char buf[MAX_INFO_STRING];
-	static int maxclients;
 
-	if (!maxclients)
-		maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	static int temp_maxclients;
+
+
+	if (!temp_maxclients)
+		temp_maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
 
 	numteammates = 0;
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;

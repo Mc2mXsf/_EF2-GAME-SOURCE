@@ -221,15 +221,21 @@ FindClientByName
 int FindClientByName(char *name) {
 	int i;
 	char buf[MAX_INFO_STRING];
-	static int maxclients;
 
-	if (!maxclients)
-		maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	static int temp_maxclients;
+
+
+	if (!temp_maxclients)
+		temp_maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		ClientName(i, buf, sizeof(buf));
 		if (!Q_stricmp(buf, name)) return i;
 	}
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		ClientName(i, buf, sizeof(buf));
 		if (stristr(buf, name)) return i;
 	}
@@ -244,16 +250,22 @@ FindEnemyByName
 int FindEnemyByName(bot_state_t *bs, char *name) {
 	int i;
 	char buf[MAX_INFO_STRING];
-	static int maxclients;
 
-	if (!maxclients)
-		maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	static int temp_maxclients;
+
+
+	if (!temp_maxclients)
+		temp_maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		if (BotSameTeam(bs, i)) continue;
 		ClientName(i, buf, sizeof(buf));
 		if (!Q_stricmp(buf, name)) return i;
 	}
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		if (BotSameTeam(bs, i)) continue;
 		ClientName(i, buf, sizeof(buf));
 		if (stristr(buf, name)) return i;
@@ -269,13 +281,19 @@ NumPlayersOnSameTeam
 int NumPlayersOnSameTeam(bot_state_t *bs) {
 	int i, num;
 	char buf[MAX_INFO_STRING];
-	static int maxclients;
 
-	if (!maxclients)
-		maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+	//--------------------------------------------------------------
+	static int temp_maxclients;
+
+
+	if (!temp_maxclients)
+		temp_maxclients = gi.Cvar_VariableIntegerValue("sv_maxclients");
 
 	num = 0;
-	for (i = 0; i < maxclients && i < MAX_CLIENTS; i++) {
+	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf, gi.getConfigstring(CS_PLAYERS+i), MAX_INFO_STRING);
 		if (strlen(buf)) {
 			if (BotSameTeam(bs, i+1)) num++;

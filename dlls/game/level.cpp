@@ -691,10 +691,14 @@ void Level::SpawnEntities( const char *themapname, const char *entities, int lev
 	}
 }
 
-void Level::NewMap( const char *mapname, const char *entities, int levelTime )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4458: declaration of ? hides class member. Renamed to: temp_? - chrissstrahl
+//--------------------------------------------------------------
+void Level::NewMap( const char *temp_mapname, const char *entities, int levelTime )
 {
 	theCinematicArmature.deleteAllCinematics();
-	current_map = mapname;
+	current_map = temp_mapname;
 	current_entities = entities;
 	
 	SpawnEntities( current_map, current_entities, levelTime );
