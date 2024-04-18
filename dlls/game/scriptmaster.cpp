@@ -925,25 +925,33 @@ void ScriptMaster::SetCurrentThread( CThread *thread )
 	currentThread = thread;
 }
 
-CThread *ScriptMaster::CreateThread( Program *program )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of program hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+CThread *ScriptMaster::CreateThread( Program *temp_program )
 {
 	CThread *thread;
 	
 	thread = new CThread;
 	
-	thread->program = program;
+	thread->program = temp_program;
 	Threads.AddObject( thread );
 	
 	return thread;	
 }
 
-CThread *ScriptMaster::CreateThread( const char *label, Program *program )
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C4459: declaration of program hides global definition. - chrissstrahl
+//--------------------------------------------------------------
+CThread *ScriptMaster::CreateThread( const char *label, Program *temp_program )
 {
 	CThread *thread;
 	int threadnum;
 	
 	thread = new CThread;
-	thread->program = program;
+	thread->program = temp_program;
 	
 	threadnum = GetUniqueThreadNumber();
 	Threads.AddObject( thread );
