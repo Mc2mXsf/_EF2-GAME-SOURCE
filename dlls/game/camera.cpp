@@ -1877,13 +1877,19 @@ void Camera::Cut( Event* ev )
 	for( j = 0; j < game.maxclients; j++ )
 	{
 		gentity_t   *other;
-		Player      *client;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of client hides class member. Renamed to: temp_client - chrissstrahl
+		//--------------------------------------------------------------
+		Player      *temp_client;
+
 
 		other = &g_entities[ j ];
 		if ( other->inuse && other->client )
 		{
-			client = ( Player * )other->entity;
-			client->CameraCut( this );
+			temp_client = ( Player * )other->entity;
+			temp_client->CameraCut( this );
 		}
 	}
 }

@@ -2757,12 +2757,18 @@ void TriggerCameraUse::TriggerCamera( Event *ev )
 	other = ev->GetEntity( 1 );
 	if ( other->isClient() )
 	{
-		Player * client;
 		Entity * ent;
 		Camera * cam;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of client hides class member. Renamed to: temp_client - chrissstrahl
+		//--------------------------------------------------------------
+		Player * temp_client;
 		
-		client = ( Player * )other;
-		cam = client->CurrentCamera();
+
+		temp_client = ( Player * )other;
+		cam = temp_client->CurrentCamera();
 		if ( cam != NULL )
 		{
 			str nextcam;
@@ -2778,7 +2784,7 @@ void TriggerCameraUse::TriggerCamera( Event *ev )
 					{
 						cam = (Camera *)ent;
 						camthread = cam->Thread();
-						client->SetCamera( cam, CAMERA_SWITCHTIME );
+						temp_client->SetCamera( cam, CAMERA_SWITCHTIME );
 					}
 				}
             }
@@ -2792,7 +2798,7 @@ void TriggerCameraUse::TriggerCamera( Event *ev )
 				{
 					cam = (Camera *)ent;
 					camthread = cam->Thread();
-					client->SetCamera( cam, CAMERA_SWITCHTIME );
+					temp_client->SetCamera( cam, CAMERA_SWITCHTIME );
 				}
 				else
 				{
@@ -3290,10 +3296,14 @@ void TriggerReverb::ChangeReverb( Event *ev )
 	other = ev->GetEntity( 1 );
 	if ( other && other->isClient() )
 	{
-		Player *client;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of client hides class member. Renamed to: temp_client - chrissstrahl
+		//--------------------------------------------------------------
+		Player *temp_client;
 		
-		client = ( Player * )other;
-		client->SetReverb( reverbtype, reverblevel );
+
+		temp_client = ( Player * )other;
+		temp_client->SetReverb( reverbtype, reverblevel );
 
 		if ( !multiplayerManager.inMultiplayer() )
 		{
@@ -3309,10 +3319,14 @@ void TriggerReverb::AltChangeReverb( Event *ev )
 	other = ev->GetEntity( 1 );
 	if ( other && other->isClient() )
 	{
-		Player *client;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of client hides class member. Renamed to: temp_client - chrissstrahl
+		//--------------------------------------------------------------
+		Player *temp_client;
 		
-		client = ( Player * )other;
-		client->SetReverb( altreverbtype, altreverblevel );
+
+		temp_client = ( Player * )other;
+		temp_client->SetReverb( altreverbtype, altreverblevel );
 
 		if ( !multiplayerManager.inMultiplayer() )
 		{
