@@ -532,10 +532,17 @@ void SoundManager::UpdateSpeaker( TriggerSpeaker * speaker )
 void SoundManager::UpdateTriggerMusic( TriggerMusic * music )
 {
 	cvar_t   *cvar;
-	str      current;
 	str      fallback;
 	str      faceted;
 	Vector   tempvec;
+
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4458: declaration of current hides class member. Renamed to: temp_current - chrissstrahl
+	//--------------------------------------------------------------
+	str      temp_current;
+
 	
 	if ( !music )
 	{
@@ -597,7 +604,7 @@ void SoundManager::UpdateTriggerMusic( TriggerMusic * music )
 	
 	// get current mood
 	cvar = gi.cvar( "snd_currentmood", "", 0 );
-	current = cvar->string;
+	temp_current = cvar->string;
 	
 	// get fallback mood
 	cvar = gi.cvar( "snd_fallbackmood", "", 0 );
@@ -605,11 +612,11 @@ void SoundManager::UpdateTriggerMusic( TriggerMusic * music )
 	
 	if ( music->multiFaceted && currentFacet )
 	{
-		music->SetAltMood( current, fallback );
+		music->SetAltMood( temp_current, fallback );
 	}
 	else
 	{
-		music->SetMood( current, fallback );
+		music->SetMood( temp_current, fallback );
 	}
 	
 	// get onetime
