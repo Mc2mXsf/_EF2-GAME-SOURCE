@@ -68,7 +68,14 @@ class type_t : public Class
 {
 public:
 	type_t( etype_t t = ev_error, def_t *d = NULL, type_t *n = NULL, type_t *aux = NULL ) :
-		type( t ), def( d ), next( n ), aux_type( aux ) { num_parms = 0; min_parms = 0; };
+		type( t ), def( d ), next( n ), aux_type( aux ) {num_parms = 0; min_parms = 0;
+        
+        
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable parm_types was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+        memset(parm_types, 0, sizeof(parm_types));
+    };
 	CLASS_PROTOTYPE( type_t );
 
 	virtual void	Archive( Archiver &arc );
@@ -131,8 +138,7 @@ public:
 	CLASS_PROTOTYPE( dfunction_t );
 
 	virtual void	Archive( Archiver &arc );
-
-   };
+  
 
     //--------------------------------------------------------------
     // GAMEFIX - Fixed: Warning C26495: The Variable dfunction_t.? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
@@ -151,6 +157,7 @@ public:
 
     str      s_name;
     str      s_file;			   // source file defined in
+ };
 
 class localstr_t
 {
