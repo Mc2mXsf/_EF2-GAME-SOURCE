@@ -1282,7 +1282,12 @@ void DrivableVehicle::Killed(Event *ev)
 	//
 	if ( driver )
 	{
-		Vector dir;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4458: declaration of dir hides class member. Renamed to: temp_dir - chrissstrahl
+		//--------------------------------------------------------------
+		Vector temp_dir;
+
+
 		SentientPtr sent;
 		Event * event;
 		
@@ -1291,10 +1296,10 @@ void DrivableVehicle::Killed(Event *ev)
 		event = new Event( EV_Use );
 		event->AddEntity( sent );
 		ProcessEvent( event );
-		dir = sent->origin - origin;
-		dir[ 2 ] += 64.0f;
-		dir.normalize();
-		sent->Damage( this, this, sent->health * 2.0f, origin, dir, vec_zero, 50, 0, MOD_VEHICLE  );
+		temp_dir = sent->origin - origin;
+		temp_dir[ 2 ] += 64.0f;
+		temp_dir.normalize();
+		sent->Damage( this, this, sent->health * 2.0f, origin, temp_dir, vec_zero, 50, 0, MOD_VEHICLE  );
 	}
 	
 	if (flags & FL_DIE_EXPLODE)
