@@ -412,7 +412,7 @@ inline str::str
    //--------------------------------------------------------------
    // GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
    //--------------------------------------------------------------
-   Q_strncpyz( data, text, stringLength );
+   Q_strncpyz( data, text, stringLength + 1 );
 
 
    len = stringLength;
@@ -452,7 +452,7 @@ inline void str::append
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: C4996 strcat: This function or variable may be unsafe. Using instead: Q_strcat - chrissstrahl
 		//--------------------------------------------------------------
-		Q_strcat( data, new_length , text );
+		Q_strcat( data, new_length + 1 , text );
 
 
       len = new_length;
@@ -475,7 +475,7 @@ inline void str::append
    //--------------------------------------------------------------
    // GAMEFIX - Fixed: C4996 strcat: This function or variable may be unsafe. Using instead: Q_strcat - chrissstrahl
    //--------------------------------------------------------------
-   Q_strcat ( data, new_length, text.c_str () );
+   Q_strcat ( data, new_length + 1 , text.c_str () );
 
 
    len = new_length;
