@@ -1427,10 +1427,15 @@ void GotoSpecified::setupWarpToPathNode( Actor &self )
 		_state = GOTO_SPEC_WARP_TO_DESTINATION;
 		setupWarpToDestination( self );
 		}
-	
-	_warpToPosition.SetPosition( goalNode->origin );
-	_warpToPosition.Begin( self );
-		
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	//--------------------------------------------------------------
+	if (goalNode) {
+		_warpToPosition.SetPosition( goalNode->origin );
+		_warpToPosition.Begin( self );
+	}	
 }
 
 //--------------------------------------------------------------
@@ -3494,7 +3499,7 @@ CLASS_DECLARATION( Behavior, GroupFollow, NULL )
 float GetAnimationRate( Entity &entity, const int animation )
 {
 	const float time = gi.Anim_Time( entity.edict->s.modelindex, animation );
-	assert( time != 0.0f );
+	assert( time != 0.0f ); //GAMEFIX - This assert fired when player died and Korban keept on walking in place ignoring enemies until player respawned, the walkbehaviour was some kind of closein, the ai was set to follow target
 
 	if ( time == 0.0f )
 	{

@@ -2135,8 +2135,22 @@ void Entity::SetEntNum
 
    level.spawn_entnum = num;
    level.AllocEdict( this );
-	client = edict->client;
-	entnum = edict->s.number;
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer. - chrissstrahl
+   //--------------------------------------------------------------
+   if (edict && edict->client) {
+	   client = edict->client;
+	   entnum = edict->s.number;
+   }
+   else {
+	   client = nullptr;
+	   entnum = 0;
+	   error("Entity::SetEntNum", "GAMEFIX: edict->client did not exist (we should never ever come here)\n");
+   }
+
+
    }
 
 void Entity::ClassnameEvent

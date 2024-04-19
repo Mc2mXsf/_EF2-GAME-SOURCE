@@ -17572,7 +17572,12 @@ Actor* Actor::GetAttachedChildActor( const str& childName )
 		//--------------------------------------------------------------
 		if ( !Q_stricmp(child->TargetName() , childName.c_str() ) )
 			{
-			if ( child->isSubclassOf(Actor) )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer. - chrissstrahl
+			//--------------------------------------------------------------
+			if (child && child->isSubclassOf(Actor) == qtrue )
 				childActor = (Actor*)child;
 
 			if ( childActor )

@@ -660,36 +660,43 @@ void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlaye
 
 		// Print to all of the players
 
-		for ( i = 0 ; i < _maxPlayers ; i++ )
+		for (i = 0; i < _maxPlayers; i++)
 		{
-			currentPlayer = multiplayerManager.getPlayer( i );
+			currentPlayer = multiplayerManager.getPlayer(i);
 
-			if ( !currentPlayer )
+			if (!currentPlayer)
 				continue;
 
 			// Figure out which color to use 
 
-			if ( killedPlayer && killedPlayer->entnum == i )
+			if (killedPlayer && killedPlayer->entnum == i)
 				color = COLOR_RED;
-			else if ( attackingPlayer && attackingPlayer->entnum == i )
+			else if (attackingPlayer && attackingPlayer->entnum == i)
 				color = COLOR_GREEN;
-			else 
+			else
 				color = COLOR_NONE;
 
 			// Build the death string
 
-			if ( suicide )
-			{
-				printString = va( "%s ^%c%s^8", killedPlayer->client->pers.netname, color, s1 );
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C6011 Dereferencing NULL-Pointer. - chrissstrahl
+			//--------------------------------------------------------------
+			if (killedPlayer) {
+				if (suicide)
+				{
+					printString = va("%s ^%c%s^8", killedPlayer->client->pers.netname, color, s1);
+				}
+				else if (s2)
+				{
+					printString = va("%s ^%c%s^8 %s ^%c%s^8", killedPlayer->client->pers.netname, color, s1, attackingPlayer->client->pers.netname, color, s2);
+				}
+				else
+				{
+					printString = va("%s ^%c%s^8 %s", killedPlayer->client->pers.netname, color, s1, attackingPlayer->client->pers.netname);
+				}
 			}
-			else if ( s2 )
-			{
-				printString = va( "%s ^%c%s^8 %s ^%c%s^8", killedPlayer->client->pers.netname, color, s1, attackingPlayer->client->pers.netname, color, s2 );
-			}
-			else
-			{
-				printString = va( "%s ^%c%s^8 %s", killedPlayer->client->pers.netname, color, s1, attackingPlayer->client->pers.netname );
-			}
+
 
 			if ( sameTeam )
 			{
