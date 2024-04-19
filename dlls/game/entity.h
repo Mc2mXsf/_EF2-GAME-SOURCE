@@ -1031,7 +1031,7 @@ inline void Entity::SetModelEvent(Event *ev)
 	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
 	//--------------------------------------------------------------
 	str temp_modelName = ev->GetString(1);
-	Q_strncpyz(modelname, temp_modelName.c_str(), temp_modelName.length() );
+	Q_strncpyz(modelname, temp_modelName.c_str(), sizeof(modelname) );
 
 	
 	char *tmpPtr = strstr(modelname, "*");
