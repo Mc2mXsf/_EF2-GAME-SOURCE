@@ -215,7 +215,7 @@ inline str::str
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
 		//--------------------------------------------------------------
-		Q_strncpyz(data, text, stringLength);
+		Q_strncpyz(data, text, stringLength + 1 );
 
 
       len = stringLength;
@@ -239,7 +239,7 @@ inline str::str
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
 	//--------------------------------------------------------------
-	Q_strncpyz( data, text.c_str(), text.length());
+	Q_strncpyz( data, text.c_str(), text.length() + 1 );
 
 
    len = text.length();
@@ -338,7 +338,7 @@ inline str::str
    //--------------------------------------------------------------
    // GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
    //--------------------------------------------------------------
-   Q_strncpyz( data, text, stringLength );
+   Q_strncpyz( data, text, stringLength + 1 );
 
 
    len = stringLength;
@@ -375,7 +375,7 @@ inline str::str
    //--------------------------------------------------------------
    // GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
    //--------------------------------------------------------------
-   Q_strncpyz( data, text , stringLength );
+   Q_strncpyz( data, text , stringLength + 1 );
 
 
    len = stringLength;
@@ -520,7 +520,7 @@ inline str& str::operator=
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
 	//--------------------------------------------------------------
-	Q_strncpyz( data, text.c_str() , text.length() );
+	Q_strncpyz( data, text.c_str() , text.length() + 1 );
 
 
    len = text.length();
@@ -588,7 +588,7 @@ inline str& str::operator=
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
 	//--------------------------------------------------------------
-	Q_strncpyz( data, text , stringLength );
+	Q_strncpyz( data, text , stringLength + 1 );
 
 
    len = stringLength;
