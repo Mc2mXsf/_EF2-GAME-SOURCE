@@ -1658,7 +1658,12 @@ void ViewMaster::SetModelEvent( Event *ev )
 	
 	// Prepend 'models/' to make things easier
 	str[ 0 ] = 0;
-	if ( ( mdl[ 1 ] != ':' ) && strnicmp( mdl, "models", 6 ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( mdl[ 1 ] != ':' ) && Q_stricmpn( mdl, "models", 6 ) )
 	{
 		strcpy( str, "models/" );
 	}

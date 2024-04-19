@@ -123,7 +123,11 @@ bool ModeCaptureTheFlag::shouldKeepItem( MultiplayerItem *item )
 {
 	// See if we want to keep this item
 
-	if ( strnicmp( item->getName().c_str(), "ctfflag", 7 ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if (Q_stricmpn( item->getName().c_str(), "ctfflag", 7 ) == 0 )
 	{
 		if ( !multiplayerManager.checkRule ( "keepflags", true ) )
 			return false;
@@ -151,7 +155,13 @@ void ModeCaptureTheFlag::itemKept( MultiplayerItem *item )
 {
 	// See if we care about this item
 
-	if ( strnicmp( item->getName().c_str(), "ctfflag", 7 ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	// 
+	// Replaced 3 times
+	//--------------------------------------------------------------
+	if (Q_stricmpn( item->getName().c_str(), "ctfflag", 7 ) == 0 )
 	{
 		CtfFlag ctfFlag;
 
@@ -160,11 +170,11 @@ void ModeCaptureTheFlag::itemKept( MultiplayerItem *item )
 		ctfFlag._realFlag = item;
 		ctfFlag._tempFlag = NULL;
 
-		if ( strnicmp( item->getName().c_str() + 8, "red", 3 ) == 0 )
+		if (Q_stricmpn( item->getName().c_str() + 8, "red", 3 ) == 0 )
 		{
 			ctfFlag._teamName = "Red";
 		}
-		else if ( strnicmp( item->getName().c_str() + 8, "blue", 4 ) == 0 )
+		else if (Q_stricmpn( item->getName().c_str() + 8, "blue", 4 ) == 0 )
 		{
 			ctfFlag._teamName = "Blue";
 		}
@@ -611,9 +621,15 @@ void ModeCaptureTheFlag::score( Player *player )
 
 	multiplayerManager.centerPrintAllClients( printString, CENTERPRINT_IMPORTANCE_NORMAL );
 
-	if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
 		multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_frc.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.5f );
-	else if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
+	else if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
 		multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_bfc.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.5f );
 	else
 	{
@@ -723,9 +739,15 @@ void ModeCaptureTheFlag::returnFlag( MultiplayerItem *item, Player *player )
 
 		multiplayerManager.centerPrintAllClients( printString, CENTERPRINT_IMPORTANCE_NORMAL );
 
-		if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
 			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_rfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
-		else if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
+		else if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
 			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_bfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
 		else
 		{
@@ -860,9 +882,15 @@ void ModeCaptureTheFlag::grabTheFlag( Player *player, MultiplayerItem *item )
 
 	multiplayerManager.centerPrintAllClients( printString, CENTERPRINT_IMPORTANCE_NORMAL );
 
-	if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
 		multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_rft.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
-	else if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
+	else if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
 		multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_bft.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
 	else
 	{
@@ -1054,7 +1082,11 @@ bool ModeCaptureTheFlag::doesPlayerHaveItem( Player *player, const char *itemNam
 {
 	// We only care about flags
 
-	if ( strnicmp( itemName, "ctfflag", 7 ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if (Q_stricmpn( itemName, "ctfflag", 7 ) == 0 )
 	{
 		// See if the player has a flag
 
@@ -1133,7 +1165,11 @@ int ModeCaptureTheFlag::getStat( Player *player, int statNum, int value )
 		{
 			ctfFlag = &_flags.ObjectAt( i );
 
-			if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), flagName.c_str(), flagName.length() ) == 0 )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), flagName.c_str(), flagName.length() ) == 0 )
 			{
 				if ( ctfFlag->_tempFlag )
 				{

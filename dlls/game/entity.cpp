@@ -2272,7 +2272,12 @@ void Entity::setModel( const char *mdl )
 	
 	// Prepend 'models/' to make things easier
 	temp = "";
-	if ( ( strlen( mdl ) > 0 ) && !strchr( mdl, '*' ) && strnicmp( "models/", mdl, 7 ) && !strstr( mdl, ".spr" ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( strlen( mdl ) > 0 ) && !strchr( mdl, '*' ) && Q_stricmpn( "models/", mdl, 7 ) && !strstr( mdl, ".spr" ) )
 	{
 		temp = "models/";
 	}
@@ -2389,7 +2394,12 @@ void Entity::setViewModel
 
    // Prepend 'models/' to make things easier
    temp = "";
-	if ( ( strlen( mdl ) > 0 ) && !strchr( mdl, '*' ) && strnicmp( "models/", mdl, 7 ) && !strstr( mdl, ".spr" ) )
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+   //--------------------------------------------------------------
+	if ( ( strlen( mdl ) > 0 ) && !strchr( mdl, '*' ) && Q_stricmpn( "models/", mdl, 7 ) && !strstr( mdl, ".spr" ) )
 		{
 		temp = "models/";
 		}
@@ -7089,7 +7099,11 @@ void Entity::MorphEvent
 
 	// See if this is an expression
 
-	if ( strnicmp( morph_target_name.c_str(), "exp_", 4 ) == 0 )
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+   //--------------------------------------------------------------
+	if ( Q_stricmpn( morph_target_name.c_str(), "exp_", 4 ) == 0 )
 		{
 		// Process this expression
 
@@ -7236,7 +7250,11 @@ void Entity::UnmorphEvent
 
 	// See if this is an expression
 
-	if ( strnicmp( morph_target_name.c_str(), "exp_", 4 ) == 0 )
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+   //--------------------------------------------------------------
+	if ( Q_stricmpn( morph_target_name.c_str(), "exp_", 4 ) == 0 )
 		{
 		// Process this expression
 
@@ -8408,24 +8426,28 @@ void Entity::DisplayEffect ( Event *ev )
 
 	// See if there is a gameplay object (if necessary)
 
-	if ( ( strnicmp( effectType.c_str(), "TransportOut", strlen( "TransportOut" ) ) == 0 ) ||
-		 ( strnicmp( effectType.c_str(), "TransportIn", strlen( "TransportIn" ) ) == 0 ) ||
-		 ( strnicmp( effectType.c_str(), "FadeOut", strlen( "FadeOut" ) ) == 0 ) ||
-		 ( strnicmp( effectType.c_str(), "FadeIn", strlen( "FadeIn" ) ) == 0 ) )
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+   //--------------------------------------------------------------
+	if ( ( Q_stricmpn( effectType.c_str(), "TransportOut", strlen( "TransportOut" ) ) == 0 ) ||
+		 ( Q_stricmpn( effectType.c_str(), "TransportIn", strlen( "TransportIn" ) ) == 0 ) ||
+		 ( Q_stricmpn( effectType.c_str(), "FadeOut", strlen( "FadeOut" ) ) == 0 ) ||
+		 ( Q_stricmpn( effectType.c_str(), "FadeIn", strlen( "FadeIn" ) ) == 0 ) )
 	{
-		if ( ( strnicmp( effectType.c_str(), "TransportOut", strlen( "TransportOut" ) ) == 0 ) )
+		if ( ( Q_stricmpn( effectType.c_str(), "TransportOut", strlen( "TransportOut" ) ) == 0 ) )
 		{
 			gameplayObjectName = "TransportOut";
 		}
-		else if ( ( strnicmp( effectType.c_str(), "TransportIn", strlen( "TransportIn" ) ) == 0 ) )
+		else if ( ( Q_stricmpn( effectType.c_str(), "TransportIn", strlen( "TransportIn" ) ) == 0 ) )
 		{
 			gameplayObjectName = "TransportIn";
 		}
-		else if ( ( strnicmp( effectType.c_str(), "FadeOut", strlen( "FadeOut" ) ) == 0 ) )
+		else if ( ( Q_stricmpn( effectType.c_str(), "FadeOut", strlen( "FadeOut" ) ) == 0 ) )
 		{
 			gameplayObjectName = "FadeOut";
 		}
-		else if ( ( strnicmp( effectType.c_str(), "FadeIn", strlen( "FadeIn" ) ) == 0 ) )
+		else if ( ( Q_stricmpn( effectType.c_str(), "FadeIn", strlen( "FadeIn" ) ) == 0 ) )
 		{
 			gameplayObjectName = "FadeIn";
 		}

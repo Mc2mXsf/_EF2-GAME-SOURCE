@@ -1219,7 +1219,11 @@ Item *Sentient::FindItemByModelname( const char *mdl, Item *current )
 	else
 		seeking = false;
 	
-	if ( strnicmp( "models/", mdl, 7 ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if (Q_stricmpn( "models/", mdl, 7 ) )
 		tmpmdl = "models/";
 	
 	tmpmdl += mdl;
@@ -4323,7 +4327,10 @@ void Sentient::CheckAnimations( Event *ev )
             {
 				goto out;
             }
-			else if ( !strnicmp( c, cs, strlen( cs ) ) ) // partial match
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+			//--------------------------------------------------------------
+			else if ( !Q_stricmpn( c, cs, strlen( cs ) ) ) // partial match
             {
 				int state_len = strlen( cs );
 				

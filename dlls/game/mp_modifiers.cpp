@@ -325,7 +325,12 @@ bool ModifierDestruction::shouldKeepItem( MultiplayerItem *item )
 	Event *event;
 
 	// See if we care about this item
-	if ( strnicmp( item->getName().c_str(), "DestructionObject", sizeof( "DestructionObject" ) - 1 ) == 0 )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if (Q_stricmpn( item->getName().c_str(), "DestructionObject", sizeof( "DestructionObject" ) - 1 ) == 0 )
 	{
 		// It's a destruction object
 
@@ -434,7 +439,11 @@ void ModifierDestruction::itemDestroyed( Player *player, MultiplayerItem *item )
 {
 	Team *team;
 
-	if ( strnicmp( item->getName().c_str(), "DestructionObject", sizeof( "DestructionObject" ) - 1 ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if (Q_stricmpn( item->getName().c_str(), "DestructionObject", sizeof( "DestructionObject" ) - 1 ) == 0 )
 	{
 		// Snap health to 0
 
@@ -797,7 +806,14 @@ bool ModifierOneFlag::shouldKeepItem( MultiplayerItem *item )
 bool ModifierOneFlag::checkRule( const char *rule, bool defaultValue, Player *player )
 {
 	// Check to see if we care about this rule
-	if ( strnicmp( rule, "flagscore-", sizeof( "flagscore-" ) - 1 ) == 0 )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( Q_stricmpn( rule, "flagscore-", sizeof( "flagscore-" ) - 1 ) == 0 )
 	{
 		// See if this flag touch should generate a flag score
 		
@@ -812,7 +828,7 @@ bool ModifierOneFlag::checkRule( const char *rule, bool defaultValue, Player *pl
 		else if ( Q_stricmp( rule, "flagscore-enemyflag" ) == 0 )
 			return true;
 	}
-	else if ( strnicmp( rule, "flagpickup-", sizeof( "flagpickup-" ) - 1 ) == 0 )
+	else if ( Q_stricmpn( rule, "flagpickup-", sizeof( "flagpickup-" ) - 1 ) == 0 )
 	{
 		// See if this flag touch should generate a flag pickup
 		
@@ -1432,7 +1448,10 @@ bool ModifierDiffusion::checkRule( const char *rule, bool defaultValue, Player *
 
 bool ModifierDiffusion::shouldKeepItem( MultiplayerItem *item )
 {
-	if ( strnicmp( item->getName().c_str(), "Diffusion-", strlen( "Diffusion-" ) ) == 0 )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmpn( item->getName().c_str(), "Diffusion-", strlen( "Diffusion-" ) ) == 0 )
 	{
 		// This is a diffusion item so keep track of it
 
@@ -2506,7 +2525,13 @@ bool ModifierSpecialties::shouldKeepItem( MultiplayerItem *item )
 
 	itemName = item->getName();
 
-	if ( strnicmp( itemName.c_str(), "specialty-", strlen( "specialty-" ) ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	// 
+	// Replaced 7 times
+	//--------------------------------------------------------------
+	if ( Q_stricmpn( itemName.c_str(), "specialty-", strlen( "specialty-" ) ) == 0 )
 	{
 		SpecialtyItem specialtyItem;
 
@@ -2517,32 +2542,32 @@ bool ModifierSpecialties::shouldKeepItem( MultiplayerItem *item )
 		specialtyItem._respawnTime = 0.0f;
 		specialtyItem._pickedupTime = 0.0f;
 
-		if ( strnicmp( itemName.c_str(), "specialty-infiltrator-", strlen( "specialty-infiltrator-" ) ) == 0 )
+		if ( Q_stricmpn( itemName.c_str(), "specialty-infiltrator-", strlen( "specialty-infiltrator-" ) ) == 0 )
 		{
 			specialtyItem._type = SPECIALTY_INFILTRATOR;
 			specialtyItem._minimumRespawnTime = _infiltratorMinRespawnTime;
 		}
-		else if ( strnicmp( itemName.c_str(), "specialty-medic-", strlen( "specialty-medic-" ) ) == 0 )
+		else if ( Q_stricmpn( itemName.c_str(), "specialty-medic-", strlen( "specialty-medic-" ) ) == 0 )
 		{
 			specialtyItem._type = SPECIALTY_MEDIC;
 			specialtyItem._minimumRespawnTime = _medicMinRespawnTime;
 		}
-		else if ( strnicmp( itemName.c_str(), "specialty-technician-", strlen( "specialty-technician-" ) ) == 0 )
+		else if ( Q_stricmpn( itemName.c_str(), "specialty-technician-", strlen( "specialty-technician-" ) ) == 0 )
 		{
 			specialtyItem._type = SPECIALTY_TECHNICIAN;
 			specialtyItem._minimumRespawnTime = _technicianMinRespawnTime;
 		}
-		else if ( strnicmp( itemName.c_str(), "specialty-demolitionist-", strlen( "specialty-demolitionist-" ) ) == 0 )
+		else if ( Q_stricmpn( itemName.c_str(), "specialty-demolitionist-", strlen( "specialty-demolitionist-" ) ) == 0 )
 		{
 			specialtyItem._type = SPECIALTY_DEMOLITIONIST;
 			specialtyItem._minimumRespawnTime = _demolitionistMinRespawnTime;
 		}
-		else if ( strnicmp( itemName.c_str(), "specialty-heavyweapons-", strlen( "specialty-heavyweapons-" ) ) == 0 )
+		else if ( Q_stricmpn( itemName.c_str(), "specialty-heavyweapons-", strlen( "specialty-heavyweapons-" ) ) == 0 )
 		{
 			specialtyItem._type = SPECIALTY_HEAVY_WEAPONS;
 			specialtyItem._minimumRespawnTime = _heavyweaponsMinRespawnTime;
 		}
-		else if ( strnicmp( itemName.c_str(), "specialty-sniper-", strlen( "specialty-sniper-" ) ) == 0 )
+		else if ( Q_stricmpn( itemName.c_str(), "specialty-sniper-", strlen( "specialty-sniper-" ) ) == 0 )
 		{
 			specialtyItem._type = SPECIALTY_SNIPER;
 			specialtyItem._minimumRespawnTime = _sniperMinRespawnTime;
@@ -3569,7 +3594,13 @@ bool ModifierControlPoints::shouldKeepItem( MultiplayerItem *item )
 {
 	ControlPointData controlPoint;
 
-	if ( strnicmp( item->getName().c_str(), "controlpoint-", strlen( "controlpoint-" ) ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	// 
+	// Replaced 7 times
+	//--------------------------------------------------------------
+	if ( Q_stricmpn( item->getName().c_str(), "controlpoint-", strlen( "controlpoint-" ) ) == 0 )
 	//if ( strnicmp( item->getName().c_str(), "controlpoint", strlen( "controlpoint" ) ) == 0 )
 	{
 		// This is a control point, add it to the list

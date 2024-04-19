@@ -842,7 +842,10 @@ void ScriptMaster::KillThread( const str &name )
 		//name
 		if(useWildCard == true)
 		{
-			result = strnicmp( thread->ThreadName(), name.c_str(), len );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+			//--------------------------------------------------------------
+			result = Q_stricmpn( thread->ThreadName(), name.c_str(), len );
 		}
 		else
 		{

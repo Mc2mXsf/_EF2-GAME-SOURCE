@@ -1653,7 +1653,12 @@ int modelIndex( const char *mdl )
 	
 	// Prepend 'models/' to make things easier
 	//if ( !strchr( mdl, '*' ) && !strchr( mdl, '\\' ) && !strchr( mdl, '/' ) )
-	if ( ( strlen( mdl ) > 0 ) && !strchr( mdl, '*' ) && strnicmp( "models/", mdl, 7 ) && strstr( mdl, ".tik" ) )
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+   //--------------------------------------------------------------
+	if ( ( strlen( mdl ) > 0 ) && !strchr( mdl, '*' ) && Q_stricmpn( "models/", mdl, 7 ) && strstr( mdl, ".tik" ) )
 	{
 		name = "models/";
 	}
@@ -2343,7 +2348,11 @@ void G_MissionFailed( const str& reason )
 
 	playerDeathThread = level.getPlayerDeathThread();
 
-	if ( ( strnicmp( reason.c_str(), "PlayerKilled", strlen( "PlayerKilled" ) ) == 0 ) && ( playerDeathThread.length() ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( Q_stricmpn( reason.c_str(), "PlayerKilled", strlen( "PlayerKilled" ) ) == 0 ) && ( playerDeathThread.length() ) )
 	{
 		ExecuteThread( playerDeathThread, true, NULL );
 	}

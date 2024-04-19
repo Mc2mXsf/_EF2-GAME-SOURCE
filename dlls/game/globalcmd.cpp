@@ -3378,7 +3378,11 @@ void CThread::SendClientVar( Event *ev )
 	
 	varName = ev->GetString( 2 );
 	
-	if ( strnicmp( varName.c_str(), levelVarPrefix.c_str(), levelVarPrefix.length() ) != 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmpn( varName.c_str(), levelVarPrefix.c_str(), levelVarPrefix.length() ) != 0 )
 	{
 		gi.WDPrintf( "SendClientVar can only send level vars, %s not allowed\n", varName.c_str() );
 		return;
