@@ -298,7 +298,11 @@ inline str::str
 	data = buffer;
 	alloced = STRING_PREALLOC_SIZE;
 
-   sprintf( text, "%.3f", num );
+   
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: Com_sprintf - chrissstrahl
+   //--------------------------------------------------------------
+   Com_sprintf(text, sizeof(text), "%.3f", num);
 
 
    //--------------------------------------------------------------
@@ -324,7 +328,11 @@ inline str::str
 	data = buffer;
 	alloced = STRING_PREALLOC_SIZE;
 
-   sprintf( text, "%d", num );
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: Com_sprintf - chrissstrahl
+   //--------------------------------------------------------------
+   Com_sprintf(text, sizeof(text), "%d", num);
 
 
    //--------------------------------------------------------------
@@ -350,7 +358,11 @@ inline str::str
 	data = buffer;
 	alloced = STRING_PREALLOC_SIZE;
 
-   sprintf( text, "%u", num );
+   
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: Com_sprintf - chrissstrahl
+   //--------------------------------------------------------------
+   Com_sprintf(text, sizeof(text), "%u", num);
 
 
    //--------------------------------------------------------------
