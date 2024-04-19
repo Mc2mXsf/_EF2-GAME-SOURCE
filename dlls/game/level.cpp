@@ -1011,7 +1011,11 @@ void Level::Precache( void )
 	
 	// Precache sublevel stuff
 	
-	if ( strlen( sublevelName ) && ( stricmp( levelName, sublevelName ) != 0 ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( strlen( sublevelName ) && ( Q_stricmp( levelName, sublevelName ) != 0 ) )
 	{
 		for( i = 0 ; i < 10 ; i++ )
 		{

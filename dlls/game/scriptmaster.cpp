@@ -848,7 +848,12 @@ void ScriptMaster::KillThread( const str &name )
 		{
 			//if the wild card is not active, then we want the exact thread
 			//name
-			result = stricmp( thread->ThreadName(), name.c_str());
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			result = Q_stricmp( thread->ThreadName(), name.c_str());
 		}
 		
 		//if the result is 0, then we have found a thread to delete.

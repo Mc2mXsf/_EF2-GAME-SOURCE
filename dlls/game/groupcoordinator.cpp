@@ -148,7 +148,11 @@ bool Group::IsThisTargetNameInGroup( const str &name )
 		if ( !checkEntity )
 			continue;
 		
-		if ( !stricmp( name.c_str() , checkEntity->TargetName() ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( name.c_str() , checkEntity->TargetName() ) )
 			return true;		
 	}
 	
@@ -465,7 +469,12 @@ int ActorGroup::CountMembersWithThisName( const str &name )
 		if ( entity->isSubclassOf( Actor ) )
 		{
 			actor = (Actor*)entity;
-			if (!stricmp(name.c_str() , actor->name.c_str() ) )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if (!Q_stricmp(name.c_str() , actor->name.c_str() ) )
 				count++;
 		}
 		

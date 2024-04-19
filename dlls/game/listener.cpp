@@ -1022,7 +1022,11 @@ int Event::compareEvents( const void *arg1, const void *arg2 )
 	ev1 = *( int * )arg1;
 	ev2 = *( int * )arg2;
 	
-	return stricmp( commandList->ObjectAt( ev1 )->c_str(), commandList->ObjectAt( ev2 )->c_str() );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	return Q_stricmp( commandList->ObjectAt( ev1 )->c_str(), commandList->ObjectAt( ev2 )->c_str() );
 }
 
 void Event::SortEventList( void )
@@ -1063,7 +1067,12 @@ int Event::FindEvent( const char *name )
 	
 	numfinds++;
 	numcompares++;
-	if ( lastevent && !stricmp( name, commandList->ObjectAt( lastevent )->c_str() ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( lastevent && !Q_stricmp( name, commandList->ObjectAt( lastevent )->c_str() ) )
 	{
 		numfirstsearch++;
 		return lastevent;
@@ -1075,7 +1084,14 @@ int Event::FindEvent( const char *name )
 	{
 		index = ( l + r ) >> 1;
 		eventnum = sortedList->ObjectAt( index );
-		diff = stricmp( name, commandList->ObjectAt( eventnum )->c_str() );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		diff = Q_stricmp( name, commandList->ObjectAt( eventnum )->c_str() );
+
+
 		numcompares++;
 		if ( diff < 0 )
 		{

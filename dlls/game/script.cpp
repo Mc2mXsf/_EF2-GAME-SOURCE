@@ -949,9 +949,16 @@ qboolean Script::GetSpecific( const char *string )
 qboolean Script::GetBoolean( qboolean crossline )
 {
 	GetToken( crossline );
-	if ( stricmp( token, "true" ) == 0 )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( token, "true" ) == 0 )
 		return qtrue ;
-	else if ( stricmp( token, "1" ) == 0 )
+	else if ( Q_stricmp( token, "1" ) == 0 )
 		return qtrue ;
 	return qfalse ;
 }

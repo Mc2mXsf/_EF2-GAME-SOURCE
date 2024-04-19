@@ -1075,7 +1075,12 @@ int BotAI(int client, float thinktime) {
 			{ /*FIXME: parse scores?*/ }
 		else if (!Q_stricmp(buf, "clientLevelShot"))
 			{ /*ignore*/ }
-		else if ( stricmp(buf, "disconnect") == 0 ) { 
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		else if ( Q_stricmp(buf, "disconnect") == 0 ) { 
 			int i = 0;
 			i++;
 		}

@@ -218,7 +218,11 @@ void PostureController::evaluate()
 		// Change the animation if it has changed
 		currentanim = _currentPostureState->getLegAnim( *act, &_postureConditionals );
 		
-		if ( currentanim.length() && ( stricmp( stateLegAnim , currentanim.c_str() ) != 0 ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( currentanim.length() && ( Q_stricmp( stateLegAnim , currentanim.c_str() ) != 0 ) )
 		{
 			act->SetAnim( currentanim, EV_Posture_Anim_Done, legs );
 			stateLegAnim = currentanim;

@@ -92,7 +92,12 @@ void ActorThink::ProcessBehaviors( Actor &actor )
 		
 		if ( actor.behaviorCode != BEHAVIOR_EVALUATING )
 		{
-			if ( stricmp( actor.behavior->getClassname(), "Talk" ) == 0 )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( Q_stricmp( actor.behavior->getClassname(), "Talk" ) == 0 )
 			{
 				actor.EndBehavior();
 				actor.EndMode();

@@ -2366,7 +2366,10 @@ qboolean Weapon::UnlimitedAmmo( firemode_t mode )
 	{
 		return true;
 	}
-	else if ( !stricmp( ammo_type[mode], "None" ) )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	else if ( !Q_stricmp( ammo_type[mode], "None" ) )
 	{
 		return true;
 	}
@@ -3484,9 +3487,16 @@ void Weapon::DoneFiring( Event *ev )
 	
 	// Check to see if the auto_putaway flag is set, and the weapon is out of ammo.  If so, then putaway the
 	// weapon.
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// Replaced 2 times
+	//--------------------------------------------------------------
 	if (
-		( !HasAmmo( FIRE_MODE1 )   || ( !stricmp( ammo_type[ FIRE_MODE1 ], "None" ) ) ) &&
-		( !HasAmmo( FIRE_MODE2 ) || ( !stricmp( ammo_type[ FIRE_MODE2 ], "None" ) ) ) &&
+		( !HasAmmo( FIRE_MODE1 )   || ( !Q_stricmp( ammo_type[ FIRE_MODE1 ], "None" ) ) ) &&
+		( !HasAmmo( FIRE_MODE2 ) || ( !Q_stricmp( ammo_type[ FIRE_MODE2 ], "None" ) ) ) &&
 		auto_putaway
 		)
 	{
@@ -4220,13 +4230,19 @@ void Weapon::SetHand( Event *ev )
 	
 	side = ev->GetString( 1 );
 	
-	if ( !stricmp( side.c_str(), "righthand" ) || !stricmp( side.c_str(), "right" ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// Replaced 7 times
+	//--------------------------------------------------------------
+	if ( !Q_stricmp( side.c_str(), "righthand" ) || !Q_stricmp( side.c_str(), "right" ) )
 		hand = WEAPON_RIGHT;
-	else if ( !stricmp( side.c_str(), "lefthand" ) || !stricmp( side.c_str(), "left" ) )
+	else if ( !Q_stricmp( side.c_str(), "lefthand" ) || !Q_stricmp( side.c_str(), "left" ) )
 		hand = WEAPON_LEFT;
-	else if ( !stricmp( side.c_str(), "dualhand" ) || !stricmp( side.c_str(), "dual" ) )
+	else if ( !Q_stricmp( side.c_str(), "dualhand" ) || !Q_stricmp( side.c_str(), "dual" ) )
 		hand = WEAPON_DUAL;
-	else if ( !stricmp( side.c_str(), "any" ) )
+	else if ( !Q_stricmp( side.c_str(), "any" ) )
 		hand = WEAPON_ANY;
 	else
 	{

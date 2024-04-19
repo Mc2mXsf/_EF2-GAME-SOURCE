@@ -934,11 +934,17 @@ void Sentient::FireWeapon( Event *ev )
 	{
 		side = ev->GetString( 1 );
 		
-		if ( !stricmp( side, "righthand" ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( side, "righthand" ) )
 			number = WEAPON_RIGHT;
-		else if ( !stricmp( side, "lefthand" ) )
+		else if ( !Q_stricmp( side, "lefthand" ) )
 			number = WEAPON_LEFT;
-		else if ( !stricmp( side, "dualhand" ) )
+		else if ( !Q_stricmp( side, "dualhand" ) )
 		{
 			number = WEAPON_DUAL;
 			
@@ -991,11 +997,17 @@ void Sentient::StopFireWeapon( Event *ev )
 	{
 		side = ev->GetString( 1 );
 		
-		if ( !stricmp( side, "righthand" ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( side, "righthand" ) )
 			number = WEAPON_RIGHT;
-		else if ( !stricmp( side, "lefthand" ) )
+		else if ( !Q_stricmp( side, "lefthand" ) )
 			number = WEAPON_LEFT;
-		else if ( !stricmp( side, "dualhand" ) )
+		else if ( !Q_stricmp( side, "dualhand" ) )
 			number = WEAPON_DUAL;
 		else
 			number = atoi( side.c_str() );
@@ -1039,11 +1051,17 @@ void Sentient::ReleaseFireWeapon( Event *ev )
 	{
 		side = ev->GetString( 1 );
 		
-		if ( !stricmp( side, "righthand" ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( side, "righthand" ) )
 			number = WEAPON_RIGHT;
-		else if ( !stricmp( side, "lefthand" ) )
+		else if ( !Q_stricmp( side, "lefthand" ) )
 			number = WEAPON_LEFT;
-		else if ( !stricmp( side, "dualhand" ) )
+		else if ( !Q_stricmp( side, "dualhand" ) )
 		{
 			number = WEAPON_DUAL;
 			if ( ev->NumArgs() == 2 )
@@ -2004,7 +2022,11 @@ void Sentient::EventGiveArmor ( Event *ev )
 	// and to get it instantiated
 	type = ev->GetString( 1 );
 	
-	if ( stricmp(type , "none" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp(type , "none" ) == 0 )
 	{
 		currentArmor = NULL;
 		currentBaseArmor = NULL;
@@ -3739,7 +3761,11 @@ int Sentient::GiveAmmo( const str &type, int amount, bool pickedUp, int maxamoun
 				if ( weapon->HasFullClip() )
 					continue;
 
-				if ( stricmp( weapon->GetAmmoType( FIRE_MODE1 ).c_str(), type.c_str() ) != 0 )
+
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+				//--------------------------------------------------------------
+				if ( Q_stricmp( weapon->GetAmmoType( FIRE_MODE1 ).c_str(), type.c_str() ) != 0 )
 					continue;
 
 				roomLeftInClip = weapon->GetClipSize( FIRE_MODE1 ) - weapon->getAmmoInClip( FIRE_MODE1 );
@@ -4289,7 +4315,11 @@ void Sentient::CheckAnimations( Event *ev )
 		{
 			cs = co.ObjectAt( j );
 			
-			if ( !stricmp( c, cs ) )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp( c, cs ) )
             {
 				goto out;
             }

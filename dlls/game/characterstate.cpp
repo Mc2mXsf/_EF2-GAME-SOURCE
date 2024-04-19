@@ -996,7 +996,10 @@ void State::GetLegAnims( Container<const char *> *c )
 		// Check to see if it's already in there
 		for ( j=1; j<=c->NumObjects(); j++ )
 		{
-			if ( !stricmp( c->ObjectAt( j ), value ) )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp( c->ObjectAt( j ), value ) )
             {
 				addobj = false;
 				break;
@@ -1020,7 +1023,10 @@ void State::GetTorsoAnims( Container<const char *> *c )
 		// Check to see if it's already in there
 		for ( j=1; j<=c->NumObjects(); j++ )
 		{
-			if ( !stricmp( c->ObjectAt( j ), value ) )
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp( c->ObjectAt( j ), value ) )
             {
 				addobj = false;
 				break;

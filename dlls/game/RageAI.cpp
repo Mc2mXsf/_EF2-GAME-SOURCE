@@ -372,7 +372,12 @@ void DefaultStrategos::SetBehaviorPackage( const str &packageName )
 	package = PackageList.ObjectAt( index );
 	
 	// If we have a package AND our current statemap name is NOT the same as our selected package name
-	if ( package && stricmp( act->statemap_name.c_str(), package->stateFile.c_str() ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( package && Q_stricmp( act->statemap_name.c_str(), package->stateFile.c_str() ) )
 	{
 		Event *event;
 		
@@ -696,7 +701,11 @@ int PackageManager::GetPackageIndex( const str &packageName )
 		pEntry = _BehaviorPackages.ObjectAt( i );
 		package = PackageList.ObjectAt( pEntry.packageIndex );
 		
-		if ( !stricmp( package->packageName.c_str() , packageName.c_str() ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( !Q_stricmp( package->packageName.c_str() , packageName.c_str() ) )
 			return pEntry.packageIndex;
 	}
 	
@@ -950,7 +959,11 @@ void Personality::Archive( Archiver &arc )
 			{
 				package = PackageList.ObjectAt( j );
 				
-				if ( stricmp( packageName.c_str() , package->packageName.c_str() ) == 0 )
+
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+				//--------------------------------------------------------------
+				if ( Q_stricmp( packageName.c_str() , package->packageName.c_str() ) == 0 )
 				{
 					tendency->packageIndex = j;
 					break;

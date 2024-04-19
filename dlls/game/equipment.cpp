@@ -221,7 +221,11 @@ void Equipment::airStrike(Event *ev)
 
 	modeName = _modes.ObjectAt( _currentMode );
 
-	if ( stricmp( modeName, "torpedostrike") != 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( modeName, "torpedostrike") != 0 )
 		return;
 
 	// Make sure our owner is a player

@@ -2186,10 +2186,14 @@ qboolean Player::checkuseweapon( Conditional &condition )
 	
 	weaponName = condition.getParm( 2 );
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
 	if (
         ( weap != NULL ) &&
         ( GetNewActiveWeaponHand() == hand ) &&
-        ( !stricmp( weap->item_name, weaponName ) )
+        ( !Q_stricmp( weap->item_name, weaponName ) )
 		)
 	{
 		return qtrue;
@@ -10478,7 +10482,10 @@ const str Player::getPainShader( const char *MODName )
 
 	if ( !gpm->hasObject( modName ) )
 	{
-		if ( stricmp( MODName, defaultName ) == 0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( Q_stricmp( MODName, defaultName ) == 0 )
 			return "";
 		else
 			return getPainShader( defaultName );
@@ -14018,7 +14025,11 @@ void Player::loadUseItem( const str &item )
 
 	itemName = item;
 
-	if ( stricmp( item.c_str(), "tricorder" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( item.c_str(), "tricorder" ) == 0 )
 	{
 		if ( HasItem( "Tricorder-stx" ) )
 			itemName = "Tricorder-stx";
@@ -14231,11 +14242,17 @@ void Player::forceMoveType( Event *ev )
 
 	moveTypeName = ev->GetString( 1 );
 
-	if ( stricmp( moveTypeName, "secret" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// Replaced 3 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( moveTypeName, "secret" ) == 0 )
 		_forcedMoveType = PM_SECRET_MOVE_MODE;
-	else if ( stricmp( moveTypeName, "3rdPerson" ) == 0 )
+	else if ( Q_stricmp( moveTypeName, "3rdPerson" ) == 0 )
 		_forcedMoveType = PM_3RD_PERSON;
-	else if ( stricmp( moveTypeName, "none" ) == 0 )
+	else if ( Q_stricmp( moveTypeName, "none" ) == 0 )
 		_forcedMoveType = PM_NONE;
 }
 

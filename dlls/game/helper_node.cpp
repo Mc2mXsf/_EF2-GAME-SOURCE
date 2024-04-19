@@ -2506,7 +2506,11 @@ HelperNode* HelperNode::FindHighestPriorityNode(  Actor& self , const str& custo
 			str type;
 			type = node->GetCustomType();
 			
-			if ( !stricmp(type.c_str() , customType.c_str() ) )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( !Q_stricmp(type.c_str() , customType.c_str() ) )
 			{
 				priority = node->GetPriority();
 				if ( priority > bestPriority )
@@ -2558,7 +2562,13 @@ HelperNode* HelperNode::FindHighestPriorityNode(  Actor& self , const str& custo
 			str type;
 			type = node->GetCustomType();
 			
-			if ( !stricmp(type.c_str() , customType.c_str() ) && !stricmp(node->target, targetedTo.c_str() ) )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			// 
+			// Replaced 2 times
+			//--------------------------------------------------------------
+			if ( !Q_stricmp(type.c_str() , customType.c_str() ) && !Q_stricmp(node->target, targetedTo.c_str() ) )
 			{
 				priority = node->GetPriority();
 				if ( priority < bestPriority )

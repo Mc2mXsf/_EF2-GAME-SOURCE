@@ -133,7 +133,11 @@ qboolean	G_ConsoleCommand( void )
 
 			cmd = gi.argv( 0 );
 
-			if ( stricmp( cmd, "say" ) == 0 )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( Q_stricmp( cmd, "say" ) == 0 )
 			{
 				G_Say( NULL, false, false );
 				result = true;
@@ -709,11 +713,17 @@ qboolean G_MaskCmd( const gentity_t *ent )
 			
 			// Get and set new mask
 			
-			if ( stricmp( gi.argv( 1 ), "monster" ) == 0 )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			// 
+			// Replaced 2 times
+			//--------------------------------------------------------------
+			if ( Q_stricmp( gi.argv( 1 ), "monster" ) == 0 )
 			{
 				entity->edict->clipmask	 = MASK_MONSTERSOLID;
 			}
-			else if ( stricmp( gi.argv( 1 ), "player" ) == 0 )
+			else if ( Q_stricmp( gi.argv( 1 ), "player" ) == 0 )
 			{
 				entity->edict->clipmask	 = MASK_PLAYERSOLID;
 			}

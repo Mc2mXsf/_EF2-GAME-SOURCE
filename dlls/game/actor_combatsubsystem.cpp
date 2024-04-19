@@ -74,7 +74,12 @@ void CombatSubsystem::UseActorWeapon(const str &weaponName , weaponhand_t hand )
 	Weapon *weapon;
 	
 	//First see if we just want to put our current item away
-	if ( !stricmp( weaponName.c_str() , "none" ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( !Q_stricmp( weaponName.c_str() , "none" ) )
 	{
 		act->DeactivateWeapon(WEAPON_LEFT);
 		act->DeactivateWeapon(WEAPON_RIGHT);

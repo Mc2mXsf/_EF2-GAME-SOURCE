@@ -108,7 +108,12 @@ bool CameraKeyFrame::ParseFrameInfo( int frameNumber, Script& cameraPathFile, fl
 
 	/// Read in the Frame number
 	token = cameraPathFile.GetToken( true );
-	if( !stricmp( token, "Frame" ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if( !Q_stricmp( token, "Frame" ) )
 	{
 		/// Make sure the frame number is the same as <frameNumber>, as expected
 		int actualFrame = cameraPathFile.GetInteger( false );
@@ -157,17 +162,22 @@ bool CameraKeyFrame::ParseFrameInfoBlock( Script& cameraPathFile, float& totalPa
 	token = cameraPathFile.GetToken( true );
 	while( *token != '}' )
 	{
-		if( !stricmp( token, "fov" ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
+		if( !Q_stricmp( token, "fov" ) )
 		{
 			/// Read in the horizontal field of view (fov) for this camera key frame
 			_fovDegrees = cameraPathFile.GetFloat( false );
 		}
-		else if( !stricmp( token, "position" ) )
+		else if( !Q_stricmp( token, "position" ) )
 		{
 			/// Read in the position vector for this camera key frame
 			_position = cameraPathFile.GetVector( false );
 		}
-		else if( !stricmp( token, "quaternion" ) )
+		else if( !Q_stricmp( token, "quaternion" ) )
 		{
 			/// Read in the orientation of the camera as a quaternion
 			float x = cameraPathFile.GetFloat( false );
@@ -413,7 +423,10 @@ bool CameraKeyFramePath::ParsePathInfo( Script& cameraPathFile )
 	token = cameraPathFile.GetToken( true );
 	while( *token != '}' )
 	{
-		if( !stricmp( token, "frameCount" ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if( !Q_stricmp( token, "frameCount" ) )
 		{
 			/// Read in the number of frames in the path
 			_numKeyFrames = cameraPathFile.GetInteger( false );
@@ -673,7 +686,12 @@ bool CameraPath::LoadKeyFramedCameraFile( const str& fileName )
 	{
 		/// Read the next token-word and take the appropriate action
 		token = cameraPathFile.GetToken( true );
-		if( !stricmp( token, "Path" ) )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if( !Q_stricmp( token, "Path" ) )
 		{
 			/// Read in the path info and its subsequent key frame data
 			success = ParsePathInfo( cameraPathFile );

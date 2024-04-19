@@ -421,7 +421,10 @@ def_t *Program::GetDef( type_t *type, const char *name, def_t *scope, bool alloc
 	// see if the name is already in use
 	for( def = def_head.next; def; def = def->next )
 	{
-		if ( ( !def->caseSensitive && ( stricmp( def->name, name ) == 0 ) ) || ( strcmp( def->name, name ) == 0 ) )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( ( !def->caseSensitive && ( Q_stricmp( def->name, name ) == 0 ) ) || ( strcmp( def->name, name ) == 0 ) )
 		{
 			if ( def->scope && ( def->scope != scope ) )
             {

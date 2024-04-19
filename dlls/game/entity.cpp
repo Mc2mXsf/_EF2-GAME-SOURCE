@@ -4807,17 +4807,24 @@ void Entity::Flags( Event *ev )
       // to match this function, if flags are added or
       // deleted the event must be updated.
       //
-      if ( !stricmp( flag, "blood" ) )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 6 times
+		//--------------------------------------------------------------
+      if ( !Q_stricmp( flag, "blood" ) )
          mask = FL_BLOOD;
-      else if ( !stricmp( flag, "explode" ) )
+      else if ( !Q_stricmp( flag, "explode" ) )
          mask = FL_DIE_EXPLODE;
-      else if ( !stricmp( flag, "die_gibs" ) )
+      else if ( !Q_stricmp( flag, "die_gibs" ) )
          mask = FL_DIE_GIBS;
-      else if ( !stricmp( flag, "autoaim" ) )
+      else if ( !Q_stricmp( flag, "autoaim" ) )
          mask = FL_AUTOAIM;
-      else if ( !stricmp( flag, "god" ) )
+      else if ( !Q_stricmp( flag, "god" ) )
          mask = FL_GODMODE;
-		else if ( !stricmp( flag, "notarget" ) )
+		else if ( !Q_stricmp( flag, "notarget" ) )
 			mask = FL_NOTARGET;
       else
          {
@@ -4880,7 +4887,12 @@ void Entity::Effects( Event *ev )
       // to match this function, if flags are added or
       // deleted the event must be updated.
       //
-      if ( !stricmp( flag, "everyframe" ) )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+      if ( !Q_stricmp( flag, "everyframe" ) )
          mask = EF_EVERYFRAME;
       else
          {
@@ -4934,37 +4946,44 @@ void Entity::RenderEffects( Event *ev )
       // to match this function, if flags are added or
       // deleted the event must be updated.
       //
-      if ( !stricmp( flag, "dontdraw" ) )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 16 times
+		//--------------------------------------------------------------
+      if ( !Q_stricmp( flag, "dontdraw" ) )
          mask = RF_DONTDRAW;
-      else if ( !stricmp( flag, "betterlighting" ) )
+      else if ( !Q_stricmp( flag, "betterlighting" ) )
          mask = RF_EXTRALIGHT;
-      else if ( !stricmp ( flag, "lensflare" ) )
+      else if ( !Q_stricmp ( flag, "lensflare" ) )
          mask = RF_LENSFLARE;
-      else if ( !stricmp ( flag, "viewlensflare" ) )
+      else if ( !Q_stricmp ( flag, "viewlensflare" ) )
          mask = RF_VIEWLENSFLARE;
-      else if ( !stricmp ( flag, "lightoffset" ) )
+      else if ( !Q_stricmp ( flag, "lightoffset" ) )
          mask = RF_LIGHTOFFSET;
-      else if ( !stricmp( flag, "skyorigin" ) )
+      else if ( !Q_stricmp( flag, "skyorigin" ) )
          mask = RF_SKYORIGIN;
-      else if ( !stricmp( flag, "fullbright" ) )
+      else if ( !Q_stricmp( flag, "fullbright" ) )
          mask = RF_FULLBRIGHT;
-      else if ( !stricmp( flag, "minlight" ) )
+      else if ( !Q_stricmp( flag, "minlight" ) )
          mask = RF_MINLIGHT;
-      else if ( !stricmp( flag, "additivedynamiclight" ) )
+      else if ( !Q_stricmp( flag, "additivedynamiclight" ) )
          mask = RF_ADDITIVE_DLIGHT;
-      else if ( !stricmp( flag, "lightstyledynamiclight" ) )
+      else if ( !Q_stricmp( flag, "lightstyledynamiclight" ) )
          mask = RF_LIGHTSTYLE_DLIGHT;
-      else if ( !stricmp( flag, "shadow" ) )
+      else if ( !Q_stricmp( flag, "shadow" ) )
          mask = RF_SHADOW;
-	  else if ( !stricmp( flag, "shadowFromBip01" ) )
+	  else if ( !Q_stricmp( flag, "shadowFromBip01" ) )
          mask = RF_SHADOW_FROM_BIP01;
-      else if ( !stricmp( flag, "preciseshadow" ) )
+      else if ( !Q_stricmp( flag, "preciseshadow" ) )
          mask = RF_SHADOW_PRECISE;
-	  else if ( !stricmp( flag, "dontInheritAlpha" ) )
+	  else if ( !Q_stricmp( flag, "dontInheritAlpha" ) )
          mask = RF_CHILDREN_DONT_INHERIT_ALPHA;
-      else if ( !stricmp( flag, "invisible" ) )
+      else if ( !Q_stricmp( flag, "invisible" ) )
          mask = RF_INVISIBLE;
-	  else if ( !stricmp( flag, "depthhack" ) )
+	  else if ( !Q_stricmp( flag, "depthhack" ) )
          mask = RF_DEPTHHACK;
       else
          {
@@ -5022,9 +5041,16 @@ void Entity::SVFlags
       // to match this function, if flags are added or
       // deleted the event must be updated.
       //
-      if ( !stricmp( flag, "broadcast" ) )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+      if ( !Q_stricmp( flag, "broadcast" ) )
          mask = SVF_BROADCAST;
-      else if ( !stricmp( flag, "sendonce" ) )
+      else if ( !Q_stricmp( flag, "sendonce" ) )
          mask = SVF_SENDONCE;
       else
          {
@@ -5594,7 +5620,11 @@ void Entity::removeAttachedModelByTargetname( const str &targetNameToRemove )
 			
 			ent = ( Entity * )G_GetEntity( bind_info->children[i] );
 			
-			if ( ent && stricmp( ent->targetname, targetNameToRemove.c_str() ) == 0 )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( ent && Q_stricmp( ent->targetname, targetNameToRemove.c_str() ) == 0 )
 			{
 				ent->PostEvent( EV_Remove, 0.0f );
 			}
@@ -7099,10 +7129,16 @@ void Entity::MorphEvent
 
 	// Check unmorphing stuff
 
-	if ( ( stricmp( morph_target_name.c_str(), "morph_base" ) == 0 ) || 
-		  ( stricmp( morph_target_name.c_str(), "morph_mouth_base" ) == 0 ) || 
-		  ( stricmp( morph_target_name.c_str(), "morph_brows_base" ) == 0 ) || 
-		  ( stricmp( morph_target_name.c_str(), "morph_eyes_base" ) == 0 ) )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 4 times
+		//--------------------------------------------------------------
+	if ( ( Q_stricmp( morph_target_name.c_str(), "morph_base" ) == 0 ) || 
+		  ( Q_stricmp( morph_target_name.c_str(), "morph_mouth_base" ) == 0 ) || 
+		  ( Q_stricmp( morph_target_name.c_str(), "morph_brows_base" ) == 0 ) || 
+		  ( Q_stricmp( morph_target_name.c_str(), "morph_eyes_base" ) == 0 ) )
 		unmorph = true;
 
 	if ( morph_index == -1 && !unmorph )
@@ -7320,53 +7356,59 @@ int Entity::GetMorphChannel
 	{
 	int morph_channel;
 
-	if ( stricmp( morph_name, "morph_a-i" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// Replaced 21 times
+	//--------------------------------------------------------------
+	if ( Q_stricmp( morph_name, "morph_a-i" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_c-t" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_c-t" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_e" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_e" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_f-v" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_f-v" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_l-th" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_l-th" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_m-b-p" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_m-b-p" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_o" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_o" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_q-w" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_q-w" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_u" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_u" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_frown" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_frown" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_sneer-l" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_sneer-l" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_sneer-r" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_sneer-r" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
-	else if ( stricmp( morph_name, "morph_mouth_base" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_mouth_base" ) == 0 )
 		morph_channel = MORPH_CHAN_MOUTH;
 
-	else if ( stricmp( morph_name, "morph_brows-up" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_brows-up" ) == 0 )
 		morph_channel = MORPH_CHAN_BROW;
-	else if ( stricmp( morph_name, "morph_brows_base" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_brows_base" ) == 0 )
 		morph_channel = MORPH_CHAN_BROW;
 
-	else if ( stricmp( morph_name, "morph_brow-ldn" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_brow-ldn" ) == 0 )
 		morph_channel = MORPH_CHAN_LEFT_BROW;
 
-	else if ( stricmp( morph_name, "morph_brow-rdn" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_brow-rdn" ) == 0 )
 		morph_channel = MORPH_CHAN_RIGHT_BROW;
 
-	else if ( stricmp( morph_name, "morph_lid-lshut" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_lid-lshut" ) == 0 )
 		morph_channel = MORPH_CHAN_LEFT_LID;
 
-	else if ( stricmp( morph_name, "morph_lid-rshut" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_lid-rshut" ) == 0 )
 		morph_channel = MORPH_CHAN_RIGHT_LID;
 
-	else if ( stricmp( morph_name, "morph_eyeshut" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_eyeshut" ) == 0 )
 		morph_channel = MORPH_CHAN_EYES;
-	else if ( stricmp( morph_name, "morph_eyes_base" ) == 0 )
+	else if ( Q_stricmp( morph_name, "morph_eyes_base" ) == 0 )
 		morph_channel = MORPH_CHAN_EYES;
 
 	else 
@@ -7876,32 +7918,38 @@ void Entity::Contents
 
 		// Get contents type
 
-		if(stricmp(contentType, "shootable") == 0)
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 12 times
+		//--------------------------------------------------------------
+		if(Q_stricmp(contentType, "shootable") == 0)
 			newFlags = CONTENTS_SHOOTABLE_ONLY;
-		else if(stricmp(contentType, "targetable") == 0)
+		else if(Q_stricmp(contentType, "targetable") == 0)
 		{
 			newFlags = CONTENTS_TARGETABLE;
 			setSolidType(SOLID_BBOX);
 		}
-		else if(stricmp(contentType, "body") == 0)
+		else if(Q_stricmp(contentType, "body") == 0)
 			newFlags = CONTENTS_BODY;
-		else if(stricmp(contentType, "solid") == 0)
+		else if(Q_stricmp(contentType, "solid") == 0)
 			newFlags = CONTENTS_SOLID;
-		else if(stricmp(contentType, "usable") == 0)
+		else if(Q_stricmp(contentType, "usable") == 0)
 			newFlags = CONTENTS_USABLE;
-		else if(stricmp(contentType, "setclip") == 0)
+		else if(Q_stricmp(contentType, "setclip") == 0)
 			newFlags = CONTENTS_SETCLIP;
-		else if(stricmp(contentType, "playerclip") == 0)
+		else if(Q_stricmp(contentType, "playerclip") == 0)
 			newFlags = CONTENTS_PLAYERCLIP;
-		else if(stricmp(contentType, "monsterclip") == 0)
+		else if(Q_stricmp(contentType, "monsterclip") == 0)
 			newFlags = CONTENTS_MONSTERCLIP;
-		else if(stricmp(contentType, "cameraclip") == 0)
+		else if(Q_stricmp(contentType, "cameraclip") == 0)
 			newFlags = CONTENTS_CAMERACLIP;
-		else if(stricmp(contentType, "weaponclip") == 0)
+		else if(Q_stricmp(contentType, "weaponclip") == 0)
 			newFlags = CONTENTS_WEAPONCLIP;
-		else if(stricmp(contentType, "corpse") == 0)
+		else if(Q_stricmp(contentType, "corpse") == 0)
 			newFlags = CONTENTS_CORPSE;
-		else if(stricmp(contentType, "all") == 0)
+		else if(Q_stricmp(contentType, "all") == 0)
 			newFlags = 0xFFFFFFFF;
 
 		// Change contents appropriatly
@@ -7961,61 +8009,67 @@ void Entity::setMask( Event* ev )
 
 		// Masks
 
-		if ( stricmp( maskType, "solid" ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 25 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( maskType, "solid" ) == 0 )
 			newMask = MASK_SOLID;
-		else if ( stricmp( maskType, "usable" ) == 0 )
+		else if ( Q_stricmp( maskType, "usable" ) == 0 )
 			newMask = MASK_USABLE;
-		else if ( stricmp( maskType, "playersolid" ) == 0 )
+		else if ( Q_stricmp( maskType, "playersolid" ) == 0 )
 			newMask = MASK_PLAYERSOLID;
-		else if ( stricmp( maskType, "deadsolid" ) == 0 )
+		else if ( Q_stricmp( maskType, "deadsolid" ) == 0 )
 			newMask = MASK_DEADSOLID;
-		else if ( stricmp( maskType, "monstersolid" ) == 0 )
+		else if ( Q_stricmp( maskType, "monstersolid" ) == 0 )
 			newMask = MASK_MONSTERSOLID;
-		else if ( stricmp( maskType, "water" ) == 0 )
+		else if ( Q_stricmp( maskType, "water" ) == 0 )
 			newMask = MASK_WATER;
-		else if ( stricmp( maskType, "opaque" ) == 0 )
+		else if ( Q_stricmp( maskType, "opaque" ) == 0 )
 			newMask = MASK_OPAQUE;
-		else if ( stricmp( maskType, "shot" ) == 0 )
+		else if ( Q_stricmp( maskType, "shot" ) == 0 )
 			newMask = MASK_SHOT;
-		else if ( stricmp( maskType, "projectile" ) == 0 )
+		else if ( Q_stricmp( maskType, "projectile" ) == 0 )
 			newMask = MASK_PROJECTILE;
-		else if ( stricmp( maskType, "melee" ) == 0 )
+		else if ( Q_stricmp( maskType, "melee" ) == 0 )
 			newMask = MASK_MELEE;
-		else if ( stricmp( maskType, "pathsolid" ) == 0 )
+		else if ( Q_stricmp( maskType, "pathsolid" ) == 0 )
 			newMask = MASK_PATHSOLID;
-		else if ( stricmp( maskType, "camerasolid" ) == 0 )
+		else if ( Q_stricmp( maskType, "camerasolid" ) == 0 )
 			newMask = MASK_CAMERASOLID;
-		else if ( stricmp( maskType, "setclip" ) == 0 )
+		else if ( Q_stricmp( maskType, "setclip" ) == 0 )
 			newMask = MASK_SETCLIP;
 
 		// Contents
 
-		else if ( stricmp( maskType, "contents_solid" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_solid" ) == 0 )
 			newMask = CONTENTS_SOLID;
-		else if ( stricmp( maskType, "contents_usable" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_usable" ) == 0 )
 			newMask = CONTENTS_USABLE;
-		else if ( stricmp( maskType, "contents_setclip" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_setclip" ) == 0 )
 			newMask = CONTENTS_SETCLIP;
-		else if ( stricmp( maskType, "contents_targetable" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_targetable" ) == 0 )
 			newMask = CONTENTS_TARGETABLE;
-		else if ( stricmp( maskType, "contents_playerclip" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_playerclip" ) == 0 )
 			newMask = CONTENTS_PLAYERCLIP;
-		else if ( stricmp( maskType, "contents_monsterclip" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_monsterclip" ) == 0 )
 			newMask = CONTENTS_MONSTERCLIP;
-		else if ( stricmp( maskType, "contents_cameraclip" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_cameraclip" ) == 0 )
 			newMask = CONTENTS_CAMERACLIP;
-		else if ( stricmp( maskType, "contents_weaponclip" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_weaponclip" ) == 0 )
 			newMask = CONTENTS_WEAPONCLIP;
-		else if ( stricmp( maskType, "contents_shootable" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_shootable" ) == 0 )
 			newMask = CONTENTS_SHOOTABLE_ONLY;
-		else if ( stricmp( maskType, "contents_body" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_body" ) == 0 )
 			newMask = CONTENTS_BODY;
-		else if ( stricmp( maskType, "contents_corpse" ) == 0 )
+		else if ( Q_stricmp( maskType, "contents_corpse" ) == 0 )
 			newMask = CONTENTS_CORPSE;
 
 		// All
 
-		else if ( stricmp( maskType, "all" ) == 0 )
+		else if ( Q_stricmp( maskType, "all" ) == 0 )
 			newMask = 0xFFFFFFFF;
 
 		// Change mask appropriately
@@ -8042,7 +8096,11 @@ void Entity::getCustomShaderInfo( const str &customShader, str &shaderName, str 
 
 	// See if we need to get info from the database
 
-	if ( ( customShader.length() > 4 ) && ( stricmp( customShader.c_str() + customShader.length() - 4, ".gdb" ) == 0 ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( customShader.length() > 4 ) && ( Q_stricmp( customShader.c_str() + customShader.length() - 4, ".gdb" ) == 0 ) )
 	{
 		str gameplayObjectName = customShader;
 		gameplayObjectName.CapLength( customShader.length() - 4 );
@@ -9161,7 +9219,11 @@ Entity *Entity::SpawnEffect( const str &name, const Vector &temp_origin, const V
 
 	nameLength = name.length();
 
-	if ( stricmp( name.c_str() + nameLength - 4, ".gdb" ) == 0 )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( Q_stricmp( name.c_str() + nameLength - 4, ".gdb" ) == 0 )
 	{
 		str gameplayObjectName;
 		GameplayManager *gpm;
@@ -9764,38 +9826,44 @@ void Entity::setMoveType( Event *ev )
 	str type;
 	type = ev->GetString( 1 );
 
-	if ( !stricmp( type.c_str() , "none"			) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+	// 
+	// Replaced 15 times
+	//--------------------------------------------------------------
+	if ( !Q_stricmp( type.c_str() , "none"			) )
 		{
 		velocity = vec_zero;
 		setMoveType( MOVETYPE_NONE );
 		}
-	else if ( !stricmp( type.c_str() , "stationary" ) )
+	else if ( !Q_stricmp( type.c_str() , "stationary" ) )
 		setMoveType( MOVETYPE_STATIONARY );
-	else if ( !stricmp( type.c_str() , "noclip"		) )
+	else if ( !Q_stricmp( type.c_str() , "noclip"		) )
 		setMoveType( MOVETYPE_NOCLIP );
-	else if ( !stricmp( type.c_str() , "push"		) )
+	else if ( !Q_stricmp( type.c_str() , "push"		) )
 		setMoveType( MOVETYPE_PUSH );
-	else if ( !stricmp( type.c_str() , "stop"		) )
+	else if ( !Q_stricmp( type.c_str() , "stop"		) )
 		setMoveType( MOVETYPE_STOP );
-	else if ( !stricmp( type.c_str() , "walk"		) )
+	else if ( !Q_stricmp( type.c_str() , "walk"		) )
 		setMoveType( MOVETYPE_WALK );
-	else if ( !stricmp( type.c_str() , "step"		) )
+	else if ( !Q_stricmp( type.c_str() , "step"		) )
 		setMoveType( MOVETYPE_STEP );
-	else if ( !stricmp( type.c_str() , "fly"		) )
+	else if ( !Q_stricmp( type.c_str() , "fly"		) )
 		setMoveType( MOVETYPE_FLY );
-	else if ( !stricmp( type.c_str() , "toss"		) )
+	else if ( !Q_stricmp( type.c_str() , "toss"		) )
 		setMoveType( MOVETYPE_TOSS );
-	else if ( !stricmp( type.c_str() , "flymissile"	) )
+	else if ( !Q_stricmp( type.c_str() , "flymissile"	) )
 		setMoveType( MOVETYPE_FLYMISSILE );
-	else if ( !stricmp( type.c_str() , "bounce"		) )
+	else if ( !Q_stricmp( type.c_str() , "bounce"		) )
 		setMoveType( MOVETYPE_BOUNCE );
-	else if ( !stricmp( type.c_str() , "slide"		) )
+	else if ( !Q_stricmp( type.c_str() , "slide"		) )
 		setMoveType( MOVETYPE_SLIDE );
-	else if ( !stricmp( type.c_str() , "rope"		) )
+	else if ( !Q_stricmp( type.c_str() , "rope"		) )
 		setMoveType( MOVETYPE_ROPE );
-	else if ( !stricmp( type.c_str() , "gib"		) )
+	else if ( !Q_stricmp( type.c_str() , "gib"		) )
 		setMoveType( MOVETYPE_GIB );
-	else if ( !stricmp( type.c_str() , "vehicle"	) )
+	else if ( !Q_stricmp( type.c_str() , "vehicle"	) )
 		setMoveType( MOVETYPE_VEHICLE );
 }
 
@@ -10155,7 +10223,12 @@ void Entity::simplePlayDialog( Event *ev )
 
 		minDistString = ev->GetString( 3 );
 
-		if ( stricmp( minDistString.c_str(), LEVEL_WIDE_STRING ) == 0 )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( Q_stricmp( minDistString.c_str(), LEVEL_WIDE_STRING ) == 0 )
 			min_dist = LEVEL_WIDE_MIN_DIST;
 		else
 			min_dist = ev->GetFloat( 3 );

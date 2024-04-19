@@ -922,63 +922,68 @@ bool CinematicActor::parse( Script &cinematicFile )
 
 	while ( token )
 	{
-		if ( stricmp( token, "name" )==0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 15 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( token, "name" )==0 )
 		{
 			setName( cinematicFile.GetString( false ) );
 		}
-		else if ( stricmp( token, "tiki" )==0 )
+		else if ( Q_stricmp( token, "tiki" )==0 )
 		{
 			setTiki( cinematicFile.GetString( false ) );
 		}
-		else if ( stricmp( token, "anim" )==0 )
+		else if ( Q_stricmp( token, "anim" )==0 )
 		{
 			setAnim( cinematicFile.GetString( false ) );
 		}
-		else if ( stricmp( token, "origin")==0 )
+		else if ( Q_stricmp( token, "origin")==0 )
 		{
 			setOriginOffset( cinematicFile.GetVector( false ) );
 		}
-		else if ( stricmp( token, "yaw" )==0 )
+		else if ( Q_stricmp( token, "yaw" )==0 )
 		{
 			setYawOffset( cinematicFile.GetFloat( false ) );
 		}
-		else if ( stricmp( token, "moveanim" )==0 )
+		else if ( Q_stricmp( token, "moveanim" )==0 )
 		{
 			setMoveAnim( cinematicFile.GetString( false ) );
 		}
-		else if ( stricmp( token, "snap" )==0 )
+		else if ( Q_stricmp( token, "snap" )==0 )
 		{
 			setSnapToSpot( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if ( stricmp( token, "nopain" )==0 )
+		else if ( Q_stricmp( token, "nopain" )==0 )
 		{
 			setIgnorePain( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if ( stricmp( token, "nosight")==0 )
+		else if ( Q_stricmp( token, "nosight")==0 )
 		{
 			setIgnoreSight( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if ( stricmp( token, "nosound")== 0 )
+		else if ( Q_stricmp( token, "nosound")== 0 )
 		{
 			setIgnoreSound( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if ( stricmp( token, "removeAfter") == 0 )
+		else if ( Q_stricmp( token, "removeAfter") == 0 )
 		{
 			setRemoveAfter( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if ( stricmp( token, "rootActor" ) == 0 )
+		else if ( Q_stricmp( token, "rootActor" ) == 0 )
 		{
 			setRootActor( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if ( stricmp( token, "afterBehavior") == 0 )
+		else if ( Q_stricmp( token, "afterBehavior") == 0 )
 		{
 			setAfterBehavior( cinematicFile.GetToken( false ) );
 		}
-		else if ( stricmp( token, "alwaysSpawn" ) == 0 )
+		else if ( Q_stricmp( token, "alwaysSpawn" ) == 0 )
 		{
 			setAlwaysSpawn( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if (stricmp( token, "}")==0 )
+		else if (Q_stricmp( token, "}")==0 )
 		{
 			break ;
 		}
@@ -1301,49 +1306,54 @@ bool CinematicCamera::parse( Script &cinematicFile )
 
 	while ( token )
 	{
-		if ( stricmp( token, "name" )==0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 10 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( token, "name" )==0 )
 		{
 			token = cinematicFile.GetString( false );
 			setName( token );
 		}
-		else if ( stricmp( token, "camfile" )==0 )
+		else if ( Q_stricmp( token, "camfile" )==0 )
 		{
 			token = cinematicFile.GetString( false );
 			setCamFile( token );
 		}
-		else if ( stricmp( token, "movetype" ) == 0 )
+		else if ( Q_stricmp( token, "movetype" ) == 0 )
 		{
 			token = cinematicFile.GetString( false );
 			setMoveType( token );
 		}
-		else if ( stricmp( token, "looktype" ) == 0 )
+		else if ( Q_stricmp( token, "looktype" ) == 0 )
 		{
 			token = cinematicFile.GetString( false );
 			setLookType( token );
 		}
-		else if ( stricmp( token, "moveactor" ) == 0 )
+		else if ( Q_stricmp( token, "moveactor" ) == 0 )
 		{
 			token = cinematicFile.GetString( false );
 			setMoveActor( token );
 		}
-		else if ( stricmp( token, "lookactor" ) == 0 )
+		else if ( Q_stricmp( token, "lookactor" ) == 0 )
 		{
 			token = cinematicFile.GetString( false );
 			setLookActor( token );
 		}
-		else if ( stricmp( token, "origin" ) == 0 )
+		else if ( Q_stricmp( token, "origin" ) == 0 )
 		{
 			setOriginOffset( cinematicFile.GetVector( false ) );
 		}
-		else if ( stricmp( token, "yaw" ) == 0 )
+		else if ( Q_stricmp( token, "yaw" ) == 0 )
 		{
 			setYawOffset( cinematicFile.GetFloat( false ) ) ;
 		}
-		else if ( stricmp( token, "selfRemoving" ) == 0 )
+		else if ( Q_stricmp( token, "selfRemoving" ) == 0 )
 		{
 			setSelfRemovingFlag( cinematicFile.GetBoolean( false ) ? true : false );
 		}
-		else if (stricmp( token, "}")==0 )
+		else if (Q_stricmp( token, "}")==0 )
 		{
 			break ;
 		}
@@ -1475,32 +1485,37 @@ bool CinematicCut::parse( Script &cinematicFile )
 
 	while ( token )
 	{
-		if ( stricmp( token, "toCamera" )==0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 6 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( token, "toCamera" )==0 )
 		{
 			token = cinematicFile.GetString( false );
 			setCameraName( token );
 		}
-		else if ( stricmp( token, "fadeOut" )==0 )
+		else if ( Q_stricmp( token, "fadeOut" )==0 )
 		{
 			value = cinematicFile.GetInteger( false );
 			setFadeOut( value );
 		}
-		else if ( stricmp( token, "fadeIn" ) == 0 )
+		else if ( Q_stricmp( token, "fadeIn" ) == 0 )
 		{
 			value = cinematicFile.GetInteger( false );
 			setFadeIn( value );
 		}
-		else if ( stricmp( token, "frame" ) == 0 )
+		else if ( Q_stricmp( token, "frame" ) == 0 )
 		{
 			value = cinematicFile.GetInteger( false );
 			setFrame( value );
 		}
-		else if ( stricmp( token, "lerp" ) == 0 )
+		else if ( Q_stricmp( token, "lerp" ) == 0 )
 		{
 			lerp = cinematicFile.GetBoolean( false ) ?  true : false ;
 			setLerpFlag( lerp );
 		}
-		else if (stricmp( token, "}")==0 )
+		else if (Q_stricmp( token, "}")==0 )
 		{
 			break ;
 		}
@@ -1644,19 +1659,24 @@ bool CinematicOrigin::parse( Script &cinematicFile )
 
 	while ( token )
 	{
-		if ( stricmp( token, "name" )==0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 4 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( token, "name" )==0 )
 		{
 			setName( cinematicFile.GetString( false ) );
 		}
-		else if ( stricmp( token, "origin" )==0 )
+		else if ( Q_stricmp( token, "origin" )==0 )
 		{
 			setOrigin( cinematicFile.GetVector( false ) );
 		}
-		else if ( stricmp( token, "yaw" ) == 0 )
+		else if ( Q_stricmp( token, "yaw" ) == 0 )
 		{
 			setYaw( cinematicFile.GetFloat( false ) );
 		}
-		else if (stricmp( token, "}")==0 )
+		else if (Q_stricmp( token, "}")==0 )
 		{
 			break ;
 		}
@@ -2518,19 +2538,26 @@ bool Cinematic::load( void )
 	while ( cinematicFile.TokenAvailable( true ) )
 	{
 		token = cinematicFile.GetToken( true );
-		if (stricmp( token, "Actors")==0)
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 4 times
+		//--------------------------------------------------------------
+		if (Q_stricmp( token, "Actors")==0)
 		{
 			if ( !parseActors( cinematicFile ) ) return false ;
 		}
-		else if (stricmp( token, "Cameras")==0)
+		else if (Q_stricmp( token, "Cameras")==0)
 		{
 			if ( !parseCameras( cinematicFile ) ) return false ;
 		}
-		else if (stricmp( token, "Objects")==0)
+		else if (Q_stricmp( token, "Objects")==0)
 		{
 			if ( !parseObjects( cinematicFile ) ) return false ;
 		}
-		else if (stricmp( token, "Origins")==0)
+		else if (Q_stricmp( token, "Origins")==0)
 		{
 			if ( !parseOrigins( cinematicFile ) ) return false ;
 		}
@@ -2563,8 +2590,14 @@ bool Cinematic::parseActors( Script &cinematicFile )
 	const char *token = cinematicFile.GetToken( true );
 	while ( token )
 	{
-		if ( stricmp( token, "}" ) == 0 )		break ;
-		if ( stricmp( token, "Actor" ) == 0)
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( token, "}" ) == 0 )		break ;
+		if ( Q_stricmp( token, "Actor" ) == 0)
 		{
 			if (!parseActor( cinematicFile )) 
 				return false ;
@@ -2619,15 +2652,21 @@ bool Cinematic::parseCameras( Script &cinematicFile )
 	{
 		if ( strcmp( token, "}" ) == 0 ) break ;
 
-		if ( stricmp( token, "Camera" ) == 0)	
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 3 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( token, "Camera" ) == 0)	
 		{
 			if ( !parseCamera( cinematicFile )) return false ;
 		}
-		else if ( stricmp( token, "Cut" ) == 0 )
+		else if ( Q_stricmp( token, "Cut" ) == 0 )
 		{
 			if ( !parseCut( cinematicFile ) )return false ;
 		}
-		else if ( stricmp( token, "ResetCamera" ) == 0 )
+		else if ( Q_stricmp( token, "ResetCamera" ) == 0 )
 		{
 			setResetCameraFlag( cinematicFile.GetBoolean( false ) ? true : false );
 		}
@@ -2702,7 +2741,12 @@ bool Cinematic::parseObjects( Script &cinematicFile )
 	while ( token )
 	{
 		if (strcmp( token, "}") == 0)			break ;
-		if (stricmp( token, "Object" ) == 0)	
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if (Q_stricmp( token, "Object" ) == 0)	
 		{
 			if (!parseObject( cinematicFile ))
 				return false ;
@@ -2750,8 +2794,13 @@ bool Cinematic::parseOrigins( Script &cinematicFile )
 	const char *token = cinematicFile.GetToken( true );
 	while ( token )
 	{
-		if ( stricmp( token, "}" ) == 0 )		break ;
-		if ( stricmp( token, "Origin" ) == 0)
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		// 
+		// Replaced 2 times
+		//--------------------------------------------------------------
+		if ( Q_stricmp( token, "}" ) == 0 )		break ;
+		if ( Q_stricmp( token, "Origin" ) == 0)
 		{
 			if ( !parseOrigin( cinematicFile )) 
 				return false ;

@@ -1217,7 +1217,12 @@ void GotoSpecified::SetArgs ( Event *ev)
 			// We have a headwatch target, but we need to make sure its not set to "none"
 			// that might occur if we're going to do a forceToTarget, but we don't want to 
 			// headwatch anything
-			if ( stricmp( parm.c_str() , "none" ) )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( Q_stricmp( parm.c_str() , "none" ) )
 				{
 				tlist = world->GetTargetList( parm );
 				if (tlist->list.NumObjects() > 0 )
@@ -7472,7 +7477,13 @@ void GotoLiftPosition::FindNodes(Actor &self )
 			str type;
 			type = node->GetCustomType();
 			
-			if ( !stricmp(type.c_str() , "lift" ) && !stricmp(node->target, volumeName.c_str() ) )
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+			// 
+			// Replaced 2 times
+			//--------------------------------------------------------------
+			if ( !Q_stricmp(type.c_str() , "lift" ) && !Q_stricmp(node->target, volumeName.c_str() ) )
 			{
 				_availableNodes.AddObject(node);
 			}
