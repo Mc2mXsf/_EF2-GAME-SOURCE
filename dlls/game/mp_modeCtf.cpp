@@ -771,9 +771,13 @@ void ModeCaptureTheFlag::returnFlag( MultiplayerItem *item, Player *player )
 
 		multiplayerManager.centerPrintAllClients( printString, CENTERPRINT_IMPORTANCE_NORMAL );
 
-		if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
 			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_rfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
-		else if ( strnicmp( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
+		else if ( Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
 			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_bfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
 		
 	}
