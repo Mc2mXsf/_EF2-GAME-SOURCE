@@ -463,6 +463,14 @@ Returns the filename, without being picky like COM_FileBase
 */
 void COM_FileName (const char *in, char *out)
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C28182 Dereferencing NULL-Pointer. - Chrissstrahl
+	//--------------------------------------------------------------
+	if (in == NULL || out == NULL) {
+		return;
+	}
+
+
 	const char *start, *end, *s;
 
 	start = NULL;
