@@ -413,7 +413,13 @@ inline void str::append
 
 		EnsureAlloced( new_length + 1 );
 
-      strcat( data, text );
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: C4996 strcat: This function or variable may be unsafe. Using instead: Q_strcat - chrissstrahl
+		//--------------------------------------------------------------
+		Q_strcat( data, new_length , text );
+
+
       len = new_length;
 		}
 	}
@@ -430,7 +436,13 @@ inline void str::append
    new_length += text.length();
    EnsureAlloced ( new_length + 1 );
 
-   strcat ( data, text.c_str () );
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: C4996 strcat: This function or variable may be unsafe. Using instead: Q_strcat - chrissstrahl
+   //--------------------------------------------------------------
+   Q_strcat ( data, new_length, text.c_str () );
+
+
    len = new_length;
 	}
 
