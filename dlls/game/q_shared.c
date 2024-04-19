@@ -1203,6 +1203,13 @@ void Com_BackslashToSlash( char *str )
    }
 
 char *Q_CleanStr( char *string ) {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C28182 Dereferencing NULL-Pointer. - Chrissstrahl
+	//--------------------------------------------------------------
+	if (string == NULL) {
+		return NULL;
+	}
+
 	char*	d;
 	char*	s;
 	int		c;
