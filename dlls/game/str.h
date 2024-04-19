@@ -210,7 +210,14 @@ inline str::str
 
 
 		EnsureAlloced ( stringLength + 1 );
-		strcpy( data, text );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+		//--------------------------------------------------------------
+		Q_strncpyz(data, text, stringLength);
+
+
       len = stringLength;
 		}
 	}
@@ -227,7 +234,14 @@ inline str::str
 	len = 0;
 
 	EnsureAlloced ( text.length() + 1);
-	strcpy( data, text.c_str() );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+	//--------------------------------------------------------------
+	Q_strncpyz( data, text.c_str(), text.length());
+
+
    len = text.length();
    }
 
@@ -319,7 +333,14 @@ inline str::str
 
 
    EnsureAlloced( stringLength + 1 );
-   strcpy( data, text );
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+   //--------------------------------------------------------------
+   Q_strncpyz( data, text, stringLength );
+
+
    len = stringLength;
    }
 
@@ -349,7 +370,14 @@ inline str::str
 
 
    EnsureAlloced( stringLength + 1 );
-   strcpy( data, text );
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+   //--------------------------------------------------------------
+   Q_strncpyz( data, text , stringLength );
+
+
    len = stringLength;
    }
 
@@ -379,7 +407,14 @@ inline str::str
 
 
    EnsureAlloced( stringLength + 1 );
-   strcpy( data, text );
+
+
+   //--------------------------------------------------------------
+   // GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+   //--------------------------------------------------------------
+   Q_strncpyz( data, text, stringLength );
+
+
    len = stringLength;
    }
 
@@ -480,7 +515,14 @@ inline str& str::operator=
 
 	{
    EnsureAlloced ( text.length() + 1, false );
-	strcpy( data, text.c_str() );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+	//--------------------------------------------------------------
+	Q_strncpyz( data, text.c_str() , text.length() );
+
+
    len = text.length();
 	return *this;
    }
@@ -542,7 +584,13 @@ inline str& str::operator=
 
 
    EnsureAlloced ( stringLength + 1, false );
-	strcpy( data, text );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+	//--------------------------------------------------------------
+	Q_strncpyz( data, text , stringLength );
+
+
    len = stringLength;
 	return *this;
 	}

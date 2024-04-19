@@ -1025,7 +1025,15 @@ inline void Entity::setViewModel(const str &mdl)
 inline void Entity::SetModelEvent(Event *ev)
 	{
 	char modelname[256] ;
-	strcpy(modelname, ev->GetString( 1 ) );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
+	//--------------------------------------------------------------
+	str temp_modelName = ev->GetString(1);
+	Q_strncpyz(modelname, temp_modelName.c_str(), temp_modelName.length() );
+
+	
 	char *tmpPtr = strstr(modelname, "*");
 	if (tmpPtr)
 		{
