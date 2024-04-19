@@ -411,7 +411,14 @@ void str::snprintf( char *dst, int size, const char *fmt, ... )
 	va_list		argptr;
 	
 	va_start (argptr,fmt);
-	len = vsprintf (buffer,fmt,argptr);
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 vsprintf: This function or variable may be unsafe. Using instead: vsnprintf - chrissstrahl
+	//--------------------------------------------------------------
+	len = vsnprintf (buffer,sizeof(buffer),fmt,argptr);
+
+
 	va_end (argptr);
 	
 	assert ( len < size );

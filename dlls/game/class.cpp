@@ -335,7 +335,14 @@ void CLASS_Print( FILE *class_file, const char *fmt, ... )
 	char		text[ 1024 ];
 	
 	va_start( argptr, fmt );
-	vsprintf( text, fmt, argptr );
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 vsprintf: This function or variable may be unsafe. Using instead: vsnprintf - chrissstrahl
+	//--------------------------------------------------------------
+	vsnprintf( text, sizeof(text), fmt, argptr );
+
+
 	va_end( argptr );
 	
 	if ( class_file )
@@ -481,7 +488,14 @@ void Class::warning( const char *function, const char *fmt, ... )
 	char		text[ 1024 ];
 	
 	va_start( argptr, fmt );
-	vsprintf( text, fmt, argptr );
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 vsprintf: This function or variable may be unsafe. Using instead: vsnprintf - chrissstrahl
+	//--------------------------------------------------------------
+	vsnprintf( text,sizeof(text), fmt, argptr );
+
+
 	va_end( argptr );
 	
 	if ( getClassID() )
@@ -500,7 +514,14 @@ void Class::error( const char *function, const char *fmt, ... )
 	char		text[ 1024 ];
 	
 	va_start( argptr, fmt );
-	vsprintf( text, fmt, argptr );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 vsprintf: This function or variable may be unsafe. Using instead: vsnprintf - chrissstrahl
+	//--------------------------------------------------------------
+	vsnprintf( text, sizeof(text), fmt, argptr );
+	
+	
 	va_end( argptr );
 	
 	if ( getClassID() )
