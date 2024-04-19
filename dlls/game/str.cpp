@@ -266,7 +266,13 @@ str operator+( const str& a, const float b )
 	
 	str result( a );
 	
-	sprintf( text, "%f", b );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: snprintf - chrissstrahl
+	//--------------------------------------------------------------
+	snprintf( text, sizeof(text), "%f", b );
+
+
 	result.append( text );
 	
 	return result;
@@ -278,7 +284,13 @@ str operator+( const str& a, const int b )
 	
 	str result( a );
 	
-	sprintf( text, "%d", b );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: snprintf - chrissstrahl
+	//--------------------------------------------------------------
+	snprintf( text, sizeof(text), "%d", b );
+
+
 	result.append( text );
 	
 	return result;
@@ -290,7 +302,13 @@ str operator+( const str& a, const unsigned b )
 	
 	str result( a );
 	
-	sprintf( text, "%u", b );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: snprintf - chrissstrahl
+	//--------------------------------------------------------------
+	snprintf( text, sizeof(text), "%u", b );
+
+
 	result.append( text );
 	
 	return result;
@@ -300,7 +318,13 @@ str& str::operator+=( const float a )
 {
 	char text[ 20 ];
 	
-	sprintf( text, "%f", a );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: snprintf - chrissstrahl
+	//--------------------------------------------------------------
+	snprintf( text, sizeof(text), "%f", a );
+
+
 	append( text );
 	
 	return *this;
@@ -310,7 +334,13 @@ str& str::operator+=( const int a )
 {
 	char text[ 20 ];
 	
-	sprintf( text, "%d", a );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: snprintf - chrissstrahl
+	//--------------------------------------------------------------
+	snprintf( text, sizeof(text), "%d", a );
+
+
 	append( text );
 	
 	return *this;
@@ -320,7 +350,13 @@ str& str::operator+=( const unsigned a )
 {
 	char text[ 20 ];
 	
-	sprintf( text, "%u", a );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: C4996 sprintf: This function or variable may be unsafe. Using instead: snprintf - chrissstrahl
+	//--------------------------------------------------------------
+	snprintf( text, sizeof(text), "%u", a );
+
+
 	append( text );
 	
 	return *this;
