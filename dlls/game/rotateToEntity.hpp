@@ -42,9 +42,14 @@ class RotateToEntity : public Behavior
 	//------------------------------------
 	// Parameters
 	//------------------------------------
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
 	private:      
-		float							_turnspeed;
-		EntityPtr						_ent;
+		float							_turnspeed = 5.0f;
+		EntityPtr						_ent = nullptr;
+
+
 		str								_anim;
 		str								_entityType;
 
@@ -72,8 +77,11 @@ class RotateToEntity : public Behavior
 	//-------------------------------------
 	// Member Variables
 	//-------------------------------------
-	private:		
-		float							_oldTurnSpeed;
+	private:	
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_oldTurnSpeed = 5.0f;
 		
 	
 	};

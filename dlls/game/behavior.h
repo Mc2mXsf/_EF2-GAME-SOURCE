@@ -686,7 +686,13 @@ class ThrowEntity : public Behavior
 	{
 	private:
 		str						throw_anim_name;
-		qboolean					anim_done;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean					anim_done = qtrue;
+
 
 	public:
       CLASS_PROTOTYPE( ThrowEntity );
@@ -2199,8 +2205,14 @@ class Wander : public Behavior
 	private:
 		//ObstacleAvoidance    avoid;
 		str						anim;
-      float                avoidtime;
-      Vector               avoidvec;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      float                avoidtime = 1.0f;
+      Vector               avoidvec = Vector( 0.0f, 0.0f, 0.0f );
+
 
 	public:
       CLASS_PROTOTYPE( Wander );
@@ -2750,7 +2762,12 @@ class GotoWayPoint : public Behavior
 		Wander					wander;
 		str                  current_waypoint_name;
 		WayPointNodePtr        current_waypoint;
-		float						next_think_time;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						next_think_time = 0.0f;
 
 
 	public:

@@ -60,14 +60,19 @@ class Talk : public Behavior
 		} TalkStates_t;
 
 	private:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		TurnTo					turnto;
-		SentientPtr				ent_listening;
-		EntityPtr				last_headwatch_target;
-		float					original_yaw;
-		float					yaw;
-		int						mode;
-		qboolean				move_allowed;
-		bool					animDone;
+		SentientPtr				ent_listening = nullptr;
+		EntityPtr				last_headwatch_target = nullptr;
+		float					original_yaw = 0.0f;
+		float					yaw = 0.0f;
+		int						mode = 0;
+		qboolean				move_allowed = qfalse;
+		bool					animDone = true;
+		
+		
 		str						oldAnimName;
 
 	public:

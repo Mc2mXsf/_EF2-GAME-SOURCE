@@ -71,8 +71,13 @@ class StringEntry
 	private:
 		str				_string;
 		str				_stringId;
-		StringType		_type;
-		StringEntry*	_next;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		StringType		_type = StringType::LEVEL;
+		StringEntry*	_next = nullptr;
 };
 
 

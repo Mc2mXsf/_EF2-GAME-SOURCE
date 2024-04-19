@@ -753,10 +753,14 @@ void PathFinder<Heuristic>::PropagateDown
 class StandardMovement : public Class
 	{
 	public:
-		int		minwidth;
-		int		minheight;
-		int		entnum;
-		qboolean can_jump;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int		minwidth = 0;
+		int		minheight = 0;
+		int		entnum = 0;
+		qboolean can_jump = qfalse;
+
 
 	inline void setSize
 		(

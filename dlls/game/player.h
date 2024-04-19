@@ -162,7 +162,14 @@ class WeaponSetItem : public Class
    {
    public:
       str name;
-      weaponhand_t hand;
+
+	  
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      weaponhand_t hand = WEAPON_ANY;
+
+
       void Archive( Archiver &arc );
    };
 

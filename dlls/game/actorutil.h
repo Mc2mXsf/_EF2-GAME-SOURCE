@@ -42,7 +42,11 @@ qboolean EntityIsValidTarget( const Entity *ent );
 class FindMovement : public StandardMovement
 	{
 	public:
-		Actor			*self;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor			*self = nullptr;
+
 
 	qboolean validpath (	PathNode *node, int i );
 	qboolean done ( PathNode *node, const PathNode *end );

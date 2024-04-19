@@ -115,7 +115,10 @@ class WarpToPosition : public Behavior
 	//-------------------------------------
 	private:
 		// Member Vars
-		int							_state;          //-- Maintains our Behavior's current State
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int							_state = 0;          //-- Maintains our Behavior's current State
 
 	};
 
@@ -209,9 +212,15 @@ class WarpToEntity : public Behavior
 		WarpToPosition							 _warp;
 
 		// Member Vars
-		unsigned int							 _state;          
-		unsigned int							 _position;
-		Vector									 _destination;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int							 _state = 0;          
+		unsigned int							 _position = 0;
+		Vector									 _destination = Vector( 0.0f, 0.0f, 0.0f );
+
 
 		// Static Constants
 		static const float						 DIST_TO_ENTITY;
@@ -409,8 +418,15 @@ public:
 	void							SetDistance ( const float distance   );
 	
 private:      
-	str                             _anim;  
-	float							_dist;
+	str                             _anim; 
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float							_dist = 0.0f;
+
+
 	// Components					
 	GoDirectlyToPoint				_motion;
 };
@@ -471,13 +487,18 @@ class GotoSpecified : public Behavior
 	//------------------------------------
 	private: 
 		str								_anim;  
-		EntityPtr						_targetEntity;
-		Vector							_targetPosition;
-		EntityPtr						_headwatchTarget;
-		bool							_forceToTarget;
-		bool							_turnAtEnd ;
-		int								_maxFailures;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr						_targetEntity = nullptr;
+		Vector							_targetPosition = Vector( 0.0f, 0.0f, 0.0f );
+		EntityPtr						_headwatchTarget = nullptr;
+		bool							_forceToTarget = false;
+		bool							_turnAtEnd = false;
+		int								_maxFailures = 1;
       
+
 	public:
 		CLASS_PROTOTYPE( GotoSpecified );
 
@@ -528,12 +549,16 @@ class GotoSpecified : public Behavior
 		WarpToPosition              _warpToPosition;
 
 		// Member Variables
-		unsigned int	            _state;
-		unsigned int                _mode;		
-		int                         _moveFailures;
-		float                       _holdTime;
-		bool                        _attemptedPathWarp;
-		Vector						_endAngles;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int	            _state = 0;
+		unsigned int                _mode = 0;
+		int                         _moveFailures = 0;
+		float                       _holdTime = 0.0f;
+		bool                        _attemptedPathWarp = true;
+		Vector						_endAngles = Vector( 0.0f, 0.0f, 0.0f );
+
 
 		// Constants
 		static const float          DIST_TO_TARGET_POSITION;
@@ -1383,10 +1408,15 @@ class AlertIdle : public Behavior
 	private: 
 		str								_followAnim;    // Animation to use when following
 		str                             _torsoAnim;     // Torso animation to play
-		float                           _baseIdleTime;  // Our base time to idle, before wandering
-		float							_emergencyDist; // Distance at which we switch to code driven speed to catch up
-		float							_followDist;
-		float							_wanderDist;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float                           _baseIdleTime = 1.0f;  // Our base time to idle, before wandering
+		float							_emergencyDist = 8.192; // Distance at which we switch to code driven speed to catch up
+		float							_followDist = 256;
+		float							_wanderDist = 512;
 		 
 		
 
@@ -1437,14 +1467,18 @@ class AlertIdle : public Behavior
 		FollowInFormation				_follow;		
 		MoveRandomDirection             _wander;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		// Member Vars
-		float                           _nextFollowAttempt;
-		float                           _nextWanderTime;
+		float                           _nextFollowAttempt = 0.0f;
+		float                           _nextWanderTime = 0.0f;
 		
-		unsigned int					_state;      
-		bool                            _useTorsoAnim;
-		bool							_unableToFollow;
-		Actor*							_self;		
+		unsigned int					_state = 0;      
+		bool                            _useTorsoAnim = false;
+		bool							_unableToFollow = true;
+		Actor*							_self = nullptr;		
    };
 
 
@@ -1505,12 +1539,17 @@ class DoBeamAttack : public Behavior
 		str								impactModel;
 		str								flashModel;
 		str								anim;      
-		float							damage;
-		float							time;
-		float							turnspeed;       
-		bool							trackEnemy;
-		int								beamCount;
-		bool							useRotation;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							damage = 1.0f;
+		float							time = 1.0f;
+		float							turnspeed = 1.0f;       
+		bool							trackEnemy = false;
+		int								beamCount = 1;
+		bool							useRotation = true;
       
 
 	public: // States
@@ -1548,12 +1587,17 @@ class DoBeamAttack : public Behavior
 		virtual void					Archive		( Archiver &arc );
 
 	private:
-		unsigned int					_state;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int					_state = 0;
 		RotateToEntity					_rotateBehavior;
-		float							_endTime;
-		bool							_initialRotationComplete;
+		float							_endTime = 5.0f;
+		bool							_initialRotationComplete = true;
 		//EntityPtr						_beam;
-		Vector							_beamEndPos;
+		Vector							_beamEndPos = Vector(0.0f,0.0f,0.0f);
+
+
 		Container<EntityPtr>			_beamList;
       
 
@@ -1661,15 +1705,18 @@ class FireWeapon : public Behavior
       void                 _stopFire ( Actor &self );
    
    private: //Member Vars
-      int                  _totalShots;
-      int                  _frameCount;      
-      float                _currentYaw;
-      float                _currentPitch;
-      Vector               _aimAngles;
-      Vector               _targetPosition;      
-      EntityPtr            _target;	  
-      qboolean             _attacking;
-	  bool				   _havePosition;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      int                  _totalShots = 0;
+      int                  _frameCount = 0;      
+      float                _currentYaw = 0.0f;
+      float                _currentPitch = 0.0f;
+      Vector               _aimAngles = Vector(0.0f, 0.0f, 0.0f);
+      Vector               _targetPosition = Vector(0.0f, 0.0f, 0.0f);
+      EntityPtr            _target = nullptr;	  
+      qboolean             _attacking = qfalse;
+	  bool				   _havePosition = false;
 
       
       

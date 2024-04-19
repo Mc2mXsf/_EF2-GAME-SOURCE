@@ -140,7 +140,12 @@ class WeaponProperty : public Class
 	private:
 		str							_property ;
 		str							_stringValue ;
-		float						_floatValue ;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_floatValue = 0.0f;
 };
 
 
