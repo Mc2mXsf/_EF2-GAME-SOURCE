@@ -1127,9 +1127,6 @@ void Q_strncpyz( char *dest, const char *src, int destsize ) {
 	if (src) {
 		strncpy(dest, src, destsize - 1);
 	}
-	else {
-		strncpy(dest, "ERROR", destsize - 1);
-	}
 	dest[destsize - 1] = 0;
 }
 
