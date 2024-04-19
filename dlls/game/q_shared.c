@@ -1120,8 +1120,17 @@ void Q_strncpyz( char *dest, const char *src, int destsize ) {
 		Com_Error( ERR_FATAL,"Q_strncpyz: destsize < 1" );
 	}
 
-	strncpy( dest, src, destsize-1 );
-    dest[destsize-1] = 0;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Possible NULL char in src - chrissstrahl
+	//--------------------------------------------------------------
+	if (src) {
+		strncpy(dest, src, destsize - 1);
+	}
+	else {
+		strncpy(dest, "ERROR", destsize - 1);
+	}
+	dest[destsize - 1] = 0;
 }
 
 int Q_stricmpn (const char *s1, const char *s2, int n) {
