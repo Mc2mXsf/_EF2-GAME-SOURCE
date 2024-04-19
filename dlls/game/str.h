@@ -27,6 +27,13 @@
 #include <string.h>
 #include <stdio.h>
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "q_shared.h"
+
+
 #ifdef _WIN32
 #pragma warning(disable : 4710)     // function 'blah' not inlined
 #endif
