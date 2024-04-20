@@ -11,6 +11,10 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+Fixed: Possible buffer overflow risk
+const char *Info_ValueForKey (const char *s, const char *key)
+void COM_StripExtension(const char* in, char* out, int destsize)
+
 Changed: Ammo Regeneration ammount given to player, rune was useless in fast paced combat, was 1 new 3 - chrissstrahl
 void RuneAmmoRegen::specificUpdate( float frameTime )
 
@@ -26,6 +30,9 @@ void BotUpdateInfoConfigStrings(void)
 Fixed: Warning: C6011 Dereferencing NULL-Pointer.
 qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float check_fovdot	)
 int BotAISetupClient(int client, struct bot_settings_s *settings, qboolean restart)
+void Entity::quitTeam(void)
+void BotDeathmatchAI(bot_state_t *bs, float thinktime)
+Event::Event( int num )
 
 Fixed: Warning: C28182 Dereferencing NULL-Pointer ?, contains same NULL-Value as ?
 void BotInterbreedBots(void)
@@ -85,6 +92,15 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 void BotTeamOrders(bot_state_t *bs)
 
 Fixed: Warning C26495: The Variable ? was not initialized. A 0ariable needs always to be initialized (type.6)
+class CinematicArmature : public Listener
+class Cinematic : public Entity
+class CinematicOrigin : public Listener
+class CinematicCut : public Listener
+class CinematicCamera : public Listener
+class CinematicActor : public Listener
+class CameraMoveState : public Class
+class BackAwayFromEnemy : public Behavior
+class AmmoEntity : public Item
 class Rune : public PowerupBase
 class PowerupBase : public Item
 class Powerup : public PowerupBase
@@ -633,6 +649,7 @@ void PathManager::SetNodeFlagsEvent( Event *ev )
 void ScriptSlave::FollowPath( Event *ev )
 
 Fixed: Warning lnt-logical-bitwise-mismatch
+qboolean KillBox( Entity *ent )
 inline void TriggerPlaySound::Archive(Archiver &arc)
 void TriggerSetVariable::SetVariable( Event *ev )
 qboolean Player::checkatdoor( Conditional &condition )
