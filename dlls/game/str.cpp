@@ -442,7 +442,12 @@ void str::BackSlashesToSlashes( void )
 
 void str::snprintf( char *dst, int size, const char *fmt, ... )
 {
-	char buffer[0x10000];
+	//--------------------------------------------------------------
+	// GAMEFIX - The function uses 65556 bytes of stack. Consider moving some data to the heap. - chrissstrahl
+	//--------------------------------------------------------------
+	static char buffer[0x10000];
+
+
 	int		len;
 	va_list		argptr;
 	
