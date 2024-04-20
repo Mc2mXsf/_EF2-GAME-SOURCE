@@ -107,24 +107,27 @@ class SensoryPerception
 	private: //Member Variables
 		
 			 // Stimuli Variables
-		    int	_stimuli;
-		    int	_permanent_stimuli;
+			LineOfSight_t _lineOfSight;
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+			//--------------------------------------------------------------
+		    int	_stimuli = 0;
+		    int	_permanent_stimuli = 0;
 
 			 // Hearing Variables
 			 Vector _noise_position;
-			 int    _last_soundType;
-			 float  _noise_time;
+			 int    _last_soundType = 0;
+			 float  _noise_time = 0.0f;
 		
 		    // Vision Stuff for "seeing"
-		    float  _fov;
-		    float  _fovdot;
-		    float  _vision_distance;
-
-			 float  _nextSenseTime;
-
-          LineOfSight_t _lineOfSight;
-
-			 Actor  *act;
+		    float  _fov = 0.0f;
+		    float  _fovdot = 0.0f;
+		    float  _vision_distance = 0.0f;
+			float  _nextSenseTime = 0.0f;
+			
+			 Actor  *act = nullptr;
 		    
 	};
 
