@@ -482,7 +482,14 @@ inline void TriggerPlaySound::Archive
          //
          // invert state so that final state will be right
          //
-         state = !state;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+		//--------------------------------------------------------------
+         state = static_cast<int>(!state);
+
+
          PostEvent( EV_Trigger_Effect, EV_POSTSPAWN );
          }
       }

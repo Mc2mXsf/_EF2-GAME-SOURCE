@@ -1652,7 +1652,12 @@ void TriggerSetVariable::SetVariable( Event *ev )
 		value--;
 		break;
 	case VAR_TOGGLE:
-		value = !value;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+		//--------------------------------------------------------------
+		value = static_cast<int>(!value);
+
+
 		break;
 	}
 	
