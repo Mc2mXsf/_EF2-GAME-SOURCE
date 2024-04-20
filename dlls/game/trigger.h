@@ -51,30 +51,36 @@ extern Event EV_Trigger_SetDestructible;
 class Trigger : public Entity
 	{
 	protected:
-		float			      wait;
-		float			      delay;
-		float			      trigger_time;
-		qboolean		      triggerActivated;
-		int			      count;
 		str		         noise;
 		str			      message;
-      str               key;
-      str               thread;
-		EntityPtr	      activator;
-		int			      respondto;
-      qboolean          useTriggerDir;
-      float             triggerCone;
-      Vector            triggerDir;
-      float             triggerDirYaw;
-		qboolean		      triggerable;
-      qboolean          removable;  // if count is 0, should this be removed?
-      qboolean          edgeTriggered; // if true, trigger only triggers when entering trigger, not when standing in it
-      int               multiFaceted; // if 0, it isn't. if 1 it is N/S oriented, if 2 it is E/W oriented
-      Container<int>    entList;
-	  bool				destructible ;
-	  int				instantdeath ; // set this to a MoD to have a trigger die instantly from a damage type
-	  bool				triggerondamage ;
-	  bool				triggerondeath ;
+		str               key;
+		str               thread;
+		Container<int>    entList;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+		float			      wait = 0.0f;
+		float			      delay = 0.0f;
+		float			      trigger_time = 0.0f;
+		qboolean		      triggerActivated = qfalse;
+		int			      count = 0;
+		EntityPtr	      activator = nullptr;
+		int			      respondto = 0;
+      qboolean          useTriggerDir = qfalse;
+      float             triggerCone = 0.0f;
+      Vector            triggerDir = Vector(0.0f, 0.0f, 0.0f);
+      float             triggerDirYaw = 0.0f;
+		qboolean		      triggerable = qfalse;
+      qboolean          removable = qfalse;  // if count is 0, should this be removed?
+      qboolean          edgeTriggered = qfalse; // if true, trigger only triggers when entering trigger, not when standing in it
+      int               multiFaceted = 0; // if 0, it isn't. if 1 it is N/S oriented, if 2 it is E/W oriented
+	  bool				destructible = false;
+	  int				instantdeath = 0; // set this to a MoD to have a trigger die instantly from a damage type
+	  bool				triggerondamage = 0;
+	  bool				triggerondeath = 0;
+
 
 	  // protected methods
       void              CheckEntList(Event *ev);
@@ -209,11 +215,17 @@ class WorkTrigger : public Trigger
    {
    private:
 		str _animation;
-      float _time;
-      qboolean   _reserved;
-      int        _currentEnt;
+		Container<str> _allowedWorkers;
 
-      Container<str> _allowedWorkers;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      float _time = 0.0f;
+      qboolean   _reserved = qfalse;
+      int        _currentEnt = 0;
+
+      
 
 	public:
 		CLASS_PROTOTYPE( WorkTrigger );
@@ -253,8 +265,12 @@ inline void WorkTrigger::Archive ( Archiver &arc )
 class TouchField : public Trigger
 	{
 	private:
-		Event				*ontouch;
-		EntityPtr      owner;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Event				*ontouch = nullptr;
+		EntityPtr      owner = nullptr;
+
 
 	public:
       CLASS_PROTOTYPE( TouchField );
@@ -298,7 +314,14 @@ class TriggerSetVariable : public Trigger
 	private:
       str            variableName;
       str            variableValue;
-      variableType_t variableType;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      variableType_t variableType = VAR_NORMAL;
+
+
 	public:
       CLASS_PROTOTYPE( TriggerSetVariable );
 
@@ -343,7 +366,13 @@ class TriggerSecret : public TriggerOnce
 class TriggerPush : public Trigger
 	{
 	protected:
-      float    speed;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      float    speed = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( TriggerPush );
@@ -368,7 +397,13 @@ inline void TriggerPush::Archive
 class TriggerPushAny : public Trigger
 	{
 	protected:
-      float    speed;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      float    speed = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( TriggerPushAny );
@@ -398,11 +433,16 @@ class TriggerPlaySound : public Trigger
 	protected:
       friend class SoundManager;
 
-		int	   state;
-		float	   min_dist;
-		float	   volume;
-      int	   channel;
-      qboolean ambient;
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+		int	   state = 0;
+		float	   min_dist = 0.0f;
+		float	   volume = 0.0f;
+      int	   channel = 0;
+      qboolean ambient = qfalse;
+
 
 	public:
       CLASS_PROTOTYPE( TriggerPlaySound );
@@ -461,9 +501,14 @@ class RandomSpeaker : public TriggerSpeaker
 	protected:
       friend class SoundManager;
 
-      float chance;
-      float mindelay;
-      float maxdelay;
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      float chance = 0.0f;
+	  float mindelay = 0.0f;
+      float maxdelay = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( RandomSpeaker );
@@ -556,7 +601,11 @@ class TriggerUseOnce : public TriggerUse
 class TriggerHurt : public TriggerUse
 	{
 	protected:
-		float		damage;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float		damage = 0.0f;
+
 
 	  void		Hurt( Event *ev );
       void		SetDamage( Event *ev );
@@ -582,7 +631,11 @@ inline void TriggerHurt::Archive
 class TriggerDamageTargets : public Trigger
 	{
 	protected:
-		float		    damage;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float		    damage = 0.0f;
+
 
 	  void		    DamageTargets( Event *ev );
       void		    SetDamage( Event *ev );
@@ -628,12 +681,18 @@ class TriggerMusic : public Trigger
 	{
 	private:
       friend class   SoundManager;
-
-      qboolean       oneshot;
 		str				current;
 		str				fallback;
 		str				altcurrent;
 		str				altfallback;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      qboolean       oneshot = qfalse;
+
+
 	public:
       CLASS_PROTOTYPE( TriggerMusic );
 
@@ -673,11 +732,17 @@ class TriggerReverb : public Trigger
 	private:
       friend class   SoundManager;
 
-      qboolean       oneshot;
-		int				reverbtype;
-		int				altreverbtype;
-      float          reverblevel;
-      float          altreverblevel;
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      qboolean       oneshot = qfalse;
+		int				reverbtype = 0;
+		int				altreverbtype = 0;
+      float          reverblevel = 0.0f;
+      float          altreverblevel = 0.0f;
+
+
 	public:
       CLASS_PROTOTYPE( TriggerReverb );
 
@@ -742,8 +807,15 @@ inline void TriggerByPushObject::Archive
 class TriggerGivePowerup : public Trigger
 	{
 	private:
-      qboolean       oneshot;
-		str				powerup_name;
+      	str				powerup_name;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean       oneshot = qfalse;
+
+
 	public:
       CLASS_PROTOTYPE( TriggerGivePowerup );
 
@@ -770,7 +842,13 @@ class TriggerGroupEvent : public Trigger
    {
    private:
       Event passEvent;
-      int   groupNumber;
+
+	  
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      int   groupNumber = 0;
+
    
    public:
       CLASS_PROTOTYPE( TriggerGroupEvent );
@@ -822,8 +900,14 @@ class TriggerCallVolume : public Trigger
 	{
 	private:
 		Container<str>	_requiredEntities;        
-		qboolean		_ready;
 		str				_exitThread;
+
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean		_ready = qfalse;
+
 
 	protected:
 		Entity*			_getEntity            ( const str& name );
@@ -866,11 +950,17 @@ class TriggerEntryAndExit : public Trigger
    private:      
       str      _entryThread;
       str      _exitThread;
-      qboolean _entered;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      qboolean _entered = qfalse;
 
       //1ST PLAYABLE HACK
-      float    _forcefieldtrigger;
-      float    _triggernumber;
+      float    _forcefieldtrigger = 0.0f;
+      float    _triggernumber = 0.0f;
+
 
    public:
       CLASS_PROTOTYPE( TriggerEntryAndExit );

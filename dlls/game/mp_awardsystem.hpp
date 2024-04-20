@@ -101,37 +101,42 @@ private:
 	static const float			_maxExcellentTime;
 	static const float			_deniedDistance;
 
-	int							_maxPlayers;
-	bool						_hadFirstStrike;
-	MultiplayerPlayerAwardData	*_playerAwardData;
-
-	int							_efficiencyIconIndex;
-	int							_sharpshooterIconIndex;
-	int							_untouchableIconIndex;
-
-	int							_logisticsIconIndex;
-	int							_tacticianIconIndex;
-	int							_demolitionistIconIndex;
-
-	int							_aceIconIndex;
-	int							_expertIconIndex;
-	int							_masterIconIndex;
-	int							_championIconIndex;
-
-	int							_mvpIconIndex;
-	int							_defenderIconIndex;
-	int							_warriorIconIndex;
-	int							_carrierIconIndex;
-	int							_interceptorIconIndex;
-	int							_braveryIconIndex;
-
-	int							_firstStrikeIconIndex;
-	int							_impressiveIconIndex;
-	int							_excellentIconIndex;
-	int							_deniedIconIndex;
-
 	Container<str>				_powerups;
 	Container<str>				_weapons;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int							_maxPlayers = 0;
+	bool						_hadFirstStrike = false;
+	MultiplayerPlayerAwardData	*_playerAwardData = nullptr;
+
+	int							_efficiencyIconIndex = 0;
+	int							_sharpshooterIconIndex = 0;
+	int							_untouchableIconIndex = 0;
+
+	int							_logisticsIconIndex = 0;
+	int							_tacticianIconIndex = 0;
+	int							_demolitionistIconIndex = 0;
+
+	int							_aceIconIndex = 0;
+	int							_expertIconIndex = 0;
+	int							_masterIconIndex = 0;
+	int							_championIconIndex = 0;
+
+	int							_mvpIconIndex = 0;
+	int							_defenderIconIndex = 0;
+	int							_warriorIconIndex = 0;
+	int							_carrierIconIndex = 0;
+	int							_interceptorIconIndex = 0;
+	int							_braveryIconIndex = 0;
+
+	int							_firstStrikeIconIndex = 0;
+	int							_impressiveIconIndex = 0;
+	int							_excellentIconIndex = 0;
+	int							_deniedIconIndex = 0;
+
 
 	int							getItemIndex( Container<str> &itemContainer, const str &itemName );
 	int							getNumItems( Container<str> &itemContainer );
