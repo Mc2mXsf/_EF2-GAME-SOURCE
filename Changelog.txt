@@ -84,7 +84,10 @@ int BotNumTeamMates(bot_state_t *bs)
 int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxteammates)
 void BotTeamOrders(bot_state_t *bs)
 
-Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6)
+Fixed: Warning C26495: The Variable ? was not initialized. A 0ariable needs always to be initialized (type.6)
+class Rune : public PowerupBase
+class PowerupBase : public Item
+class Powerup : public PowerupBase
 class RuneAmmoRegen : public Rune
 class SensoryPerception 
 class TriggerSetVariable : public Trigger
