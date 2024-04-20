@@ -781,6 +781,12 @@ void SelectSpawnPoint( Vector &org, Vector &ang, str &thread )
 		// GAMEFIX - changed error message to spell out the object type - chrissstrahl
 		//--------------------------------------------------------------
 		gi.Error( ERR_DROP, "No info_player_start named '%s'.  Can't spawn player.\n", level.spawnpoint.c_str() );
+		
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C28182 Dereferencing NULL-Pointer ?, contains same NULL-Value as ? - chrissstrahl
+		//--------------------------------------------------------------
+		return;
 	}
 	
 	org = spot->origin;
