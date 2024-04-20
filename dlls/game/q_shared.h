@@ -696,7 +696,14 @@ void COM_FileBase (const char *in, char *out);
 void COM_FileName (const char *in, char *out);
 
 const char	*COM_SkipPath( const char *pathname );
-void	      COM_StripExtension( const char *in, char *out );
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Possible buffer overflow risk - chrissstrahl
+//--------------------------------------------------------------
+void COM_StripExtension(const char* in, char* out, int destsize);
+
+
 void	      COM_DefaultExtension( char *path, int maxSize, const char *extension );
 void        Com_BackslashToSlash( char *str );
 

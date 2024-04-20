@@ -1234,10 +1234,14 @@ char *ClientTeam( const gentity_t *ent )
 	if (!ent->client)
 		return value;
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Possible buffer overflow risk - Needed to be updated with COM_StripExtension - chrissstrahl
+	//--------------------------------------------------------------
 	if ( multiplayerManager.checkFlag( MP_FLAG_MODELTEAMS ) )
-		COM_StripExtension( Info_ValueForKey( ent->client->pers.userinfo, "model" ), value );
+		COM_StripExtension( Info_ValueForKey( ent->client->pers.userinfo, "model" ), value, sizeof(value));
 	else if ( multiplayerManager.checkFlag( MP_FLAG_SKINTEAMS ) )
-		COM_StripExtension( Info_ValueForKey( ent->client->pers.userinfo, "skin" ), value );
+		COM_StripExtension( Info_ValueForKey( ent->client->pers.userinfo, "skin" ), value, sizeof(value));
 	
 	return( value );
 }
