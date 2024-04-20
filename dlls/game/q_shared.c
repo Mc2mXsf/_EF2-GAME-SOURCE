@@ -398,12 +398,38 @@ int COM_ParseHex (const char *hex)
 COM_StripExtension
 ============
 */
-void COM_StripExtension (const char *in, char *out)
-   {
-	while ( *in && ( *in != '.' ) )
-		*out++ = *in++;
-	*out = 0;
-   }
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Possible buffer overflow risk - chrissstrahl - Code by Daggo
+//--------------------------------------------------------------
+void COM_StripExtension(const char* in, char* out, int destsize) {
+	// Search for the last dot
+	char* extDot = Q_strrchr(in, '.');
+	if (extDot) {
+		// Found a dot, might be an extension
+		char* slash = Q_strrchr(in, '/');
+		if (slash && slash > extDot) {
+			// Not an extension, because it's part of a folder name
+			extDot = NULL;
+		}
+	}
+
+	// If we found an extension dot and it's within the range of what fits into out reduce destsize accordingly
+	if (extDot && destsize > (extDot - in) + 1) {
+		destsize = (extDot - in) + 1;
+
+		// Special case: if in == out we want to avoid copying over
+		if (in == out) {
+			if (destsize > 0) out[destsize - 1] = 0;
+			else out[0] = 0;
+
+			// Nothing more to do
+			return;
+		}
+	}
+
+	// Copy all the content we want in there
+	Q_strncpyz(out, in, destsize);
+}
 
 /*
 ============
