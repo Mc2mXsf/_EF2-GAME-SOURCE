@@ -1044,7 +1044,12 @@ qboolean KillBox( Entity *ent )
 	//
 	// all clear
 	//
-	return !fail;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	return (fail == 0);
 }
 
 qboolean IsNumeric( const char *str )
