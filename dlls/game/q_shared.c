@@ -1258,9 +1258,14 @@ key and returns the associated value, or an empty string.
 */
 const char *Info_ValueForKey (const char *s, const char *key)
 {
-	char	pkey[512];
-	static	char value[2][512];	// use two buffers so compares
-								// work without stomping on each other
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Possible buffer overflow risk - chrissstrahl - reported by Daggo
+	//--------------------------------------------------------------
+	char	pkey[MAX_INFO_STRING];
+	static	char value[2][MAX_INFO_STRING];	// use two buffers so compares
+											// work without stomping on each other
+	
+	
 	static	int	valueindex = 0;
 	char	*o;
 
