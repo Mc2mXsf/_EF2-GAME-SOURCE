@@ -3958,7 +3958,13 @@ void TriggerCallVolume::TriggerStuff( Event *ev )
 	AddOtherToEntList( other );
 	
 	if ( other->isSubclassOf( Player ) )
-	{      
+	{   
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: trigger_volume_callvolume set activating player as activator - chrissstrahl
+		//--------------------------------------------------------------
+		activator = other;
+
+
 		_checkForRequiredEnts();
 		_notifyRequiredEnts(true);
 
@@ -4068,25 +4074,20 @@ void TriggerCallVolume::EntityLeftVolume( Event *ev )
 	
 	if ( other->isSubclassOf( Player ) )
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: trigger_volume_callvolume targetname not being cleared from Player when leaving trigger - chrissstrahl
+		// GAMEFIX - Fixed: trigger_volume_callvolume set activating player as activator - chrissstrahl
+		//--------------------------------------------------------------
 		_notifyRequiredEnts(false);
-		
+		activator = other;
+
+
 		if ( _exitThread.length() ){
 			if (!ExecuteThread(_exitThread, true, this)) {
 				warning("StartThread", "Null game script");
 			}
 		}
-
-
-
-		//--------------------------------------------------------------
-		// GAMEFIX - Fixed: trigger_volume_callvolume targetname not being cleared from Player when leaving trigger - chrissstrahl
-		// - Changed: Code moved down to avoid possible conflicts when trigger targetname is cleared - chrissstrahl
-		//--------------------------------------------------------------
-		// Null out the currentCallVolume on the Player		
-		player = ( Player* )other;
-		player->SetCurrentCallVolume( "" );
-
-
+		
 		int entNum;
 		for ( int i = entList.NumObjects() ; i > 0  ; i-- ){
 			entNum = entList.ObjectAt( i );
@@ -4178,12 +4179,20 @@ void TriggerCallVolume::_notifyRequiredEnts(bool inCallVolume )
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Trigger always refering to client 0 - chrissstrahl
+	// And not clearing the current callvolume var on player
 	//--------------------------------------------------------------
-	player = gamefix_getPlayerInsideOfEntity((Entity*)this);
-	
-	
-	// Set the currentCallVolume on the Player
-	player->SetCurrentCallVolume( TargetName() );
+	for (int i = 0; i < maxclients->integer; i++) {
+		player = GetPlayer(i);
+		if (player) {
+			if (!IsEntityInBoundingBox(player) && player->GetCurrentCallVolume() == TargetName()) {
+				player->SetCurrentCallVolume("");
+			}
+			if (!multiplayerManager.inMultiplayer() || !multiplayerManager.isPlayerSpectator(player)) {
+				player->SetCurrentCallVolume(TargetName());
+			}
+		}
+	}
+
 	
 	for ( int i = 1; i <= _requiredEntities.NumObjects() ; i++ )
 	{
