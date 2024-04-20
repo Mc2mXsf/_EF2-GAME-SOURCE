@@ -36,3 +36,4 @@ dlls/game/game.log
 dlls/game/vc.nativecodeanalysis.all.xml
 bots_fix_experimental.txt
 dlls/game/CodeAnalysisResultManifest.txt
+upgrade.lst
