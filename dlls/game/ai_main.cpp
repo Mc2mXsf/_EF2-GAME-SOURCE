@@ -410,6 +410,14 @@ void BotTeamplayReport(void) {
 		if ( !botstates[i] || !botstates[i]->inuse ) continue;
 		//
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
@@ -423,6 +431,14 @@ void BotTeamplayReport(void) {
 		if ( !botstates[i] || !botstates[i]->inuse ) continue;
 		//
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
@@ -572,6 +588,14 @@ void BotUpdateInfoConfigStrings(void) {
 			continue;
 		//
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name")))
 			continue;
@@ -600,8 +624,18 @@ void BotInterbreedBots(void) {
 	}
 
 	if (gi.GeneticParentsAndChildSelection(MAX_CLIENTS, ranks, &parent1, &parent2, &child)) {
-		gi.BotInterbreedGoalFuzzyLogic(botstates[parent1]->gs, botstates[parent2]->gs, botstates[child]->gs);
-		gi.BotMutateGoalFuzzyLogic(botstates[child]->gs, 1);
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C28182 Dereferencing NULL-Pointer ?, contains same NULL-Value as ? - chrissstrahl
+		//--------------------------------------------------------------
+		if (botstates[parent1] && botstates[parent1]->inuse &&
+			botstates[parent2] && botstates[parent2]->inuse &&
+			botstates[child] && botstates[child]->inuse)
+		{
+			gi.BotInterbreedGoalFuzzyLogic(botstates[parent1]->gs, botstates[parent2]->gs, botstates[child]->gs);
+			gi.BotMutateGoalFuzzyLogic(botstates[child]->gs, 1);
+		}
 	}
 	// reset the kills and deaths
 	for (i = 0; i < MAX_CLIENTS; i++) {
@@ -1232,6 +1266,15 @@ int BotAISetupClient(int client, struct bot_settings_s *settings, qboolean resta
 		BotAI_Print(PRT_FATAL, "AAS not initialized\n");
 		return qfalse;
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!bs) {
+		return 0;
+	}
+
 
 	//load the bot character
 	bs->character = gi.BotLoadCharacter(settings->characterfile, settings->skill);

@@ -577,18 +577,25 @@ qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float che
 	int tagNum;
 	
 	
-	if ( !act )
-		gi.Error( ERR_DROP, "SensoryPerception::InFOV -- actor is NULL" );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	// GAMEFIX - Fixed: Return value being bool instead of qboolean. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!act) {
+		gi.Error(ERR_DROP, "SensoryPerception::InFOV -- actor is NULL");
+		return qfalse;
+	}
+
 	
 	if ( check_fov == 360.0f )
-		return true;
+		return qfalse;
 	temp = act->EyePosition();
 	delta = pos - act->EyePosition();
 	
 	if ( !delta.x && !delta.y )
 	{
 		// special case for straight up and down
-		return true;
+		return qfalse;
 	}
 	
 	// give better vertical vision

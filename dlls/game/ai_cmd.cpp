@@ -295,6 +295,14 @@ int NumPlayersOnSameTeam(bot_state_t *bs) {
 	num = 0;
 	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf, gi.getConfigstring(CS_PLAYERS+i), MAX_INFO_STRING);
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		if (strlen(buf)) {
 			if (BotSameTeam(bs, i+1)) num++;
 		}
