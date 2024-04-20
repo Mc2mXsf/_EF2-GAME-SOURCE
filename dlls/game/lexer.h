@@ -53,24 +53,30 @@ typedef enum
 class Lexer
    {
    private:
-      int			   source_line;
-      
       const char		*pr_file_p;
       const char		*pr_line_start;		// start of current source line
-      
-      int			   pr_bracelevel;
 
-      char		      pr_token[ 2048 ];
+
+      //--------------------------------------------------------------
+      // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+      //--------------------------------------------------------------
+      int			   source_line = 0;
+      int			   pr_bracelevel = 0;
+      char		      pr_token[2048] = { 0 };
+
 
    public:
-   
       token_type_t	pr_token_type;
-
       type_t		   *pr_immediate_type;
       eval_t		   pr_immediate;
-      char	         pr_immediate_string[ 2048 ];
+      Program& program;
 
-      Program        &program;
+
+    //--------------------------------------------------------------
+    // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+    //--------------------------------------------------------------
+      char	         pr_immediate_string[2048] = { 0 };
+      
 
                      Lexer( Program &prg );
 

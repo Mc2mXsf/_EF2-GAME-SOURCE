@@ -39,34 +39,47 @@ extern Event EV_Item_PickupDone;
 class Item : public Trigger
 	{
 	private:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		float					_skillLevel;
 		int						_iconIndex;
 
 	protected:
-		SentientPtr				owner;
-		qboolean				respawnable;
-		qboolean				playrespawn;
-		qboolean				coolitem;
-		qboolean				coolitemforced;
 		str						cool_dialog;
 		str						cool_anim;
-		float					respawntime;
 		str						dialog_needed;
-		int						item_index;
 		str						item_name;
-		float					maximum_amount;
-		float					amount;
 		str						pickup_thread;
-		qboolean				no_remove;
-		int						bot_inventory_index;
 		MultiplayerItemType		_mpItemType;
-		int						_missingSkin;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		SentientPtr				owner = nullptr;
+		qboolean				respawnable = qfalse;
+		qboolean				playrespawn = qfalse;
+		qboolean				coolitem = qfalse;
+		qboolean				coolitemforced = qfalse;
+		float					respawntime = 0.0f;
+		int						item_index = 0;
+		float					maximum_amount = 0.0f;
+		float					amount = 0.0f;
+		qboolean				no_remove = qfalse;
+		int						bot_inventory_index = 0;
+		int						_missingSkin = 0;
+
 		
 		void					ItemTouch( Event *ev );
 
 	public:
-		qboolean				has_been_looked_at;
-		float					_nextPickupTime;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean				has_been_looked_at = qfalse;
+		float					_nextPickupTime = 0.0f;
+
 
 		CLASS_PROTOTYPE( Item );
 

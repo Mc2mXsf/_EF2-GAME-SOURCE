@@ -66,11 +66,16 @@ class CoverCombatWithRangedWeapon : public Behavior
 		str		_movementAnim;
 		str		_torsoAnim;
 		str		_fireAnim;
-		float	_maxDistance;
-		float	_fireTimeMin;
-		float	_fireTimeMax;
-		float	_pauseTimeMin;
-		float	_pauseTimeMax;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float	_maxDistance = 0.0f;
+		float	_fireTimeMin = 0.0f;
+		float	_fireTimeMax = 0.0f;
+		float	_pauseTimeMin = 0.0f;
+		float	_pauseTimeMax = 0.0f;
 
 
 	//-------------------------------------

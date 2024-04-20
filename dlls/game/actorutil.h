@@ -63,7 +63,11 @@ class FindMovement : public StandardMovement
 class FindCoverMovement : public StandardMovement
 	{
 	public:
-		Actor			*self;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor			*self = nullptr;
+
 
 	qboolean validpath (	PathNode *node, int i );
 	qboolean done ( PathNode *node, const PathNode *end );
@@ -80,7 +84,11 @@ class FindCoverMovement : public StandardMovement
 class FindFleeMovement : public StandardMovement
 	{
 	public:
-		Actor			*self;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor			*self = nullptr;
+
 
 	qboolean validpath ( PathNode *node, int i	);
 	qboolean done	( PathNode *node,	const PathNode *end );
@@ -96,7 +104,11 @@ class FindFleeMovement : public StandardMovement
 class FindEnemyMovement : public StandardMovement
 	{
 	public:
-		Actor			*self;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor			*self = nullptr;
+
 
 	qboolean done	( PathNode *node, const PathNode *end );
 

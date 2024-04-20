@@ -49,37 +49,41 @@ class MultiplayerDialogData
 {
 public:
 	str				_soundName;
-	int				_channel;
-	float			_volume;
-	float			_minDist;
-	float			_time;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int				_channel = 0;
+	float			_volume = 0.0f;
+	float			_minDist = 0.0f;
+	float			_time = 0.0f;
 };
 
 class MultiplayerPlayerData
 {
 public:
 	static const int	_maxDialogs;
-
-	bool				_valid;
-	int					_votecount;
-	bool				_voted;
-	bool				_spectator;
-	bool				_spectatorByChoice;
-	SpectatorTypes		_spectatorType;
-	float				_spectatorTime;
-	int					_spectatorPlayerNum;
-	bool				_waitingForRespawn;
-	float				_respawnTime;
-	str					_teamHud;
-
-	bool				_named;
 	str					_name;
+	str					_teamHud;
+	SpectatorTypes		_spectatorType;
 
-	MultiplayerDialogData*	_dialogData;
-	int					_nextDialogSendSpot;
-	int					_nextDialogAddSpot;
-	float				_nextDialogSendTime;
-	float				_nextTauntTime;
+	bool				_valid = false;
+	int					_votecount = 0;
+	bool				_voted = false;
+	bool				_spectator = false;
+	bool				_spectatorByChoice = false;
+	float				_spectatorTime = 0.0f;
+	int					_spectatorPlayerNum = 0;
+	bool				_waitingForRespawn = false;
+	float				_respawnTime = 0.0f;
+	bool				_named = false;
+	MultiplayerDialogData*	_dialogData = nullptr;
+	int					_nextDialogSendSpot = 0;
+	int					_nextDialogAddSpot = 0;
+	float				_nextDialogSendTime = 0.0f;
+	float				_nextTauntTime = 0.0f;
+
 
 						MultiplayerPlayerData();
 						~MultiplayerPlayerData();
@@ -107,37 +111,37 @@ class MultiplayerManager : public Class
 		static const float				_maxVoteTime;
 		static const int				_maxSayStringLength;
 		static const float				_inBetweenMatchTime;
+		
+		Container<MultiplayerModifier*>	_modifiers;
 
-		bool							_inMultiplayerGame;
-		bool							_gameStarted;
-		bool							_gameOver;
-		MultiplayerModeBase				*_multiplayerGame;
-		bool							_allowFighting;
-		Container<MultiplayerModifier *>	_modifiers;
-		MultiplayerPlayerData			*_playerData;
-		AwardSystem						*_awardSystem;
-
-		float							_voteTime;
 		str								_voteString;
-		int								_voteYes;
-		int								_voteNo;
-		int								_numVoters;
 
-		float							_declareWinnerTime;
-		bool							_declaredWinner;
 
-		bool							_needToAddBots;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		bool							_inMultiplayerGame = false;
+		bool							_gameStarted = false;
+		bool							_gameOver = false;
+		MultiplayerModeBase				*_multiplayerGame = nullptr;
+		bool							_allowFighting = false;
+		MultiplayerPlayerData			*_playerData = nullptr;
+		AwardSystem						*_awardSystem = nullptr;
 
-		bool							_inMatch;
+		float							_voteTime = 0.0f;
+		int								_voteYes = 0;
+		int								_voteNo = 0;
+		int								_numVoters = 0;
+		float							_declareWinnerTime = 0.0f;
+		bool							_declaredWinner = false;
+		bool							_needToAddBots = false;
+		bool							_inMatch = false;
+		int								_talkingIconIndex = 0;
+		int								_waitingToRespawnIconIndex = 0;
+		float							_restartMatchTime = 0.0f;
+		float							_respawnTime = 0.0f;
+		int								_oldFlags = 0;
 
-		int								_talkingIconIndex;
-		int								_waitingToRespawnIconIndex;
-
-		float							_restartMatchTime;
-
-		float							_respawnTime;
-
-		int								_oldFlags;
 
 		gclient_s *						getClient( int entnum );
 

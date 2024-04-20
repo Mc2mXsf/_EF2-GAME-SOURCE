@@ -345,8 +345,14 @@ class GotoPoint : public Behavior
 {
 	private: // Parameters
 		str                              anim;  
-		float                            dist;
-		Vector                           point;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float                            dist = 0.0f;
+		Vector                           point = Vector( 0.0f, 0.0f, 0.0f );
+
 
    protected:
       
@@ -367,7 +373,12 @@ class GotoPoint : public Behavior
    private:      
       // Components      
       FollowPathToPoint               _chase;
-	  bool							  _chaseFailed;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+	  bool							  _chaseFailed = true;
 
 };
 
@@ -2040,13 +2051,15 @@ class Hibernate : public Behavior
       GotoPoint                        _gotoHelperNode;
 
    private: // Member Variables
-      HelperNodePtr						   _node;            
 
-      unsigned int                     _state;
 
-      int                              _moveFailures; 
-
-      float                            _nextMoveAttempt;   
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+      HelperNodePtr						   _node = nullptr;
+      unsigned int                     _state = 0;
+	  int                              _moveFailures = 0;
+      float                            _nextMoveAttempt = 0.0f;   
       
       
       
@@ -2141,10 +2154,17 @@ class GotoLiftPosition : public Behavior
       GotoPoint								_gotoHelperNode;
 
    private: // Member Variables
-      HelperNodePtr							_node; 
-      unsigned int							_state;
-      int									_moveFailures; 
-      float									_nextMoveAttempt;
+
+
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+      HelperNodePtr							_node = nullptr; 
+      unsigned int							_state = 0;
+      int									_moveFailures = 0;
+      float									_nextMoveAttempt = 0.0f;
+	  
+	  
 	  Container<HelperNodePtr>				_availableNodes;
 	  Container<HelperNodePtr>				_attemptedNodes;
       

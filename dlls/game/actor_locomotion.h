@@ -51,9 +51,15 @@ class LocomotionController
 		void						_init();
 
 	private:
-		Actor						*act;
-		MovementStyle				_movementStyle;
 		FollowPath					_chase;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		MovementStyle				_movementStyle = MOVEMENT_STYLE_NONE;
+		Actor* act = nullptr;
+
 
 	};
 
@@ -180,27 +186,33 @@ class MovementSubsystem
 		static Vector				_step;
 
 		stepmoveresult_t			_lastmove;
-		float						_forwardspeed;
-		PathPtr						_path;
-		Vector						_move;
-		Vector						_movedir;
-		float						_movespeed;
-		Vector						_movevelocity;
-		float						_totallen;
-		float						_turnspeed;
-		Vector						_animdir;
-		Vector						_divedir;
-		Vector						_startpos;
-		qboolean					_fliplegs;
-		qboolean					_movingBackwards;
-		bool						_faceEnemy;
-		bool						_adjustAnimDir;
-		MovementType_t				_movementType;		
-		bool						_stickToGround;
-		bool						_useCodeDrivenSpeed;
+		MovementType_t				_movementType;
 
-		Actor						*act;
-		EntityPtr					_blockingEntity;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_forwardspeed = 0.0f;
+		PathPtr						_path = nullptr;
+		Vector						_move = Vector(0.0f, 0.0f, 0.0f);
+		Vector						_movedir = Vector(0.0f, 0.0f, 0.0f);
+		float						_movespeed = 0.0f;
+		Vector						_movevelocity = Vector(0.0f, 0.0f, 0.0f);
+		float						_totallen = 0.0f;
+		float						_turnspeed = 0.0f;
+		Vector						_animdir = Vector(0.0f, 0.0f, 0.0f);
+		Vector						_divedir = Vector(0.0f, 0.0f, 0.0f);
+		Vector						_startpos = Vector(0.0f, 0.0f, 0.0f);
+		qboolean					_fliplegs = qfalse;
+		qboolean					_movingBackwards = qfalse;
+		bool						_faceEnemy = false;
+		bool						_adjustAnimDir = false;
+			
+		bool						_stickToGround = false;
+		bool						_useCodeDrivenSpeed = false;
+
+		Actor						*act = nullptr;
+		EntityPtr					_blockingEntity = nullptr;
 
 	};
 

@@ -58,11 +58,16 @@ class Behavior : public Listener
 	private:
 		str						_failureReason;
 		str						_internalStateName;
-		Listener			   *_controller ;
-		Actor*					_self;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Listener			   *_controller = nullptr;
+		Actor*					_self = nullptr;
 	protected:
-		PathNodePtr				movegoal;
+		PathNodePtr				movegoal = nullptr;
+
 
 	public:
 		CLASS_PROTOTYPE( Behavior );
@@ -103,7 +108,11 @@ typedef SafePtr<Behavior> BehaviorPtr;
 class Idle : public Behavior
 	{
 	private:
-		float						nexttwitch;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						nexttwitch = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( Idle );
@@ -128,11 +137,15 @@ inline void Idle::Archive
 class Pain : public Behavior
 	{
 	private:
-		int						current_pain_type;
-		int						pain_anim_number;
-		qboolean					anim_done;
-		int						number_of_pains;
-		int						max_pains;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						current_pain_type = 0;
+		int						pain_anim_number = 0;
+		qboolean					anim_done = qfalse;
+		int						number_of_pains = 0;
+		int						max_pains = 0;
+
 
 	public:
       CLASS_PROTOTYPE( Pain );
@@ -164,9 +177,13 @@ inline void Pain::Archive
 class Watch : public Behavior
 	{
 	private:
-		EntityPtr				ent_to_watch;
-		float						turn_speed;
-		float						old_turn_speed;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent_to_watch = nullptr;
+		float						turn_speed = 0.0f;
+		float						old_turn_speed = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( Watch );
@@ -194,7 +211,11 @@ inline void Watch::Archive
 class Turn : public Behavior
 	{
 	private:
-		float						turn_speed;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( Turn );
@@ -220,10 +241,16 @@ inline void Turn::Archive
 class CircleEnemy : public Behavior
 	{
 	private:
-		EntityPtr				ent_to_circle;
 		str						center_part_name;
-		float						last_angle_change;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent_to_circle = nullptr;
+		float						last_angle_change = 0.0f;
 		
+
 	public:
       CLASS_PROTOTYPE( CircleEnemy );
 
@@ -252,18 +279,23 @@ inline void CircleEnemy::Archive
 class BurrowAttack : public Behavior
 	{
 	private:
-		Vector					goal;
-		Vector					attack_origin;
-		int						burrow_mode;
-		EntityPtr				leg1;
-		EntityPtr				leg2;
-		EntityPtr				leg3;
-		EntityPtr				leg4;
-		int						stage;
-		int						attacks_left;
-		float						burrow_speed;
-		qboolean					too_close;
-		qboolean					use_last_known_position;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					goal = Vector( 0.0f, 0.0f, 0.0f );
+		Vector					attack_origin = Vector(0.0f, 0.0f, 0.0f);
+		int						burrow_mode = 0;
+		EntityPtr				leg1 = nullptr;
+		EntityPtr				leg2 = nullptr;
+		EntityPtr				leg3 = nullptr;
+		EntityPtr				leg4 = nullptr;
+		int						stage = 0;
+		int						attacks_left = 0;
+		float						burrow_speed = 0.0f;
+		qboolean					too_close = qfalse;
+		qboolean					use_last_known_position = qfalse;
+
+
 	public:
       CLASS_PROTOTYPE( BurrowAttack );
 
@@ -299,10 +331,14 @@ inline void BurrowAttack::Archive
 class ShockWater : public Behavior
 	{
 	private:
-		EntityPtr				left_beam;
-		EntityPtr				right_beam;
-		EntityPtr				center_beam;
-		qboolean					already_started;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				left_beam = nullptr;
+		EntityPtr				right_beam = nullptr;
+		EntityPtr				center_beam = nullptr;
+		qboolean					already_started = qfalse;
+
 
 	public:
       CLASS_PROTOTYPE( ShockWater );
@@ -330,13 +366,19 @@ inline void ShockWater::Archive
 class Shock : public Behavior
 	{
 	private:
-		EntityPtr				beam;
 		str						tag_name;
-		float						damage;
-		qboolean					already_started;
-		float						random_angle;
 		str                  beamShader;
-		float                z_offset;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				beam = nullptr;
+		float						damage = 0.0f;
+		qboolean					already_started = qfalse;
+		float						random_angle = 0.0f;
+		float                z_offset = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( Shock );
@@ -368,15 +410,21 @@ inline void Shock::Archive
 class MultiShock : public Behavior
 	{
 	private:
-		EntityPtr				beam1;
-		EntityPtr            beam2;
 		str						tag_name1;
 		str                  tag_name2;
-		float						damage;
-		qboolean					already_started;
-		float						random_angle;
 		str                  beamShader;
-		float                z_offset;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				beam1 = nullptr;
+		EntityPtr            beam2 = nullptr;
+		float						damage = 0.0f;
+		qboolean					already_started = qfalse;
+		float						random_angle = 0.0f;
+		float                z_offset = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( MultiShock );
@@ -411,11 +459,16 @@ inline void MultiShock::Archive
 class ShockDown : public Behavior
 	{
 	private:
-		EntityPtr				beam;
 		str						tag_name;
-		float						damage;
-		qboolean					already_started;
 		str                  beamShader;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				beam = nullptr;
+		float						damage = 0.0f;
+		qboolean					already_started = qfalse;
 		
 
 	public:
@@ -446,13 +499,20 @@ inline void ShockDown::Archive
 class CircleAttack : public Behavior
 	{
 	private:
-		EntityPtr				first_part;
-		EntityPtr				current_part;
 		str						command;
 		str						direction;
-		float						next_time;
-		int						current_direction;
-		int						number_of_attacks;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				first_part = nullptr;
+		EntityPtr				current_part = nullptr;
+		float						next_time = 0.0f;
+		int						current_direction = 0;
+		int						number_of_attacks = 0;
+
+
 	public:
       CLASS_PROTOTYPE( CircleAttack );
 
@@ -484,14 +544,21 @@ inline void CircleAttack::Archive
 class DragEnemy : public Behavior
 	{
 	private:
-		EntityPtr				ent_to_drag;
 		str						tag_name;
-		float						damage;
-		float						target_yaw;
-		float						last_turn_time;
-		qboolean					attached;
-		Vector					offset;
-		qboolean					drop;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent_to_drag = nullptr;
+		float						damage = 0.0f;
+		float						target_yaw = 0.0f;
+		float						last_turn_time = 0.0f;
+		qboolean					attached = qfalse;
+		Vector					offset = Vector( 0.0f , 0.0f , 0.0f );
+		qboolean					drop = qfalse;
+
+
 	public:
       CLASS_PROTOTYPE( DragEnemy );
 
@@ -522,14 +589,21 @@ inline void DragEnemy::Archive
 class PickupEnemy : public Behavior
 	{
 	private:
-		EntityPtr				ent_to_drag;
 		str						tag_name;
-		float						damage;
-		float						target_yaw;
-		float						last_turn_time;
-		qboolean					attached;
-		Vector					offset;
-		qboolean					drop;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent_to_drag = nullptr;
+		float						damage = 0.0f;
+		float						target_yaw = 0.0f;
+		float						last_turn_time = 0.0f;
+		qboolean					attached = qfalse;
+		Vector					offset = Vector( 0.0f , 0.0f , 0.0f );
+		qboolean					drop = qfalse;
+
+
 	public:
       CLASS_PROTOTYPE( PickupEnemy );
 
@@ -560,7 +634,10 @@ inline void PickupEnemy::Archive
 class Aim : public Behavior
 	{
 	private:
-		EntityPtr				target;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				target = nullptr;
 
 	public:
       CLASS_PROTOTYPE( Aim );
@@ -586,14 +663,18 @@ inline void Aim::Archive
 class TurnTo : public Behavior
 	{
 	private:
-		EntityPtr				ent;
-		Vector					dir;
-		float						yaw;
-		int						mode;
-		qboolean					anim_done;
-		bool					useTurnAnim;
-		int						extraFrames;
-		bool					_useAnims;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent = nullptr;
+		Vector					dir = Vector( 0.0f , 0.0f , 0.0f );
+		float						yaw = 0.0f;
+		int						mode = 0;
+		qboolean					anim_done = qfalse;
+		bool					useTurnAnim = false;
+		int						extraFrames = 0;
+		bool					_useAnims = false;
+
 
 	public:
       CLASS_PROTOTYPE( TurnTo );
@@ -631,8 +712,14 @@ inline void TurnTo::Archive
 class RotateToEnemy : public Behavior
    {
 	private:
-		float turnSpeed;
 		str   anim;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float turnSpeed = 0.0f;
+		
 
 	public:
    CLASS_PROTOTYPE( RotateToEnemy );
@@ -656,8 +743,14 @@ class PickupEntity : public Behavior
 	{
 	private:
 		str						pickup_anim_name;
-		qboolean					anim_done;
-		EntityPtr				ent_to_pickup;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean					anim_done = qfalse;
+		EntityPtr				ent_to_pickup = nullptr;
+
 
 	public:
       CLASS_PROTOTYPE( PickupEntity );
@@ -719,11 +812,14 @@ inline void ThrowEntity::Archive
 class HeadWatch : public Behavior
 	{
 	private:
-		EntityPtr				ent_to_watch;
-		Vector					current_head_angles;
-		float						max_speed;
-		qboolean					forever;		
-		qboolean             usingEyes;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent_to_watch = nullptr;
+		Vector					current_head_angles = Vector( 0.0f , 0.0f , 0.0f );
+		float						max_speed = 0.0f;
+		qboolean					forever = qfalse;		
+		qboolean             usingEyes = qfalse;
 
 
 	public:
@@ -756,13 +852,18 @@ inline void HeadWatch::Archive
 class HeadWatchEnemy : public Behavior
 	{
 	private:
-		EntityPtr				ent_to_watch;
-		Vector					current_head_angles;
-      Vector               current_torso_angles;
-		float						max_speed;
-		qboolean					forever;
-		float                threshold;
-		qboolean             usingEyes;		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent_to_watch = nullptr;
+		Vector					current_head_angles = Vector( 0.0f , 0.0f, 0.0f );
+      Vector               current_torso_angles = Vector( 0.0f, 0.0f, 0.0f );
+		float						max_speed = 0.0f;
+		qboolean					forever = qfalse;
+		float                threshold = 0.0f;
+		qboolean             usingEyes = qfalse;		
+
+
 	public:
       CLASS_PROTOTYPE( HeadWatchEnemy );
 
@@ -795,12 +896,16 @@ inline void HeadWatchEnemy::Archive
 class EyeWatch : public Behavior
    {
 	private:
-		EntityPtr				ent_to_watch;
-		Vector					current_left_eye_angles;
-		Vector               current_right_eye_angles;
-		float						max_speed;
-		qboolean					forever;
-		float                threshold;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr				ent_to_watch = nullptr;
+		Vector					current_left_eye_angles = Vector(0.0f, 0.0f, 0.0f);
+		Vector               current_right_eye_angles = Vector( 0.0f , 0.0f, 0.0f );
+		float						max_speed = 0.0f;
+		qboolean					forever = qfalse;
+		float                threshold = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( EyeWatch );
@@ -898,15 +1003,20 @@ inline void HeadAndEyeWatch::Archive
 class TorsoTurn : public Behavior
 	{
 	private:
-		int						turn_towards_enemy;
-		float						speed;
-		int						forever;
-		qboolean             use_pitch;
-		float						current_yaw;
-		float						current_pitch;
 		str						tag_name;
-		float						tolerance;
-		float                offset;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						turn_towards_enemy = 0;
+		float						speed = 0.0f;
+		int						forever = 0;
+		qboolean             use_pitch = qfalse;
+		float						current_yaw = 0.0f;
+		float						current_pitch = 0.0f;
+		float						tolerance = 0.0f;
+		float                offset = 0.0f;
 
 	public:
       CLASS_PROTOTYPE( TorsoTurn );
@@ -943,18 +1053,23 @@ inline void TorsoTurn::Archive
 class TorsoWatchEnemy : public Behavior
 	{
 	private:
-		float						speed;
-		int						forever;
-		qboolean             use_pitch;
-		float						current_yaw;
-		float						current_pitch;
 		str						tag_name;
-		float						threshold;
-		float                offset;
-		qboolean             invert;
-		qboolean             reset;
-      qboolean             invertLegs;
-      float                nextFlipTime;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						speed = 0.0f;
+		int						forever = 0;
+		qboolean             use_pitch = qfalse;
+		float						current_yaw = 0.0f;
+		float						current_pitch = 0.0f;
+		float						threshold = 0.0f;
+		float                offset = 0.0f;
+		qboolean             invert = qfalse;
+		qboolean             reset = qfalse;
+      qboolean             invertLegs = qfalse;
+      float                nextFlipTime = 0.0f;
       
 
 	public:
@@ -992,22 +1107,27 @@ inline void TorsoWatchEnemy::Archive
 class FallToDeath : public Behavior
    {
    private:
-		float forwardmove;
-		float sidemove;
-		float distance;
-		float time;
-		float speed;
 		str   startAnim;
 		str   fallAnim;
 		str   deathAnim;
-		Vector yaw_forward;
-		Vector yaw_left;
-		qboolean did_impulse;
-		float  impulse_time;
 
-		qboolean animdone;
-		int state;
+
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+		float forwardmove = 0.0f;
+		float sidemove = 0.0f;
+		float distance = 0.0f;
+		float time = 0.0f;
+		float speed = 0.0f;
+		Vector yaw_forward = Vector( 0.0f , 0.0f, 0.0f );
+		Vector yaw_left = Vector( 0.0f, 0.0f, 0.0f );
+		qboolean did_impulse = qfalse;
+		float  impulse_time = 0.0f;
+		qboolean animdone = qfalse;
+		int state = 0;
 	
+		
 	public:
 		CLASS_PROTOTYPE( FallToDeath );
 		
@@ -1046,17 +1166,23 @@ inline void FallToDeath::Archive
 class GotoPathNode : public Behavior
 	{
 	private:
-		TurnTo					turnto;
-		FollowPath				*chase;
-		int						state;
-		qboolean					usevec;
-		//float						time;
 		str						anim;
-		EntityPtr				goalent;
-		Vector					goal;
-		EntityPtr				entity_to_watch;
+		TurnTo					turnto;
+		FollowPath* chase;
 		HeadWatch				head_watch;
-		bool					_followingEntity;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						state = 0;
+		qboolean					usevec = qfalse;
+		//float						time;
+		EntityPtr				goalent = nullptr;
+		Vector					goal = Vector( 0.0f , 0.0f , 0.0f );
+		EntityPtr				entity_to_watch = nullptr;
+		bool					_followingEntity = false;
+
 
 	public:
       CLASS_PROTOTYPE( GotoPathNode );
@@ -1111,7 +1237,13 @@ class Flee : public Behavior
 	private:
 		FollowPathToPoint		chase;
 		str						anim;
-		PathNodePtr				flee_node;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		PathNodePtr				flee_node = nullptr;
+
 
 	public:
       CLASS_PROTOTYPE( Flee );
@@ -1172,8 +1304,13 @@ class FindCover : public Behavior
 		str						anim;
 		str						crouch_anim;
 		FollowPathToPoint		chase;
-		int						state;
-		float						nextsearch;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						state = 0;
+		float						nextsearch = 0.0f;
 
 	public:
       CLASS_PROTOTYPE( FindCover );
@@ -1206,8 +1343,14 @@ class FindFlee : public Behavior
 	private:
 		str						anim;
 		FollowPathToPoint		chase;
-		int						state;
-		float						nextsearch;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						state = 0;
+		float						nextsearch = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( FindFlee );
@@ -1239,10 +1382,15 @@ class FindEnemy : public Behavior
 	private:
 		str						anim;
 		FollowPathToPoint		chase;
-		int						state;
-		float						nextsearch;
-      PathNodePtr          lastSearchNode;
-      Vector               lastSearchPos;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						state = 0;
+		float						nextsearch = 0.0f;
+      PathNodePtr          lastSearchNode = nullptr;
+      Vector               lastSearchPos = Vector( 0.0f, 0.0f, 0.0f );
 
 	public:
       CLASS_PROTOTYPE( FindEnemy );
@@ -1274,14 +1422,19 @@ inline void FindEnemy::Archive
 class AimAndShoot : public Behavior
 	{
 	private:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						mode = 0;
+		int						maxshots = 0;
+		int						numshots = 0;
+		qboolean					animdone = qfalse;
+      float                enemy_health = 0.0f;
+      float                aim_time = 0.0f;
+
+
 		Aim						aim;
 		TorsoTurn            torsoTurn;
-		int						mode;
-		int						maxshots;
-		int						numshots;
-		qboolean					animdone;
-      float                enemy_health;
-      float                aim_time;
       str                  animprefix;
       str                  aimanim;
       str                  fireanim;
@@ -1323,11 +1476,16 @@ inline void AimAndShoot::Archive
 class AimAndMelee : public Behavior
 	{
 	private:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						mode = 0;
+		int						maxshots = 0;
+		int						numshots = 0;
+		qboolean					animdone = qfalse;
+
+
 		Aim						aim;
-		int						mode;
-		int						maxshots;
-		int						numshots;
-		qboolean					animdone;
 		str						anim_name;
 
 	public:
@@ -1410,21 +1568,25 @@ inline void LeapToEnemy::Archive
 class FlyToPoint : public Behavior
 	{
 	private:
-      float                avoidtime;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      float                avoidtime = 0.0f;
 		Vector					target_angle;
-		float						turn_speed;
-		float						old_turn_speed;
-		float						speed;
-		float						old_forward_speed;
-		Vector					goal;
-		qboolean					random_allowed;
-		qboolean					force_goal;
-		int						stuck;
-		Vector					temp_goal;
-		qboolean					use_temp_goal;
-		qboolean					adjustYawAndRoll;
-		qboolean             offsetOrigin;
+		float						turn_speed = 0.0f;
+		float						old_turn_speed = 0.0f;
+		float						speed = 0.0f;
+		float						old_forward_speed = 0.0f;
+		Vector					goal = Vector( 0.0f , 0.0f, 0.0f );
+		qboolean					random_allowed = qfalse;
+		qboolean					force_goal = qfalse;
+		int						stuck = 0;
+		Vector					temp_goal = Vector(0.0f, 0.0f, 0.0f);
+		qboolean					use_temp_goal = qfalse;
+		qboolean					adjustYawAndRoll = qfalse;
+		qboolean             offsetOrigin = qfalse;
 		
+
 	public:
       CLASS_PROTOTYPE( FlyToPoint );
 
@@ -1471,12 +1633,17 @@ inline void FlyToPoint::Archive
 class FlyCloseToEnemy : public Behavior
 	{
 	private:
-		str						anim;
-		float						turn_speed;
-		float						speed;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+		float						speed = 0.0f;
+		float						next_goal_time = 0.0f;
+		qboolean					adjustPitch = qfalse;
+
+
 		FlyToPoint				fly;
-		float						next_goal_time;
-		qboolean					adjustPitch;
+		str						anim;
 
 	public:
       CLASS_PROTOTYPE( FlyCloseToEnemy );
@@ -1507,10 +1674,16 @@ class FlyCloseToPlayer : public Behavior
 	{
 	private:
 		str						anim;
-		float						turn_speed;
-		float						speed;
 		FlyToPoint				fly;
-		float						next_goal_time;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+		float						speed = 0.0f;
+		float						next_goal_time = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( FlyCloseToPlayer );
@@ -1543,10 +1716,16 @@ class FlyCloseToParent : public Behavior
 	{
 	private:
 		str						anim;
-		float						turn_speed;
-		float						speed;
 		FlyToPoint				fly;
-		float						next_goal_time;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+		float						speed = 0.0f;
+		float						next_goal_time = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( FlyCloseToParent );
@@ -1581,11 +1760,16 @@ class FlyDescend: public Behavior
 	private:
 		str						anim;
 		FlyToPoint				fly;
-		Vector					goal;
-		float						height;
-		float						speed;
-		float						next_height_check;
-		float						last_check_height;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					goal = Vector( 0.0f, 0.0f, 0.0f );
+		float						height = 0.0f;
+		float						speed = 0.0f;
+		float						next_height_check = 0.0f;
+		float						last_check_height = 0.0f;
 
 	public:
       CLASS_PROTOTYPE( FlyDescend );
@@ -1621,14 +1805,20 @@ class FlyWander : public Behavior
 	{
 	private:
 		str						anim;
-		float						turn_speed;
-		float						speed;
 		FlyToPoint				fly;
-		float						change_course_time;
-		float						next_change_course_time;
-		float						original_z;
-		Vector					goal;
-		qboolean					try_to_go_up;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+		float						speed = 0.0f;
+		float						change_course_time = 0.0f;
+		float						next_change_course_time = 0.0f;
+		float						original_z = 0.0f;
+		Vector					goal = Vector( 0.0f , 0.0f, 0.0f );
+		qboolean					try_to_go_up = qfalse;
+
 
 	public:
       CLASS_PROTOTYPE( FlyWander );
@@ -1665,15 +1855,20 @@ class FlyToNode : public Behavior
 	{
 	private:
 		str						anim;
-		float						turn_speed;
-		float						speed;
 		FlyToPoint				fly;
+		str						NodeType;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+		float						speed = 0.0f;
 		//float						original_z;
 		//Vector					goal;
 		//qboolean					try_to_go_up;
-		str						NodeType;
 		//int						NodeIdx;
-		int						NumberOfNodes;
+		int						NumberOfNodes = 0;
 
 
 	public:
@@ -1987,9 +2182,14 @@ class FlyStrafe : public Behavior
 	{
 	private:
 		str						anim;
-		float						speed;
-		qboolean             right;
-		float                roll;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						speed = 0.0f;
+		qboolean             right = qfalse;
+		float                roll = 0.0f;
 		
 
 	public:
@@ -2023,12 +2223,17 @@ class FlyClimb : public Behavior
 	private:
 		str						anim;
 		FlyToPoint				fly;
-		Vector					goal;
-		float						height;
-		float						speed;
-		float						next_height_check;
-		float						last_check_height;
-		float                collision_buffer;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					goal = Vector( 0.0f, 0.0f, 0.0f );
+		float						height = 0.0f;
+		float						speed = 0.0f;
+		float						next_height_check = 0.0f;
+		float						last_check_height = 0.0f;
+		float                collision_buffer = 0.0f;
 
 	public:
       CLASS_PROTOTYPE( FlyClimb );
@@ -2063,16 +2268,20 @@ inline void FlyClimb::Archive
 class FlySplinePath : public Behavior
    {
    private:
-		EntityPtr ent;
-		BSpline  splinePath;
-		SplinePathPtr currentNode;
-		qboolean clamp;
-		qboolean ignoreAngles;
-		qboolean splineAngles;
-		float startTime;		
-		Vector oldGoal;
-		qboolean havePath;
-		
+	   BSpline  splinePath;
+
+
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+		EntityPtr ent = nullptr;
+		SplinePathPtr currentNode = nullptr;
+		qboolean clamp = qfalse;
+		qboolean ignoreAngles = qfalse;
+		qboolean splineAngles = qfalse;
+		float startTime = 0.0f;		
+		Vector oldGoal = Vector( 0.0f, 0.0f, 0.0f );
+		qboolean havePath = qfalse;
 		
 
 	public:
@@ -2140,8 +2349,14 @@ class VerticalTakeOff : public Behavior
 	{
 	private:
 		str					anim;
-		float             speed;
-		float             height;		
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float             speed = 0.0f;
+		float             height = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( VerticalTakeOff );
@@ -2173,7 +2388,13 @@ class Hover : public Behavior
 	private:
 		str						anim;
 		FlyToPoint				fly;
-		Vector					goal;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					goal = Vector( 0.0f , 0.0f , 0.0f );
+
 
 	public:
       CLASS_PROTOTYPE( Hover );
@@ -2242,19 +2463,24 @@ class CircleCurrentEnemy : public Behavior
 	{
 	private:
 		str anim;
-		float radius;
-		qboolean maintainDistance;
-		qboolean clockwise;
-		Vector dirToEnemy;
 
-		float turnAngle;
-		float oldAngle;
-		float angleStep;
 
-		int stuck;
-		int stuckCheck;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float radius = 0.0f;
+		qboolean maintainDistance = qfalse;
+		qboolean clockwise = qfalse;
+		Vector dirToEnemy = Vector( 0.0f , 0.0f, 0.0f );
 
-		qboolean angleAdjusted;
+		float turnAngle = 0.0f;
+		float oldAngle = 0.0f;
+		float angleStep = 0.0f;
+
+		int stuck = 0;
+		int stuckCheck = 0;
+
+		qboolean angleAdjusted = qfalse;
 		
 		
 	public:
@@ -2293,19 +2519,23 @@ class ChaoticDodge : public Behavior
 	private:
 		str anim;
 		
-		float turnAngle;
-		float oldAngle;
-		float angleStep;
-		float time;
-		float changeTime;
 
-		int stuck;
-		int stuckCheck;
-		qboolean adjusting;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float turnAngle = 0.0f;
+		float oldAngle = 0.0f;
+		float angleStep = 0.0f;
+		float time = 0.0f;
+		float changeTime = 0.0f;
 
-		qboolean angleAdjusted;		
-		float turnspeed;
-		float turnTime;
+		int stuck = 0;
+		int stuckCheck = 0;
+		qboolean adjusting = qfalse;
+
+		qboolean angleAdjusted = qfalse;		
+		float turnspeed = 0.0f;
+		float turnTime = 0.0f;
 		
 		
 	public:
@@ -2346,8 +2576,14 @@ class GetCloseToEnemy : public Behavior
 		str						anim;
 		FollowPathToEntity	chase;
 		Wander					wander;
-		qboolean					forever;
-		float						next_think_time;
+
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean					forever = qfalse;
+		float						next_think_time = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( GetCloseToEnemy );
@@ -2381,9 +2617,14 @@ class GetCloseToPlayer : public Behavior
 		str						anim;
 		FollowPathToEntity	chase;
 		Wander					wander;
-		qboolean					forever;
-		float						next_think_time;
-		float                speed;		
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean					forever = qfalse;
+		float						next_think_time = 0.0f;
+		float                speed = 0.0f;		
 
 	public:
       CLASS_PROTOTYPE( GetCloseToPlayer );
@@ -2418,11 +2659,17 @@ class GetWithinRangeOfPlayer : public Behavior
 		str						anim;
 		FollowPathToEntity	chase;
 		Wander					wander;
-		qboolean					forever;
-		float						next_think_time;
-		float                speed;
-      float                startRangeMax;
-      float                startRangeMin;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean					forever = qfalse;
+		float						next_think_time = 0.0f;
+		float                speed = 0.0f;
+      float                startRangeMax = 0.0f;
+      float                startRangeMin = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( GetWithinRangeOfPlayer );
@@ -2455,8 +2702,14 @@ class RetreatFromEnemy : public Behavior
 		str						anim;
 		FollowPathToPoint		chase;
 		Wander					wander;
-		qboolean					forever;
-		float						next_think_time;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean					forever = qfalse;
+		float						next_think_time = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( RetreatFromEnemy );
@@ -2519,17 +2772,23 @@ private:
 	FollowPathToPoint		chase;
 	str						moveanim;
 	str						lookaroundanim;
-	Vector					goal;
-	float					curioustime;
-	float					lookaroundtime;
-	float					lookaroundtime_end;
 	TurnTo					turnto;
-	float					investigate_time;
-	int						mode;
-	Vector					start_pos;
-	float					start_yaw;
-	qboolean				return_to_original_location;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Vector					goal = Vector( 0.0f, 0.0f, 0.0f );
+	float					curioustime = 0.0f;
+	float					lookaroundtime = 0.0f;
+	float					lookaroundtime_end = 0.0f;
+	float					investigate_time = 0.0f;
+	int						mode = 0;
+	Vector					start_pos = Vector(0.0f, 0.0f, 0.0f);
+	float					start_yaw = 0.0f;
+	qboolean				return_to_original_location = qfalse;
 	
+
 public:
 	CLASS_PROTOTYPE( Investigate );
 	Investigate();
@@ -2569,8 +2828,15 @@ class TurnInvestigate : public Behavior
 	private:
 		str						left_anim;
 		str						right_anim;
-		float						turn_speed;
-		Vector					goal;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+		Vector					goal = Vector( 0.0f, 0.0f, 0.0f );
+
+
 	public:
       CLASS_PROTOTYPE( TurnInvestigate );
 
@@ -2600,10 +2866,17 @@ class TurnToEnemy : public Behavior
 	private:
 		str						left_anim;
 		str						right_anim;
-		float						turn_speed;
-		qboolean					forever;
-		qboolean					anim_done;
-		qboolean					use_last_known_position;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						turn_speed = 0.0f;
+		qboolean					forever = qfalse;
+		qboolean					anim_done = qfalse;
+		qboolean					use_last_known_position = qfalse;
+
+
 	public:
       CLASS_PROTOTYPE( TurnToEnemy );
 
@@ -2661,7 +2934,14 @@ class TeleportToPosition : public Behavior
 	{
 	private:
 		str						teleport_position_name;
-		int						number_of_teleport_positions;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						number_of_teleport_positions = 0;
+
+
 	public:
       CLASS_PROTOTYPE( TeleportToPosition );
 
@@ -2688,12 +2968,19 @@ inline void TeleportToPosition::Archive
 class GhostAttack : public Behavior
 	{
 	private:
-		int						mode;
-		Vector					attack_dir;
-		Vector					attack_position;
-		Vector					retreat_position;
 		FlyToPoint				fly;
-		qboolean					real_attack;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						mode = 0;
+		Vector					attack_dir = Vector( 0.0f , 0.0f , 0.0f );
+		Vector					attack_position = Vector(0.0f, 0.0f, 0.0f);;
+		Vector					retreat_position = Vector(0.0f, 0.0f, 0.0f);;
+		qboolean					real_attack = qfalse;
+
+
 	public:
       CLASS_PROTOTYPE( GhostAttack );
 
@@ -2723,9 +3010,14 @@ inline void GhostAttack::Archive
 class Levitate : public Behavior
 	{
 	private:
-		float						distance;
-		float						speed;
-		float						final_z;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						distance = 0.0f;
+		float						speed = 0.0f;
+		float						final_z = 0.0f;
+
+
 	public:
       CLASS_PROTOTYPE( Levitate );
 
@@ -2808,9 +3100,14 @@ class FlyCircleAroundWaypoint : public Behavior
 		str						anim;
 		FlyToPoint				fly;
 		//float						original_z;
-		qboolean					fly_clockwise;
 		str                  waypointname;
-		qboolean             nearestPlayer;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean				fly_clockwise = qfalse;
+		qboolean             nearestPlayer = qfalse;
 
 	public:
       CLASS_PROTOTYPE( FlyCircleAroundWaypoint );
@@ -2849,21 +3146,25 @@ inline void FlyCircleAroundWaypoint::Archive
 class HelicopterFlyToPoint : public Behavior
 	{
 	private:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
       float                avoidtime;
-		Vector					target_angle;
-		float						turn_speed;
-		float						old_turn_speed;
-		float						speed;
-		float						old_forward_speed;
-		Vector					goal;
-		qboolean					random_allowed;
-		qboolean					force_goal;
-		int						stuck;
-		Vector					temp_goal;
-		qboolean					use_temp_goal;
-		qboolean					adjustYawAndRoll;	
-		qboolean             offsetOrigin;
+		Vector					target_angle = Vector( 0.0f , 0.0f , 0.0f );
+		float						turn_speed = 0.0f;
+		float						old_turn_speed = 0.0f;
+		float						speed = 0.0f;
+		float						old_forward_speed = 0.0f;
+		Vector					goal = Vector(0.0f, 0.0f, 0.0f);
+		qboolean					random_allowed = qfalse;
+		qboolean					force_goal = qfalse;
+		int						stuck = 0;
+		Vector					temp_goal = Vector(0.0f, 0.0f, 0.0f);
+		qboolean					use_temp_goal = qfalse;
+		qboolean					adjustYawAndRoll = qfalse;
+		qboolean             offsetOrigin = qfalse;
 		
+
 	public:
       CLASS_PROTOTYPE( HelicopterFlyToPoint );
 
@@ -2914,8 +3215,13 @@ class HelicopterFlyCircle : public Behavior
 		str						anim;
 		HelicopterFlyToPoint	fly;
 		//float						original_z;
-		qboolean					fly_clockwise;
-		qboolean             circle_player;			
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean					fly_clockwise = qfalse;
+		qboolean             circle_player = qfalse;			
 
 	public:
       CLASS_PROTOTYPE( HelicopterFlyCircle );
@@ -2951,19 +3257,22 @@ class HelicopterStrafeAttack : public Behavior
 	{
 	private:
 		str						anim;
-		Vector               dir;
-		Vector               targetAngles;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector               dir = Vector(0.0f, 0.0f, 0.0f);
+		Vector               targetAngles = Vector(0.0f, 0.0f, 0.0f);
 		//float                angleDelta;
-		float                turnTime;
-
-		float                lerpStart;
-		float                lerpEnd;
-		float                startYaw;
-		float                endYaw;
-		qboolean             setUpLerp;
-		qboolean             completedLerp;
-
-		Vector               goal;
+		float                turnTime = 0.0f;
+		float                lerpStart = 0.0f;
+		float                lerpEnd = 0.0f;
+		float                startYaw = 0.0f;
+		float                endYaw = 0.0f;
+		qboolean             setUpLerp = qfalse;
+		qboolean             completedLerp = qfalse;
+		Vector               goal = Vector(0.0f, 0.0f, 0.0f);
 
 				
 	public:
@@ -3012,8 +3321,14 @@ class HelicopterFlyToWaypoint : public Behavior
 		str						anim;
 		HelicopterFlyToPoint	fly;
 		str                  waypointname;
-		qboolean             nearestPlayer;
-		qboolean             nearestPlayerTarget;
+
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean             nearestPlayer = qfalse;
+		qboolean             nearestPlayerTarget = qfalse;
+
 
 	public:
       CLASS_PROTOTYPE( HelicopterFlyToWaypoint );

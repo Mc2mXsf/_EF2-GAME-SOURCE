@@ -60,19 +60,22 @@ class HeadWatcher
       void         _init();
 
    private:
-      EntityPtr _watchTarget;
-      Vector    _currentHeadAngles;
-      float     _maxHeadTurnSpeed;
-      float     _turnThreshold;
-      qboolean  _explicitSet;
-	  float		_maxHeadYaw;
-	  float		_maxHeadPitch;
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+      EntityPtr _watchTarget = nullptr;
+      Vector    _currentHeadAngles = Vector( 0.0f , 0.0f, 0.0f );
+      float     _maxHeadTurnSpeed = 0.0f;
+      float     _turnThreshold = 0.0f;
+      qboolean  _explicitSet = qfalse;
+	  float		_maxHeadYaw = 0.0f;
+	  float		_maxHeadPitch = 0.0f;
 
-	  bool		_twitchHead;
-	  float		_nextTwitchHeadTime;
-	  Vector	_headTwitchAngles;
-	  float		_maxDistance;
-	  bool		_ignoreWatchTarget;
+	  bool		_twitchHead = false;
+	  float		_nextTwitchHeadTime = 0.0f;
+	  Vector	_headTwitchAngles = Vector( 0.0f , 0.0f, 0.0f );
+	  float		_maxDistance = 0.0f;
+	  bool		_ignoreWatchTarget = false;
 
       Actor *act;
 

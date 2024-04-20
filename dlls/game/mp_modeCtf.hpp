@@ -23,9 +23,12 @@
 class MultiplayerPlayerCtfData
 {
 public:
-	int					_hasFlag;
-	EntityPtr			_carriedFlag;
-	MultiplayerItem *	_flag;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int					_hasFlag = 0;
+	EntityPtr			_carriedFlag = nullptr;
+	MultiplayerItem *	_flag = nullptr;
 
 	MultiplayerPlayerCtfData() { _hasFlag = false; }
 	void				init( void ) { _hasFlag = false; }
@@ -34,9 +37,12 @@ public:
 class CtfFlag
 {
 public:
-	MultiplayerItem	*		_tempFlag;
-	float					_tempFlagTime;
-	MultiplayerItem	*		_realFlag;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	MultiplayerItem	*		_tempFlag = nullptr;
+	float					_tempFlagTime = 0.0f;
+	MultiplayerItem	*		_realFlag = nullptr;
 	str						_teamName;
 };
 
@@ -59,26 +65,34 @@ class ModeCaptureTheFlag : public ModeTeamBase
 		static const int					_pointsForTakingTheFlag;
 		static const int					_pointsForCapturingTheFlag;
 
-		Team*                               _redTeam;
-		Team*                               _blueTeam;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Team*                               _redTeam = nullptr;
+		Team*                               _blueTeam = nullptr;
+
 
 		Container<CtfFlag>					_flags;
 
-		MultiplayerPlayerCtfData			*_playerCtfData;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		MultiplayerPlayerCtfData			*_playerCtfData = nullptr;
 
-		int									_flagCarrierIconIndex;
+		int									_flagCarrierIconIndex = 0;
 
-		int									_oneFlagTakenIconIndex;
-		int									_oneFlagMissingIconIndex;
-		int									_oneFlagInBaseIconIndex;
+		int									_oneFlagTakenIconIndex = 0;
+		int									_oneFlagMissingIconIndex = 0;
+		int									_oneFlagInBaseIconIndex = 0;
 
-		int									_redFlagTakenIconIndex;
-		int									_redFlagMissingIconIndex;
-		int									_redFlagInBaseIconIndex;
+		int									_redFlagTakenIconIndex = 0;
+		int									_redFlagMissingIconIndex = 0;
+		int									_redFlagInBaseIconIndex = 0;
 
-		int									_blueFlagTakenIconIndex;
-		int									_blueFlagMissingIconIndex;
-		int									_blueFlagInBaseIconIndex;
+		int									_blueFlagTakenIconIndex = 0;
+		int									_blueFlagMissingIconIndex = 0;
+		int									_blueFlagInBaseIconIndex = 0;
 
 	protected:
 		///* virtual */ void					_endMatch();    // Notifies teams of end of match

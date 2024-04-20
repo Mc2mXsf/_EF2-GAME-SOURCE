@@ -68,13 +68,19 @@ class HealGroupMember : public Behavior
 	// Parameters
 	//------------------------------------
 	private:
-		str								_anim;		
-		float							_healDistance;
-		float							_maxDistance;	
-		float							_initialHealPercentage;
-		float							_regenHealPercentage;
-		float							_regenInterval;
-		float							_maxPercentage;
+		str								_anim;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_healDistance = 0.0f;
+		float							_maxDistance = 0.0f;
+		float							_initialHealPercentage = 0.0f;
+		float							_regenHealPercentage = 0.0f;
+		float							_regenInterval = 0.0f;
+		float							_maxPercentage = 0.0f;
+
 
 	//-------------------------------------
 	// Internal Functionality
@@ -128,15 +134,21 @@ class HealGroupMember : public Behavior
 		GotoEntity						_gotoEntity;
 		RotateToEntity					_rotateToEntity;
 
+
 	//-------------------------------------
 	// Member Variables
 	//-------------------------------------
 	private: 
-		unsigned int					_state;	
-		ActorPtr						_currentPatient;
-		str								_legAnim;
-		float							_nextTriageUpdate;
 		Container<triageEntry_t*>		_triageList;
+		str								_legAnim;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int					_state = 0;	
+		ActorPtr						_currentPatient = nullptr;
+		float							_nextTriageUpdate = 0.0f;
 		
 
 	};

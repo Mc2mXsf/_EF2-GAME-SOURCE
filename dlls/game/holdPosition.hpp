@@ -111,13 +111,17 @@ class HoldPosition : public Behavior
 		str								_twitchAnim;
 		str								_weaponTwitchAnim;
 
-		float							_holdTimeMin;
-		float							_holdTimeMax;
-		float							_endHoldTime;
-		float							_nextTwitchTime;
-		float							_twitchInterval;
-		bool							_canTwitch;
-		bool							_animDone;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_holdTimeMin = 0.0f;
+		float							_holdTimeMax = 0.0f;
+		float							_endHoldTime = 0.0f;
+		float							_nextTwitchTime = 0.0f;
+		float							_twitchInterval = 0.0f;
+		bool							_canTwitch = qfalse;
+		bool							_animDone = qfalse;
 		
 
 	//-------------------------------------
@@ -125,7 +129,12 @@ class HoldPosition : public Behavior
 	//-------------------------------------
 	private: 
 		HoldPositionStates_t			_state;	
-		Actor						   *_self;		
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor						   *_self = nullptr;		
 		
 
 	};

@@ -44,10 +44,14 @@ inline void AmmoEntity::Archive( Archiver &arc )
 
 class Ammo : public Class
 	{
-   int amount;
-   int maxamount;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+   int amount = 0;
+   int maxamount = 0;
+   int name_index = 0;
+   
    str name;
-   int name_index;
 
 	public:
       CLASS_PROTOTYPE( Ammo );

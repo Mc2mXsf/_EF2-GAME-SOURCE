@@ -104,31 +104,29 @@ class PathNode : public Listener
 								_connections;	// these are the real connections between nodex
 
 		// These variables are all used during the search
-		int				f;
-		int				h;
-		int				g;
-
-		int				gridX;
-		int				gridY;
-
-		float				drawtime;
-		float				occupiedTime;
-		int				entnum;
-
 		pathlist_t		inlist;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int				f = 0;
+		int				h = 0;
+		int				g = 0;
+		int				gridX = 0;
+		int				gridY = 0;
+		float				drawtime = 0.0f;
+		float				occupiedTime = 0.0f;
+		int				entnum = 0;
 		// reject is used to indicate that a node is unfit for ending on during a search
-		qboolean			reject;
-
-		PathNode			*Parent;
-
+		qboolean			reject = qfalse;
+		PathNode			*Parent = nullptr;
 		// For the open and closed lists
-		PathNode			*NextNode;
+		PathNode			*NextNode = nullptr;
+		unsigned int	nodeflags = 0;
+		float			jumpAngle = 0.0f;
+		EntityPtr		targetEntity = nullptr;
 
-		unsigned int	nodeflags;
-		float			jumpAngle;
-
-		EntityPtr		targetEntity;
 
 		friend class   PathSearch;
 		friend void		DrawAllConnections( void );
@@ -154,15 +152,21 @@ class PathNode : public Listener
 	public:
       CLASS_PROTOTYPE( PathNode );
 
-      int            contents;
-      Vector         origin;
-      Vector         angles;
-		Vector			mins;
-		Vector			maxs;
 		str				targetname;
 		str				target;
-		qboolean			setangles;
 		str				animname;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      int            contents = 0;
+      Vector         origin = Vector(0.0f, 0.0f, 0.0f);
+      Vector         angles = Vector(0.0f, 0.0f, 0.0f);
+		Vector			mins = Vector(0.0f, 0.0f, 0.0f);
+		Vector			maxs = Vector(0.0f, 0.0f, 0.0f);
+		qboolean			setangles = qfalse;
+		
 
 							PathNode();
 							~PathNode();
@@ -289,8 +293,14 @@ private:
 
 	Container<PathNode *>	_pathNodes;
 	Container<PathNode *>	_specialPathNodes;
-	bool					_loadingArchive;
-	bool					_pathNodesCalculated;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	bool					_loadingArchive = false;
+	bool					_pathNodesCalculated = false;
+
 
 	MapCell *				_mapCells[PATHMAP_GRIDSIZE][PATHMAP_GRIDSIZE];
 };
@@ -306,11 +316,17 @@ class PathFinder : public Class
 	{
 	private:
 	   Stack<PathNode *>	stack;
-	   PathNode				*OPEN;
-	   PathNode				*CLOSED;
-		PathNode				*endnode;
-		int						_maxNodesToCheck;
-		int						_checkedNodes;
+
+
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+	   PathNode				*OPEN = nullptr;
+	   PathNode				*CLOSED = nullptr;
+		PathNode				*endnode = nullptr;
+		int						_maxNodesToCheck = 0;
+		int						_checkedNodes = 0;
+
 
 		void					ClearPath( void );
 		void					ClearOPEN( void );

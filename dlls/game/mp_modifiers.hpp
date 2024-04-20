@@ -199,21 +199,21 @@ class ModifierElimination : public MultiplayerModifier
 private:
 	static const int			_pointsForBeingLastAlive;
 
-	bool						_respawning;
-	bool						_playerEliminated;
-	int							_maxPlayers;
 
-	EliminationPlayerData*		_playerEliminationData;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	bool						_respawning = false;
+	bool						_playerEliminated = false;
+	int							_maxPlayers = 0;
+	EliminationPlayerData*		_playerEliminationData = nullptr;
+	bool						_matchOver = false;
+	float						_matchStartTime = 0.0f;
+	int							_eliminatedIconIndex = 0;
+	bool						_needPlayers = false;
+	int							_eliminatedTextIndex = 0;
+	int							_nextRoundTextIndex = 0;
 
-	bool						_matchOver;
-	float						_matchStartTime;
-
-	int							_eliminatedIconIndex;
-
-	bool						_needPlayers;
-
-	int							_eliminatedTextIndex;
-	int							_nextRoundTextIndex;
 
 	void						reset( void );
 	int							numPlayersAliveOnTeam( const str &teamName );
@@ -293,42 +293,36 @@ private:
 
 	static const int			_teamPointsForBombing;
 
-
-	int							_bomber;
-	int							_bombArmedByPlayer;
-
-	int							_lastBomber;
-	float						_bombDroppedTime;
-
-	float						_timeNeededForBombToExplode;
-
 	DiffusionBombPlace			_redBombPlace;
 	DiffusionBombPlace			_blueBombPlace;
 
-	MultiplayerItem *			_bomb;
-	MultiplayerItem *			_tempBombItem;
-	Entity *					_attachedBomb;
 
-	float						_tempBombItemTime;
-
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int							_bomber = 0;
+	int							_bombArmedByPlayer = 0;
+	int							_lastBomber = 0;
+	float						_bombDroppedTime = 0.0f;
+	float						_timeNeededForBombToExplode = 0.0f;
+	MultiplayerItem *			_bomb = nullptr;
+	MultiplayerItem *			_tempBombItem = nullptr;
+	Entity *					_attachedBomb = nullptr;
+	float						_tempBombItemTime = 0.0f;
 	//DiffusionPlayerData			*_playerDiffusionData;
-	int							_maxPlayers;
-
+	int							_maxPlayers = 0;
 	int							_bomberIconIndex;
-	int							_diffuserIconIndex;
-
-	int							_bombNormalIconIndex;
-	int							_bombPlacedIconIndex;
-	int							_bombArmedIconIndex;
-
-	int							_redBombPlaceArmedIconIndex;
-	int							_blueBombPlaceArmedIconIndex;
-	int							_bombCarriedByRedTeamIconIndex;
-	int							_bombCarriedByBlueTeamIconIndex;
-	int							_bombInBaseIconIndex;
-	int							_bombOnGroundIconIndex;
-
-	float						_respawnTime;
+	int							_diffuserIconIndex = 0;
+	int							_bombNormalIconIndex = 0;
+	int							_bombPlacedIconIndex = 0;
+	int							_bombArmedIconIndex = 0;
+	int							_redBombPlaceArmedIconIndex = 0;
+	int							_blueBombPlaceArmedIconIndex = 0;
+	int							_bombCarriedByRedTeamIconIndex = 0;
+	int							_bombCarriedByBlueTeamIconIndex = 0;
+	int							_bombInBaseIconIndex = 0;
+	int							_bombOnGroundIconIndex = 0;
+	float						_respawnTime = 0.0f;
 
 
 	void						dropBomb( Player *player );
@@ -460,19 +454,23 @@ private:
 	static const float			_amountOfHealingForPoints;
 	static const int			_pointsForHealing;
 
-	static const bool			_removeItems;
-
-	SpecialtyPlayerData			*_playerSpecialtyData;
-	int							_maxPlayers;
+	static const bool			_removeItems;	
 
 	Container<SpecialtyItem>	_specialtyItems;
 
-	int							_infiltratorIconIndex;
-	int							_medicIconIndex;
-	int							_technicianIconIndex;
-	int							_demolitionistIconIndex;
-	int							_heavyweaponsIconIndex;
-	int							_sniperIconIndex;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	SpecialtyPlayerData			*_playerSpecialtyData = nullptr;
+	int							_maxPlayers = 0;
+	int							_infiltratorIconIndex = 0;
+	int							_medicIconIndex = 0;
+	int							_technicianIconIndex = 0;
+	int							_demolitionistIconIndex = 0;
+	int							_heavyweaponsIconIndex = 0;
+	int							_sniperIconIndex = 0;
+
 
 	void						putItemBack( Player *player );
 	void						removeItem( MultiplayerItem *item );
@@ -524,7 +522,11 @@ public:
 class HandicapPlayerData
 {
 public:
-	float				_handicap;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float				_handicap = 0.0f;
+
 
 						HandicapPlayerData() { _handicap = 1.0f; }
 	void				reset( void ) { _handicap = 1.0f; }
@@ -552,7 +554,12 @@ class PointsPerWeaponData
 {
 public:
 	str				_name;
-	int				_points;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int				_points = 0;
 };
 
 class ModifierPointsPerWeapon : public MultiplayerModifier
@@ -604,21 +611,26 @@ private:
 
 	Container<ControlPointData>	_controlPoints;
 
-	int							_alphaControlPointRedControlledIndex;
-	int							_alphaControlPointBlueControlledIndex;
-	int							_alphaControlPointNeutralControlledIndex;
 
-	int							_betaControlPointRedControlledIndex;
-	int							_betaControlPointBlueControlledIndex;
-	int							_betaControlPointNeutralControlledIndex;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int							_alphaControlPointRedControlledIndex = 0;
+	int							_alphaControlPointBlueControlledIndex = 0;
+	int							_alphaControlPointNeutralControlledIndex = 0;
 
-	int							_deltaControlPointRedControlledIndex;
-	int							_deltaControlPointBlueControlledIndex;
-	int							_deltaControlPointNeutralControlledIndex;
+	int							_betaControlPointRedControlledIndex = 0;
+	int							_betaControlPointBlueControlledIndex = 0;
+	int							_betaControlPointNeutralControlledIndex = 0;
 
-	int							_gammaControlPointRedControlledIndex;
-	int							_gammaControlPointBlueControlledIndex;
-	int							_gammaControlPointNeutralControlledIndex;
+	int							_deltaControlPointRedControlledIndex = 0;
+	int							_deltaControlPointBlueControlledIndex = 0;
+	int							_deltaControlPointNeutralControlledIndex = 0;
+
+	int							_gammaControlPointRedControlledIndex = 0;
+	int							_gammaControlPointBlueControlledIndex = 0;
+	int							_gammaControlPointNeutralControlledIndex = 0;
+
 
 	float						findNearestControlledControlPoint( const str &teamName, const Vector &position );
 	ControlPointType			getControlPointType( const str &name );
@@ -654,7 +666,12 @@ private:
 	static const float			_regenTime;
 	static const int			_regenAmount;
 
-	float						_lastRegenTime;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float						_lastRegenTime = 0.0f;
+
 
 public:
 								ModifierInstantKill();
@@ -676,11 +693,16 @@ private:
 	static const float			_actionHeroRegenRate;
 	static const int			_extraPointsForKillingActionHero;
 
-	int							_actionHeroNum;
-	float						_healthRegenRate;
 
-	int							_actionHeroIconIndex;
-	int							_actionHeroInfoIconIndex;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int							_actionHeroNum = 0;
+	float						_healthRegenRate = 0.0f;
+
+	int							_actionHeroIconIndex = 0;
+	int							_actionHeroInfoIconIndex = 0;
+
 
 public:
 								ModifierActionHero();

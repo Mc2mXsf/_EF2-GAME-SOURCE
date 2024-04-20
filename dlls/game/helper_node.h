@@ -228,11 +228,17 @@ class HelperNode : public Listener
 		void				NextAnim();
       
 		//For Convience
-		Vector				origin;
 		str					target;
 		str					targetname;
-		Vector				angles;
+		
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector				origin = Vector(0.0f, 0.0f, 0.0f);
+		Vector				angles = Vector(0.0f, 0.0f, 0.0f);
   
+
 		//Static Functions
 		static HelperNode* FindClosestHelperNode( Actor &self , int mask , float  maxDist , float minDistanceFromPlayer, bool unreserveCurrentNode = true );
 		static HelperNode* FindClosestHelperNode( Actor &self , int mask , NodeDescriptorType_t descriptor , float maxDist );
@@ -271,34 +277,34 @@ class HelperNode : public Listener
 		str						_killtarget;
 		str						_customType;
 
-		int						_id;
-		int						_animcount;
-		int						_maxkills;
 
-		qboolean				_animactive;
-		qboolean				_coveractive;
-		qboolean				_waitrandom;
-		qboolean				_waitforanim;
-		qboolean				_criticalchange;
-		bool					_reserved;
- 
-		float					_waittime;
-		float					_minhealth;
-		float					_minenemyrange;
-		float					_activationRange;
-		float					_priority;
-		float					_lastUseTime;
-      
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						_id = 0;
+		int						_animcount = 0;
+		int						_maxkills = 0;
+		qboolean				_animactive = qfalse;
+		qboolean				_coveractive = qfalse;
+		qboolean				_waitrandom = qfalse;
+		qboolean				_waitforanim = qfalse;
+		qboolean				_criticalchange = qfalse;
+		bool					_reserved = qfalse;
+		float					_waittime = 0.0f;
+		float					_minhealth = 0.0f;
+		float					_minenemyrange = 0.0f;
+		float					_activationRange = 0.0f;
+		float					_priority = 0.0f;
+		float					_lastUseTime = 0.0f;
+		unsigned int			_nodeflags = 0; 
+		ListenerPtr				_user = nullptr;
+		int						_customAnimListIndex = 0;
+		bool					_usingCustomAnimList = qfalse;
+
+
 		CoverType_t				_covertype;
 		CoverDirection_t		_coverdir;
-
-		unsigned int			_nodeflags;  
-		NodeDescriptorType_t	_descriptor;    
-		
-		
-		ListenerPtr				_user;
-		int						_customAnimListIndex;
-		bool					_usingCustomAnimList;
+		NodeDescriptorType_t	_descriptor;
 		Container<customAnimListEntry_t*>		_customAnimList;
 		
 		
