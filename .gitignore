@@ -33,3 +33,5 @@ dlls/game/game.Build.CppClean.log
 dlls/game/game.dll.recipe
 dlls/game/game.ilk
 dlls/game/game.log
+dlls/game/vc.nativecodeanalysis.all.xml
+bots_fix_experimental.txt
