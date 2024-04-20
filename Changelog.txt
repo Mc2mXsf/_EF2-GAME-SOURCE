@@ -11,15 +11,32 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+IGNORING THE FOLLOWING CODE WARNINGS:
+Warning C4996 sscanf: This function or variable may be unsafe. - It is only used in conjunction with float or integer
+listener.cpp:888:14: warning: deleting void* is undefined [-Wdelete-incomplete]  ::delete[]( ( void * )event ); - No solution to hadle this right was found
+
+Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated.
+int NumPlayersOnSameTeam(bot_state_t *bs)
+void BotTeamplayReport(void)
+void BotUpdateInfoConfigStrings(void)
+
+Fixed: Warning: C6011 Dereferencing NULL-Pointer.
+qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float check_fovdot	)
+int BotAISetupClient(int client, struct bot_settings_s *settings, qboolean restart)
+
+Fixed: Warning: C28182 Dereferencing NULL-Pointer ?, contains same NULL-Value as ?
+void BotInterbreedBots(void)
+
+Fixed: Return value being bool instead of qboolean.
+qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float check_fovdot	)
+
 The function uses 65556 bytes of stack. Consider moving some data to the heap.
 void Com_sprintf (char *dest, int size, const char *fmt, ...)
 
-Fixed: Warning: C28182 Dereferencing NULL-Pointer.
-void COM_FileName (const char *in, char *out)
-
-Fixed: Possible NULL char
+Fixed: Warning: C28182 Possible NULL char
 void Q_strncpyz( char *dest, const char *src, int destsize )
 char *Q_CleanStr( char *string )
+void COM_FileName (const char *in, char *out)
 
 Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz
 inline str::str(const char *text)
@@ -63,6 +80,7 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 void BotTeamOrders(bot_state_t *bs)
 
 Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6)
+class SensoryPerception 
 class TriggerSetVariable : public Trigger
 class TriggerPushAny : public Trigger
 class TriggerPush : public Trigger
@@ -606,6 +624,8 @@ void PathManager::SetNodeFlagsEvent( Event *ev )
 void ScriptSlave::FollowPath( Event *ev )
 
 Fixed: Warning lnt-logical-bitwise-mismatch
+inline void TriggerPlaySound::Archive(Archiver &arc)
+void TriggerSetVariable::SetVariable( Event *ev )
 qboolean Player::checkatdoor( Conditional &condition )
 qboolean Player::checkputawayleft( Conditional &condition )
 qboolean Player::checkputawayright( Conditional &condition )
