@@ -24,7 +24,11 @@
 class AmmoEntity : public Item
 	{
 	private:
-		float					_lastPrintTime;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float					_lastPrintTime = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( AmmoEntity );

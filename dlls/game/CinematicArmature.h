@@ -134,23 +134,28 @@ private:
 	str							_tiki ;
 	str							_anim ;
 	str							_moveAnim ;
-	Vector						_origin ;
-	Vector						_originOffset ;
-	ActorPtr					_actor ;
-	float						_yaw ;
-	float						_yawOffset ;
-	bool						_snapToSpot ;
-	bool						_ignorePain ;
-	bool						_ignoreSight ;
-	bool						_ignoreSound ;
-	bool						_isAtSpot ;
-	bool						_isAnimDone ;
-	bool						_hasActorControl ;
-	bool						_rootActor ;
-	bool						_removeAfter ;
-	bool						_alwaysSpawn ;
 	CinematicActorAfterBehavior _afterBehavior ;
 	CinematicActorState			_state ;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Vector						_origin = Vector(0.0f, 0.0f, 0.0f);
+	Vector						_originOffset = Vector(0.0f, 0.0f, 0.0f);
+	ActorPtr					_actor = nullptr;
+	float						_yaw = 0.0f;
+	float						_yawOffset = 0.0f;
+	bool						_snapToSpot = false;
+	bool						_ignorePain = false;
+	bool						_ignoreSight = false;
+	bool						_ignoreSound = false;
+	bool						_isAtSpot = false;
+	bool						_isAnimDone = false;
+	bool						_hasActorControl = false;
+	bool						_rootActor = false;
+	bool						_removeAfter = false;
+	bool						_alwaysSpawn = false;
 };
 
 //===============================================================
@@ -272,15 +277,20 @@ class CinematicCamera : public Listener
 	private:
 		CameraMoveType			 _moveType ;
 		CameraLookType			 _lookType ;
-		CameraPtr				 _camera ;
-		Vector					 _originOffset ;
-		float					 _yawOffset ;
-		bool					 _playing ;
-		bool					 _selfRemoving ;
-		str						 _name ;
-		str						 _camFile ;
-		str						 _moveActor ;
-		str						 _lookActor ;
+		str						 _name;
+		str						 _camFile;
+		str						 _moveActor;
+		str						 _lookActor;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		CameraPtr				 _camera = nullptr;
+		Vector					 _originOffset = Vector(0.0f , 0.0f, 0.0f);
+		float					 _yawOffset = 0.0f;
+		bool					 _playing = false;
+		bool					 _selfRemoving = false;
 
 };
 
@@ -362,12 +372,18 @@ class CinematicCut : public Listener
 		void					 _handleCutEvent( Event *event );
 
 	private:
-		CinematicCamera			*_cinematicCamera ;
-		bool					 _lerpFlag ;
-		int						 _frame ;
-		int						 _fadeOut ;
-		int						 _fadeIn ;
 		str						 _cameraName ;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		CinematicCamera			*_cinematicCamera = nullptr;
+		bool					 _lerpFlag = false;
+		int						 _frame = 0;
+		int						 _fadeOut = 0;
+		int						 _fadeIn = 0;
+		
 };
 
 
@@ -425,9 +441,14 @@ class CinematicOrigin : public Listener
 
 		void					 Archive( Archiver &arc );
 	private:
-		Vector					 _origin ;
 		str						 _name ;
-		float					 _yaw ;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					 _origin = Vector( 0.0f, 0.0f, 0.0f );
+		float					 _yaw = 0.0f;
 };
 
 
@@ -549,11 +570,16 @@ private:
 	str							_filename ;
 	str							_startThread;
 	str							_stopThread ;
-	bool						_looping ;
-	bool						_playing ;
-	bool						_callStartThreadFlag ;
-	bool						_resetCamera ;
 	CinematicStage				_stage ;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	bool						_looping = false;
+	bool						_playing = false;
+	bool						_callStartThreadFlag = false;
+	bool						_resetCamera = false;
 };
 
 
@@ -729,8 +755,13 @@ class CinematicArmature : public Listener
 
 	private:
 		Container<CinematicPtr>	 _cinematicList ;
-		Cinematic				*_cinematic ;
-		static bool				 _debug ;
+		static bool				 _debug;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Cinematic				*_cinematic = nullptr;
 };
 
 

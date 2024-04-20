@@ -1308,9 +1308,15 @@ class BackAwayFromEnemy : public Behavior
 	// Parameters
 	//------------------------------------
 	private: 
-		str							_anim;		
-		float						_dist;
-		float						_minDist;
+		str							_anim;	
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_dist = 0.0f;
+		float						_minDist = 0.0f;
+
 
 	public:
 		CLASS_PROTOTYPE( BackAwayFromEnemy );
@@ -1345,7 +1351,12 @@ class BackAwayFromEnemy : public Behavior
 		MoveRandomDirection			_moveRandom;     //-- Behavior that will steer us to our desired position
 
 		// Member Vars
-		int							_state;          //-- Maintains our Behavior's current State
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int							_state = 0;          //-- Maintains our Behavior's current State
 
 	};
 

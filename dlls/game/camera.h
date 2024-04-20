@@ -76,22 +76,25 @@ class Camera;
 class CameraMoveState : public Class
 {
 public:
-	Vector			pos;
-	Vector			movedir;    // direction of travel
-	Vector			angles;     // angles from spline camera
-
 	BSpline			cameraPath;
-	SplinePathPtr	splinePath;
-	SplinePathPtr	currentNode;
-	SplinePathPtr	loopNode;
 
-	float			cameraTime;
-	int				lastTime;
-	int				newTime;
 
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	SplinePathPtr	splinePath = nullptr;
+	SplinePathPtr	currentNode = nullptr;
+	SplinePathPtr	loopNode = nullptr;
+	float			cameraTime = 0.0f;
+	int				lastTime = 0;
+	int				newTime = 0;
 	qboolean		followingpath;
-	EntityPtr		followEnt;
-	EntityPtr		orbitEnt;
+	EntityPtr		followEnt = nullptr;
+	EntityPtr		orbitEnt = nullptr;
+	Vector			pos = Vector(0.0f, 0.0f, 0.0f);
+	Vector			movedir = Vector(0.0f, 0.0f, 0.0f);    // direction of travel
+	Vector			angles = Vector(0.0f, 0.0f, 0.0f);     // angles from spline camera
+
 
 	void			operator=( const CameraMoveState& newstate );
 	void			Evaluate( Camera* camera );
