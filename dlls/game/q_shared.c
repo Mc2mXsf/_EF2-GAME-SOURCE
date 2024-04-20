@@ -1174,7 +1174,12 @@ int Q_stricmp (const char *s1, const char *s2) {
 
 void Com_sprintf (char *dest, int size, const char *fmt, ...)
 {
-	char	bigbuffer[0x10000];
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: The function uses 65556 bytes of stack. Consider moving some data to the heap. - chrissstrahl
+	//--------------------------------------------------------------
+	static char	bigbuffer[0x10000];
+
+
 	int		len;
 	va_list		argptr;
 
