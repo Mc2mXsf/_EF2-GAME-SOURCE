@@ -6355,7 +6355,15 @@ void Entity::quitTeam
 			   }
          }
 
-      bind_info->teamchain->flags &= ~FL_TEAMSLAVE;
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	  //--------------------------------------------------------------
+	  if (bind_info->teamchain) {
+		  bind_info->teamchain->flags &= ~FL_TEAMSLAVE;
+	  }
+
+
 		}
 	else
 		{

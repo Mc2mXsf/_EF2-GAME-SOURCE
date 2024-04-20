@@ -1668,7 +1668,17 @@ Event::Event( int num )
 	{
 		initCommandList();
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!commandList) {
+		gi.Error(ERR_DROP, "Event::Event( int num ) - commandList was not init");
+		return;
+	}
 	
+
 	assert( ( num > 0 ) && ( num <= commandList->NumObjects() ) );
 	
 	if ( ( num <= 0 ) || ( num > commandList->NumObjects() ) )

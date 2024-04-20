@@ -5475,7 +5475,14 @@ void BotDeathmatchAI(bot_state_t *bs, float thinktime) {
 	BotResetNodeSwitches();
 	//execute AI nodes
 	for (i = 0; i < MAX_NODESWITCHES; i++) {
-		if (bs->ainode(bs)) break;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		//--------------------------------------------------------------
+		if (bs->ainode && bs->ainode(bs)) break;
+
+
 	}
 	//if the bot removed itself :)
 	if (!bs->inuse) return;
