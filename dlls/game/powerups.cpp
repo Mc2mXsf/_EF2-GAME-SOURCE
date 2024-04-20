@@ -700,7 +700,11 @@ void RuneAmmoRegen::specificUpdate( float frameTime )
 		{
 			ammoType = weapon->GetAmmoType( FIRE_MODE1 );
 	
-			player->GiveAmmo( ammoType, 1, false );
+			
+			//--------------------------------------------------------------
+			// GAMEFIX - Changed: Ammo Regeneration ammount given to player, rune was useless in fast paced combat - was 1 - chrissstrahl
+			//--------------------------------------------------------------
+			player->GiveAmmo( ammoType, 3 , false );
 		}
 
 		_nextGiveTime = level.time + 1.0f;
