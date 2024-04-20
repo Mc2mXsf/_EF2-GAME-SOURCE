@@ -29,15 +29,19 @@ class HoldableItem;
 class PowerupBase : public Item
 {
 	protected:
-
-		Sentient				*_owner;
 		str						_modelName;
-
 		str						_modelToAttachOnUse;
 		str						_modelToAttachOnUseTag;
-		float					_modelToAttachOnUseRemoveTime;
 		str						_modelToSpawn;
 		str						_shaderToDisplayOnUse;
+		
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Sentient				*_owner = nullptr;
+		float					_modelToAttachOnUseRemoveTime = 0.0f;
+
 
 		void					init( const str &modelname, Sentient *owner );
 				
@@ -102,8 +106,11 @@ inline void PowerupBase::Archive( Archiver &arc )
 class Powerup : public PowerupBase
 {
 	protected:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float					_timeLeft = 0.0f;
 
-		float					_timeLeft;
 
 	public:
 		CLASS_PROTOTYPE( Powerup );
@@ -247,9 +254,13 @@ inline void PowerupInvisibility::Archive( Archiver &arc )
 class Rune : public PowerupBase
 {
 	protected:
-		Vector					_originalOrigin;
-		bool					_originalOriginSet;
-				
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					_originalOrigin = Vector(0.0f, 0.0f, 0.0f);
+		bool					_originalOriginSet = false;
+			
+
 	public:
 		CLASS_PROTOTYPE( Rune );
 
