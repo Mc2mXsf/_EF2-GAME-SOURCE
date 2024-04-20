@@ -4064,7 +4064,7 @@ void TriggerCallVolume::EntityLeftVolume( Event *ev )
 {
 	Entity *other;   
 	Actor  *actor;
-	Player *player;
+	//Player *player;
 	
 	other = NULL;
 	other = ev->GetEntity( 1 );
