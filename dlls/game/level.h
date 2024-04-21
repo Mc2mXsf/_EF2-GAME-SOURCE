@@ -44,97 +44,99 @@ class Level : public Class
 	public:
 		const char		*current_map;
 		const char		*current_entities;      
-						
-		int				spawn_entnum;
-		int				currentInstanceNumber;
-		int				spawnflags;
-						
-		int				framenum;
-		int				inttime;                // level time in millisecond integer form
-		float			time;
-		float			timeInLevel;
-		float			frametime;
-		float			fixedframetime;         // preset frame time based on sv_fps
-		int				startTime;				   // level.time the map was started
-						
 		str				level_name;	            // the descriptive name (Outer Base, etc)
 		str				mapname;		            // the server name (base1, etc)
 		str				spawnpoint;             // targetname of spawnpoint
-		str				nextmap;		            // go here when fraglimit is hit
-						
-		qboolean		restart;                // set true when game loop should restart
-		qboolean		started;				// set when the level is started.
-						
-		// used for		cinematics
-		qboolean		playerfrozen;
-						
-		// intermiss	ion state
-		float			intermissiontime;			// time the intermission was started
-		int				exitintermission;
-		float			intermission_advancetime;
-		bool			_showIntermission;
-		bool			_saveOrientation;
-						
-		gentity_s		*next_edict;				// Used to keep track of the next edict to process in G_RunFrame
-						
-		int				total_secrets;
-		int				found_secrets;
-		int				total_specialItems;
-		int				found_specialItems;
-
+		str				nextmap;		            // go here when fraglimit is hit						
 		str				game_script;
-						
-		// FIXME - r	emove this later when it is passed in the event.
-		trace_t			impact_trace;
-						
-		qboolean		cinematic;
-						
-		qboolean		ai_on;
-						
-		qboolean		mission_failed;
-		qboolean		died_already;
-						
-		qboolean		near_exit;
-						
-		// Blending		color for water, light volumes,lava
-		Vector			water_color;
-		float			water_alpha;
-						
-		Vector			slime_color;
-		float			slime_alpha;
-						
-		Vector			lava_color;
-		float			lava_alpha;
-						
 		str				current_soundtrack;
 		str				saved_soundtrack;
-						
-		CThread			*consoleThread;
-
-		Vector			m_fade_color;
-		float			m_fade_alpha;
-		float			m_fade_time;
-		float			m_fade_time_start;
-		fadetype_t		m_fade_type;
-		fadestyle_t		m_fade_style;
-
-		float			m_letterbox_fraction;
-		float			m_letterbox_time;
-		float			m_letterbox_time_start;
-		letterboxdir_t	m_letterbox_dir;
-
-		bool			_cleanup;
-
 		str				_playerDeathThread;
-
-		HelperNodeController* hNodeController;
 		//
 		// list of automatic_cameras on the level
 		//
-		Container<Camera *>	automatic_cameras;
+		Container<Camera*>	automatic_cameras;
+		
+		// FIXME - r	emove this later when it is passed in the event.
+		trace_t			impact_trace;
 
-		Vector         m_intermission_origin;
-		Vector         m_intermission_angle;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int				spawn_entnum = 0;
+		int				currentInstanceNumber = 0;
+		int				spawnflags = 0;
+						
+		int				framenum = 0;
+		int				inttime = 0;                // level time in millisecond integer form
+		float			time = 0.0f;
+		float			timeInLevel = 0.0f;
+		float			frametime = 0.0f;
+		float			fixedframetime = 0.0f;         // preset frame time based on sv_fps
+		int				startTime = 0;				   // level.time the map was started
+						
+		qboolean		restart = qfalse;                // set true when game loop should restart
+		qboolean		started = qfalse;				// set when the level is started.
+						
+		// used for		cinematics
+		qboolean		playerfrozen = qfalse;
+						
+		// intermiss	ion state
+		float			intermissiontime = 0.0f;			// time the intermission was started
+		int				exitintermission = 0;
+		float			intermission_advancetime = 0.0f;
+		bool			_showIntermission = false;
+		bool			_saveOrientation = false;
+						
+		gentity_s		*next_edict = nullptr;				// Used to keep track of the next edict to process in G_RunFrame
+						
+		int				total_secrets = 0;
+		int				found_secrets = 0;
+		int				total_specialItems = 0;
+		int				found_specialItems = 0;
+						
+		qboolean		cinematic = qfalse;
+						
+		qboolean		ai_on = qfalse;
+						
+		qboolean		mission_failed = qfalse;
+		qboolean		died_already = qfalse;
+						
+		qboolean		near_exit = qfalse;
+						
+		// Blending		color for water, light volumes,lava
+		Vector			water_color = Vector(0.0f, 0.0f, 0.0f);
+		float			water_alpha = 0.0f;
+						
+		Vector			slime_color = Vector(0.0f, 0.0f, 0.0f);
+		float			slime_alpha = 0.0f;
+						
+		Vector			lava_color = Vector(0.0f, 0.0f, 0.0f);
+		float			lava_alpha = 0.0f;
+
+		CThread			*consoleThread = nullptr;
+
+		Vector			m_fade_color = Vector(0.0f, 0.0f, 0.0f);
+		float			m_fade_alpha = 0.0f;
+		float			m_fade_time = 0.0f;
+		float			m_fade_time_start = 0.0f;
+		fadetype_t		m_fade_type = fadein;
+		fadestyle_t		m_fade_style = alphablend;
+
+		float			m_letterbox_fraction = 0.0f;
+		float			m_letterbox_time = 0.0f;
+		float			m_letterbox_time_start = 0.0f;
+		letterboxdir_t	m_letterbox_dir = letterbox_in;
+
+		bool			_cleanup = false;
+
+		HelperNodeController* hNodeController = nullptr;
+
+		Vector         m_intermission_origin = Vector(0.0f, 0.0f, 0.0f);
+		Vector         m_intermission_angle = Vector(0.0f, 0.0f, 0.0f);
+
+
 
 		CLASS_PROTOTYPE( Level );
 

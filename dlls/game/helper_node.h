@@ -78,12 +78,19 @@ typedef enum
 	WAITTYPE_TOTAL_NUMBER
 	} waitType_t;
 
-typedef struct
-	{
+struct customAnimListEntry
+{
 	str anim;
-	waitType_t waitType;
-	float	time;
-	} customAnimListEntry_t;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	waitType_t waitType = WAITTYPE_EVENT;
+	float	time = 0;
+};
+using customAnimListEntry_t = customAnimListEntry;
+
 
 // Created by the level to handle the archiving of HelperNodes
 class HelperNodeController : public Entity
@@ -300,15 +307,13 @@ class HelperNode : public Listener
 		ListenerPtr				_user = nullptr;
 		int						_customAnimListIndex = 0;
 		bool					_usingCustomAnimList = qfalse;
+		CoverType_t				_covertype = COVER_TYPE_NONE;
+		CoverDirection_t		_coverdir = COVER_DIRECTION_NONE;
+		NodeDescriptorType_t	_descriptor = DESCRIPTOR_NONE;
 
 
-		CoverType_t				_covertype;
-		CoverDirection_t		_coverdir;
-		NodeDescriptorType_t	_descriptor;
+
 		Container<customAnimListEntry_t*>		_customAnimList;
-		
-		
-
   };
 
 inline void HelperNode::SetUser( Listener *user )

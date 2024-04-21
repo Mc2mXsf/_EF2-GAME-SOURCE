@@ -58,8 +58,14 @@ class GotoHelperNodeEX : public Behavior
 	private:
 		str			    _nodeType;
 		str				_movementAnim;
-		HelperNodePtr	_node;
-		float			_maxDistance;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		HelperNodePtr	_node = 0;
+		float			_maxDistance = 0.0f;
+
 
 	//-------------------------------------
 	// Internal Functionality
@@ -113,7 +119,11 @@ class GotoHelperNodeEX : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		GotoHelperNodeStates_t			_state;		 				
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		GotoHelperNodeStates_t			_state = GOTO_HNODE_FIND_NODE;
+
 
 		static const float				NODE_RADIUS;
 

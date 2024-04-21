@@ -266,79 +266,114 @@ typedef struct
 } BehaviorPackageType_t;
 
 // Helper Node Data
-typedef struct
+struct CurrentHelperNodeData
 {
-   HelperNodePtr node;
-   int         mask;
-   int         nodeID;
-} CurrentHelperNodeData_t;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	HelperNodePtr node = nullptr;
+	int         mask = 0;
+	int         nodeID = 0;
+};
+using CurrentHelperNodeData_t = CurrentHelperNodeData;
 
-typedef struct
+struct IgnoreHelperNodeData
 {
-   HelperNodePtr node;
-   int         mask;
-   int         nodeID;
-} IgnoreHelperNodeData_t;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	HelperNodePtr node = nullptr;
+	int         mask = 0;
+	int         nodeID = 0;
+};
+using IgnoreHelperNodeData_t = IgnoreHelperNodeData;
+
 
 // Follow Target Data
-typedef struct
+struct FollowTargetData
 {
-   EntityPtr	currentFollowTarget;
-   EntityPtr	specifiedFollowTarget;
-   float		maxRangeIdle;
-   float		minRangeIdle;
-   float		maxRangeCombat;
-   float		minRangeCombat;
-} FollowTargetData_t;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	EntityPtr	currentFollowTarget = nullptr;
+	EntityPtr	specifiedFollowTarget = nullptr;
+	float		maxRangeIdle = 0.0f;
+	float		minRangeIdle = 0.0f;
+	float		maxRangeCombat = 0.0f;
+	float		minRangeCombat = 0.0f;
+};
+using FollowTargetData_t = FollowTargetData;
 
-typedef struct
+struct BehaviorPackageEntry
 {
-  int          packageIndex;
-  float        currentScore;
-  float        lastScore;  
-  float        lastTimeExecuted;
-  float        priority;
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+//--------------------------------------------------------------
+  int          packageIndex = 0;
+  float        currentScore = 0.0f;
+  float        lastScore = 0.0f;
+  float        lastTimeExecuted = 0.0f;
+  float        priority = 0.0f;
+};
+using BehaviorPackageEntry_t = BehaviorPackageEntry;
 
-} BehaviorPackageEntry_t;
-
-typedef struct
+struct PackageTendency
 {
-  int          packageIndex;
-  float        tendency;
-  float        lastTendencyCheck;
-} PackageTendency_t;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+  int          packageIndex = 0;
+  float        tendency = 0.0f;
+  float        lastTendencyCheck = 0.0f;
+};
+using PackageTendency_t = PackageTendency;
 
 // We need to modify PackageTendency_t to do 
 // what struct is going to do, however, I'm 2 days from a
 // milestone, so I'm not changing anything right now
-typedef struct
+struct Tendency
 {
-  str tendencyName;
-  float tendencyValue;
-} Tendency_t;
+	str tendencyName;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float tendencyValue = 0.0f;
+};
+using Tendency_t = Tendency;
 
 // StateVar -- Structure for holding StateVars
-typedef struct
+struct StateVarX
 {
 	str varName;
 	str varValue;
-	float varTime;
-} StateVar;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float varTime = 0.0f;
+};
+using StateVar = StateVarX;
 
 // part_t -- Part stuff
-typedef struct
+struct part
 {
-	EntityPtr ent;
-	unsigned int state_flags;
-} part_t;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	EntityPtr ent = nullptr;
+	unsigned int state_flags = 0;
+};
+using part_t = part;
 
 // threadlist_t -- A Key/Value pair for all the custom threading stuff we're doing
 // we will eventually need to convert all those errant actor threads into this.
-typedef struct
+struct threadlist
 {
 	str threadType;
 	str threadName;
-} threadlist_t;
+};
+using threadlist_t = threadlist;
 
 //===========================================
 // Enumerations

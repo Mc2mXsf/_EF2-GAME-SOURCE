@@ -58,7 +58,12 @@ class GotoHelperNodeNearestEnemy : public Behavior
 	private:
 		str			    _nodeType;
 		str				_movementAnim;
-		float			_maxDistance;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			_maxDistance = 0.0f;
 		
 
 	//-------------------------------------
@@ -114,13 +119,13 @@ class GotoHelperNodeNearestEnemy : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		GotoHelperNodeStates_t			_state;		 				
-		HelperNodePtr					_node;
-		EntityPtr						_currentEnemy;
-
-		Actor						   *_self;		
-
-
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		GotoHelperNodeStates_t			_state = GOTO_HNODE_FIND_NODE;
+		HelperNodePtr					_node = nullptr;
+		EntityPtr						_currentEnemy = nullptr;
+		Actor						   *_self = nullptr;
 	};
 
 

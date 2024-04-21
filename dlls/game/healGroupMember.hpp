@@ -60,13 +60,14 @@ class HealGroupMember : public Behavior
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
-		typedef struct
+		struct triageEntry
 		{
 		EntityPtr	ent = nullptr;
 		float		health = 0.0f;
 		float		dist = 0.0f;
 		bool		treated  = false;
-		} triageEntry_t;
+		};
+		using triageEntry_t = triageEntry;
 
 	//------------------------------------
 	// Parameters
