@@ -374,7 +374,21 @@ class Event : public Class
 			unsigned			   linenumber	: 19;		      // linenumber does double duty in the case of the console commands
          } EventInfo_t;
 
-		int					   eventnum;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int					   eventnum = 0;
+		EventArgDef          *returntype = nullptr;
+		int					   threadnum = 0;
+		short                anim_number = 0;
+		short                anim_frame = 0;
+		SafePtr<Listener>    m_sourceobject = nullptr;
+		//Listener             *obj = nullptr;
+		float		            time = 0.0f;
+		int                  flags = 0;
+
+		
 		EventInfo			   info;
       const char           *name;
       const char           *formatspec;
@@ -382,15 +396,8 @@ class Event : public Class
       const char           *documentation;
 		Container<EventVar>  *data;
 		Container<EventArgDef> *definition;
-		EventArgDef          *returntype;
-		int					   threadnum;
-      short                anim_number;
-      short                anim_frame;
-      SafePtr<Listener>    m_sourceobject;
+      
 
-	   //Listener             *obj;
-	   float		            time;
-      int                  flags;
 
 		friend class			Level;
 
@@ -430,8 +437,13 @@ class Event : public Class
 	public:
 		CLASS_PROTOTYPE( Event );
 
-      Event             *next;               // next event in the list, used for event recycling
-      Event             *prev;               // previous event int the list, used for event recycling
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      Event             *next = nullptr;               // next event in the list, used for event recycling
+      Event             *prev = nullptr;               // previous event int the list, used for event recycling
+
 
 		void * operator	new( size_t );
 		void operator		delete( void * );

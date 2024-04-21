@@ -88,7 +88,7 @@ public:
 	float			cameraTime = 0.0f;
 	int				lastTime = 0;
 	int				newTime = 0;
-	qboolean		followingpath;
+	qboolean		followingpath = qfalse;
 	EntityPtr		followEnt = nullptr;
 	EntityPtr		orbitEnt = nullptr;
 	Vector			pos = Vector(0.0f, 0.0f, 0.0f);
