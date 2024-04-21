@@ -70,14 +70,19 @@ class CorridorCombatWithRangedWeapon : public Behavior
 		str		_fireAnim;
 		str		_preFireAnim;
 		str		_postFireAnim;
-		float	_postureChangeChance;
-		float	_maxDistance;
-		float	_retreatDistance;
-		float	_threatDistance;
-		float	_fireTimeMin;
-		float	_fireTimeMax;
-		float	_pauseTimeMin;
-		float	_pauseTimeMax;		
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float	_postureChangeChance = 0.0f;
+		float	_maxDistance = 0.0f;
+		float	_retreatDistance = 0.0f;
+		float	_threatDistance = 0.0f;
+		float	_fireTimeMin = 0.0f;
+		float	_fireTimeMax = 0.0f;
+		float	_pauseTimeMin = 0.0f;
+		float	_pauseTimeMax = 0.0f;
 
 	//-------------------------------------
 	// Internal Functionality
@@ -229,19 +234,21 @@ class CorridorCombatWithRangedWeapon : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		corridorCombatStates_t			_state;
-		HelperNodePtr					_node; 		
-		Actor						   *_self;
-		EntityPtr						_currentEnemy;
-		bool							_finishedPostureTransition;		
-		float							_nextFireTime;
-		float							_nextPauseTime;				
-		float							_holdPositionTime;
-		float							_enemyUpdateTime;		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		corridorCombatStates_t			_state = CORRIDORCOMBAT_WRW_FINDNODE;
+		HelperNodePtr					_node = nullptr; 		
+		Actor						   *_self = nullptr;
+		EntityPtr						_currentEnemy = nullptr;
+		bool							_finishedPostureTransition = false;		
+		float							_nextFireTime = 0.0f;
+		float							_nextPauseTime = 0.0f;
+		float							_holdPositionTime = 0.0f;
+		float							_enemyUpdateTime = 0.0f;
+
 
 		static const float				NODE_RADIUS;
-
-
 	};
 
 

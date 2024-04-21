@@ -110,9 +110,14 @@ class GotoCurrentHelperNode : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		GotoHelperNodeStates_t			_state;		 				
-		HelperNodePtr					_node;
-		bool							_faceEnemy;		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------		
+		GotoHelperNodeStates_t			_state = GOTO_HNODE_FIND_NODE;
+		HelperNodePtr					_node = nullptr;
+		bool							_faceEnemy = false;	
+
+
 		static const float				NODE_RADIUS;
 
 	};

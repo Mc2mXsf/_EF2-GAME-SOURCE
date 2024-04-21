@@ -122,18 +122,15 @@ class HoldPosition : public Behavior
 		float							_twitchInterval = 0.0f;
 		bool							_canTwitch = qfalse;
 		bool							_animDone = qfalse;
-		
 
 	//-------------------------------------
 	// Member Variables
 	//-------------------------------------
 	private: 
-		HoldPositionStates_t			_state;	
-
-
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
+		HoldPositionStates_t			_state = HOLD_POSITION_HOLD;
 		Actor						   *_self = nullptr;		
 		
 

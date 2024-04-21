@@ -61,17 +61,20 @@ class InfoNotNull : public Entity
 class ExplodingWall : public Trigger
 	{
 	protected:
-		int      dmg;
-		int      explosions;
-		float    attack_finished;
-      Vector   land_angles;
-      float    land_radius;
-      float    angle_speed;
-      int      state;
-      Vector   base_velocity;
-      Vector   random_velocity;
-      Vector   orig_mins, orig_maxs;
-      qboolean on_ground;
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+		int      dmg = 0;
+		int      explosions = 0;
+		float    attack_finished = 0.0f;
+      Vector   land_angles = Vector(0.0f, 0.0f, 0.0f);
+      float    land_radius = 0.0f;
+      float    angle_speed = 0.0f;
+      int      state = 0;
+      Vector   base_velocity = Vector(0.0f, 0.0f, 0.0f);
+      Vector   random_velocity = Vector(0.0f, 0.0f, 0.0f);
+      Vector   orig_mins, orig_maxs = Vector(0.0f, 0.0f, 0.0f);
+      qboolean on_ground = qfalse;
 
 	public:
       CLASS_PROTOTYPE( ExplodingWall );
@@ -121,7 +124,13 @@ class Teleporter : public Trigger
 	{
 	public:
 		str					teleport_thread;
-		qboolean				in_use;
+
+
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+		qboolean				in_use = qfalse;
+
 
       CLASS_PROTOTYPE( Teleporter );
 
@@ -149,7 +158,11 @@ inline void Teleporter::Archive
 class TeleporterDestination : public Entity
 	{
 	public:
-		Vector				movedir;
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+		Vector				movedir = Vector(0.0f, 0.0f, 0.0f);
+
 
       CLASS_PROTOTYPE( TeleporterDestination );
 
@@ -171,18 +184,24 @@ inline void TeleporterDestination::Archive
 class UseAnim : public Entity
 	{
 	public:
-      int               count;
-      qboolean          active;
-      str               thread;
-      str               triggertarget;
-      int               num_loops;
       str               state;
       str               camera;
       str               anim;
       str               key;
-      float             delay;
-      float             last_active_time;
 	  str				action_type;
+      str               thread;
+      str               triggertarget;
+
+
+    //--------------------------------------------------------------
+    // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+    //--------------------------------------------------------------
+    int               count = 0;
+    qboolean          active = qfalse;
+    int               num_loops = 0;
+    float             delay = 0.0f;
+    float             last_active_time = 0.0f;
+
 
       CLASS_PROTOTYPE( UseAnim );
 
@@ -239,9 +258,15 @@ class TouchAnim : public UseAnim
 class UseAnimDestination : public Entity
 	{
 	public:
-      int               num_loops;
       str               state;
       str               anim;
+
+
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+      int               num_loops = 0;
+
 
       CLASS_PROTOTYPE( UseAnimDestination );
 
@@ -274,18 +299,24 @@ class UseObject : public Entity
       str               stop_thread;
       str               reset_thread;
       str               triggertarget;
-      Vector            offset;
-      float             yaw_offset;
-      int               count;
-      float             cone;
       str               state;
       str               state_backwards;
       str               useMaterial;
-      int               objectState;
-      float             reset_time;
 	  str				action_type;
-      qboolean          active;
-	  bool				movetheplayer;
+
+
+      //--------------------------------------------------------------
+      // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+      //--------------------------------------------------------------
+      Vector            offset = Vector(0.0f, 0.0f, 0.0f);
+      float             yaw_offset = 0.0f;
+      int               count = 0;
+      float             cone = 0.0f;
+      int               objectState = 0;
+      float             reset_time = 0.0f;
+      qboolean          active = qfalse;
+	  bool				movetheplayer = false;
+
 
       CLASS_PROTOTYPE( UseObject );
 
@@ -356,7 +387,14 @@ class TossObject : public Entity
 	{
    private:
       str            bouncesound;
-      float          bouncesoundchance;
+
+
+      //--------------------------------------------------------------
+      // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+      //--------------------------------------------------------------
+      float          bouncesoundchance = 0.0f;
+
+
       void           Stop( Event *ev );
       void           Touch( Event *ev );
       void           SetBounceSound( Event *ev );
@@ -388,9 +426,14 @@ inline void TossObject::Archive
 class PushObject : public Entity
 	{
    private:
-      EntityPtr      owner;
-		float			   attack_finished;
-		int				dmg;
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+      EntityPtr      owner = nullptr;
+		float			   attack_finished = 0.0f;
+		int				dmg = 0;
+
+
       str            pushsound;
 
  	public:
@@ -426,18 +469,24 @@ inline void PushObject::Archive
 class FallingRock : public Entity
 	{
    private:
-      int            active;
-      Vector         start_origin;
-      Vector         last_bounce_origin;
-      Entity         *current;
-      Entity         *activator;
-      Vector         bounce_dir;
-      Vector         rotateaxis;
-      float          attack_finished;
-      float          wait;
-      float          speed;
-      int            dmg;
       str            bouncesound;
+
+
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+      int            active = 0;
+      Vector         start_origin = Vector(0.0f, 0.0f, 0.0f);
+      Vector         last_bounce_origin = Vector(0.0f, 0.0f, 0.0f);
+      Entity         *current = nullptr;
+      Entity         *activator = nullptr;
+      Vector         bounce_dir = Vector(0.0f, 0.0f, 0.0f);
+      Vector         rotateaxis = Vector(0.0f, 0.0f, 0.0f);
+      float          attack_finished = 0.0f;
+      float          wait = 0.0f;
+      float          speed = 0.0f;
+      int            dmg = 0;
+
 
       void           Touch( Event *ev );
       void           Bounce( Event *ev );

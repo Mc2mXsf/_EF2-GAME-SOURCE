@@ -47,18 +47,23 @@ class Door : public ScriptSlave
 		str			sound_move;
 		str			sound_message;
 		str			sound_locked;
-		float       lastblocktime;
-		float		angle;
-		Vector		dir;
-		float       diropened;
-		int			state;
-		int         previous_state;
-		int			trigger;
-		int			nextdoor;
-		DoorPtr		master;
-		float		next_locked_time;
 
-		Vector		_extraTriggerSize;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float       lastblocktime = 0.0f;
+		float		angle = 0.0f;
+		Vector		dir = Vector(0.0f, 0.0f, 0.0f);
+		float       diropened = 0.0f;
+		int			state = 0;
+		int         previous_state = 0;
+		int			trigger = 0;
+		int			nextdoor = 0;
+		DoorPtr		master = nullptr;
+		float		next_locked_time = 0.0f;
+		Vector		_extraTriggerSize = Vector(0.0f, 0.0f, 0.0f);
+
 
 		void				SetDir( Event *ev );
 		void				OpenEnd( Event *ev );
@@ -151,9 +156,12 @@ inline void Door::Archive( Archiver &arc )
 class RotatingDoor : public Door
 {
 	protected:
-		float		angle;
-		Vector		startangle;
-		int			init_door_direction;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float		angle = 0.0f;
+		Vector		startangle = Vector(0.0f,0.0f,0.0f);
+		int			init_door_direction = 0;
 
 	public:
 		CLASS_PROTOTYPE( RotatingDoor );
@@ -178,12 +186,16 @@ inline void RotatingDoor::Archive( Archiver &arc )
 class SlidingDoor : public Door
 {
 	protected:
-		float		totalmove;
-		float		lip;
-		Vector		pos1;
-		Vector		pos2;
-		float		basespeed;
-		Vector		movedir;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float		totalmove = 0.0f;
+		float		lip = 0.0f;
+		Vector		pos1 = Vector(0.0f, 0.0f, 0.0f);
+		Vector		pos2 = Vector(0.0f, 0.0f, 0.0f);
+		float		basespeed = 0.0f;
+		Vector		movedir = Vector(0.0f, 0.0f, 0.0f);
+
 
 	public:
 		CLASS_PROTOTYPE( SlidingDoor );
@@ -214,18 +226,22 @@ inline void SlidingDoor::Archive( Archiver &arc )
 class ScriptDoor : public Door
 {
 	protected:
-		bool	_toggle;
-		bool	_targeted;
-		float	_openPercentage;
-		float	_currentPercentage;
-		float	_totalMove;
-		float	_currentMove;
-		float	_baseSpeed;
-		float	_speed;
-		Vector	_originalPos;
-		Vector	_currentPos;
-		Vector	_destinationPos;
-		Vector	_moveDir;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		bool	_toggle = false;
+		bool	_targeted = false;
+		float	_openPercentage = 0.0f;
+		float	_currentPercentage = 0.0f;
+		float	_totalMove = 0.0f;
+		float	_currentMove = 0.0f;
+		float	_baseSpeed = 0.0f;
+		float	_speed = 0.0f;
+		Vector	_originalPos = Vector(0.0f, 0.0f, 0.0f);
+		Vector	_currentPos = Vector(0.0f, 0.0f, 0.0f);
+		Vector	_destinationPos = Vector(0.0f, 0.0f, 0.0f);
+		Vector	_moveDir = Vector(0.0f, 0.0f, 0.0f);
+
 
 	public:
 		CLASS_PROTOTYPE( ScriptDoor );

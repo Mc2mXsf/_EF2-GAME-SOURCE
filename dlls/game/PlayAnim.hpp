@@ -57,8 +57,13 @@ class PlayAnim : public Behavior
 	private: 
 		str							_legAnim;  
 		str							_torsoAnim;
-		float						_minTime;
-		float						_maxTime;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_minTime = 0.0f;
+		float						_maxTime = 0.0f;
 
 	//-------------------------------------
 	// Internal Functionality
@@ -106,8 +111,11 @@ class PlayAnim : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		PlayAnimStates_t						_state;	
-		float									_endTime;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		PlayAnimStates_t						_state = PLAYANIM_SETUP;
+		float									_endTime = 0.0f;
 		
 };
 

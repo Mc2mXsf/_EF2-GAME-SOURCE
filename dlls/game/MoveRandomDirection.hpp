@@ -81,17 +81,20 @@ class MoveRandomDirection : public Behavior
 
 	private: 
 		GotoPoint						_chase;
-
-		Vector							_destination;
-		unsigned int					_mode;
-		float							_dist;
-		float							_minDistance;
-		float							_nextChangeTime;      
-		bool							_foundGoodDestination;
-		bool							_forever;
-		bool							_faceEnemy;
 		str								_torsoAnim;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector							_destination = Vector(0.0f, 0.0f, 0.0f);
+		unsigned int					_mode = 0;
+		float							_dist = 0.0f;
+		float							_minDistance = 0.0f;
+		float							_nextChangeTime = 0.0f;
+		bool							_foundGoodDestination = false;
+		bool							_forever = false;
+		bool							_faceEnemy = false;
 	};
 
 inline void MoveRandomDirection::Archive( Archiver &arc	)

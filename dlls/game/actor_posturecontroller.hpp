@@ -62,21 +62,20 @@ class PostureController
 		void			init();		
 
 	private:
-		StateMap		*_postureStateMap;
-		str				 _postureStateMap_Name;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		StateMap		*_postureStateMap = nullptr;
+		State			*_currentPostureState = nullptr;
+		State			*_requestedPostureState = nullptr;
+		SafePtr<Listener> _requestor = nullptr;
+		Actor		    *act = nullptr;
 
-		State			*_currentPostureState;
+
+		str				 _postureStateMap_Name;		
 		str				 _currentPostureState_Name;
-
-		State			*_requestedPostureState;
 		str				 _requestedPostureState_Name;
-
-		SafePtr<Listener> _requestor;
 		Container<Conditional*>	 _postureConditionals;
-
-
-		
-		Actor		    *act;
 };
 
 inline const str& PostureController::getRequestedPostureName()

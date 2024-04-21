@@ -86,43 +86,43 @@ class PlayerHeuristics : public Class
 		void	IncrementFailedObjectives();
 
 
-		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------		
 		//Single Player Stats Persistent
-		long int	shotsFired;
-		long int	shotsHit;
-		long int	numberOfDeaths;
-		long int	enemiesKilled;
-
+		long int	shotsFired = 0;
+		long int	shotsHit = 0;
+		long int	numberOfDeaths = 0;
+		long int	enemiesKilled = 0;
 		//level properties...
 		//these are the statistics for that instance of the level
-		long int	shotsFiredInLevel;		
-		long int	shotsHitInLevel;
-		long int	enemiesKilledInLevel;
-		long int	teammatesKilledInLevel;
+		long int	shotsFiredInLevel = 0;
+		long int	shotsHitInLevel = 0;
+		long int	enemiesKilledInLevel = 0;
+		long int	teammatesKilledInLevel = 0;
+		int			numObjectives = 0;
+		int			numCompleteObjectives = 0;
+		int			numFailedObjectives = 0;
+		float		timeOnLevel = 0.0f;
+		float		levelStartTime = 0.0f;
+		float		levelEndTime = 0.0f;
+		float		playerHealth = 0.0f;
 
-		int			numObjectives;
-		int			numCompleteObjectives;
-		int			numFailedObjectives;
-		
 
-		float		timeOnLevel;
-		float		levelStartTime;
-		float		levelEndTime;
-		float		playerHealth;
 		str			lastLevel;
 		str			currentLevel;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------	
  		//Multiplayer Stats
-		int			ping;
-		int			itemsPickedUp;
-		int			specialEvents;
-		
+		int			ping = 0;
+		int			itemsPickedUp = 0;
+		int			specialEvents = 0;
 		//Weapon Stats
-
-
 		//Skill Level
-		float		skillLevel;
-
+		float		skillLevel = 0.0f;
 };
 
 

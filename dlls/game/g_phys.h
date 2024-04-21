@@ -80,7 +80,10 @@ public:
 	float & GetValue( void ) { return _value; }
 
 private:
-	float	_value;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float	_value = 0.0f;
 };
 
 //------------------------- CLASS ------------------------------
@@ -109,11 +112,14 @@ public:
 	float				GetGravity( void ) const { return _gravity; }
 
 private:
-	Vector				_launchPoint;
-	Vector				_targetPoint;
-	float				_launchAngle;
-	float				_travelTime;
-	Vector				_initialVelocity;
-	float				_gravity;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Vector				_launchPoint = Vector(0.0f, 0.0f, 0.0f);
+	Vector				_targetPoint = Vector(0.0f, 0.0f, 0.0f);
+	float				_launchAngle = 0.0f;
+	float				_travelTime = 0.0f;
+	Vector				_initialVelocity = Vector(0.0f, 0.0f, 0.0f);
+	float				_gravity = 0.0f;
 };
 #endif /* g_phys.h */

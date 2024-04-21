@@ -115,12 +115,17 @@ class Jump : public Steering
 		virtual void						Archive( Archiver &arc );
 
 	private:
-		float								_endtime;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float								_endtime = 0.0f;
+		int									_state = 0;
+		bool								_animdone = false;
+		Vector								_goal = Vector(0.0f, 0.0f, 0.0f);
+
+
 		Angle								_launchAngle;
 		str									_anim;
-		int									_state;
-		bool								_animdone;
-		Vector								_goal;
 
 	};
 

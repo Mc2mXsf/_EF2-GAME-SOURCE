@@ -77,7 +77,7 @@ class HeadWatcher
 	  float		_maxDistance = 0.0f;
 	  bool		_ignoreWatchTarget = false;
 
-      Actor *act;
+      Actor *act = nullptr;
 
    };
 

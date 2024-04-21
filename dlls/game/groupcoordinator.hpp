@@ -61,8 +61,13 @@ class Group	: public Listener
 	protected:
 
 	private:
-		Container< EntityPtr >	_memberList;		
-		int						_id;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						_id = 0;
+
+
+		Container< EntityPtr >	_memberList;
 		str						_groupDeathThread;
 };
 

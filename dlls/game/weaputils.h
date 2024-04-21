@@ -45,60 +45,61 @@ class Projectile : public Entity
 {
 public:
 	CLASS_PROTOTYPE( Projectile );
-	
-	float			fov;
-	int				owner;
-	float			speed;
-	float			minspeed;
-	float			bouncefactor;
-	float			damage;
-	float			knockback;
-	float			life;
-	float			minlife;
-	float			dlight_radius;
-	float			charge_fraction;
-	bool			firstTimeOwnerControl;
-	
-	Vector			prevPlayerAngles;
-	Vector			originalPlayerAngles;
-	Vector			dlight_color;
-	Vector			addvelocity;
-	meansOfDeath_t	meansofdeath;
-	FuncBeam		*m_beam;
-	int				projFlags;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float			fov = 0.0f;
+	int				owner = 0;
+	float			speed = 0.0f;
+	float			minspeed = 0.0f;
+	float			bouncefactor = 0.0f;
+	float			damage = 0.0f;
+	float			knockback = 0.0f;
+	float			life = 0.0f;
+	float			minlife = 0.0f;
+	float			dlight_radius = 0.0f;
+	float			charge_fraction = 0.0f;
+	bool			firstTimeOwnerControl = false;
+	Vector			prevPlayerAngles = Vector(0.0f, 0.0f, 0.0f);
+	Vector			originalPlayerAngles = Vector(0.0f, 0.0f, 0.0f);
+	Vector			dlight_color = Vector(0.0f, 0.0f, 0.0f);
+	Vector			addvelocity = Vector(0.0f, 0.0f, 0.0f);
+	meansOfDeath_t	meansofdeath = MOD_LIGHTSWORD;
+	FuncBeam		*m_beam = nullptr;
+	int				projFlags = 0;
+	EntityPtr		target = nullptr;
+	bool			addownervelocity = false;
+	bool			drunk = false;
+	bool			can_hit_owner = false;
+	bool			remove_when_stopped = false;
+	bool			stick_on_touch = false;
+	bool			ownercontrol = false;
+	bool			_ownerControlLaser = false;
+	bool			_ownerControlUsed = false;
+	float			_controlTurnSpeed = 0.0f;
+	bool			triggerdetonate = false;
+	float			startTime = 0.0f;
+	float			drunkAngleModifier = 0.0f;
+	float			impactmarkradius = 0.0f;
+	bool			_scaleByCharge = false;
+	float			_minScaleFromCharge = 0.0f;
+	float			_maxScaleFromCharge = 0.0f;
+	bool			_scaleExplosion = false;
+	bool			_notifyActors = false;
+	bool			_notShootable = false;
+	bool			_hitsProjectiles = false;
+	float			_minOnGroundTime = 0.0f;
+	bool			_onGround = false;
+	float			_startOnGroundTime = 0.0f;
+	bool			_heatSeek = false;
+	bool			_damagedSomething = false;
+
+
 	str				bouncesound;
 	str				impactmarkshader;
 	str				impactmarkorientation;
-	float			impactmarkradius;
 	str				explosionmodel;
-	EntityPtr		target;
-	bool			addownervelocity;
-	bool			drunk;
-	bool			can_hit_owner;
-	bool			remove_when_stopped;
-	bool			stick_on_touch;
-	bool			ownercontrol;
-	bool			_ownerControlLaser;
-	bool			_ownerControlUsed;
-	float			_controlTurnSpeed;
-	bool			triggerdetonate;
-	float			startTime;
-	float			drunkAngleModifier;
-	
-	bool			_scaleByCharge;
-	float			_minScaleFromCharge;
-	float			_maxScaleFromCharge;
-	bool			_scaleExplosion;
-	bool			_notifyActors;
-	bool			_notShootable;
-	bool			_hitsProjectiles;
 
-	float			_minOnGroundTime;
-	bool			_onGround;
-	float			_startOnGroundTime;
-	bool			_heatSeek;
-
-	bool			_damagedSomething;
 	
 					Projectile();
 	virtual			~Projectile();

@@ -185,13 +185,12 @@ class MovementSubsystem
 	private: // Member Variables
 		static Vector				_step;
 
-		stepmoveresult_t			_lastmove;
-		MovementType_t				_movementType;
-
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
+		stepmoveresult_t			_lastmove = STEPMOVE_OK;
+		MovementType_t				_movementType = MOVEMENT_TYPE_NORMAL;
 		float						_forwardspeed = 0.0f;
 		PathPtr						_path = nullptr;
 		Vector						_move = Vector(0.0f, 0.0f, 0.0f);

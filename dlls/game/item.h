@@ -42,8 +42,9 @@ class Item : public Trigger
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
-		float					_skillLevel;
-		int						_iconIndex;
+		float					_skillLevel = 0.0f;
+		int						_iconIndex = 0;
+
 
 	protected:
 		str						cool_dialog;
@@ -51,12 +52,12 @@ class Item : public Trigger
 		str						dialog_needed;
 		str						item_name;
 		str						pickup_thread;
-		MultiplayerItemType		_mpItemType;
-
+		
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
+		MultiplayerItemType		_mpItemType = MP_ITEM_TYPE_NORMAL;
 		SentientPtr				owner = nullptr;
 		qboolean				respawnable = qfalse;
 		qboolean				playrespawn = qfalse;

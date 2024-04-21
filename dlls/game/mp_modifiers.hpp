@@ -104,10 +104,13 @@ public:
 class DestructionPlayerData
 {
 public:
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float				_lastHealTime = 0.0f;
+	float				_damageDone = 0.0f;
+	float				_healthHealed = 0.0f;
 
-	float				_lastHealTime;
-	float				_damageDone;
-	float				_healthHealed;
 
 						DestructionPlayerData() { reset(); }
 	void				reset( void ) { _lastHealTime = 0.0f; _damageDone = 0.0f; _healthHealed = 0.0f; }
@@ -129,22 +132,26 @@ private:
 	static const int			_pointsForDestroying;
 	static const int			_pointsForGuarding;
 
-	MultiplayerItem *			_redDestructionObject;
-	MultiplayerItem *			_blueDestructionObject;
 
-	float						_redLastDamageSoundTime;
-	float						_blueLastDamageSoundTime;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	MultiplayerItem *			_redDestructionObject = nullptr;
+	MultiplayerItem *			_blueDestructionObject = nullptr;
 
-	int							_maxPlayers;
-	DestructionPlayerData *		_destructionPlayerData;
+	float						_redLastDamageSoundTime = 0.0f;
+	float						_blueLastDamageSoundTime = 0.0f;
 
-	float						_redObjectLasthealth;
-	float						_blueObjectLasthealth;
+	int							_maxPlayers = 0;
+	DestructionPlayerData *		_destructionPlayerData = nullptr;
 
-	bool						_blueObjectDestroyed;
-	bool						_redObjectDestroyed;
+	float						_redObjectLasthealth = 0.0f;
+	float						_blueObjectLasthealth = 0.0f;
 
-	float						_respawnTime;
+	bool						_blueObjectDestroyed = false;
+	bool						_redObjectDestroyed = false;
+
+	float						_respawnTime = 0.0f;
 
 	float						findDistanceToTeamsObject( const str &teamName, const Vector &position );
 	void						updateObjectAnim( MultiplayerItem *destructionObject, float health, float lastHealth, float maxHealth );
@@ -187,8 +194,11 @@ public:
 class EliminationPlayerData
 {
 public:
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	bool				_eliminated = false;
 
-	bool				_eliminated;
 
 						EliminationPlayerData() { reset(); }
 	void				reset( void ) { _eliminated = false; }
@@ -256,18 +266,17 @@ public:
 class DiffusionBombPlace
 {
 public:
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	MultiplayerItem *	_item = nullptr;
+	bool				_armed = false;
+	float				_totalArmingTime = 0.0f;
+	float				_totalDisarmingTime = 0.0f;
+	float				_lastArmingTime = 0.0f;
+	float				_lastDisarmingTime = 0.0f;
+	float				_totalArmedTime = 0.0f;
 
-	MultiplayerItem *	_item;
-
-	bool				_armed;
-
-	float				_totalArmingTime;
-	float				_totalDisarmingTime;
-
-	float				_lastArmingTime;
-	float				_lastDisarmingTime;
-
-	float				_totalArmedTime;
 
 						DiffusionBombPlace();
 	void				reset( void );
@@ -408,14 +417,18 @@ public:
 class SpecialtyItem
 {
 public:
-	MultiplayerItem *	_item;
-	SpecialtyType		_type;
-	str					_teamName;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	MultiplayerItem *	_item = nullptr;
+	SpecialtyType		_type = SPECIALTY_NONE;
+	bool				_needToRespawn = qfalse;
+	float				_respawnTime = 0.0f;
+	float				_minimumRespawnTime = 0.0f;
+	float				_pickedupTime = 0.0f;
 
-	bool				_needToRespawn;
-	float				_respawnTime;
-	float				_minimumRespawnTime;
-	float				_pickedupTime;
+
+	str					_teamName;
 };
 
 class ModifierSpecialties : public MultiplayerModifier

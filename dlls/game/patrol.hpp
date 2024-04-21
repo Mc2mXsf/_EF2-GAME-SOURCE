@@ -124,12 +124,17 @@ class Patrol : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		HelperNodePtr				_node;
-		HelperNodePtr				_lastNode;
-		unsigned int				_state;
-		int							_moveFailures;
-		float						_nextMoveAttempt;
-		float						_waitTime;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		HelperNodePtr				_node = nullptr;
+		HelperNodePtr				_lastNode = nullptr;
+		unsigned int				_state = 0;
+		int							_moveFailures = 0;
+		float						_nextMoveAttempt = 0.0f;
+		float						_waitTime = 0.0f;
+
+
 		str							_torsoAnim;
 		str							_anim;
    };

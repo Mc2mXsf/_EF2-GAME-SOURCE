@@ -30,7 +30,11 @@
 class Exploder : public Trigger
 	{
 	private:
-		float			damage;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			damage = 0.0f;
+
 
 		void			MakeExplosion( Event *ev );
 		void			SetDmg( Event *ev );
@@ -59,11 +63,15 @@ inline void Exploder::Archive
 class MultiExploder : public Trigger
 	{
 	protected:
-		float			explodewait;
-		float			explode_time;
-		float			duration;
-		int				damage;
-		float			randomness;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			explodewait = 0.0f;
+		float			explode_time = 0.0f;
+		float			duration = 0.0f;
+		int				damage = 0;
+		float			randomness = 0.0f;
+
 
 		void			MakeExplosion( Event *ev );
 		void			SetDmg( Event *ev );
@@ -110,17 +118,22 @@ class ExplodeObject : public MultiExploder
 	{
 	private:
       Container<str> debrismodels;
-      int            debrisamount;
-      float          severity;
 		str				debrissound;
 		str				explosionmodel;
-		float			explosionradius;
 
-		bool		_spawnEarthquake;
-		bool		_haveSpawnedEarthquake;
-		float		_earthquakeMagnitude;
-		float		_earthquakeDuration;
-		float		_earthquakeDistance;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int            debrisamount = 0;
+		float          severity = 0.0f;
+		float			explosionradius = 0.0f;
+		bool		_spawnEarthquake = false;
+		bool		_haveSpawnedEarthquake = false;
+		float		_earthquakeMagnitude = 0.0f;
+		float		_earthquakeDuration = 0.0f;
+		float		_earthquakeDistance = 0.0f;
+
 
       void           SetDebrisModel( Event *ev );
       void           SetSeverity( Event *ev );

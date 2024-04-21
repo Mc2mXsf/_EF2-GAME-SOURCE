@@ -94,23 +94,25 @@ public:
 class def_t : public Class
    {
    public:
-	   type_t		   *type;
-	   str            name;
-      def_t          *next;
-	   gofs_t		   ofs;
-      gofs_t		   localofs;      // equal to ofs for globals, negative for locals
-      def_t          *scope;		   // function the var was defined in, or NULL
-	   int			   initialized;	// 1 when a declaration included "= immediate"
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+        type_t		   *type = nullptr;
+        def_t          *scope = nullptr;		   // function the var was defined in, or NULL
+        int			   initialized = 0;	// 1 when a declaration included "= immediate"
+        bool				caseSensitive = qfalse;
+        bool				_onDefList = qfalse;
 
-		bool				caseSensitive;
 
-		bool				_onDefList;
+        def_t          *next;
+        gofs_t		   ofs;
+        gofs_t		   localofs;      // equal to ofs for globals, negative for locals
+        str            name;
+        def_t();
 
-                     def_t();
+        CLASS_PROTOTYPE( def_t );
 
-							CLASS_PROTOTYPE( def_t );
-
-		virtual void	Archive( Archiver &arc );
+        virtual void	Archive( Archiver &arc );
    };
 
 typedef struct
@@ -175,29 +177,28 @@ class Program : public Class
 
 		virtual void	Archive( Archiver &arc );
 
-      def_t		      *pr_global_defs[ MAX_REGS ];	// to find def for a global variable
-      float		      pr_globals[ MAX_REGS ];
-      int		      numpr_globals;
 
-      int            locals_start;
-      int			   locals_end;		// for tracking local variables vs temps
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+        def_t* pr_global_defs[MAX_REGS] = {nullptr};	// to find def for a global variable
+        float		  pr_globals[MAX_REGS] = {0.0f};
+        int		      numpr_globals = 0;
+        int            locals_start = 0;
+        int			   locals_end = 0;		// for tracking local variables vs temps
+        int			   numstatements = 0;
+        int			   numfunctions = 0;
+        type_t* types = nullptr;
+        def_t* def_tail = nullptr;		               // add new defs after this and move it
+        int		      pr_error_count = 0;
 
-      localstr_t		strings[ MAX_STRINGS ];
 
-      dstatement_t	statements[ MAX_STATEMENTS ];
-      int			   numstatements;
-
-      dfunction_t	   functions[ MAX_FUNCTIONS ];
-      int			   numfunctions;
-
-	   type_t		   *types;	
-	   def_t		      def_head;		               // unused head of linked list
-	   def_t		      *def_tail;		               // add new defs after this and move it
-
-      int		      pr_error_count;
-
-      Container<str> filenames;
-      str            s_file;
+        def_t		      def_head;		               // unused head of linked list
+        dstatement_t	statements[MAX_STATEMENTS];
+        dfunction_t	   functions[MAX_FUNCTIONS];
+        localstr_t		strings[MAX_STRINGS];
+        Container<str> filenames;
+        str            s_file;
 
       type_t         *FindType( const type_t *type );
       def_t          *GetDef( type_t *type, const char *name, def_t *scope, bool allocate, Lexer *lex );

@@ -386,16 +386,14 @@ class Event : public Class
 		SafePtr<Listener>    m_sourceobject = nullptr;
 		//Listener             *obj = nullptr;
 		float		            time = 0.0f;
-		int                  flags = 0;
-
-		
-		EventInfo			   info;
-      const char           *name;
-      const char           *formatspec;
-      const char           *argument_names;
-      const char           *documentation;
-		Container<EventVar>  *data;
-		Container<EventArgDef> *definition;
+		int                  flags = 0;		
+		EventInfo			   info = {};
+		const char           *name = nullptr;
+		const char           *formatspec = nullptr;
+		const char           *argument_names = nullptr;
+		const char           *documentation = nullptr;
+		Container<EventVar>  *data = nullptr;
+		Container<EventArgDef> *definition = nullptr;
       
 
 

@@ -31,12 +31,15 @@
 class Mover : public Listener
 	{
 	private:
-      Vector				finaldest;
-		Vector				angledest;
-		Event					*endevent;
-		int					moveflags;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      Vector				finaldest = Vector(0.0f, 0.0f, 0.0f);
+		Vector				angledest = Vector(0.0f, 0.0f, 0.0f);
+		Event				*endevent = nullptr;
+		int					moveflags = 0;
+		Entity				*self = nullptr;
 
-		Entity				*self;
 
 	public:
 		CLASS_PROTOTYPE( Mover );

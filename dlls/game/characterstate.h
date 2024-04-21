@@ -78,7 +78,12 @@ class Conditional;
 template< class Type >
 struct Condition
 	{
-	const char     *name;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	const char     *name = nullptr;
+
+
    qboolean       ( Type::*func )( Conditional &condition );
    };
 

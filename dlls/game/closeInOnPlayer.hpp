@@ -107,15 +107,12 @@ class CloseInOnPlayer : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		closeInOnPlayerStates_t					_state;
-
-
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
 		EntityPtr								_player = nullptr;
 		Actor								   *_self = nullptr;
-
+		closeInOnPlayerStates_t					_state = CLOSE_IN_ON_PLAYER_APPROACH;
 };
 
 inline void CloseInOnPlayer::setAnim( const str &animName )

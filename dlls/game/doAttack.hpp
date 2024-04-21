@@ -56,9 +56,15 @@ class DoAttack : public Behavior
 
 	private: // Parameters
 		str								_anim;
-		float							_turnspeed; 
-		bool							_forceAttack;
 		str								_rotateAnim;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_turnspeed = 0.0f; 
+		bool							_forceAttack = false;
+		
       
 	protected:
 		void							_setupRotate    ( Actor &self );
@@ -84,7 +90,12 @@ class DoAttack : public Behavior
 		void							SetRotateAnim ( const str &animName );
 
 	private:
-		unsigned int                     _state;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int                     _state = 0;
+
+
 		RotateToEntity                   _rotateBehavior;	  
 	};
 

@@ -64,13 +64,18 @@ class GeneralCombatWithMeleeWeapon : public Behavior
 		str								_attackAnim;
 		str								_rotationAnim;
 		str								_rushAnim;
-		float							_maxDistanceToEngage;
-		float							_meleeDistance;
-		float							_strafeChance;
-		float							_blockChance;
-		float							_attackChance;
-		float							_postureChangeChance;
-		bool							_allowRushFailure;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_maxDistanceToEngage = 0.0f;
+		float							_meleeDistance = 0.0f;
+		float							_strafeChance = 0.0f;
+		float							_blockChance = 0.0f;
+		float							_attackChance = 0.0f;
+		float							_postureChangeChance = 0.0f;
+		bool							_allowRushFailure = false;
 
 
 	//-------------------------------------
@@ -135,23 +140,24 @@ class GeneralCombatWithMeleeWeapon : public Behavior
 	  str								_blockAttack;
 	  str								_postureTransitionAnim;
 
-	  unsigned int						_state;
-	  unsigned int						_nextPostureState;		
-	  
-	  float 							_nextRotateTime;
-	  float 							_nextStrafeAttemptTime;
-	  float 							_nextRushAttemptTime;
-	  float 							_nextPostureChangeTime;
-	  float 							_exitHoldTime;
-	  float								_exitBlockTime;
-
-	  Actor*							_self;
-
 	  // Components
 	  RotateToEntity					_rotate;
 	  GotoEntity						_rush;
 	  Strafe							_strafeComponent;
-	  
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+	  unsigned int						_state = 0;
+	  unsigned int						_nextPostureState = 0;
+	  float 							_nextRotateTime = 0.0f;
+	  float 							_nextStrafeAttemptTime = 0.0f;
+	  float 							_nextRushAttemptTime = 0.0f;
+	  float 							_nextPostureChangeTime = 0.0f;
+	  float 							_exitHoldTime = 0.0f;
+	  float								_exitBlockTime = 0.0f;
+	  Actor*							_self = nullptr;
    };
 
 
