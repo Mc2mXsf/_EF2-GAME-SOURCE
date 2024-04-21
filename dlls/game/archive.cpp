@@ -830,6 +830,12 @@ Class * Archiver::ReadObject( void )
 	if ( !cls )
 	{
 		FileError( "Invalid class %s.", classname.c_str() );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		//--------------------------------------------------------------
+		return nullptr;
 	}
 	
 	isent = checkInheritance( &Entity::ClassInfo, cls );

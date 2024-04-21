@@ -1786,6 +1786,16 @@ Event::Event( const char *command, int flags, const char *theFormatspec, const c
 	{
 		initCommandList();
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!commandList) {
+		gi.Error(ERR_DROP, "Event::Event( int num ) - commandList was not init");
+		return;
+	}
+
 	
 	eventnum = FindEvent( command );
 	if ( !eventnum )
@@ -1858,6 +1868,16 @@ Event::Event( const char *command )
 	{
 		initCommandList();
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!commandList) {
+		gi.Error(ERR_DROP, "Event::Event( int num ) - commandList was not init");
+		return;
+	}
+
 	
 	eventnum = FindEvent( command );
 	if ( !eventnum )
@@ -1889,6 +1909,16 @@ Event::Event( const str &command )
 		initCommandList();
 	}
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!commandList) {
+		gi.Error(ERR_DROP, "Event::Event( int num ) - commandList was not init");
+		return;
+	}
+
+
 	eventnum = FindEvent( command );
 	if ( !eventnum )
 	{

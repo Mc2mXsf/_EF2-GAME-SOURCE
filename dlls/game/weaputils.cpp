@@ -1971,8 +1971,14 @@ Projectile *ProjectileAttack( const Vector &start, Vector &dir, Entity *owner, c
 	else
 		gi.WDPrintf( "%s is not of class projectile\n", projectileModel.c_str() );
 	
-	if ( !proj )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+	// Added check for owner
+	//--------------------------------------------------------------
+	if ( !proj || !owner)
 		return NULL;
+
 
 	if ( owner && owner->isSubclassOf( Player ) )
 	{

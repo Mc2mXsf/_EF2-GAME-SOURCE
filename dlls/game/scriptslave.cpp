@@ -2646,7 +2646,13 @@ void ScriptSkyOrigin::Think( void )
 			
 			// Calculate the new origin
 			
-			delta = player->origin - player_base_position;
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+			//--------------------------------------------------------------
+			delta = player_origin - player_base_position;
+
+
 			delta *= translation_multiplier;
 			
 			if ( max_distance && ( delta.length() > max_distance ) )

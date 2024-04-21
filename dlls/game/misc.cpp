@@ -2856,6 +2856,12 @@ Entity *FallingRock::SetNextBounceDir( void )
 	if ( !ent )
 	{
 		gi.Error( ERR_DROP, "FallingRock :: Entity with targetname of '%s' not found", current->target.c_str() );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		//--------------------------------------------------------------
+		return nullptr;
 	}
 	
 	bounce_dir = ent->origin - current->origin;

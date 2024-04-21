@@ -672,13 +672,27 @@ void ModifierDestruction::update( float frameTime )
 
 		if ( _blueObjectDestroyed )
 		{
-			_blueDestructionObject->setHealth( _blueDestructionObject->max_health );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+			//--------------------------------------------------------------
+			if (_blueDestructionObject) {
+				_blueDestructionObject->setHealth(_blueDestructionObject->max_health);
+			}
+
+
 			_blueObjectDestroyed = false;
 		}
 
 		if ( _redObjectDestroyed )
 		{
-			_redDestructionObject->setHealth( _redDestructionObject->max_health );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+			//--------------------------------------------------------------
+			if (_blueDestructionObject) {
+				_redDestructionObject->setHealth(_redDestructionObject->max_health);
+			}
+
+
 			_redObjectDestroyed = false;
 		}
 

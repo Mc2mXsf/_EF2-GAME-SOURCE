@@ -635,17 +635,22 @@ void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlaye
 
 		if ( dedicated->integer )
 		{
-			if ( suicide )
-			{
-				printString = va( "%s %s", killedPlayer->client->pers.netname, s1 );
-			}
-			else if ( s2 )
-			{
-				printString = va( "%s %s %s %s", killedPlayer->client->pers.netname, s1, attackingPlayer->client->pers.netname, s2 );
-			}
-			else
-			{
-				printString = va( "%s %s %s", killedPlayer->client->pers.netname, s1, attackingPlayer->client->pers.netname );
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+			//--------------------------------------------------------------
+			if (killedPlayer) {
+				if (suicide)
+				{
+					printString = va("%s %s", killedPlayer->client->pers.netname, s1);
+				}
+				else if (s2)
+				{
+					printString = va("%s %s %s %s", killedPlayer->client->pers.netname, s1, attackingPlayer->client->pers.netname, s2);
+				}
+				else
+				{
+					printString = va("%s %s %s", killedPlayer->client->pers.netname, s1, attackingPlayer->client->pers.netname);
+				}
 			}
 
 			if ( sameTeam )

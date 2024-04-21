@@ -2213,7 +2213,15 @@ void MultiplayerManager::say( Player *player, const str &text, bool team )
 
 	if ( realText.length() > _maxSayStringLength )
 	{
-		HUDPrint( player->entnum, "$$SayTooLong$$\n" );
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		// Added player check
+		//--------------------------------------------------------------
+		if (player) {
+			HUDPrint(player->entnum, "$$SayTooLong$$\n");
+		}
+
+
 		return;
 	}
 

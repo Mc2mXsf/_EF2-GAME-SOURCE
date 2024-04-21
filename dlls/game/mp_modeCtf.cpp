@@ -742,24 +742,36 @@ void ModeCaptureTheFlag::returnFlag( MultiplayerItem *item, Player *player )
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
-		// 
 		// Replaced 2 times
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		// Added if check for ctfFlag->_realFlag
 		//--------------------------------------------------------------
-		if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
-			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_rfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
-		else if (Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
-			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_bfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
-		else
-		{
-			if ( _playerGameData[ player->entnum ]._currentTeam->getName() == "Red" )
-				multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_frbrt.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
+		if (ctfFlag->_realFlag) {
+			if (Q_stricmpn(ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen("ctfflag-red")) == 0)
+				multiplayerManager.broadcastSound("localization/sound/dialog/dm/comp_rfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f);
+			else if (Q_stricmpn(ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen("ctfflag-blue")) == 0)
+				multiplayerManager.broadcastSound("localization/sound/dialog/dm/comp_bfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f);
 			else
-				multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_frbbt.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
+			{
+				if (_playerGameData[player->entnum]._currentTeam->getName() == "Red")
+					multiplayerManager.broadcastSound("localization/sound/dialog/dm/comp_frbrt.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f);
+				else
+					multiplayerManager.broadcastSound("localization/sound/dialog/dm/comp_frbbt.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f);
+			}
 		}
+
 
 		// Tell all of the other multiplayer systems that the flag was returned
 
-		multiplayerManager.playerEventNotification( "flag-returned", ctfFlag->_realFlag->getName().c_str(), player );
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		// Added if check for ctfFlag->_realFlag
+		//--------------------------------------------------------------
+		if (ctfFlag->_realFlag) {
+			multiplayerManager.playerEventNotification("flag-returned", ctfFlag->_realFlag->getName().c_str(), player);
+		}
+
 
 		// Give points to the player 
 
@@ -774,11 +786,16 @@ void ModeCaptureTheFlag::returnFlag( MultiplayerItem *item, Player *player )
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C4996 strnicmp: The POSIX name for this item is deprecated. Using Q_stricmpn instead. - chrissstrahl
+		// Replaced 2 times
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		// Added if check for ctfFlag->_realFlag
 		//--------------------------------------------------------------
-		if ( Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen( "ctfflag-red" ) ) == 0 )
-			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_rfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
-		else if ( Q_stricmpn( ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen( "ctfflag-blue" ) ) == 0 )
-			multiplayerManager.broadcastSound( "localization/sound/dialog/dm/comp_bfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f );
+		if (ctfFlag->_realFlag) {
+			if (Q_stricmpn(ctfFlag->_realFlag->getName().c_str(), "ctfflag-red", strlen("ctfflag-red")) == 0)
+				multiplayerManager.broadcastSound("localization/sound/dialog/dm/comp_rfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f);
+			else if (Q_stricmpn(ctfFlag->_realFlag->getName().c_str(), "ctfflag-blue", strlen("ctfflag-blue")) == 0)
+				multiplayerManager.broadcastSound("localization/sound/dialog/dm/comp_bfr.mp3", CHAN_AUTO, DEFAULT_VOL, DEFAULT_MIN_DIST, NULL, 1.2f);
+		}
 		
 	}
 }
