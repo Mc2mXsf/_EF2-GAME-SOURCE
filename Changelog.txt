@@ -11,6 +11,31 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+Fixed: Warning C6011 Dereferencing NULL-Pointer.
+void MultiplayerManager::say( Player *player, const str &text, bool team )
+Projectile *ProjectileAttack( const Vector &start, Vector &dir, Entity *owner, const str &projectileModel, float fraction,float real_speed )
+Event::Event( const char *command, int flags, const char *theFormatspec, const char *theArgument_names, const char *theDocumentation )
+Event::Event( const char *command )
+Class * Archiver::ReadObject( void )
+void Player::ClientThink( Event *ev )
+void Player::LevelCleanup( void )
+void Player::SetPlayerViewUsingActorController( Camera *camera )
+void Entity::quitTeam(void)
+void Entity::SetEntNum(int num)
+void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlayer, int meansOfDeath )
+void GotoSpecified::setupWarpToPathNode( Actor &self )
+Actor* Actor::GetAttachedChildActor( const str& childName )
+qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float check_fovdot	)
+int BotAISetupClient(int client, struct bot_settings_s *settings, qboolean restart)
+void Entity::quitTeam(void)
+void BotDeathmatchAI(bot_state_t *bs, float thinktime)
+Event::Event( int num )
+Event::Event( const str &command )
+void ModeCaptureTheFlag::returnFlag( MultiplayerItem *item, Player *player )
+Entity *FallingRock::SetNextBounceDir( void )
+void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlayer, int meansOfDeath )
+void ModifierDestruction::update( float frameTime )
+
 Fixed: Possible buffer overflow risk
 const char *Info_ValueForKey (const char *s, const char *key)
 void COM_StripExtension(const char* in, char* out, int destsize)
@@ -26,13 +51,6 @@ Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not 
 int NumPlayersOnSameTeam(bot_state_t *bs)
 void BotTeamplayReport(void)
 void BotUpdateInfoConfigStrings(void)
-
-Fixed: Warning: C6011 Dereferencing NULL-Pointer.
-qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float check_fovdot	)
-int BotAISetupClient(int client, struct bot_settings_s *settings, qboolean restart)
-void Entity::quitTeam(void)
-void BotDeathmatchAI(bot_state_t *bs, float thinktime)
-Event::Event( int num )
 
 Fixed: Warning: C28182 Dereferencing NULL-Pointer ?, contains same NULL-Value as ?
 void BotInterbreedBots(void)
@@ -91,7 +109,44 @@ int BotNumTeamMates(bot_state_t *bs)
 int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxteammates)
 void BotTeamOrders(bot_state_t *bs)
 
-Fixed: Warning C26495: The Variable ? was not initialized. A 0ariable needs always to be initialized (type.6)
+Fixed: Warning C26495: The Variable ? was not initialized. A Variable needs always to be initialized (type.6)
+class State : public Class
+class Expression : public Class
+class Conditional : public Class
+class CombatSubsystem 
+class CameraWatchState : public Class
+class EnemyManager 
+class EFGameComponent : public ActorGameComponent
+class Earthquake : public Trigger
+void Door::SetDir( Event *ev )
+Door::Door()
+class Personality 
+class PackageManager 
+class DefaultStrategos : public Strategos
+class Actor : public Sentient
+class CameraManager : public Listener
+class Camera : public Entity
+class CameraState : public Class
+class AnimatedTeleportToPlayer : public Behavior
+class FollowPathBlindly : public Behavior
+class SimpleMelee : public Behavior
+class MoveToDistanceFromEnemy : public Behavior
+class GroupFollow : public Behavior
+class FollowInFormation : public Behavior
+class CircleStrafeEntity   : public Behavior
+class Strafe : public Behavior
+class MoveFromConeOfFire : public Behavior
+class WarpToEntity : public Behavior
+class WarpToPosition : public Behavior
+class GoDirectlyToPoint : public Steering
+class FollowPathToEntity : public FollowPath
+class GotoEntity : public Behavior
+class CloseInOnPlayer : public Behavior
+class CloseInOnEnemy : public Behavior
+class CloseInOnEnemyWhileFiringWeapon : public Behavior
+class MultiplayerModeBase : public Class
+class Event : public Class
+class ChangePosture : public Behavior
 class CinematicArmature : public Listener
 class Cinematic : public Entity
 class CinematicOrigin : public Listener
@@ -457,16 +512,6 @@ void Player::UpdateStats( void )
 
 Fixed: Warning C4458: declaration of activator hides class member. Renamed to: temp_activator
 void Trigger::TriggerStuff( Event *ev )
-
-Fixed: Warning C6011 Dereferencing NULL-Pointer.
-void Player::ClientThink( Event *ev )
-void Player::LevelCleanup( void )
-void Player::SetPlayerViewUsingActorController( Camera *camera )
-void Entity::quitTeam(void)
-void Entity::SetEntNum(int num)
-void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlayer, int meansOfDeath )
-void GotoSpecified::setupWarpToPathNode( Actor &self )
-Actor* Actor::GetAttachedChildActor( const str& childName )
 
 Fixed: Warning C4389 ==: Conflict between signed and unsigned
 void Team::AddPlayer( Player* player )
