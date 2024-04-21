@@ -163,11 +163,14 @@ inline void CameraMoveState::Archive( Archiver& arc )
 class CameraWatchState : public Class
 {
 public:
-	Vector			watchAngles;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Vector			watchAngles = Vector(0.0f, 0.0f, 0.0f);
+	EntityPtr		watchEnt = nullptr;
+	qboolean		watchNodes = qfalse;
+	qboolean		watchPath = qfalse;
 
-	EntityPtr		watchEnt;
-	qboolean		watchNodes;
-	qboolean		watchPath;
 
 	void			Evaluate( const Camera* camera, const CameraMoveState* move );
 	void			Initialize( Camera* camera );
@@ -198,7 +201,13 @@ class CameraState : public Class
 public:
 	CameraMoveState		move;
 	CameraWatchState	watch;
-	float				fov;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float				fov = 0.0f;
+
 
 	void				Evaluate( Camera * camera );
 	void				Initialize( Camera * camera );
@@ -231,50 +240,62 @@ private:
 	//
 	// follow parameters
 	//
-	float			follow_yaw;
-	qboolean		follow_yaw_fixed;
-	float			follow_dist;
-	int				follow_mask;
-
-	// camera speed
-	float			camera_speed;
-	// current camera fov
-	float			camera_fov;
-	// orbit height
-	float			orbit_height;
-	// orbit_dotrace
-	qboolean		orbit_dotrace;
-	// whether or not auto calculate fov, a non-zero value means yes
-	float			auto_fov;
-
-	// automatic variables
-	float			automatic_startTime;
-	float			automatic_stopTime;
-	float			automatic_radius;
-	float			automatic_maxFOV;
-	qboolean		automatic_active;
 	Container<str>	automatic_states;
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float			follow_yaw = 0.0f;
+	qboolean		follow_yaw_fixed = qfalse;
+	float			follow_dist = 0.0f;
+	int				follow_mask = 0;
+
+	// camera speed
+	float			camera_speed = 0.0f;
+	// current camera fov
+	float			camera_fov = 0.0f;
+	// orbit height
+	float			orbit_height = 0.0f;
+	// orbit_dotrace
+	qboolean		orbit_dotrace = qfalse;
+	// whether or not auto calculate fov, a non-zero value means yes
+	float			auto_fov = 0.0f;
+
+	// automatic variables
+	float			automatic_startTime = 0.0f;
+	float			automatic_stopTime = 0.0f;
+	float			automatic_radius = 0.0f;
+	float			automatic_maxFOV = 0.0f;
+	qboolean		automatic_active = qfalse;
+
 	// members supporting new key-framed camera system
-	CameraPath*		newCameraPath; // NULL if not currently in use (fall back to old system)
-	float			newCameraPathSeconds; // the number of seconds the camera is into its key-framed path
+	CameraPath*		newCameraPath = nullptr; // NULL if not currently in use (fall back to old system)
+	float			newCameraPathSeconds = 0.0f; // the number of seconds the camera is into its key-framed path
+
 
 protected:
 	CameraState		currentstate;
 	CameraState		newstate;
 
-	float			watchTime;  // if non-zero, camera view is transitioning
-	float			followTime; // if non-zero, camera position is tranisitioning
-	float			fovTime;    // if non-zero, fov is being lerped
 
-	float			fadeTime; // time to transition over
-	float			fovFadeTime; // time for fov transition
-	float			followFadeTime; // time for fov transition
-	float			watchFadeTime; // time for fov transition
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float			watchTime = 0.0f;  // if non-zero, camera view is transitioning
+	float			followTime = 0.0f; // if non-zero, camera position is tranisitioning
+	float			fovTime = 0.0f;    // if non-zero, fov is being lerped
+
+	float			fadeTime = 0.0f; // time to transition over
+	float			fovFadeTime = 0.0f; // time for fov transition
+	float			followFadeTime = 0.0f; // time for fov transition
+	float			watchFadeTime = 0.0f; // time for fov transition
+
+	qboolean		showcamera = qfalse;
+
 
 	str				nextCamera;
 	str				thread;
-	qboolean		showcamera;
 
 	void			SetupCamera( Event* ev );
 	void			CameraThink( Event* ev );
@@ -452,23 +473,22 @@ class CameraManager : public Listener
 protected:
 	Container<str>	pathList;
 	BSpline			cameraPath;
-	SplinePathPtr	path;
-	SplinePathPtr	current;
-	float			speed;
-	int				watch;
 	str				pathName;
-	CameraPtr		cam;
-	qboolean		cameraPath_dirty;
-	
+
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 	//--------------------------------------------------------------
+	SplinePathPtr	path = nullptr;
+	SplinePathPtr	current = nullptr;
+	float			speed = 0.0f;
+	int				watch = 0;
+	CameraPtr		cam = nullptr;
+	qboolean		cameraPath_dirty = qfalse;
 	float			playbackStartTime = 0.0f;
+	qboolean		isPreviewPlaybackRunning = qfalse;
 
-
-	qboolean		isPreviewPlaybackRunning;
-
+	
 	void			NewPath( Event* ev );
 	void			SetPath( Event* ev );
 	void			SetTargetName( Event* ev );

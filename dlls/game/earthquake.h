@@ -32,13 +32,17 @@ extern Event EV_Earthquake_SetDistance;
 class Earthquake : public Trigger
 {
 	protected:
-		float		_startTime;
-		bool		_active;
-		float		_magnitude;
-		float		_duration;
-		float		_distance;
-		float		_currentMagnitude;
-		bool		_playSound;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float		_startTime = 0.0f;
+		bool		_active = false;
+		float		_magnitude = 0.0f;
+		float		_duration = 0.0f;
+		float		_distance = 0.0f;
+		float		_currentMagnitude = 0.0f;
+		bool		_playSound = false;
+
 
 	public:
 		CLASS_PROTOTYPE( Earthquake );

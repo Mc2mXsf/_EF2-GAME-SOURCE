@@ -64,9 +64,14 @@ class AnimatedTeleportToPosition : public Behavior
 	//------------------------------------
 	private:
 		str						_teleportPositionName;
-		int						_numberOfTeleportPositions;
 		str						_startAnim;
 		str						_endAnim;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						_numberOfTeleportPositions = 0;
 
 
 	//-------------------------------------
@@ -84,9 +89,14 @@ class AnimatedTeleportToPosition : public Behavior
 	//-------------------------------------
 	// Member Variables
 	//-------------------------------------
-	private:		
-		animTeleportStates_t	_state;
-		PathNodePtr				_goal;
+	private:	
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		animTeleportStates_t	_state = ANIM_TELEPORT_BEGIN;
+		PathNodePtr				_goal = nullptr;
 
 	};
 

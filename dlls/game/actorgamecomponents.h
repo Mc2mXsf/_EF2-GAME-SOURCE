@@ -73,7 +73,10 @@ class EFGameComponent : public ActorGameComponent
 		void  DoArchive( Archiver &arc , const Actor *act );
 
 	private:
-		Actor *act;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor *act = nullptr;
 	};
 
 #endif /*__ACTORGAMECOMPONENTS_H__*/

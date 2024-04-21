@@ -191,17 +191,21 @@ class CoverCombatWithRangedWeapon : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		coverCombatStates_t				_state;
-		HelperNodePtr					_node; 		
-		Actor						   *_self;
-		EntityPtr						_currentEnemy;
-		bool							_finishedPostureTransition;
-		bool							_spotted;
-		float							_nextSpotCheck;
-		float							_nextStandTime;
-		float							_nextDuckTime;
-		float							_nextFireTime;
-		float							_nextPauseTime;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		coverCombatStates_t				_state = COVERCOMBAT_WRW_FIND_COVER;
+		HelperNodePtr					_node = nullptr; 		
+		Actor						   *_self = nullptr;
+		EntityPtr						_currentEnemy = nullptr;
+		bool							_finishedPostureTransition = false;
+		bool							_spotted = false;
+		float							_nextSpotCheck = 0.0f;
+		float							_nextStandTime = 0.0f;
+		float							_nextDuckTime = 0.0f;
+		float							_nextFireTime = 0.0f;
+		float							_nextPauseTime = 0.0f;
+
 
 		static const float				NODE_RADIUS;
 

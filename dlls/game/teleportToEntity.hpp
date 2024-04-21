@@ -98,9 +98,14 @@ class AnimatedTeleportToPlayer : public Behavior
 	//-------------------------------------
 	// Member Variables
 	//-------------------------------------
-	private:		
-		Vector					_teleportPosition;
-		animTeleportStates_t	_state;
+	private:	
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					_teleportPosition = Vector(0.0f, 0.0f, 0.0f);
+		animTeleportStates_t	_state = ANIM_TELEPORT_BEGIN;
 	};
 
 inline void AnimatedTeleportToPlayer::Archive( Archiver &arc )

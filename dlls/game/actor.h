@@ -101,8 +101,14 @@ class Actor : public Sentient
 {
 	public:
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		// E3 2002 Hack Stuff
-		EntityPtr forcedEnemy;
+		EntityPtr forcedEnemy = nullptr;
+
+
 
 		typedef enum {
 			ACTOR_CONTROL_NONE,
@@ -125,18 +131,21 @@ class Actor : public Sentient
 		// of just BONE.
 		//-----------------------------------------------------
 		str								 newanim;
-		int								 newanimnum;
-		int                              animnum;
 		str								 animname;
-		Event							*newanimevent;
 		str								 last_anim_event_name;
-
 		str								 newTorsoAnim;
-		int								 newTorsoAnimNum;
 		str								 TorsoAnimName;
-		Event							*newTorsoAnimEvent;		
 		str								 last_torso_anim_event_name;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Event							*newanimevent = nullptr;
+		int								 newanimnum = 0;
+		int                              animnum = 0;
+		int								 newTorsoAnimNum = 0;
+		Event							*newTorsoAnimEvent = nullptr;		
 		//-----------------------------------------------------
 		// Range Data
 		// This was original placed here so that level designers
@@ -147,11 +156,10 @@ class Actor : public Sentient
 		// of legacy.  However, we should keep an eye on this to 
 		// see if can be removed.
 		//-----------------------------------------------------
-		float						absoluteMin;
-		float						absoluteMax;
-		float						preferredMin;
-		float						preferredMax;
-		
+		float						absoluteMin = 0.0f;
+		float						absoluteMax = 0.0f;
+		float						preferredMin = 0.0f;
+		float						preferredMax = 0.0f;
 		//-----------------------------------------------------
 		// Actor and Target Types
 		// the actortype is the primary determinant of who the
@@ -168,10 +176,9 @@ class Actor : public Sentient
 		// that this can be removed, but I'm not going to do it
 		// right now for fear of breaking stuff
 		//-----------------------------------------------------
-		actortype_t					actortype;
-		targetType_t				targetType;
-		qboolean					validTarget;
-		
+		actortype_t					actortype = IS_FRIEND;
+		targetType_t				targetType = ATTACK_ANY;
+		qboolean					validTarget = qfalse;
 		//-----------------------------------------------------
 		// Behavior Data
 		// We have the ability to play multiple behaviors simultaneously
@@ -182,22 +189,23 @@ class Actor : public Sentient
 		// are worked out of using multiple behaviors ( especially when
 		// relying on Anim Done or other such conditionals
 		//--------------------------------------------------------
-		BehaviorPtr						behavior;
+		BehaviorPtr						behavior = nullptr;
+		BehaviorPtr						headBehavior = nullptr;
+		BehaviorPtr						eyeBehavior = nullptr;
+		BehaviorPtr						torsoBehavior = nullptr;
+		BehaviorReturnCode_t			behaviorCode = BEHAVIOR_SUCCESS;
+		BehaviorReturnCode_t			headBehaviorCode = BEHAVIOR_SUCCESS;
+		BehaviorReturnCode_t			eyeBehaviorCode = BEHAVIOR_SUCCESS;
+		BehaviorReturnCode_t			torsoBehaviorCode = BEHAVIOR_SUCCESS;
+
+
+
 		str								currentBehavior;
 		str								behaviorFailureReason;
-		BehaviorReturnCode_t			behaviorCode;
-
-		BehaviorPtr						headBehavior;
 		str								currentHeadBehavior;
-		BehaviorReturnCode_t			headBehaviorCode;
-
-		BehaviorPtr						eyeBehavior;
 		str								currentEyeBehavior;
-		BehaviorReturnCode_t			eyeBehaviorCode;
-
-		BehaviorPtr						torsoBehavior;
 		str								currentTorsoBehavior;
-		BehaviorReturnCode_t			torsoBehaviorCode;
+
 
 		//---------------------------------------------------------
 		// Lead Factors
@@ -215,9 +223,12 @@ class Actor : public Sentient
 		//	always leads it perfectly; [0,2] means he sometimes
 		//	over-leads and sometimes under-leads it.
 		//---------------------------------------------------------
-		float							minLeadFactor;
-		float							maxLeadFactor;
 		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							minLeadFactor = 0.0f;
+		float							maxLeadFactor = 0.0f;
 		//---------------------------------------------------------
 		// ThrowObject Flag
 		// This is here in case the actor has an object deemed as
@@ -228,13 +239,19 @@ class Actor : public Sentient
 		// that we "have" a throw object, it should be made an bit
 		// in the Actor Flag stuff not its own bool
 		//----------------------------------------------------------
-		qboolean                   haveThrowObject;
+		qboolean                   haveThrowObject = qfalse;
+
+
+
 
 		//-----------------------------------------------------------
 		// AnimSet -- Animation Sets can be setup in the GPD.  What
 		// animset the actor is currently using is set up in script
 		//-----------------------------------------------------------
 		str							animset;
+
+
+
 
 		//----------------------------------------------------------
 		// Flags
@@ -243,14 +260,16 @@ class Actor : public Sentient
 		// should experiment with converting these flags into a 
 		// bit vector
 		//---------------------------------------------------------
-		unsigned int				actor_flags1;
-		unsigned int				actor_flags2;
-		unsigned int				actor_flags3;	
-		unsigned int				actor_flags4;	
-		unsigned int				notify_flags1;
-		unsigned int				state_flags;
-
-
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int				actor_flags1 = 0;
+		unsigned int				actor_flags2 = 0;
+		unsigned int				actor_flags3 = 0;	
+		unsigned int				actor_flags4 = 0;	
+		unsigned int				notify_flags1 = 0;
+		unsigned int				state_flags = 0;
 		//--------------------------------------------------------
 		// Some Dialog and Babble Stuff
 		// Okay, now that we have context dialog stuff in addition
@@ -258,18 +277,23 @@ class Actor : public Sentient
 		// even if we do it as a helper class, it needs something
 		// it really needs to be moved
 		//---------------------------------------------------------
-		float						 chattime;
-		float						 nextsoundtime;
-		DialogMode_t				 DialogMode;
-		float						 radiusDialogRange;
-		DialogNode_t				*dialog_list;
-		float						 dialog_done_time;
-		str							 dialog_state_name;
-		str							 dialog_old_state_name;		
+		float						 chattime = 0.0f;
+		float						 nextsoundtime = 0.0f;
+		DialogMode_t				 DialogMode = DIALOG_MODE_NORMAL;
+		float						 radiusDialogRange = 0.0f;
+		DialogNode_t				*dialog_list = nullptr;
+		float						 dialog_done_time = 0.0f;
 		bool						 _ignoreNextContext;
+		float						 _nextContextTime = 0.0f;
+		float						 _contextInterval = 0.0f;
+
+
+
+
+		str							 dialog_state_name;
+		str							 dialog_old_state_name;
 		str							 _nextContextToIgnore;
-		float						 _nextContextTime;
-		float						 _contextInterval;
+
 		
 		//---------------------------------------------------------
 		// Thread Management
@@ -282,7 +306,14 @@ class Actor : public Sentient
 		// it would also allow us to have many many more types of these
 		// threads since they would only be stored "as required"
 		//----------------------------------------------------------
-		ThreadPtr					scriptthread;		
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		ThreadPtr					scriptthread = nullptr;
+
+		
+
 		str							kill_thread;
 		str							escape_thread;
 		str							captured_thread;
@@ -293,6 +324,8 @@ class Actor : public Sentient
 		str							idle_thread;
 		Container<threadlist_t *>	threadList;
 		
+
+
 		//----------------------------------------------------------
 		// Pain and Miscellaneous Damage
 		// I honestly don't know what some of these variables
@@ -300,18 +333,27 @@ class Actor : public Sentient
 		// for actors and see if there's a better way to do it,
 		// and verify that we need all of this stuff
 		//----------------------------------------------------------
-		float						pain_threshold;
-		float						next_drown_time;
-		float						air_finished;
-		int							pain_type;
-		Vector						pain_angles;
-		int							bullet_hits;
-		float						next_pain_time;
-		float						min_pain_time;
-		float						next_forced_pain_time;
-		float						max_pain_time;
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						pain_threshold = 0.0f;
+		float						next_drown_time = 0.0f;
+		float						air_finished = 0.0f;
+		int							pain_type = 0;
+		Vector						pain_angles = Vector(0.0f, 0.0f, 0.0f);
+		int							bullet_hits = 0;
+		float						next_pain_time = 0.0f;
+		float						min_pain_time = 0.0f;
+		float						next_forced_pain_time = 0.0f;
+		float						max_pain_time = 0.0f;
+
+
+
 		str							_deathEffect;
 				
+
+
 		//----------------------------------------------------------
 		// State map and "Thinking" stuff
 		// Here's where we store all the stuff for the Actors state
@@ -321,34 +363,33 @@ class Actor : public Sentient
 		// for a specified actor.
 		// We really really need better debuging tools for actors		
 		//----------------------------------------------------------
-		
 		str							 masterstatemap_name;		
-		StateMap					*masterstatemap;
-		State						*currentMasterState;
-		State						*lastMasterState;
-
-		str							 statemap_name;
-		StateMap					*statemap;
-		State						*currentState;
-		State						*lastState;
-
-		State						*globalState;
-		
-		float						 state_time;
-		float						 masterstate_time;
-		int							 times_done;
-		int							 masterstate_times_done;
-		float						 state_done_time;
-		float						 masterstate_done_time;
-		float						 last_time_active;
-		stateDebugType_t			 showStates;
-		talkModeStates_t			 talkMode;
-		bool						 useConvAnims;		
-
-
+		str							 statemap_name;		
 		static Condition<Actor>		 Conditions[];
 		Container<Conditional *>	 conditionals;	
 		Container<Conditional *>	 master_conditionals;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		StateMap					*masterstatemap = nullptr;
+		State						*currentMasterState = nullptr;
+		State						*lastMasterState = nullptr;
+		StateMap					*statemap = nullptr;
+		State						*currentState = nullptr;
+		State						*lastState = nullptr;
+		State						*globalState = nullptr;
+		float						 state_time = 0.0f;
+		float						 masterstate_time = 0.0f;
+		int							 times_done = 0;
+		int							 masterstate_times_done = 0;
+		float						 state_done_time = 0.0f;
+		float						 masterstate_done_time = 0.0f;
+		float						 last_time_active = 0.0f;
+		stateDebugType_t			 showStates = DEBUG_NONE;
+		talkModeStates_t			 talkMode = TALK_TURNTO;
+		bool						 useConvAnims = false;
 
 		
 		//-----------------------------------------------------------
@@ -361,10 +402,14 @@ class Actor : public Sentient
 		// executes
 		//------------------------------------------------------------
 		str							 fuzzyengine_name;
-		FuzzyEngine					*fuzzyEngine;
-		qboolean					 fuzzyEngine_active;
 		Container<Conditional *>	 fuzzy_conditionals;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		FuzzyEngine					*fuzzyEngine = nullptr;
+		qboolean					 fuzzyEngine_active = qfalse;
 		//------------------------------------------------------------
 		// Eye Angle stuff
 		// This is in here for when we were actually moving the eyes
@@ -379,11 +424,10 @@ class Actor : public Sentient
 		// However, something to handle that might be good to look into 
 		// for the future
 		//--------------------------------------------------------------
-		float                      maxEyeYawAngle;
-		float                      minEyeYawAngle;
-		float                      maxEyePitchAngle;
-		float                      minEyePitchAngle;
-		
+		float                      maxEyeYawAngle = 0.0f;
+		float                      minEyeYawAngle = 0.0f;
+		float                      maxEyePitchAngle = 0.0f;
+		float                      minEyePitchAngle = 0.0f;
 		//--------------------------------------------------------------
 		// Saved Items (from switching to talk mode and stuff)
 		// This saved stuff presents some interesting possiblities for 
@@ -392,13 +436,16 @@ class Actor : public Sentient
 		// to talk, when the dialog is completed, they step back into
 		// the behaivors they saved off here
 		//---------------------------------------------------------------
-		int								saved_mode;
-		BehaviorPtr						saved_behavior;
-		BehaviorPtr						saved_headBehavior;
-		BehaviorPtr						saved_eyeBehavior;
-		BehaviorPtr						saved_torsoBehavior;
-		ThreadPtr						saved_scriptthread;
-		ThreadPtr						saved_actorthread;
+		int								saved_mode = 0;
+		BehaviorPtr						saved_behavior = nullptr;
+		BehaviorPtr						saved_headBehavior = nullptr;
+		BehaviorPtr						saved_eyeBehavior = nullptr;
+		BehaviorPtr						saved_torsoBehavior = nullptr;
+		ThreadPtr						saved_scriptthread = nullptr;
+		ThreadPtr						saved_actorthread = nullptr;
+
+
+
 		str								saved_anim_name;
 		str								saved_state_name;
 		str								saved_anim_event_name;
@@ -420,73 +467,83 @@ class Actor : public Sentient
 		// Here to let us handle incoming attacks -- Could probably
 		// be improved
 		//----------------------------------------------------------------
-		EntityPtr							incoming_proj;
-		float								incoming_time;
-		qboolean							incoming_bullet;
 
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr							incoming_proj = nullptr;
+		float								incoming_time = 0.0f;
+		qboolean							incoming_bullet = qfalse;
 		//-----------------------------------------------------------------
 		// Basic Data about the Actor
 		// All this should probably be made private and have accessors
 		// We also need to take some time and verify we're using all of 
 		// this stuff
 		//-----------------------------------------------------------------
-		str								name;
-		float							max_inactive_time;
-		Vector							eyeoffset;
-		float							last_jump_time;
-		str								enemytype;
-		float							actorrange_time;
-		float							last_height;
-		EntityPtr						last_ent;
-		float							canseeenemy_time;
-		float							canseeplayer_time;
-		int								stage;
-		int								num_of_spawns;
-		ActorPtr						spawnparent;
-		Vector							last_attack_pos;
-		Vector							last_attack_enemy_pos;
-		EntityPtr						last_attack_entity_hit;
-		Vector							last_attack_entity_hit_pos;
-		int								mode;
-		Vector							last_known_enemy_pos;
-		Vector							last_known_player_pos;
-		float							feet_width;
-		Vector							last_origin;
-		float							next_find_enemy_time;
-		float							minimum_melee_height;
-		float							damage_angles;
-		float							real_head_pitch;
-		float							next_pain_sound_time;
-		float							last_ground_z;
+		float							max_inactive_time = 0.0f;
+		Vector							eyeoffset = Vector(0.0f, 0.0f, 0.0f);
+		float							last_jump_time = 0.0f;
+		float							actorrange_time = 0.0f;
+		float							last_height = 0.0f;
+		EntityPtr						last_ent = nullptr;
+		float							canseeenemy_time = 0.0f;
+		float							canseeplayer_time = 0.0f;
+		int								stage = 0;
+		int								num_of_spawns = 0;
+		ActorPtr						spawnparent = nullptr;
+		Vector							last_attack_pos = Vector(0.0f, 0.0f, 0.0f);
+		Vector							last_attack_enemy_pos = Vector(0.0f, 0.0f, 0.0f);
+		EntityPtr						last_attack_entity_hit = nullptr;
+		Vector							last_attack_entity_hit_pos = Vector(0.0f, 0.0f, 0.0f);
+		int								mode = 0;
+		Vector							last_known_enemy_pos = Vector(0.0f, 0.0f, 0.0f);
+		Vector							last_known_player_pos = Vector(0.0f, 0.0f, 0.0f);
+		float							feet_width = 0.0f;
+		Vector							last_origin = Vector(0.0f, 0.0f, 0.0f);
+		float							next_find_enemy_time = 0.0f;
+		float							minimum_melee_height = 0.0f;
+		float							damage_angles = 0.0f;
+		float							real_head_pitch = 0.0f;
+		float							next_pain_sound_time = 0.0f;
+		float							last_ground_z = 0.0f;
+		float							next_blink_time = 0.0f;
+		float							actor_to_actor_damage_modifier = 0.0f;
+		float							last_used_time = 0.0f;
+		float							hitscan_response_chance = 0.0f;
+		int								shotsFired = 0;
+		int								ondamage_threshold = 0;
+		float							timeBetweenSleepChecks = 0.0f;
+		int								saved_bone_hit = 0;
+		float							activationDelay = 0.0f;
+		float							activationStart = 0.0f;
+		float							deathKnockbackVerticalValue = 0.0f;
+		float							deathKnockbackHorizontalValue = 0.0f;
+
+
+
 		str								emotion;
-		float							next_blink_time;
-		float							actor_to_actor_damage_modifier;		
-		float							last_used_time;
-		float							hitscan_response_chance;
-		int								shotsFired;
-		int								ondamage_threshold;
-		float							timeBetweenSleepChecks;
-		int								saved_bone_hit;
-		float							activationDelay;
-		float							activationStart;
-		float							deathKnockbackVerticalValue;
-		float							deathKnockbackHorizontalValue;
+		str								name;
+		str								enemytype;
+
+
 
 		//-----------------------------------------------------
 		// Pain Sound Stuff
 		//-----------------------------------------------------
-		float							_nextPlayPainSoundTime;	
-		float							_playPainSoundInterval;
-
-
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_nextPlayPainSoundTime = 0.0f;	
+		float							_playPainSoundInterval = 0.0f;
 		//-----------------------------------------------------
 		// Controller stuff
 		// If set, this is the listener controlling the actor.
 		// This controller is notifyied whenever the actor ends
 		// a behavior.
 		//-----------------------------------------------------
-		ListenerPtr						_controller ;
-		ActorControlType				_controlType ;
+		ListenerPtr						_controller = nullptr;
+		ActorControlType				_controlType = ACTOR_CONTROL_NONE;
 		
 		
 		//-----------------------------------------------------
@@ -508,6 +565,7 @@ class Actor : public Sentient
 		CurrentHelperNodeData_t			currentHelperNode;
 		IgnoreHelperNodeData_t			ignoreHelperNode;
 
+
 		//--------------------------------------------------------
 		// Follow Target
 		// This data structure maintains who the actor would
@@ -517,7 +575,12 @@ class Actor : public Sentient
 		// target.
 		//--------------------------------------------------------
 		FollowTargetData_t				followTarget;
-		int								_steeringDirectionPreference;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int								_steeringDirectionPreference = 0;
 
 
 
@@ -527,58 +590,63 @@ class Actor : public Sentient
 		// at these things
 		//-----------------------------------------------------
 		Container<StateVar *>			stateVarList;
-		EntityPtr						trigger;				
 		str								command;		
 		str								idle_state_name;
 		str								master_idle_state_name;
 		str								global_state_name;
-		float							next_player_near;		
-		EntityPtr						pickup_ent;
-		float							stunned_end_time;
-		Container<str>					spawn_items;
-		float							spawn_chance;
 		str								bounce_off_effect;
-		float							bounce_off_velocity;
-		Container<int>					can_be_finsihed_by_mods;		
-		float							max_boss_health;
-		qboolean						haveAttached;
-		float							currentSplineTime;
-		float							_dialogMorphMult;
-		weaponhand_t					_useWeaponDamage;
-		float							_nextCheckForWorkNodeTime;
-		float							_nextCheckForHibernateNodeTime;
-		float							_nextCheckForEnemyPath;
-		bool							_havePathToEnemy;		
-		float							_nextPathDistanceToFollowTargetCheck;
-		bool							_checkedChance;
-		bool							_levelAIOff;
+		Container<int>					can_be_finsihed_by_mods;	
+		Container<str>					spawn_items;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr						trigger = nullptr;				
+		float							next_player_near;		
+		EntityPtr						pickup_ent = nullptr;
+		float							stunned_end_time = 0.0f;
+		float							spawn_chance = 0.0f;
+		float							bounce_off_velocity = 0.0f;
+		float							max_boss_health = 0.0f;
+		qboolean						haveAttached = qfalse;
+		float							currentSplineTime = 0.0f;
+		float							_dialogMorphMult = 0.0f;
+		weaponhand_t					_useWeaponDamage = WEAPON_RIGHT;
+		float							_nextCheckForWorkNodeTime = 0.0f;
+		float							_nextCheckForHibernateNodeTime = 0.0f;
+		float							_nextCheckForEnemyPath = 0.0f;
+		bool							_havePathToEnemy = qfalse;		
+		float							_nextPathDistanceToFollowTargetCheck = false;
+		bool							_checkedChance = 0.0f;
+		bool							_levelAIOff = qfalse;
 		//------------------------------------------------------
 		// Helper Classes
 		// These are classes that help the actor function
 		// We need a couple more of these, specifically one 
 		// for dialog, and another for "thread" management
 		//------------------------------------------------------
-		ActorThink						*thinkStrategy;
-		ActorGameComponent				*gameComponent;
-		SensoryPerception				*sensoryPerception;
-		Strategos						*strategos;
-		EnemyManager					*enemyManager;
-		PackageManager					*packageManager;
-		MovementSubsystem				*movementSubsystem;
-		Personality						*personality;
-		CombatSubsystem					*combatSubsystem;
-		HeadWatcher						*headWatcher;
-		PostureController				*postureController;
-		
+		ActorThink						*thinkStrategy = nullptr;
+		ActorGameComponent				*gameComponent = nullptr;
+		SensoryPerception				*sensoryPerception = nullptr;
+		Strategos						*strategos = nullptr;
+		EnemyManager					*enemyManager = nullptr;
+		PackageManager					*packageManager = nullptr;
+		MovementSubsystem				*movementSubsystem = nullptr;
+		Personality						*personality = nullptr;
+		CombatSubsystem					*combatSubsystem = nullptr;
+		HeadWatcher						*headWatcher = nullptr;
+		PostureController				*postureController = nullptr;
 		//------------------------------------------------------
 		// 1st Playable Hack
 		// Obviously, this needs to be removed as soon as possible
 		//-------------------------------------------------------
-		float                      lastPathCheck_Work;
-		float                      lastPathCheck_Flee;
-		float                      lastPathCheck_Patrol;
-		qboolean                   testing;
+		float                      lastPathCheck_Work = 0.0f;
+		float                      lastPathCheck_Flee = 0.0f;
+		float                      lastPathCheck_Patrol = 0.0f;
+		qboolean                   testing = qfalse;
+
+
 
 		str							_branchDialogName;		
 

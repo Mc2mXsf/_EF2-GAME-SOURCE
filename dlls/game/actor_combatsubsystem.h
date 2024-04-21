@@ -85,12 +85,16 @@ class CombatSubsystem
 
 	private:		
 		ActiveWeapon	_activeWeapon;
-		float			_nextTimeTracedToTarget;
-		float			_traceInterval;
-		bool			_canShootTarget;
-		float			_yawDiff;
-				
-		Actor *act;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			_nextTimeTracedToTarget = 0.0f;
+		float			_traceInterval = 0.0f;
+		bool			_canShootTarget = false;
+		float			_yawDiff = 0.0f;
+		Actor *act = nullptr;
 	};
 
 

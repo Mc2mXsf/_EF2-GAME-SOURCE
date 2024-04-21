@@ -105,14 +105,17 @@ class EnemyManager
 
 	private: //Member Variables
 			Container<HateListEntry_t> _hateList;
-			EntityPtr                  _currentEnemy;
-			EntityPtr                  _lastEnemy;
-			EntityPtr                  _alternateTarget;
-			qboolean                   _lockedOnCurrentEnemy;
-			float                      _currentEnemyHate;
-			
 
-			Actor                      *act;
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+			//--------------------------------------------------------------
+			EntityPtr                  _currentEnemy = nullptr;
+			EntityPtr                  _lastEnemy = nullptr;
+			EntityPtr                  _alternateTarget = nullptr;
+			qboolean                   _lockedOnCurrentEnemy = qfalse;
+			float                      _currentEnemyHate = 0.0f;
+			Actor                      *act = nullptr;
 	};
 
 

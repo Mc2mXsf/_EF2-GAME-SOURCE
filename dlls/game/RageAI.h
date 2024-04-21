@@ -135,10 +135,14 @@ private: // Functions
 	
 private: // Member Variables
 
-	Actor *act;
-	float _checkYawMin;
-	float _checkYawMax;
-	float _checkInConeDistMax;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Actor *act = nullptr;
+	float _checkYawMin = 0.0f;
+	float _checkYawMax = 0.0f;
+	float _checkInConeDistMax = 0.0f;
 	
 	
 	
@@ -178,12 +182,16 @@ class PackageManager
 		void DoArchive( Archiver &arc , Actor *actor );				
 
 	private: // Member Variables
-		Actor *act;
 		Container<BehaviorPackageEntry_t> _BehaviorPackages;
 
-		int						_currentFVarIndex;
-		float					_currentFVarLastExecuteTime;
-		int						_currentPackageIndex;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor *act = nullptr;
+		int						_currentFVarIndex = 0;
+		float					_currentFVarLastExecuteTime = 0.0f;
+		int						_currentPackageIndex = 0;
 	};
 
 
@@ -228,19 +236,26 @@ class Personality
 
 	private: // Emotions and Tendencies
       
-      float _aggressiveness;
-      float _talkiness;
 
-      float _anger;
-      float _fear;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      float _aggressiveness = 0.0f;
+      float _talkiness = 0.0f;
+
+      float _anger = 0.0f;
+      float _fear = 0.0f;
       
       
       // Package Tendencies
       Container<PackageTendency_t> _PackageTendencies;
       Container<Tendency_t> _Tendencies;
 		
-	private: // Member Variables			
-		Actor *act;
+	private: // Member Variables	
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Actor *act = nullptr;
 
 	};
 

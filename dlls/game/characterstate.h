@@ -85,9 +85,13 @@ struct Condition
 class Conditional : public Class
    {
 	private :
-		qboolean                   result;
-		qboolean                   previous_result;
-		bool                       checked;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean                   result = qfalse;
+		qboolean                   previous_result = qfalse;
+		bool                       checked = false;
+
 
 	public :
 		Condition<Class>        condition;
@@ -207,7 +211,13 @@ class Expression : public Class
       Container<condition_t>  conditions;
 		
 	// For Fuzzy Vars
-	float                   points;
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float                   points = 0.0f;
+
 
    public :
                               Expression();
@@ -283,17 +293,21 @@ class State : public Class
 		str								torsoBehaviorName;
 		Container<str>             torsoBehaviorParmList;
 
-		float								minTime;
-		float								maxTime;
+		Container<Expression>      legAnims;
+		Container<Expression>      torsoAnims;
 
-      Container<Expression>      legAnims;
-      Container<Expression>      torsoAnims;
+		Container<Expression>      states;
+		Container<str>             entryCommands;
+		Container<str>             exitCommands;
 
-      Container<Expression>      states;
-      Container<str>             entryCommands;
-      Container<str>             exitCommands;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float								minTime = 0.0f;
+		float								maxTime = 0.0f;
+		qboolean                   ignoreGlobalStates = qfalse;
 		
-		qboolean                   ignoreGlobalStates;
 
       void                       readNextState( Script &script );
       void                       readMoveType( Script &script );
