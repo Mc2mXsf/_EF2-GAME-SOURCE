@@ -77,35 +77,41 @@ class MultiplayerModeBase : public Class
 		Container<PlayerDeathmatchStart *>	_unusedSpawnpointList;
 		Container<str>                      _weaponList;
 		Container<SimpleAmmoType *>         _ammoList;
-		unsigned int						_activePlayers ;
-		unsigned int						_spawncounter ;
-		unsigned int                        _startingHealth ;
-		bool								_fightInProgress ;
 
 		str									_startingWeaponName;
 
-		MultiplayerPlayerGameData			*_playerGameData;
-		unsigned int						_maxPlayers;
-		int									_pointLimit;
 
-		float								_matchStartTime;
-		float								_gameStartTime;
-		float								_timeLimit;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int						_activePlayers = 0;
+		unsigned int						_spawncounter = 0;
+		unsigned int                        _startingHealth = 0;
+		bool								_fightInProgress = false;
 
-		bool								_gameStarted;
-		int									_lastTimeRemaining;
+		MultiplayerPlayerGameData			*_playerGameData = nullptr;
+		unsigned int						_maxPlayers = 0;
+		int									_pointLimit = 0;
 
-		int									_spectatorIconIndex;
+		float								_matchStartTime = 0.0f;
+		float								_gameStartTime = 0.0f;
+		float								_timeLimit = 0.0f;
 
-		int									_warmUpTextIndex;
-		int									_waitingForMinPlayersTextIndex;
-		int									_playingTextIndex;
+		bool								_gameStarted = false;
+		int									_lastTimeRemaining = 0;
 
-		int									_lastHighestPoints;
+		int									_spectatorIconIndex = 0;
 
-		bool								_played5MinWarning;
-		bool								_played2MinWarning;
-		bool								_played1MinWarning;
+		int									_warmUpTextIndex = 0;
+		int									_waitingForMinPlayersTextIndex = 0;
+		int									_playingTextIndex = 0;
+
+		int									_lastHighestPoints = 0;
+
+		bool								_played5MinWarning = false;
+		bool								_played2MinWarning = false;
+		bool								_played1MinWarning = false;
+
 
 		// Abstract constructor
 											MultiplayerModeBase();

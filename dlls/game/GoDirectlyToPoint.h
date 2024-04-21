@@ -57,8 +57,13 @@ public:
 	const bool					AtDestination( const Actor &self ) const;
 
 private:
-	Vector						_destination;
-	float						_radius;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Vector						_destination = Vector(0.0f, 0.0f, 0.0f);
+	float						_radius = 0.0f;
 };
 
 inline void GoDirectlyToPoint::Archive( Archiver &arc )

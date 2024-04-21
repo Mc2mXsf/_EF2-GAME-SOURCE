@@ -102,14 +102,12 @@ class ChangePosture : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		changePostureStates_t					_state;
-
-
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
 		bool									_postureDone = false;
 		bool									_canChange = false;
+		changePostureStates_t					_state = CHANGE_POSTURE_SETUP;
 
 };
 

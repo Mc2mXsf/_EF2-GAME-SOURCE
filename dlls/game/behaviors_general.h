@@ -86,7 +86,11 @@ class WarpToPosition : public Behavior
 	// Parameters
 	//------------------------------------
 	private: 
-		Vector                      _position;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector                      _position = Vector(0.0f,0.0f,0.0f);
+
 
 	public:
 		CLASS_PROTOTYPE( WarpToPosition );
@@ -179,7 +183,11 @@ class WarpToEntity : public Behavior
 	// Parameters
 	//------------------------------------
 	private: 
-		EntityPtr                      _entity;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr                      _entity = nullptr;
+
 
 	public:
 		CLASS_PROTOTYPE( WarpToEntity );
@@ -266,9 +274,15 @@ class GotoEntity : public Behavior
 	//------------------------------------
 	private: 
 		str                              _anim;  
-		float                            _dist;
-		EntityPtr                        _entity;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float                            _dist = 0.0f;
+		EntityPtr                        _entity = nullptr;
       
+
 	public:
 		CLASS_PROTOTYPE( GotoEntity );
 
@@ -560,6 +574,8 @@ class GotoSpecified : public Behavior
 		WarpToPosition              _warpToPosition;
 
 		// Member Variables
+		
+		
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
@@ -702,16 +718,22 @@ class MoveFromConeOfFire : public Behavior
 		GotoPoint					_chase;          //-- Behavior that will steer us to our desired position
 
 		// Member Vars
-		int							_state;          //-- Maintains our Behavior's current State
-		float						_nextsearch;	 //-- Next Time we are allowed to search for a position
-		Vector						_newDestination; //-- Where we're going      
-		Vector						_left;           //-- Holds Data for Left Direction Check
-		Vector						_right;          //-- Holds Data for Right Direction Check
-		bool						_stuckOnPlayer;  //-- Flag for being stuck on the player
-		float						_oldTurnSpeed;
-		Vector						_destination;
 		str							_torsoAnim;
-		bool						_nextToObstacle;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int							_state = 0;          //-- Maintains our Behavior's current State
+		float						_nextsearch = 0.0f;	 //-- Next Time we are allowed to search for a position
+		Vector						_newDestination = Vector(0.0f, 0.0f, 0.0f); //-- Where we're going      
+		Vector						_left = Vector(0.0f, 0.0f, 0.0f);           //-- Holds Data for Left Direction Check
+		Vector						_right = Vector(0.0f, 0.0f, 0.0f);          //-- Holds Data for Right Direction Check
+		bool						_stuckOnPlayer;  //-- Flag for being stuck on the player
+		float						_oldTurnSpeed = 0.0f;
+		Vector						_destination = Vector(0.0f, 0.0f, 0.0f);
+		bool						_nextToObstacle = false;
+
 
 		// Constants
 		static const float          CONE_OF_FIRE_RADIUS;
@@ -767,7 +789,11 @@ class Strafe : public Behavior
       };
 
 	private: // Parameters
-      unsigned int                     mode;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+      unsigned int                     mode = 0;
+
 
    protected:
       void                             _init          ( Actor &self            );
@@ -788,8 +814,13 @@ class Strafe : public Behavior
 
    private:
       str                              _anim;
-      bool                             _canStrafe;
-      bool                             _strafeComplete;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      bool                             _canStrafe = false;
+      bool                             _strafeComplete = false;
 
       
 };
@@ -825,10 +856,15 @@ class CircleStrafeEntity   : public Behavior
 	{
 	private: //Parameters
 		str                 _type;
-		float               _radius;
 		str                 _legAnim;
-		bool                _clockwise;
-		float				_testDistance;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float               _radius = 0.0f;
+		bool                _clockwise = false;
+		float				_testDistance = 0.0f;
 
 				
 	public:
@@ -855,14 +891,19 @@ class CircleStrafeEntity   : public Behavior
 		
 	private: //Member Vars
 		Wander						_wander;
-		EntityPtr					_strafeTarget;
-		Vector						_lastPosition;
-		int							_moveAttempts;      
-		Vector						_holdAngles;
-		bool						_failed;
-		float						_recheckTime;
 
-		float						_startWanderTime;      
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr					_strafeTarget = nullptr;
+		Vector						_lastPosition = Vector(0.0f, 0.0f, 0.0f);
+		int							_moveAttempts = 0;      
+		Vector						_holdAngles = Vector(0.0f, 0.0f, 0.0f);
+		bool						_failed = false;
+		float						_recheckTime = 0.0f;
+
+		float						_startWanderTime = 0.0f;
 				
 
 	};
@@ -951,9 +992,15 @@ class FollowInFormation : public Behavior
 	// Parameters
 	//------------------------------------
 	private:
-		str						_anim;      		
-		float					_emergencyDistance;
-		float					_catchupSpeed;
+		str						_anim;    
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float					_emergencyDistance = 0.0f;
+		float					_catchupSpeed = 0.0f;
+
 
 	public:
 		CLASS_PROTOTYPE( FollowInFormation );
@@ -1008,19 +1055,24 @@ class FollowInFormation : public Behavior
 		WarpToPosition        _warpToPosition;
 
 		// Member Vars
-		unsigned int          _state;     
-		float                 _followFailureTime;
-		float                 _nextFollowAttemptTime;
-		float                 _followDist;
-		float                 _followDistMin;
-		float                 _nextTargetCheckTime;
-		float                 _endHold;
-		bool                  _selectedFollowTarget;
-		bool                  _attemptedWarpToPath;
-		bool                  _setFollowFailureTime;
-		float				  _oldForwardSpeed;
-		float				  _oldTurnSpeed;
-		bool				  _codeDriven;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int          _state = 0;     
+		float                 _followFailureTime = 0.0f;
+		float                 _nextFollowAttemptTime = 0.0f;
+		float                 _followDist = 0.0f;
+		float                 _followDistMin = 0.0f;
+		float                 _nextTargetCheckTime = 0.0f;
+		float                 _endHold = 0.0f;
+		bool                  _selectedFollowTarget = false;
+		bool                  _attemptedWarpToPath = false;
+		bool                  _setFollowFailureTime = false;
+		float				  _oldForwardSpeed = 0.0f;
+		float				  _oldTurnSpeed = 0.0f;
+		bool				  _codeDriven = false;
 
 
    };
@@ -1154,16 +1206,21 @@ class GroupFollow : public Behavior
 		str						_torsoAnimation;
 		GotoEntity				_follow; 
 		MoveRandomDirection		_wander;
-		int						_state;
-		bool					_animationRateNeedsUpdate;
 
-		float					_stopDistance;
-		float					_paceDistance;
-		float					_endHold;
-		float					_oldForwardSpeed;
-		float					_nextFindFollowTime;
-		float					_nextPathLenCheckTime;
-		float					_nextPathLenCheckTime2;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int						_state = 0;
+		bool					_animationRateNeedsUpdate = false;
+
+		float					_stopDistance = 0.0f;
+		float					_paceDistance = 0.0f;
+		float					_endHold = 0.0f;
+		float					_oldForwardSpeed = 0.0f;
+		float					_nextFindFollowTime = 0.0f;
+		float					_nextPathLenCheckTime = 0.0f;
+		float					_nextPathLenCheckTime2 = 0.0f;
 
    };
 
@@ -1220,7 +1277,14 @@ class MoveToDistanceFromEnemy : public Behavior
 
    private:
       str   _anim;
-      float _distance;
+
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      float _distance = 0.0f;
+
 
 	public:
       CLASS_PROTOTYPE( MoveToDistanceFromEnemy );
@@ -1245,10 +1309,15 @@ class MoveToDistanceFromEnemy : public Behavior
       FollowPathToPoint		_chase;
 
       // Member Vars
-		int						_state;
-		float						_nextsearch;
-      Vector               _away;
-      Vector               _toTeam;
+
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+		int						_state = 0;
+		float						_nextsearch = 0.0f;
+      Vector               _away = Vector(0.0f, 0.0f, 0.0f);
+      Vector               _toTeam = Vector(0.0f, 0.0f, 0.0f);
 
    };
 
@@ -1831,8 +1900,14 @@ class SimpleMelee : public Behavior
 	private: // Parameters
 		str                              rushAnim;
 		str                              attackAnim;
-		float                            meleeDist;
-		float                            turnSpeed;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float                            meleeDist = 0.0f;
+		float                            turnSpeed = 0.0f;
+
 
 	public:
 		CLASS_PROTOTYPE( SimpleMelee );
@@ -1879,15 +1954,19 @@ class SimpleMelee : public Behavior
 		CircleStrafeEntity              _circleStrafe;
 		DoAttack                        _attack;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		// Member Variables
-		unsigned int					_state; 
-		float							_holdTime;
-		int								_holdCount;
-		bool							_strafeClockwise;
-		int								_strafeAttempts;
-		float							_nextStrafeTime;
-		float							_nextEnemyCheckTime;
-		Actor*							_self;
+		unsigned int					_state = 0; 
+		float							_holdTime = 0.0f;
+		int								_holdCount = 0;
+		bool							_strafeClockwise = false;
+		int								_strafeAttempts = 0;
+		float							_nextStrafeTime = 0.0f;
+		float							_nextEnemyCheckTime = 0.0f;
+		Actor*							_self = nullptr;
 
    };
 
@@ -1958,10 +2037,15 @@ private:
 							
 	// Member Variables	
 	str						_animName;
-	HelperNodePtr			_node;
-	HelperNodePtr			_nextNode;
-	float					_offset;
 	str						_startNodeName;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	HelperNodePtr			_node = nullptr;
+	HelperNodePtr			_nextNode = nullptr;
+	float					_offset = 0.0f;
 };
 
 inline void FollowPathBlindly::Archive( Archiver &arc	)

@@ -59,11 +59,17 @@ class CloseInOnEnemyWhileFiringWeapon : public Behavior
 		str							_approachAnim;  
 		str							_aimAnim;
 		str							_fireAnim;
-		float						_fireTimeMin;
-		float						_fireTimeMax;
-		float						_pauseTimeMin;
-		float						_pauseTimeMax;
-		float						_dist;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_fireTimeMin = 0.0f;
+		float						_fireTimeMax = 0.0f;
+		float						_pauseTimeMin = 0.0f;
+		float						_pauseTimeMax = 0.0f;
+		float						_dist = 0.0f;
+
 
 	//-------------------------------------
 	// Internal Functionality
@@ -119,11 +125,16 @@ class CloseInOnEnemyWhileFiringWeapon : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		CIWFStates_t							_state;
-		EntityPtr								_currentEnemy;
-		float									_nextFireTime;
-		float									_nextPauseTime;
-		Actor								   *_self;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		CIWFStates_t							_state = CIWF_APPROACH_SETUP_APPROACH;
+		EntityPtr								_currentEnemy = nullptr;
+		float									_nextFireTime = 0.0f;
+		float									_nextPauseTime = 0.0f;
+		Actor								   *_self = nullptr;
 
 };
 

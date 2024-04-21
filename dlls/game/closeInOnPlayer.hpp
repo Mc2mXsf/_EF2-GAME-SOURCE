@@ -56,7 +56,12 @@ class CloseInOnPlayer : public Behavior
 	private: // Parameters
 		str							_anim;  
 		str							_torsoAnim;
-		float						_dist;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_dist = 0.0f;
 
 	//-------------------------------------
 	// Internal Functionality
@@ -103,8 +108,13 @@ class CloseInOnPlayer : public Behavior
 	//-------------------------------------
 	private: 
 		closeInOnPlayerStates_t					_state;
-		EntityPtr								_player;
-		Actor								   *_self;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr								_player = nullptr;
+		Actor								   *_self = nullptr;
 
 };
 

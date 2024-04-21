@@ -56,7 +56,13 @@ class CloseInOnEnemy : public Behavior
 	private: // Parameters
 		str							_anim;  
 		str							_torsoAnim;
-		float						_dist;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		//--------------------------------------------------------------
+		float						_dist = false;
+
 
 	//-------------------------------------
 	// Internal Functionality
@@ -102,9 +108,14 @@ class CloseInOnEnemy : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		closeInOnEnemyStates_t					_state;
-		EntityPtr								_currentEnemy;
-		Actor								   *_self;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6011 Dereferencing NULL-Pointer. - chrissstrahl
+		//--------------------------------------------------------------
+		closeInOnEnemyStates_t					_state = CLOSE_IN_ON_ENEMY_APPROACH;
+		EntityPtr								_currentEnemy = nullptr;
+		Actor								   *_self = nullptr;
 
 };
 

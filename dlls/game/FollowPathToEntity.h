@@ -52,8 +52,13 @@ protected:
 	virtual const bool			ClearTraceToGoal( Actor &self, const trace_t &traceToGoal, const float radius ) const;
 	
 private:
-	EntityPtr					_targetEntity;
-	Vector						_oldGoalPosition;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	EntityPtr					_targetEntity = nullptr;
+	Vector						_oldGoalPosition = Vector(0.0f, 0.0f, 0.0f);
 };
 
 inline void FollowPathToEntity::Archive( Archiver &arc )
