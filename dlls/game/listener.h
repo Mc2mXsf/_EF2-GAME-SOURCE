@@ -440,9 +440,11 @@ class Event : public Class
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		// Tried to nullptr next and prev, but this crates a issue where ev->prev creates a null error, further investigation might be required
+		// - Current STATE - NO CHANGE
 		//--------------------------------------------------------------
-      Event             *next = nullptr;               // next event in the list, used for event recycling
-      Event             *prev = nullptr;               // previous event int the list, used for event recycling
+      Event             *next;               // next event in the list, used for event recycling
+      Event             *prev;               // previous event int the list, used for event recycling
 
 
 		void * operator	new( size_t );
