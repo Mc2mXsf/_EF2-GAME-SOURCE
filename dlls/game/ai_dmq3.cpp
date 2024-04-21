@@ -4313,13 +4313,17 @@ BotEnableActivateGoalAreas
 ==================
 */
 void BotEnableActivateGoalAreas(bot_activategoal_t *activategoal, int enable) {
-	int i;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+	//--------------------------------------------------------------
+	bool enableState = enable != 0; // Convert to Boolean explicitly
 
-	if (activategoal->areasdisabled == !enable)
+
+	if (activategoal->areasdisabled == !enableState)
 		return;
-	for (i = 0; i < activategoal->numareas; i++)
-		gi.AAS_EnableRoutingArea( activategoal->areas[i], enable );
-	activategoal->areasdisabled = !enable;
+	for (int i = 0; i < activategoal->numareas; i++)
+		gi.AAS_EnableRoutingArea( activategoal->areas[i], enableState);
+	activategoal->areasdisabled = !enableState;
 }
 
 /*
