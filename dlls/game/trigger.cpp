@@ -3936,6 +3936,13 @@ void TriggerCallVolume::TriggerStuff( Event *ev )
 	{
 		return;
 	}
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: trigger_volume_callvolume set activating entity as activator - chrissstrahl
+	//--------------------------------------------------------------
+	activator = other;
+
 	
 	if ( _ready )
 	{
@@ -3964,12 +3971,6 @@ void TriggerCallVolume::TriggerStuff( Event *ev )
 	
 	if ( other->isSubclassOf( Player ) )
 	{   
-		//--------------------------------------------------------------
-		// GAMEFIX - Fixed: trigger_volume_callvolume set activating player as activator - chrissstrahl
-		//--------------------------------------------------------------
-		activator = other;
-
-
 		_checkForRequiredEnts();
 		_notifyRequiredEnts(true);
 
@@ -4076,15 +4077,20 @@ void TriggerCallVolume::EntityLeftVolume( Event *ev )
 	
 	if ( !other )
 		return;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: trigger_volume_callvolume set activating entity as activator - chrissstrahl
+	//--------------------------------------------------------------
+	activator = other;
+
 	
 	if ( other->isSubclassOf( Player ) )
 	{
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: trigger_volume_callvolume targetname not being cleared from Player when leaving trigger - chrissstrahl
-		// GAMEFIX - Fixed: trigger_volume_callvolume set activating player as activator - chrissstrahl
 		//--------------------------------------------------------------
 		_notifyRequiredEnts(false);
-		activator = other;
 
 
 		if ( _exitThread.length() ){
