@@ -242,7 +242,7 @@ Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
 			playerClosest = player;
 		}
 	}
-	return player;
+	return playerClosest;
 	//FAKK2 Equivalent does not exist - trigger_volume_callvolume
 }
 
