@@ -37,6 +37,13 @@
 #include <qcommon/stringresource.hpp>
 #include "teammateroster.hpp"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 //--------------------------------------------------------------
 // GAMEFIX - error: '...' was not declared in this scope - chrissstrahl
 //--------------------------------------------------------------

@@ -10,6 +10,18 @@
 #pragma once
 #include "_pch_cpp.h"
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
+//--------------------------------------------------------------
+struct gamefix_client_persistant_s
+{
+	int				entNum = -1;
+	bool			isBot = false;
+	str				language = "Eng";
+	bool			admin = false;
+};
+extern gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
+
 
 bool gameFix_inSingleplayer();
 bool gameFix_inMultiplayer();
