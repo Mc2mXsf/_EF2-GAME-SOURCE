@@ -31,13 +31,17 @@
 
 #define	MAXTOKEN	256
 
-typedef struct
-	{
-	qboolean		tokenready;
-   int         offset;
-	int			line;
-	char			token[ MAXTOKEN ];
-	} scriptmarker_t;
+struct scriptmarker_s
+{
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	qboolean		tokenready = qfalse;
+	int         offset = 0;
+	int			line = 0;
+	char			token[MAXTOKEN] = {0};
+};
+using scriptmarker_t = scriptmarker_s;
 
 typedef struct
 	{
@@ -50,24 +54,33 @@ typedef struct
 class Script : public Class
 	{
 	protected:
-		qboolean		tokenready;
-
 		str			filename;
-		const char	*script_p;
-		const char	*end_p;
-		Container<macro *> macrolist;
+		const char* script_p;
+		const char* end_p;
+		Container<macro*> macrolist;
 
-		int			line;
-		char			token[ MAXTOKEN ];
 
-		qboolean		releaseBuffer;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean		tokenready = qfalse;
+		int				line = 0;
+		char			token[MAXTOKEN] = {0};
+		qboolean		releaseBuffer = qfalse;
+
 
 		qboolean		AtComment( void );
 		void			CheckOverflow( void );
 
 	public:
 		const char	*buffer;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		int			length;
+
 
       CLASS_PROTOTYPE( Script );
 

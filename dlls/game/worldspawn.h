@@ -46,8 +46,14 @@ public:
 	
 	Container<Entity *>		list;
 	str						targetname;
-	int						index;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int						index = 0;
 	
+
 						TargetList();
 						TargetList( const str &tname );
 						~TargetList();
@@ -63,19 +69,21 @@ public:
 class DynamicLightInfo
 {
 public:
-	float		defaultIntensity;
-	
-	float		intensity;
-	
-	float		start_intensity;
-	float		end_intensity;
-	
-	float		start_fade_time;
-	float		fade_time;
-	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float		defaultIntensity = 0.0f;
+	float		intensity = 0.0f;
+	float		start_intensity = 0.0f;
+	float		end_intensity = 0.0f;
+	float		start_fade_time = 0.0f;
+	float		fade_time = 0.0f;
+	int			current_lightstyle_position = 0;
+	qboolean	stop_at_end = qfalse;	
+
+
 	str			lightstyle;
-	int			current_lightstyle_position;
-	qboolean	stop_at_end;
+
 	
 					DynamicLightInfo();
 	virtual void	Archive( Archiver &arc );
@@ -100,22 +108,21 @@ inline void DynamicLightInfo::Archive( Archiver &arc )
 class WindInfo
 {
 public:
-	Vector		direction;
-	float		intensity;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Vector		direction = Vector(0.0f, 0.0f, 0.0f);
+	float		intensity = 0.0f;
+	float		start_intensity = 0.0f;
+	float		end_intensity = 0.0f;
+	float		min_intensity = 0.0f;
+	float		max_intensity = 0.0f;
+	float		start_fade_time = 0.0f;
+	float		fade_time = 0.0f;
+	float		gust_time = 0.0f;
+	float		max_change = 0.0f;
 	
-	float		start_intensity;
-	float		end_intensity;
-	
-	float		min_intensity;
-	float		max_intensity;
-	
-	float		start_fade_time;
-	float		fade_time;
-	
-	float		gust_time;
-	
-	float		max_change;
-	
+
 					WindInfo();
 	virtual void	Archive( Archiver &arc );
 };
@@ -141,9 +148,13 @@ inline void WindInfo::Archive( Archiver &arc )
 class WeatherInfo
 {
 public:
-	weather_t	type;
-	int			intensity;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	weather_t	type = WEATHER_NONE;
+	int			intensity = 0;
 	
+
 					WeatherInfo();
 	virtual void	Archive( Archiver &arc );
 };
@@ -160,37 +171,41 @@ private:
 	Container<TargetList *>		targetList;
 	Container<str>				_brokenThings;
 	Container<str>				_availableViewModes;
-	qboolean					world_dying;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	qboolean					world_dying = qfalse;
 	
+
 public:
 	CLASS_PROTOTYPE( World );
 	
 	str							skipthread;
-	float						farplane_distance;
-	Vector						farplane_color;
-	qboolean					farplane_cull;
-	qboolean					farplane_fog;
-	
-	qboolean					terrain_global;
-	float						terrain_global_min;
-	
-	float						entity_fade_dist;
-	
-	DynamicLightInfo			dynamic_lights[ MAX_LIGHTING_GROUPS ];
-	
 	WindInfo					wind;
-	
 	WeatherInfo					weather;
-	float						time_scale;
-	
-	float						sky_alpha;
-	qboolean					sky_portal;
-	
-	// Movement info
-	float						_physicsInfo[ WORLD_PHYSICS_TOTAL_NUMBER ];
 
-	bool						_canShakeCamera;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float						farplane_distance = 0.0f;
+	Vector						farplane_color = Vector(0.0f, 0.0f, 0.0f);
+	qboolean					farplane_cull = qfalse;
+	qboolean					farplane_fog = qfalse;
+	qboolean					terrain_global = qfalse;
+	float						terrain_global_min = 0.0f;
+	float						entity_fade_dist = 0.0f;
+	DynamicLightInfo			dynamic_lights[ MAX_LIGHTING_GROUPS ];
+	float						time_scale = 0.0f;
+	float						sky_alpha = 0.0f;
+	qboolean					sky_portal = qfalse;
+	// Movement info
+	float						_physicsInfo[WORLD_PHYSICS_TOTAL_NUMBER] = {0.0f};
+	bool						_canShakeCamera = false;
 	
+
 	World();
 	~World();
 	

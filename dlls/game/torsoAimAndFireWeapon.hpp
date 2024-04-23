@@ -60,18 +60,22 @@ class TorsoAimAndFireWeapon : public Behavior
 	// Parameters
 	//------------------------------------
 	private:
-		float			_aimTimeMin;
-		float			_aimTimeMax;
-		float			_fireTimeMin;
-		float			_fireTimeMax;
-		bool			_forceAttack;
-		float			_maxTorsoYaw;
-		float			_maxTorsoPitch;
-		float			_maxTorsoTurnSpeed;
-		int				_shots;
-		bool			_aimOnly;
-		bool			_repeat;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			_aimTimeMin = 0.0f;
+		float			_aimTimeMax = 0.0f;
+		float			_fireTimeMin = 0.0f;
+		float			_fireTimeMax = 0.0f;
+		bool			_forceAttack = false;
+		float			_maxTorsoYaw = 0.0f;
+		float			_maxTorsoPitch = 0.0f;
+		float			_maxTorsoTurnSpeed = 0.0f;
+		int				_shots = 0;
+		bool			_aimOnly = false;
+		bool			_repeat = false;
 		
+
 	//-------------------------------------
 	// Internal Functionality
 	//-------------------------------------
@@ -130,21 +134,26 @@ class TorsoAimAndFireWeapon : public Behavior
 	//-------------------------------------
 	// Member Variables
 	//-------------------------------------
-	private: 
-		TorsoAimAndFireStates_t			_state;	
-		Vector							_currentTorsoAngles;		
-		float							_endFireTime;
-		float							_endAimTime;
-		EntityPtr						_currentEnemy;
-		bool							_canAttack;
-		bool							_animDone;
+	private:
 		str								_aimAnim;
 		str								_preFireAnim;
-		str								_fireAnim;	
+		str								_fireAnim;
 		str								_postFireAnim;
-		bool							_fireFailed;
-		bool							_endOnAimFail;
-		Actor						   *_self;		
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		TorsoAimAndFireStates_t			_state = TORSO_AIM_AND_FIRE_AIM;
+		Vector							_currentTorsoAngles = Vector(0.0f, 0.0f, 0.0f);		
+		float							_endFireTime = 0.0f;
+		float							_endAimTime = 0.0f;
+		EntityPtr						_currentEnemy = nullptr;
+		bool							_canAttack = false;
+		bool							_animDone = false;
+		bool							_fireFailed = false;
+		bool							_endOnAimFail = false;
+		Actor						   *_self = nullptr;		
 		
 
 	};

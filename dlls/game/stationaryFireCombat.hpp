@@ -65,10 +65,15 @@ class StationaryFireCombat : public Behavior
 		str				_fireAnim;	
 		str				_postFireAnim;
 		str				_stance;
-		float			_aimTimeMin;
-		float			_aimTimeMax;
-		float			_fireTimeMin;
-		float			_fireTimeMax;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			_aimTimeMin = 0.0f;
+		float			_aimTimeMax = 0.0f;
+		float			_fireTimeMin = 0.0f;
+		float			_fireTimeMax = 0.0f;
 		
 
 	//-------------------------------------
@@ -144,13 +149,16 @@ class StationaryFireCombat : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		StationaryFireStates_t			_state;	
-		float							_endFireTime;
-		float							_endAimTime;
-		EntityPtr						_currentEnemy;
-		bool							_animDone;	
-		bool							_canAttack;
-		Actor						   *_self;		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		StationaryFireStates_t			_state = STATIONARY_FIRE_AIM;
+		float							_endFireTime = 0.0f;
+		float							_endAimTime = 0.0f;
+		EntityPtr						_currentEnemy = nullptr;
+		bool							_animDone = false;	
+		bool							_canAttack = false;
+		Actor						   *_self = nullptr;		
 		
 
 	};

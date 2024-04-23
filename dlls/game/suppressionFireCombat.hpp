@@ -63,11 +63,16 @@ class SuppressionFireCombat : public Behavior
 		str				_movementAnim;
 		str				_torsoIdleAnim;
 		str				_torsoAttackAnim;
-		float			_maxDistance;
-		float			_pauseTimeMin;
-		float			_pauseTimeMax;
-		float			_fireTimeMin;
-		float			_fireTimeMax;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			_maxDistance = 0.0f;
+		float			_pauseTimeMin = 0.0f;
+		float			_pauseTimeMax = 0.0f;
+		float			_fireTimeMin = 0.0f;
+		float			_fireTimeMax = 0.0f;
 		
 
 	//-------------------------------------
@@ -136,15 +141,18 @@ class SuppressionFireCombat : public Behavior
 	//-------------------------------------
 	// Member Variables
 	//-------------------------------------
-	private: 
-		SuppressionFireStates_t			_state;	
-		bool							_atNode;
-		float							_nextMoveAttempt;
-		float							_endFireTime;
-		float							_endPauseTime;
-		HelperNodePtr					_node;
-		EntityPtr						_currentEnemy;
-		Actor						   *_self;		
+	private:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		SuppressionFireStates_t			_state = SUPPRESSION_FIRE_FIND_NODE;
+		bool							_atNode = false;
+		float							_nextMoveAttempt = 0.0f;
+		float							_endFireTime = 0.0f;
+		float							_endPauseTime = 0.0f;
+		HelperNodePtr					_node = nullptr;
+		EntityPtr						_currentEnemy = nullptr;
+		Actor						   *_self = nullptr;	
 		
 
 	};

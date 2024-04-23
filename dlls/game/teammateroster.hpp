@@ -23,15 +23,21 @@
 const int MAX_TEAMMATES=4;
 
 //Teammate Data Structure
-typedef struct 
+struct TeammateData_s
 {
-	int		entNum;
-	int		injuredHealthLevel;
-	int		criticalHealthLevel;
-	bool	active;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int		entNum = 0;
+	int		injuredHealthLevel = 0;
+	int		criticalHealthLevel = 0;
+	bool	active = false;
+
+
 	str		archeType;
 
-}TeammateData;
+};
+using TeammateData = TeammateData_s;
 
 //-------------------------- CLASS ----------------------------------
 // 

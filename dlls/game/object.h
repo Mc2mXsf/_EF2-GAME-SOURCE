@@ -43,11 +43,17 @@ extern Event EV_ThrowObject_Throw;
 class ThrowObject : public Object
 	{
    private:
-      int               owner;
-      Vector            pickup_offset;
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+		int               owner = 0;
+		Vector            pickup_offset = Vector(0.0f, 0.0f, 0.0f);
+		float             damage = 0.0f;
+		qboolean          hurt_target = qfalse;
+
+
       str               throw_sound;
-		float             damage;
-		qboolean          hurt_target;
+
 
 	public:
       CLASS_PROTOTYPE( ThrowObject );

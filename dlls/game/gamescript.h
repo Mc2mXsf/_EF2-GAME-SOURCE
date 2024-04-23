@@ -22,11 +22,12 @@
 #include "class.h"
 #include "script.h"
 
-typedef struct
-	{
-	scriptmarker_t pos;
-	str labelname;
-	} script_label_t;
+struct script_label_s
+{
+    scriptmarker_t pos;
+    str labelname;
+};
+using script_label_t = script_label_s;
 
 class GameScript;
 
