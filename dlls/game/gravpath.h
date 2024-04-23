@@ -26,13 +26,21 @@
 class GravPathNode : public Entity
    {
    private:
-      float    speed;
-      float    radius;
-      qboolean headnode;
-		float		max_speed;
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+        float    speed = 0.0f;
+        float    radius = 0.0f;
+        qboolean headnode = qfalse;
+        float		max_speed = 0.0f;
+
 
    public:
-      qboolean       active;
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+      qboolean       active = qfalse;
+
 
       CLASS_PROTOTYPE(GravPathNode);
                      GravPathNode();
@@ -69,11 +77,15 @@ class GravPath : public Listener
 	{
 	private:
 		Container<GravPathNodePtr>	pathlist;
-		float							   pathlength;
 
-		GravPathNodePtr    	      from;
-		GravPathNodePtr   		   to;
-		int							   nextnode;
+
+        //--------------------------------------------------------------
+        // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+        //--------------------------------------------------------------
+		float							   pathlength = 0.0f;
+		GravPathNodePtr    	      from = nullptr;
+		GravPathNodePtr   		   to = nullptr;
+		int							   nextnode = 0;
 
 	public:
       CLASS_PROTOTYPE( GravPath );
@@ -95,10 +107,14 @@ class GravPath : public Listener
 		GravPathNode		*End(void);
 	   virtual void      Archive( Archiver &arc );
 
-      Vector                     mins;
-      Vector                     maxs;
-      Vector                     origin;
-      qboolean                   force;
+
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+      Vector                     mins = Vector(0.0f, 0.0f, 0.0f);
+      Vector                     maxs = Vector(0.0f, 0.0f, 0.0f);
+      Vector                     origin = Vector(0.0f, 0.0f, 0.0f);
+      qboolean                   force = qfalse;
 	};
 
 inline void GravPath::Archive

@@ -729,7 +729,7 @@ class MoveFromConeOfFire : public Behavior
 		Vector						_newDestination = Vector(0.0f, 0.0f, 0.0f); //-- Where we're going      
 		Vector						_left = Vector(0.0f, 0.0f, 0.0f);           //-- Holds Data for Left Direction Check
 		Vector						_right = Vector(0.0f, 0.0f, 0.0f);          //-- Holds Data for Right Direction Check
-		bool						_stuckOnPlayer;  //-- Flag for being stuck on the player
+		bool						_stuckOnPlayer = false;  //-- Flag for being stuck on the player
 		float						_oldTurnSpeed = 0.0f;
 		Vector						_destination = Vector(0.0f, 0.0f, 0.0f);
 		bool						_nextToObstacle = false;

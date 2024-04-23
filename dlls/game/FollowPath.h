@@ -137,8 +137,12 @@ private:
 	const Steering::ReturnValue			RetreatCurrentNode( Actor &self, const Vector &goalPosition );
 	
 	Container<FollowNode *>				_nodes;
-	FollowNodePtr						_currentNode;
-	
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	FollowNodePtr						_currentNode = nullptr;
 };
 
 inline void FollowNodePath::Archive( Archiver &arc )
@@ -238,12 +242,17 @@ protected:
 	virtual void				SetCurrentNode(FollowNodePtr node) { _path.SetCurrentNode(node); }
 	
 private:
-	float						_radius;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float						_radius = 0.0f;
+	float						_avoidanceDistance = 0.0f;
+	Vector						_desiredHeading = Vector(0.0f, 0.0f, 0.0f);
+	qboolean					_jumping = qfalse;
+
+
 	FollowNodePath				_path;
-	float						_avoidanceDistance;
-	Vector						_desiredHeading;
 	Jump						_jump;
-	qboolean					_jumping;
 	str							_oldAnim;
 };
 

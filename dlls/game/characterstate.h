@@ -96,10 +96,15 @@ class Conditional : public Class
 		qboolean                   result = qfalse;
 		qboolean                   previous_result = qfalse;
 		bool                       checked = false;
-
+		
 
 	public :
-		Condition<Class>        condition;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Condition<Class>			condition = {};
+
+
 		Container<str>			parmList;
 
 		bool                    getResult( testcondition_t test, Entity &ent );

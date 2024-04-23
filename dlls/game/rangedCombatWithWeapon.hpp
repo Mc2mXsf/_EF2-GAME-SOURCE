@@ -67,10 +67,16 @@ class RangedCombatWithWeapon : public Behavior
 	private: 
 		str                         _aimAnim;       // --Animation used to aim the weapon
 		str							_fireAnim;		// --The animation used to fire the weapon
-		float						_approachDist;
-		float						_retreatDist;
-		float						_strafeChance;
-		float						_postureChangeChance;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_approachDist = 0.0f;
+		float						_retreatDist = 0.0f;
+		float						_strafeChance = 0.0f;
+		float						_postureChangeChance = 0.0f;
+
 
 	//-------------------------------------
 	// Internal Functionality
@@ -145,12 +151,15 @@ class RangedCombatWithWeapon : public Behavior
 		SelectBestWeapon				_selectBestWeapon;
 
 
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		// Member Vars
-		int								_state;          //-- Maintains our Behavior's current State
-		Actor*							_self;
-		EntityPtr						_currentEnemy;
-		float							_nextSelectWeaponTime;
-		float							_recheckTime;
+		int								_state = 0;          //-- Maintains our Behavior's current State
+		Actor*							_self = nullptr;
+		EntityPtr						_currentEnemy = nullptr;
+		float							_nextSelectWeaponTime = 0.0f;
+		float							_recheckTime = 0.0f;
 		// Constants
 		
 	};

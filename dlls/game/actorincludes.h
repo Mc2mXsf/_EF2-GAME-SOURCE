@@ -226,6 +226,9 @@ typedef enum
 //DialogNode_t -- Structure for Dialog Nodes
 typedef struct DialogNode_s
    {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
 	char alias_name[ MAX_ALIAS_NAME_LENGTH ];
 	int random_flag;
 	int number_of_parms;
@@ -235,29 +238,38 @@ typedef struct DialogNode_s
 	struct DialogNode_s *next;
    } DialogNode_t;
 
-typedef struct
-   {
-   int entNum;
-   float time;
-   qboolean inLineOfSight;
-   } LineOfSight_t;
+struct LineOfSight
+{
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int entNum = 0;
+	float time = 0.0f;
+	qboolean inLineOfSight = qfalse;
+};
+using LineOfSight_t = LineOfSight;
 
 //HateListEntry_t -- Structure for the hate list
-typedef struct
+struct HateListEntry
 {
-  // Information that will need to be persistant, or accesses
-  // frequently should be placed in this structure
+	// Information that will need to be persistant, or accesses
+	// frequently should be placed in this structure
 
-  EntityPtr enemy;               //Pointer to the entity
-  float     lastSightTime;       //Last time I tried to see this entity
-  float     nextSightTime;       //Next time I try and see this entity
-  qboolean  canSee;              //Can I see the enemy ( based on last time I tried )
-  float     damageCaused;        //total damage that entity has done to me
-  float     hate;                //how much hate I have for this entiy
 
-  float     lastDistance;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	EntityPtr enemy = nullptr;               //Pointer to the entity
+	float     lastSightTime = 0.0f;       //Last time I tried to see this entity
+	float     nextSightTime = 0.0f;       //Next time I try and see this entity
+	qboolean  canSee = qfalse;              //Can I see the enemy ( based on last time I tried )
+	float     damageCaused = 0.0f;        //total damage that entity has done to me
+	float     hate = 0.0f;                //how much hate I have for this entiy
 
-} HateListEntry_t;
+	float     lastDistance = 0.0f;
+
+};
+using HateListEntry_t = HateListEntry;
 
 typedef struct
 {
@@ -342,7 +354,7 @@ struct Tendency
 using Tendency_t = Tendency;
 
 // StateVar -- Structure for holding StateVars
-struct StateVarX
+struct StateVar_s
 {
 	str varName;
 	str varValue;
@@ -353,7 +365,7 @@ struct StateVarX
 	//--------------------------------------------------------------
 	float varTime = 0.0f;
 };
-using StateVar = StateVarX;
+using StateVar = StateVar_s;
 
 // part_t -- Part stuff
 struct part

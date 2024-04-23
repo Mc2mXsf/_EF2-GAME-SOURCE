@@ -95,13 +95,16 @@ class PatrolWorkHibernate : public Behavior
 
    private:
       // Member Variables
-      unsigned int                     _state;
-      HelperNodePtr                    _lastWorkNodeChecked;
-      HelperNodePtr                    _lastHibernateNodeChecked;      
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	   //--------------------------------------------------------------
+      unsigned int                     _state = 0;
+      HelperNodePtr                    _lastWorkNodeChecked = nullptr;
+      HelperNodePtr                    _lastHibernateNodeChecked = nullptr;
+      float                            _nextStateCheck = 0.0f;
+      float                            _nextWorkCheck = 0.0f;
+      float                            _nextHibernateCheck = 0.0f;
 
-      float                            _nextStateCheck;
-      float                            _nextWorkCheck;
-      float                            _nextHibernateCheck;
 
       // Constants
       static const float               MIN_DISTANCE_TO_PATROL_NODE;
@@ -202,17 +205,21 @@ class PatrolWorkWander : public Behavior
 		MoveRandomDirection              _wanderComponent;
 
 	private: // Member Variables
-		unsigned int                     _state;
-		HelperNodePtr                    _lastWorkNodeChecked;
-		HelperNodePtr                    _lastPatrolNodeChecked;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int                     _state = 0;
+		HelperNodePtr                    _lastWorkNodeChecked = nullptr;
+		HelperNodePtr                    _lastPatrolNodeChecked = nullptr;
       
-		float                            _nextStateCheck;
-		float                            _nextWorkCheck;
-		float                            _nextPatrolCheck;
+		float                            _nextStateCheck = 0.0f;
+		float                            _nextWorkCheck = 0.0f;
+		float                            _nextPatrolCheck = 0.0f;
 	  
-		int                              _wanderFailures;	 
-		int                              _patrolFailures;
-		int                              _workFailures;
+		int                              _wanderFailures = 0;	 
+		int                              _patrolFailures = 0;
+		int                              _workFailures = 0;
+
 
 		// Constants
 		static const float               MIN_DISTANCE_TO_PATROL_NODE;

@@ -96,7 +96,13 @@ class Door : public ScriptSlave
 	public:
 		CLASS_PROTOTYPE( Door );
 
-		qboolean	locked;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean	locked = qfalse;
+
 
 							Door();
 		qboolean			isOpen( void );

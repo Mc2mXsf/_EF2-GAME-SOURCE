@@ -68,11 +68,17 @@ class PathNode;
 class PathNodeConnection : public Class
 {
 public:
-	CLASS_PROTOTYPE( PathNodeConnection );
-	int					targetNodeIndex;
-	short				moveCost;
-	byte				maxheight[ NUM_WIDTH_VALUES ];
-	int					door;
+	CLASS_PROTOTYPE(PathNodeConnection);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	int					targetNodeIndex = 0;
+	short				moveCost = 0;
+	byte				maxheight[NUM_WIDTH_VALUES] = {0};
+	int					door = 0;
+
 
 	virtual void		Archive( Archiver &arc )
 	{
@@ -103,9 +109,6 @@ class PathNode : public Listener
 		Container<PathNodeConnection *>
 								_connections;	// these are the real connections between nodex
 
-		// These variables are all used during the search
-		pathlist_t		inlist;
-
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
@@ -118,6 +121,8 @@ class PathNode : public Listener
 		float				drawtime = 0.0f;
 		float				occupiedTime = 0.0f;
 		int				entnum = 0;
+		// These variables are all used during the search
+		pathlist_t		inlist = NOT_IN_LIST;
 		// reject is used to indicate that a node is unfit for ending on during a search
 		qboolean			reject = qfalse;
 		PathNode			*Parent = nullptr;

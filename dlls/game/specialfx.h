@@ -25,12 +25,17 @@
 class Fulcrum : public ScriptSlave
 	{
    private:
-      float       resetspeed;
-      float       dampening;
-      float       limit;
-      float       speed;
-      qboolean    touched;
-      Vector      startangles;
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+      float       resetspeed = 0.0f;
+      float       dampening = 0.0f;
+      float       limit = 0.0f;
+      float       speed = 0.0f;
+      qboolean    touched = qfalse;
+      Vector      startangles = Vector(0.0f,0.0f,0.0f);
+
+
       str         movesound;
 
 	public:

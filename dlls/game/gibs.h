@@ -26,18 +26,30 @@
 class Gib : public Entity
    {
    private:
-      int      sprayed;
-      float    scale;
-      Entity   *blood;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int      sprayed = 0;
+		float    scale = 0.0f;
+		Entity   *blood = nullptr;
+		float		blood_splat_size = 0.0f;
+		float		final_pitch = 0.0f;
+		float		next_bleed_time = 0.0f;
+
+
 		str		blood_splat_name;
-		float		blood_splat_size;
 		str		blood_spurt_name;
-		float		final_pitch;
-		float		next_bleed_time;
+
    public:
       CLASS_PROTOTYPE( Gib );
 
-      qboolean    fadesplat;
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      qboolean    fadesplat = qfalse;
+
+
       Gib();
 		~Gib();
       Gib( const str &name, qboolean blood_trail, const str &bloodtrailname="", const str &bloodspurtname="", 

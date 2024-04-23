@@ -41,15 +41,19 @@ solid_edge items only clip against bsp models.
 
 */
 
-typedef struct
+struct pushed_
 {
-	Entity		*ent;
-	Vector		localorigin;
-	Vector		origin;
-	Vector		localangles;
-	Vector		angles;
-	float		deltayaw;
-} pushed_t;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	Entity* ent = nullptr;
+	Vector		localorigin = Vector(0.0f, 0.0f, 0.0f);
+	Vector		origin = Vector(0.0f, 0.0f, 0.0f);
+	Vector		localangles = Vector(0.0f, 0.0f, 0.0f);
+	Vector		angles = Vector(0.0f, 0.0f, 0.0f);
+	float		deltayaw = 0.0f;
+};
+using pushed_t = pushed_;
 
 pushed_t pushed[ MAX_GENTITIES ];
 pushed_t *pushed_p;

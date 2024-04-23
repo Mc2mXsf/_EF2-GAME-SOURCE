@@ -229,21 +229,24 @@ inline void Projectile::Archive ( Archiver &arc )
 class Explosion : public Projectile
 {
 public:
-	float				flash_r;
-	float				flash_g;
-	float				flash_b;
-	float				flash_a;
-	float				flash_minradius;
-	float				flash_radius;
-	float				flash_mintime;
-	float				flash_time;
-	int					flash_type;
-	float				radius_damage;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float				flash_r = 0.0f;
+	float				flash_g = 0.0f;
+	float				flash_b = 0.0f;
+	float				flash_a = 0.0f;
+	float				flash_minradius = 0.0f;
+	float				flash_radius = 0.0f;
+	float				flash_mintime = 0.0f;
+	float				flash_time = 0.0f;
+	int					flash_type = 0;
+	float				radius_damage = 0.0f;
+	float				radius = 0.0f;
+	qboolean			constant_damage = qfalse;
+	qboolean			damage_every_frame = qfalse;
 	
-	float				radius;
-	qboolean			constant_damage;
-	qboolean			damage_every_frame;
-	
+
 	CLASS_PROTOTYPE( Explosion );
 	
 	Explosion();

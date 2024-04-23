@@ -39,17 +39,24 @@ extern Event EV_ScriptSlave_NewOrders;
 class ScriptSlave : public Trigger
 	{
 	private:
-		Vector				_newAngles;
-		Vector				_newPosition;
-		bool				_handlesDamage;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector				_newAngles = Vector(0.0f, 0.0f, 0.0f);
+		Vector				_newPosition = Vector(0.0f, 0.0f, 0.0f);
+		bool				_handlesDamage = false;
 
 	protected:
-		ThreadPtr			touchthread;
-		ThreadPtr			blockthread;
-		ThreadPtr			triggerthread;
-		ThreadPtr			usethread;
-		ThreadPtr			damagethread;
-		ThreadPtr			movethread;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		ThreadPtr			touchthread = nullptr;
+		ThreadPtr			blockthread = nullptr;
+		ThreadPtr			triggerthread = nullptr;
+		ThreadPtr			usethread = nullptr;
+		ThreadPtr			damagethread = nullptr;
+		ThreadPtr			movethread = nullptr;
+
 
 		str					touchlabel;
 		str					uselabel;
@@ -57,46 +64,46 @@ class ScriptSlave : public Trigger
 		str					triggerlabel;
 		str					damagelabel;
 
-		float				attack_finished;
-		float				dmg;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float				attack_finished = 0.0f;
+		float				dmg = 0.0f;
 		int					dmg_means_of_death;
-		qboolean			thinking;
+		qboolean			thinking = qfalse;
+		float				_forcefieldNumber = 0.0f;
+		float				_triggerNumber = 0.0f;
+		EntityPtr			_scanner = nullptr;
+		bool				_portalOpen = false;
+		float				_nextNeedToUseTime = 0.0f;
+		bool				_canBeAttackedByOtherScriptSlaves = false;
 
-		float				_forcefieldNumber;
-		float				_triggerNumber;
-		EntityPtr			_scanner;
-
-		bool				_portalOpen;
 
 		str					_damageEffect;
 		str					_bloodModel;
 		Container<str>		_requiredMODlist;
 
-		float				_nextNeedToUseTime;
-
-		bool				_canBeAttackedByOtherScriptSlaves;
-
 
 	public:
-	
-		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean			commandswaiting = qfalse;
+		Vector				TotalRotation = Vector(0.0f, 0.0f, 0.0f);
+		Vector				ForwardDir = Vector(0.0f, 0.0f, 0.0f);
+		float				speed = 0.0f;
+		Waypoint			*waypoint = nullptr;
+		float				traveltime = 0.0f;
+		BSpline				*splinePath = nullptr;
+		float				splineTime = 0.0f;
+		SplinePathPtr		currentNode = nullptr;
+		int					lastTime = 0;
+		int					newTime = 0;
+		qboolean			splineangles = qfalse;
+		qboolean			ignoreangles = qfalse;
+		qboolean			moving = qfalse;  // is the script object currently moving?
 
-		qboolean			commandswaiting;
-		Vector				TotalRotation;
-		Vector				ForwardDir;
-		float				speed;
-		Waypoint			*waypoint;
-		float				traveltime;
-		BSpline				*splinePath;
-		float				splineTime;
-
-		SplinePathPtr		currentNode;
-		int					lastTime;
-		int					newTime;
-
-		qboolean			splineangles;
-		qboolean			ignoreangles;
-		qboolean			moving;  // is the script object currently moving?
 
 		CLASS_PROTOTYPE( ScriptSlave );
 
@@ -338,7 +345,13 @@ class ScriptModel : public ScriptSlave
 {
 	private:
 		void				GibEvent(Event *ev);
-		qboolean			animationDriven;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean			animationDriven = qfalse;
+
 
 	public:
 		CLASS_PROTOTYPE( ScriptModel );
@@ -371,12 +384,15 @@ class ScriptOrigin : public ScriptSlave
 class ScriptSkyOrigin : public ScriptSlave
 	{
 	public:
-		qboolean			use_base_position;
-		Vector				base_position;
-		qboolean			use_player_base_position;
-		Vector				player_base_position;
-		float				translation_multiplier;
-		float				max_distance;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		qboolean			use_base_position = qfalse;
+		Vector				base_position = Vector(0.0f, 0.0f, 0.0f);
+		qboolean			use_player_base_position = qfalse;
+		Vector				player_base_position = Vector(0.0f, 0.0f, 0.0f);
+		float				translation_multiplier = 0.0f;
+		float				max_distance = 0.0f;
 
 
 		CLASS_PROTOTYPE( ScriptSkyOrigin );

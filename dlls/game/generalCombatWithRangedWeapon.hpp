@@ -74,19 +74,23 @@ class GeneralCombatWithRangedWeapon : public Behavior
 		str								_fireAnim;
 		str								_preFireAnim;
 		str								_postFireAnim;
-		float							_approachDist;
-		float							_retreatDist;
-		float							_strafeChance;
-		float							_strafeTime;
-		float							_strafeRandomFactor;
-		float							_postureChangeChance;
-		float							_fireTimeMin;
-		float							_fireTimeMax;
-		float							_fireTimeRandomFactor;
-		float							_pauseTimeMin;
-		float							_pauseTimeMax;
-		float							_pauseTimeRandomFactor;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_approachDist = 0.0f;
+		float							_retreatDist = 0.0f;
+		float							_strafeChance = 0.0f;
+		float							_strafeTime = 0.0f;
+		float							_strafeRandomFactor = 0.0f;
+		float							_postureChangeChance = 0.0f;
+		float							_fireTimeMin = 0.0f;
+		float							_fireTimeMax = 0.0f;
+		float							_fireTimeRandomFactor = 0.0f;
+		float							_pauseTimeMin = 0.0f;
+		float							_pauseTimeMax = 0.0f;
+		float							_pauseTimeRandomFactor = 0.0f;
 
 
 	//-------------------------------------
@@ -212,25 +216,27 @@ class GeneralCombatWithRangedWeapon : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		generalCombatStates_t			_state;		
-		Actor						   *_self;
-		EntityPtr						_currentEnemy;
-		bool							_finishedPostureTransition;
-		bool							_randomAdvanceLockOut;
-		bool							_randomRetreatLockOut;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		generalCombatStates_t			_state = GC_WRW_FAILED;
+		Actor						   *_self = nullptr;
+		EntityPtr						_currentEnemy = nullptr;
+		bool							_finishedPostureTransition = false;
+		bool							_randomAdvanceLockOut = false;
+		bool							_randomRetreatLockOut = false;
 
-		float							_nextRotateTime;
-		float							_nextStrafeAttemptTime;
-		float							_nextPostureChange;
-		float							_nextClearRetreatLockOutTime;
-		float							_nextClearAdvanceLockOutTime;
+		float							_nextRotateTime = 0.0f;
+		float							_nextStrafeAttemptTime = 0.0f;
+		float							_nextPostureChange = 0.0f;
+		float							_nextClearRetreatLockOutTime = 0.0f;
+		float							_nextClearAdvanceLockOutTime = 0.0f;
 		      
-		int								_randomAdvanceFailures;
-		int								_randomRetreatFailures;
+		int								_randomAdvanceFailures = 0;
+		int								_randomRetreatFailures = 0;
 
-		float							_nextFireTime;
-		float							_nextPauseTime;
-
+		float							_nextFireTime = 0.0f;
+		float							_nextPauseTime = 0.0f;
 };
 
 
