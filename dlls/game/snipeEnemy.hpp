@@ -60,12 +60,15 @@ class SnipeEnemy : public Behavior
 	// Parameters
 	//------------------------------------
 	private:
-		float			_aimTime;
-		float			_lockDownTime;
-		float			_maxTorsoYaw;
-		float			_maxTorsoPitch;
-		float			_maxTorsoTurnSpeed;
-		int				_shots;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float			_aimTime = 0.0f;
+		float			_lockDownTime = 0.0f;
+		float			_maxTorsoYaw = 0.0f;
+		float			_maxTorsoPitch = 0.0f;
+		float			_maxTorsoTurnSpeed = 0.0f;
+		int				_shots = 0;
 		
 		
 	//-------------------------------------
@@ -127,23 +130,26 @@ class SnipeEnemy : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		SnipeAimAndFireStates_t			_state;	
-		Vector							_currentTorsoAngles;		
-		float							_endAimTime;
-		float							_endLockDownTime;
-		EntityPtr						_currentEnemy;
-		bool							_canAttack;
-		bool							_animDone;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		SnipeAimAndFireStates_t			_state = SNIPE_AIM_AND_FIRE_AIM;
+		Vector							_currentTorsoAngles = Vector(0.0f, 0.0f, 0.0f);
+		float							_endAimTime = 0.0f;
+		float							_endLockDownTime = 0.0f;
+		EntityPtr						_currentEnemy = nullptr;
+		bool							_canAttack = false;
+		bool							_animDone = false;
+		bool							_fireFailed = false;
+		Vector							_lastGoodPosition = Vector(0.0f, 0.0f, 0.0f);
+		Vector							_targetSpread = Vector(0.0f, 0.0f, 0.0f);
+		Actor						   *_self = nullptr;
+
+
 		str								_aimAnim;
 		str								_preFireAnim;
-		str								_fireAnim;	
+		str								_fireAnim;
 		str								_postFireAnim;
-		bool							_fireFailed;
-		Vector							_lastGoodPosition;
-		Vector							_targetSpread;
-		Actor						   *_self;		
-		
-
 	};
 
 inline void SnipeEnemy::Archive( Archiver &arc	)

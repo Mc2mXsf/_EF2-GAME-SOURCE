@@ -288,8 +288,6 @@ class State : public Class
       str                        name;
 
       str                        nextState;
-      movecontrol_t              movetype;
-      cameratype_t               cameratype;
 
 		str								behaviorName;
 		Container<str>					behaviorParmList;
@@ -314,6 +312,8 @@ class State : public Class
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
 		//--------------------------------------------------------------
+		movecontrol_t              movetype = MOVECONTROL_USER;
+		cameratype_t               cameratype = CAMERA_TOPDOWN;
 		float								minTime = 0.0f;
 		float								maxTime = 0.0f;
 		qboolean                   ignoreGlobalStates = qfalse;
@@ -489,9 +489,15 @@ class StateMap : public Class
 	private :
 		Container<State *>         stateList;
 		Container<State *>		   globalStateList;
-		Condition<Class>           *current_conditions;
-		Container<Conditional *>   *current_conditionals;
-		str						   filename;				
+		str						   filename;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Condition<Class>           *current_conditions = nullptr;
+		Container<Conditional *>   *current_conditionals = nullptr;
+
 
 	public :
 		StateMap();
@@ -580,10 +586,14 @@ class FuzzyEngine : public Class
 
    private :
       Container<FuzzyVar *>       _varList;
-      Condition<Class>           *_current_conditions;
-      Container<Conditional *>   *_current_conditionals;
-		str								 _filename;
+	  str								 _filename;
 
+
+	  //--------------------------------------------------------------
+	  // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	  //--------------------------------------------------------------
+      Condition<Class>           *_current_conditions = nullptr;
+      Container<Conditional *>   *_current_conditionals = nullptr;
    };
 
 //================================================

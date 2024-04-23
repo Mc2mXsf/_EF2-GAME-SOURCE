@@ -74,12 +74,17 @@ inline void Fulcrum::Archive
 class RunThrough : public Entity
 	{
    private:
-      Vector      offset;
-      float       speed;
-      float       chance;
-      float       delay;
-      float       lasttriggertime;
-      float       lip;
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+      Vector      offset = Vector(0.0f, 0.0f, 0.0f);
+      float       speed = 0.0f;
+      float       chance = 0.0f;
+      float       delay = 0.0f;
+      float       lasttriggertime = 0.0f;
+      float       lip = 0.0f;
+
+
       str         spawnmodel;
 
       void        SetSpeed( Event *ev );
@@ -115,19 +120,24 @@ inline void RunThrough::Archive
 class SinkObject : public ScriptSlave
 	{
    private:
-      float       resetspeed;
-      float       resetdelay;
-      float       dampening;
-      float       limit;
-      float       speed;
-      float       delay;
-      float       time_touched;
-      float       time_reset;
+       //--------------------------------------------------------------
+       // GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+       //--------------------------------------------------------------
+      float       resetspeed = 0.0f;
+      float       resetdelay = 0.0f;
+      float       dampening = 0.0f;
+      float       limit = 0.0f;
+      float       speed = 0.0f;
+      float       delay = 0.0f;
+      float       time_touched = 0.0f;
+      float       time_reset = 0.0f;
+      qboolean    touched = qfalse;
+      qboolean    active = qfalse;
+      Vector      startpos = Vector(0.0f, 0.0f, 0.0f);
+
+
       str         sinksound;
       str         resetsound;
-      qboolean    touched;
-      qboolean    active;
-      Vector      startpos;
 
 	public:
       CLASS_PROTOTYPE( SinkObject );

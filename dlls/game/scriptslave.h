@@ -70,7 +70,7 @@ class ScriptSlave : public Trigger
 		//--------------------------------------------------------------
 		float				attack_finished = 0.0f;
 		float				dmg = 0.0f;
-		int					dmg_means_of_death;
+		int					dmg_means_of_death = 0;
 		qboolean			thinking = qfalse;
 		float				_forcefieldNumber = 0.0f;
 		float				_triggerNumber = 0.0f;

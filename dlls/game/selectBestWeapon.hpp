@@ -58,7 +58,11 @@ class SelectBestWeapon : public Behavior
 	// Parameters
 	//------------------------------------
 	private:
-		EntityPtr	_currentEnemy;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr	_currentEnemy = nullptr;
+
 
 	//-------------------------------------
 	// Internal Functionality
@@ -119,13 +123,17 @@ class SelectBestWeapon : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		selectBestWeaponStates_t	_state;
-		Actor					   *_self;
-		WeaponPtr					_bestWeapon;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		selectBestWeaponStates_t	_state = SBW_SELECT_WEAPON;
+		Actor					   *_self = nullptr;
+		WeaponPtr					_bestWeapon = nullptr;
+		bool						_animDone = false;
+
+
 		str							_currentWeaponName;
 		str							_bestWeaponName;
-		bool						_animDone;
-
 	};
 
 inline void	SelectBestWeapon::SetCurrentEnemy( Entity *enemy )
