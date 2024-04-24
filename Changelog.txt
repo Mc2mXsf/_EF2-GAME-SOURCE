@@ -11,6 +11,15 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
+g_gametype 2 -> botmatch starten -> g_gametype 0 -> devmap dm_kw -> archiver error -> wenn aber das match vorher verlassen wird, besteht das problem nicht
+
+Fixed: Warning C6031 Return value ignored: sscanf.
+void BotMatch_CheckPoint(bot_state_t *bs, bot_match_t *match)
+void SoundManager::UpdateRandomSpeaker( RandomSpeaker * speaker )
+void SoundManager::UpdateSpeaker( TriggerSpeaker * speaker )
+void SoundManager::UpdateTriggerMusic( TriggerMusic * music )
+inline Vector::Vector( const char *text	): x( 0 ), y( 0 ), z( 0 )
+
 Fixed: Warning C6011 Dereferencing NULL-Pointer.
 void MultiplayerManager::say( Player *player, const str &text, bool team )
 Projectile *ProjectileAttack( const Vector &start, Vector &dir, Entity *owner, const str &projectileModel, float fraction,float real_speed )
@@ -51,6 +60,14 @@ Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not 
 int NumPlayersOnSameTeam(bot_state_t *bs)
 void BotTeamplayReport(void)
 void BotUpdateInfoConfigStrings(void)
+int BotNumActivePlayers(void)
+char *BotFirstClientInRankings(void)
+char *BotRandomOpponentName(bot_state_t *bs)
+char *BotLastClientInRankings(void)
+char *BotFirstClientInRankings(void)
+int BotNumTeamMates(bot_state_t *bs)
+void BotTeamOrders(bot_state_t *bs)
+int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxteammates)
 
 Fixed: Warning: C28182 Dereferencing NULL-Pointer ?, contains same NULL-Value as ?
 void BotInterbreedBots(void)
@@ -59,9 +76,10 @@ void SelectSpawnPoint( Vector &org, Vector &ang, str &thread )
 Fixed: Return value being bool instead of qboolean.
 qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float check_fovdot	)
 
-The function uses 65556 bytes of stack. Consider moving some data to the heap.
+The function uses ? bytes of stack. Consider moving some data to the heap.
 void Com_sprintf (char *dest, int size, const char *fmt, ...)
 void str::snprintf( char *dst, int size, const char *fmt, ... )
+void Animate::NewAnim( int animnum, bodypart_t part )
 
 Fixed: Warning: Possible NULL char
 void Q_strncpyz( char *dest, const char *src, int destsize )
@@ -110,6 +128,104 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 void BotTeamOrders(bot_state_t *bs)
 
 Fixed: Warning C26495: The Variable ? was not initialized. A Variable needs always to be initialized (type.6)
+class WatchEntityEX : public Behavior
+class Work : public Behavior
+class WatchEntity : public Behavior
+class HVMoveMode_FollowPath : public VehicleMoveMode
+class VehicleBase : public ScriptModel
+class Vehicle : public VehicleBase
+class UseAlarm : public Behavior
+class Damage : public Class
+class FuzzyEngine : public Class
+class StateMap : public Class
+class SnipeEnemy : public Behavior
+class ShrapnelBomb : public Projectile
+class SelectBestWeapon : public Behavior
+class SinkObject : public ScriptSlave
+class RunThrough : public Entity
+class RangedCombatWithWeapon : public Behavior
+class PatrolWorkWander : public Behavior
+class ScriptSkyOrigin : public ScriptSlave
+class ScriptModel : public ScriptSlave
+class ScriptSlave : public Trigger
+class PatrolWorkHibernate : public Behavior
+class GravPath : public Listener
+class GravPathNode : public Entity
+class Gib : public Entity
+class GeneralCombatWithRangedWeapon : public Behavior
+class Fulcrum : public ScriptSlave
+class FollowNodePath : public Class
+class FollowPath : public Steering
+class Explosion : public Projectile
+class Script : public Class
+class StationaryFireCombat : public Behavior
+class StationaryFireCombatEX : public Behavior
+class SuppressionFireCombat : public Behavior
+class TargetList : public Class
+class DynamicLightInfo
+class WindInfo
+class WeatherInfo
+class World : public Entity
+class ThrowObject : public Object
+class TorsoAimAndFireWeapon : public Behavior
+TeammateData
+scriptmarker_t
+script_label_t
+LineOfSight_t
+HateListEntry_t
+pushed_t
+part_t
+StateVar
+Tendency_t
+PackageTendency_t
+BehaviorPackageEntry_t
+FollowTargetData_t
+IgnoreHelperNodeData_t
+CurrentHelperNodeData_t
+customAnimListEntry_t
+struct Condition
+class GotoHelperNode : public Behavior
+class GotoHelperNodeEX : public Behavior
+class GotoHelperNodeNearestEnemy : public Behavior
+class Level : public Class
+class FallingRock : public Entity
+class PushObject : public Entity
+class Waypoint : public Entity
+class UseObject : public Entity
+class UseAnimDestination : public Entity
+class UseAnim : public Entity
+class TeleporterDestination : public Entity
+class Teleporter : public Trigger
+class ExplodingWall : public Trigger
+class Exploder : public Trigger
+class MultiExploder : public Trigger
+class ExplodeObject : public MultiExploder
+class ScriptDoor : public Door
+class SlidingDoor : public Door
+class RotatingDoor : public Door
+class DoAttack : public Behavior
+class CorridorCombatWithRangedWeapon : public Behavior
+class Door : public ScriptSlave
+class SpecialtyItem
+class def_t : public Class
+class Projectile : public Entity
+class Program : public Class
+class PostureController
+class PlayerHeuristics : public Class
+class PlayAnim : public Behavior
+class Patrol : public Behavior
+class MoveRandomDirection : public Behavior
+class Mover : public Listener
+class ModifierDiffusion : public MultiplayerModifier
+class DiffusionBombPlace
+class EliminationPlayerData
+class ModifierDestruction : public MultiplayerModifier
+class DestructionPlayerData
+class Trajectory
+class Angle
+class Group	: public Listener
+class GotoCurrentHelperNode : public Behavior
+class GeneralCombatWithMeleeWeapon : public Behavior
 class State : public Class
 class Expression : public Class
 class Conditional : public Class
@@ -292,7 +408,6 @@ class RotateToEntity : public Behavior
 class DoBeamAttack : public Behavior
 class AlertIdle : public Behavior
 class WeaponProperty : public Class
-customAnimListEntry_t
 class FireWeapon : public Behavior
 class WarpToEntity : public Behavior
 class WarpToPosition : public Behavior
