@@ -4388,7 +4388,7 @@ void Actor::AttackEntity( Event *ev	)
 	// GAMEFIX - Fixed: Crash if $actor.attack($entity) is used but $entity does not exist - chrissstrahl
 	//--------------------------------------------------------------
 	if (!targetEntity) {
-		gi.Printf(va("Actor::AttackEntity - $%s.attack($entity) failed, entity does not exist\n", this->targetname.c_str()));
+		gi.Printf("Actor::AttackEntity - $%s.attack($entity) failed, entity does not exist\n", this->targetname.c_str());
 		return;
 	}
 
