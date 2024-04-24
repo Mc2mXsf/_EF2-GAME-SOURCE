@@ -175,10 +175,22 @@ inline Vector::Vector( const char *text	): x( 0 ), y( 0 ), z( 0 )
 {
 	if ( text )
 	{
-		if ( text[0] == '"' )
-			sscanf( text, "\"%f %f %f\"", &x, &y, &z );
-		else
-			sscanf( text, "%f %f %f", &x, &y, &z );
+		if (text[0] == '"') {
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+			//--------------------------------------------------------------
+			if (!sscanf(text, "\"%f %f %f\"", &x, &y, &z)) {
+				gi.Error(ERR_DROP, "inline Vector::Vector( const char *text	) - Bad Format or Bad Data");
+			}
+		}
+		else {
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+			//--------------------------------------------------------------
+			if (!sscanf(text, "%f %f %f", &x, &y, &z)) {
+				gi.Error(ERR_DROP, "inline Vector::Vector( const char *text	) - Bad Format or Bad Data");
+			}
+		}
 	}
 }
 

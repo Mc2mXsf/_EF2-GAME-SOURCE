@@ -423,7 +423,16 @@ void SoundManager::UpdateRandomSpeaker( RandomSpeaker * speaker )
 	
 	// get origin
 	cvar = gi.cvar( "snd_origin", "", 0 );
-	sscanf( cvar->string, "%f %f %f", &tempvec[ 0 ], &tempvec[ 1 ], &tempvec[ 2 ] );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!sscanf(cvar->string, "%f %f %f", &tempvec[0], &tempvec[1], &tempvec[2])) {
+		return;
+	}
+
+
 	speaker->setOrigin( tempvec );
 	
 	// get targetname
@@ -491,7 +500,16 @@ void SoundManager::UpdateSpeaker( TriggerSpeaker * speaker )
 	
 	// get origin
 	cvar = gi.cvar( "snd_origin", "", 0 );
-	sscanf( cvar->string, "%f %f %f", &tempvec[ 0 ], &tempvec[ 1 ], &tempvec[ 2 ] );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!sscanf(cvar->string, "%f %f %f", &tempvec[0], &tempvec[1], &tempvec[2])) {
+		return;
+	}
+
+
 	speaker->setOrigin( tempvec );
 	
 	// get targetname
@@ -561,7 +579,16 @@ void SoundManager::UpdateTriggerMusic( TriggerMusic * music )
 	
 	// get origin
 	cvar = gi.cvar( "snd_origin", "", 0 );
-	sscanf( cvar->string, "%f %f %f", &tempvec[ 0 ], &tempvec[ 1 ], &tempvec[ 2 ] );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!sscanf(cvar->string, "%f %f %f", &tempvec[0], &tempvec[1], &tempvec[2])) {
+		return;
+	}
+
+
 	music->setOrigin( tempvec );
 	
 	// get targetname
@@ -665,7 +692,16 @@ void SoundManager::UpdateTriggerReverb( TriggerReverb * reverb )
 	
 	// get origin
 	cvar = gi.cvar( "snd_origin", "", 0 );
-	sscanf( cvar->string, "%f %f %f", &tempvec[ 0 ], &tempvec[ 1 ], &tempvec[ 2 ] );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!sscanf(cvar->string, "%f %f %f", &tempvec[0], &tempvec[1], &tempvec[2])) {
+		return;
+	}
+
+
 	reverb->setOrigin( tempvec );
 	
 	// get targetname

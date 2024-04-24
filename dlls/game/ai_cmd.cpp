@@ -1196,7 +1196,16 @@ void BotMatch_CheckPoint(bot_state_t *bs, bot_match_t *match) {
 	gi.BotMatchVariable(match, NETNAME, netname, sizeof(netname));
 	client = ClientFromName(netname);
 	//BotGPSToPosition(buf, position);
-	sscanf(buf, "%f %f %f", &position[0], &position[1], &position[2]);
+	
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+	//--------------------------------------------------------------
+	if (sscanf(buf, "%f %f %f", &position[0], &position[1], &position[2])) {
+		return;
+	}
+
+	
 	position[2] += 0.5;
 	areanum = BotPointAreaNum(position);
 	if (!areanum) {
