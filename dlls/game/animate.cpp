@@ -237,20 +237,27 @@ void Animate::NewAnim( int animnum, bodypart_t part )
 	if ( ( last_anim != animnum ) && !( last_anim_flags & ANIM_SERVER_EXITCOMMANDS_PROCESSED ) )
 	{
 		// exit the previous animation
-		tiki_cmd_t cmds;
-		if ( gi.Frame_Commands( self->edict->s.modelindex, last_anim, TIKI_FRAME_CMD_EXIT, &cmds ) )
+		
+
+		//--------------------------------------------------------------
+		// GAMEFIX - The function uses ? bytes of stack. Consider moving some data to the heap. - chrissstrahl
+		//--------------------------------------------------------------
+		static tiki_cmd_t cmds_1;
+
+
+		if ( gi.Frame_Commands( self->edict->s.modelindex, last_anim, TIKI_FRAME_CMD_EXIT, &cmds_1 ) )
 		{
-			for( int ii = 0; ii < cmds.num_cmds; ii++ )
+			for( int ii = 0; ii < cmds_1.num_cmds; ii++ )
             {
-				Event *ev = new Event( cmds.cmds[ ii ].args[ 0 ] );
+				Event *ev = new Event( cmds_1.cmds[ ii ].args[ 0 ] );
 				
 				ev->SetSource( EV_FROM_ANIMATION );
 				ev->SetAnimationNumber( last_anim );
 				ev->SetAnimationFrame( 0 );
 				
-				for( int j = 1; j < cmds.cmds[ ii ].num_args; j++ )
+				for( int j = 1; j < cmds_1.cmds[ ii ].num_args; j++ )
 				{
-					ev->AddToken( cmds.cmds[ ii ].args[ j ] );
+					ev->AddToken( cmds_1.cmds[ ii ].args[ j ] );
 				}
 				self->ProcessEvent( ev );
             }
@@ -305,19 +312,26 @@ void Animate::NewAnim( int animnum, bodypart_t part )
 	{
 		ClearAllEffectAnims();
 		// enter this animation
-		tiki_cmd_t cmds;
-		if ( gi.Frame_Commands( self->edict->s.modelindex, animnum, TIKI_FRAME_CMD_ENTRY, &cmds ) )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - The function uses ? bytes of stack. Consider moving some data to the heap. - chrissstrahl
+		//--------------------------------------------------------------
+		static tiki_cmd_t cmds_2;
+
+
+		if ( gi.Frame_Commands( self->edict->s.modelindex, animnum, TIKI_FRAME_CMD_ENTRY, &cmds_2 ) )
 		{
-			for( int ii = 0; ii < cmds.num_cmds; ii++ )
+			for( int ii = 0; ii < cmds_2.num_cmds; ii++ )
             {
-				Event *ev = new Event( cmds.cmds[ ii ].args[ 0 ] );
+				Event *ev = new Event( cmds_2.cmds[ ii ].args[ 0 ] );
 				ev->SetSource( EV_FROM_ANIMATION );
 				ev->SetAnimationNumber( animnum );
 				ev->SetAnimationFrame( 0 );
 				
-				for( int j = 1; j < cmds.cmds[ ii ].num_args; j++ )
+				for( int j = 1; j < cmds_2.cmds[ ii ].num_args; j++ )
 				{
-					ev->AddToken( cmds.cmds[ ii ].args[ j ] );
+					ev->AddToken( cmds_2.cmds[ ii ].args[ j ] );
 				}
 				self->ProcessEvent( ev );
             }
@@ -363,20 +377,27 @@ void Animate::NewAnim( int animnum, bodypart_t part )
 			if ( has_commands )
             {
 				// we want normal frame commands to occur right on the frame
-				tiki_cmd_t cmds;
-				if ( gi.Frame_Commands( self->edict->s.modelindex, animnum, i, &cmds ) )
+				
+				
+				//--------------------------------------------------------------
+				// GAMEFIX - The function uses ? bytes of stack. Consider moving some data to the heap. - chrissstrahl
+				//--------------------------------------------------------------
+				static tiki_cmd_t cmds_3;
+				
+				
+				if ( gi.Frame_Commands( self->edict->s.modelindex, animnum, i, &cmds_3 ) )
 				{
-					for( int ii = 0; ii < cmds.num_cmds; ii++ )
+					for( int ii = 0; ii < cmds_3.num_cmds; ii++ )
 					{
-						Event *ev = new Event( cmds.cmds[ ii ].args[ 0 ] );
+						Event *ev = new Event( cmds_3.cmds[ ii ].args[ 0 ] );
 						
 						ev->SetSource( EV_FROM_ANIMATION );
 						ev->SetAnimationNumber( animnum );
 						ev->SetAnimationFrame( i );
 						
-						for( int j = 1; j < cmds.cmds[ ii ].num_args; j++ )
+						for( int j = 1; j < cmds_3.cmds[ ii ].num_args; j++ )
 						{
-							ev->AddToken( cmds.cmds[ ii ].args[ j ] );
+							ev->AddToken( cmds_3.cmds[ ii ].args[ j ] );
 						}
 						self->PostEvent( ev, time, flags );
 					}
