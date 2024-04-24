@@ -60,6 +60,14 @@ int BotNumActivePlayers(void) {
 	num = 0;
 	for (i = 0; i < maxclients->integer && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || 
 			!strlen(Info_ValueForKey(buf, "name"))
@@ -143,6 +151,14 @@ char *BotFirstClientInRankings(void) {
 	bestclient = 0;
 	for (i = 0; i < maxclients->integer && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
@@ -175,6 +191,14 @@ char *BotLastClientInRankings(void) {
 	bestclient = 0;
 	for (i = 0; i < maxclients->integer && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
@@ -209,6 +233,14 @@ char *BotRandomOpponentName(bot_state_t *bs) {
 		if (i == bs->client) continue;
 		//
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
