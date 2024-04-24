@@ -81,6 +81,14 @@ int BotNumTeamMates(bot_state_t *bs) {
 	numplayers = 0;
 	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
@@ -147,6 +155,14 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 	numteammates = 0;
 	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
@@ -920,6 +936,14 @@ void BotTeamOrders(bot_state_t *bs) {
 	numteammates = 0;
 	for (i = 0; i < temp_maxclients && i < MAX_CLIENTS; i++) {
 		strncpy(buf,gi.getConfigstring(CS_PLAYERS+i), sizeof(buf));
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated. - chrissstrahl
+		//--------------------------------------------------------------
+		buf[MAX_INFO_STRING - 1] = '\0';
+
+
 		//if no config string or no name
 		if (!strlen(buf) || !strlen(Info_ValueForKey(buf, "name"))) continue;
 		//skip spectators
