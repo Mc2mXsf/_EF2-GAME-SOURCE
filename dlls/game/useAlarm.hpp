@@ -60,7 +60,12 @@ class UseAlarm : public Behavior
 	//------------------------------------
 	private: // Parameters
 		str							_movementAnimName ; // anim to play to move to work node, default is "walk"
-		float						_maxDistance;	    // maximum distance to look for node
+
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_maxDistance = 0.0f;	    // maximum distance to look for node
 
 	//-------------------------------------
 	// Internal Functionality
@@ -115,10 +120,13 @@ class UseAlarm : public Behavior
 		RotateToEntity							_rotateToEntity;
 
 	private: // Member Variables
-		HelperNodePtr							_node;            
-		unsigned int							_state;
-		bool									_animDone;
-		Actor*									_self;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		HelperNodePtr							_node = nullptr;            
+		unsigned int							_state = 0;
+		bool									_animDone = false;
+		Actor*									_self = nullptr;
 		
 	};
 

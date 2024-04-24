@@ -61,7 +61,13 @@ class WatchEntityEX : public Behavior
 		str								_stance;
 		str								_shuffleAnim;
 		str								_torsoAnim;
-		EntityPtr						_ent;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		EntityPtr						_ent = nullptr;
+
 
 	//-------------------------------------
 	// Internal Functionality
@@ -117,10 +123,12 @@ class WatchEntityEX : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		unsigned int					_state;		
-		float							_time;
-		float							_turnspeed;	
-
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int					_state = 0;		
+		float							_time = 0.0f;
+		float							_turnspeed = 0.0f;
 	};
 
 inline void WatchEntityEX::SetEntity( Entity *ent )

@@ -57,14 +57,18 @@ class WatchEntity : public Behavior
 	// Parameters
 	//------------------------------------
 	private:
-		float							_time;
-		float							_turnspeed;
-		float							_oldTurnSpeed;
-		str								_anim;
-		EntityPtr						_ent;
-		unsigned int					_waitForAnim;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float							_time = 0.0f;
+		float							_turnspeed = 0.0f;
+		float							_oldTurnSpeed = 0.0f;
+		EntityPtr						_ent = nullptr;
+		unsigned int					_waitForAnim = 0;
+		bool							_forcePlayer = false;
+
 		str								_holdAnim;
-		bool							_forcePlayer;
+		str								_anim;
 
 	//-------------------------------------
 	// Internal Functionality
@@ -112,8 +116,11 @@ class WatchEntity : public Behavior
 	// Member Variables
 	//-------------------------------------
 	private: 
-		unsigned int					_state;	
-		unsigned int					_animDone;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int					_state = 0;	
+		unsigned int					_animDone = 0;
 		
 	};
 

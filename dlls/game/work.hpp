@@ -66,7 +66,12 @@ class Work : public Behavior
 	//------------------------------------
 	private: // Parameters
 		str							_gotoWorkAnimName ; // anim to play to move to work node, default is "walk"
-		float						_maxDistance;	    // maximum distance to look for node
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float						_maxDistance = 0.0f;	    // maximum distance to look for node
 
 	//-------------------------------------
 	// Internal Functionality
@@ -141,11 +146,14 @@ class Work : public Behavior
 		GotoHelperNode					_gotoHelperNode;
 
 	private: // Member Variables
-		HelperNodePtr							_node;            
-		unsigned int							_state;
-		bool									_animDone;
-		float									_endTime;
-		Actor*									_self;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		HelperNodePtr							_node = nullptr;            
+		unsigned int							_state = 0;
+		bool									_animDone = false;
+		float									_endTime = 0.0f;
+		Actor*									_self = nullptr;
 		
 	};
 

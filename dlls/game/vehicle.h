@@ -122,10 +122,14 @@ class HVMoveMode_FollowPath : public VehicleMoveMode
 		void     _RunThread( const str &thread_name );
 
 	private:
-		WayPointNode*	  _currentWaypoint;
-		str				  _currentWaypointName;
-		qboolean			  _pathcompleted;	
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		WayPointNode*	  _currentWaypoint = nullptr;
+		qboolean		  _pathcompleted = qfalse;
 
+
+		str				  _currentWaypointName;
 	};
 
 
@@ -135,8 +139,12 @@ class HVMoveMode_FollowPath : public VehicleMoveMode
 class VehicleBase : public ScriptModel
 	{
 	public:
-		VehicleBase *vlink;
-		Vector		 offset;
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		VehicleBase *vlink = nullptr;
+		Vector		 offset = Vector(0.0f,0.0f,0.0f);
+
 
       CLASS_PROTOTYPE( VehicleBase );
 
@@ -176,67 +184,73 @@ class FrontWheels : public VehicleBase
 class Vehicle : public VehicleBase
 	{
 	public:
-		float					turnimpulse;
-		float					pitchimpulse;
-		float					moveimpulse;
-		float					jumpimpulse;
-		float					currentspeed;
+		str               weaponName;
+		str               driveranim;
 
-		Vector           _DriverBBoxMaxs;
-		Vector           _DriverBBoxMins;
-		Vector           _originalBBoxMaxs;
-		Vector           _originalBBoxMins;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float					turnimpulse = 0.0f;
+		float					pitchimpulse = 0.0f;
+		float					moveimpulse = 0.0f;
+		float					jumpimpulse = 0.0f;
+		float					currentspeed = 0.0f;
+
+		Vector           _DriverBBoxMaxs = Vector(0.0f, 0.0f, 0.0f);
+		Vector           _DriverBBoxMins = Vector(0.0f, 0.0f, 0.0f);
+		Vector           _originalBBoxMaxs = Vector(0.0f, 0.0f, 0.0f);
+		Vector           _originalBBoxMins = Vector(0.0f, 0.0f, 0.0f);
 
 		void			 CalculateOrientation();		
 
 	protected:
-		SentientPtr			driver;
-		SentientPtr			lastdriver;
-		float					maxturnrate;
+		SentientPtr			driver = nullptr;
+		SentientPtr			lastdriver = nullptr;
+		float					maxturnrate = 0.0f;
 		
-		float					turnangle;
-		float					pitchangle;
+		float					turnangle = 0.0f;
+		float					pitchangle = 0.0f;
 		
-		float					speed;
-      float             conesize;
-      float             maxtracedist;
-      str               weaponName;
-      str               driveranim;
-      Vector            last_origin;
-      Vector            seatangles;
-      Vector            seatoffset;
-      Vector            driveroffset;
-      Vector            Corners[4];
+		float					speed = 0.0f;
+      float             conesize = 0.0f;
+      float             maxtracedist = 0.0f;
+      Vector            last_origin = Vector(0.0f, 0.0f, 0.0f);
+      Vector            seatangles = Vector(0.0f, 0.0f, 0.0f);
+      Vector            seatoffset = Vector(0.0f, 0.0f, 0.0f);
+      Vector            driveroffset = Vector(0.0f, 0.0f, 0.0f);
+	  Vector            Corners[4] = {Vector(0.0f, 0.0f, 0.0f)};
 
-      qboolean          drivable;
-      qboolean          locked;
-      qboolean          hasweapon;
-      qboolean          showweapon;
-      qboolean          steerinplace;
-      qboolean          jumpable;
+      qboolean          drivable = qfalse;
+      qboolean          locked = qfalse;
+      qboolean          hasweapon = qfalse;
+      qboolean          showweapon = qfalse;
+      qboolean          steerinplace = qfalse;
+      qboolean          jumpable = qfalse;
 
-	  qboolean			_restrictPitch;
-	  float				_maximumPitch;
-	  float				_minimumPitch;
+	  qboolean			_restrictPitch = qfalse;
+	  float				_maximumPitch = 0.0f;
+	  float				_minimumPitch = 0.0f;
 
-	  qboolean			_restrictYaw;
-	  float				_maximumYaw;
-	  float				_minimumYaw;
+	  qboolean			_restrictYaw = qfalse;
+	  float				_maximumYaw = 0.0f;
+	  float				_minimumYaw = 0.0f;
 
-	  float				_startYaw;
-	  float				_startPitch;
-	  float				_yawSeam;
-	  float				_pitchSeam;
+	  float				_startYaw = 0.0f;
+	  float				_startPitch = 0.0f;
+	  float				_yawSeam = 0.0f;
+	  float				_pitchSeam = 0.0f;
 
-	  qboolean			_noPrediction;
+	  qboolean			_noPrediction = qfalse;
 	  
-	  vec3_t			_oldOrigin;
-	  bool				_oldWeaponName;
+	  vec3_t			_oldOrigin = {0.0f};
+	  bool				_oldWeaponName = false;
 
-	  bool				_disableInventory;
+	  bool				_disableInventory = false;
 
 		//Test stuff
-		float             usetime;
+		float             usetime = 0.0f;
+
 
 		virtual void      WorldEffects( void );
 		virtual void      CheckWater( void );

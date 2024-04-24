@@ -81,19 +81,23 @@ public:
 class Damage : public Class
 {
 public:
-	float		damage;
-	Entity		*inflictor;
-	Entity		*attacker;
-	Vector		position;
-	Vector		direction;
-	Vector		normal;
-	int			knockback;
-	int			dflags;
-	int			meansofdeath;
-	int			surfaceNumber;
-	int			boneNumber;
-	bool		showPain;
-	Entity		*weapon;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	float		damage = 0.0f;
+	Entity		*inflictor = nullptr;
+	Entity		*attacker = nullptr;
+	Vector		position = Vector(0.0f, 0.0f, 0.0f);
+	Vector		direction = Vector(0.0f, 0.0f, 0.0f);
+	Vector		normal = Vector(0.0f, 0.0f, 0.0f);
+	int			knockback = 0;
+	int			dflags = 0;
+	int			meansofdeath = 0;
+	int			surfaceNumber = 0;
+	int			boneNumber = 0;
+	bool		showPain = false;
+	Entity		*weapon = nullptr;
+
 
 	Damage();
 	Damage( Event *ev );
@@ -125,7 +129,11 @@ private:
 
 
 protected:
-	DamageModifierType		_type;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26495: The Variable _multiplier/_chance/_painBaseLine was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+	//--------------------------------------------------------------
+	DamageModifierType		_type = UNDEFINED;
+
 
 	virtual void resolveDamage(Damage &damage) = 0;
 	virtual void resolvePain(Damage &damage) = 0;
