@@ -1006,13 +1006,18 @@ qboolean G_SendCommandToAllPlayers( const char *command )
 {
 	bool retVal = true ;
 
-	for( unsigned int clientIdx = 0; clientIdx < maxclients->integer; ++clientIdx )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for( unsigned int clientIdx = 0; clientIdx < (unsigned)maxclients->integer; ++clientIdx )
 	{
 		gentity_t *ent = g_entities + clientIdx ;
 		if ( !ent->inuse || !ent->client || !ent->entity ) continue;
 
 		if ( !G_SendCommandToPlayer( ent, command ) ) retVal = false ;
 	}
+
 
 	return retVal ;
 }
@@ -1096,8 +1101,11 @@ qboolean G_SetWidgetTextOfPlayer( const gentity_t *ent, const char *widgetName, 
 	
 	strcpy(tmpstr, widgetText);
 	
-	int i;
-	for ( i=0; i<strlen(widgetText); i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i=0; i<strlen(widgetText); i++ )
 	{
 		if ( tmpstr[i] == '\n' )
 			tmpstr[i] = '~';
@@ -1105,6 +1113,7 @@ qboolean G_SetWidgetTextOfPlayer( const gentity_t *ent, const char *widgetName, 
 			tmpstr[i] = '^';
 	}
 	
+
 	str command("globalwidgetcommand ");
 	command += widgetName ;
 	command += " labeltext " ;

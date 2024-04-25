@@ -4332,7 +4332,11 @@ void Sentient::CheckAnimations( Event *ev )
 			//--------------------------------------------------------------
 			else if ( !Q_stricmpn( c, cs, strlen( cs ) ) ) // partial match
             {
-				int state_len = strlen( cs );
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+				//--------------------------------------------------------------
+				unsigned int state_len = strlen( cs );
+
 				
 				// Animation in tik file is longer than the state machine's anim
 				if ( strlen( c ) > state_len )

@@ -2020,7 +2020,11 @@ extern "C" void G_ClientUserinfoChanged( gentity_t *ent, const char *userinfo )
 
 		// Strip out bad characters
 
-		for (int i = 0 ; i < strlen( ent->client->pers.netname ) ; i++ )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		for (unsigned int i = 0 ; i < strlen( ent->client->pers.netname ) ; i++ )
 		{
 			if ( ent->client->pers.netname[ i ] == ':' )
 			{

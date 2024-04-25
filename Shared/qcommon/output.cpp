@@ -443,10 +443,13 @@ void HTMLDocFileOutput::OutputEvent(Event *ev)
 	if ( text )
 	{
 		char new_doc[1024];
-		int old_index;
 		int new_index = 0;
 		
-		for ( old_index = 0 ; old_index < strlen ( text ) ; old_index++ )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		for (unsigned int old_index = 0 ; old_index < strlen ( text ) ; old_index++ )
 		{
 			if ( text[old_index] == '\n' )
 			{
@@ -701,7 +704,6 @@ void ToolDocFileOutput::OutputEvent(Event *ev)
 {
 	int numargs;
 	const char *text;
-	int i;
 	
 	fprintf(fileptr, "\n");
 	fprintf(fileptr, "\t%s\n", ev->getName() );
@@ -717,7 +719,12 @@ void ToolDocFileOutput::OutputEvent(Event *ev)
 	fprintf(fileptr, "\n\t\thelp\t\t\"");
 	
 	text = ev->GetDocumentation();
-	for ( i=0; i<strlen(text); i++ )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i=0; i<strlen(text); i++ )
 	{
 		if ( text[i] == '\n' )
 			fprintf(fileptr, "\n\t\t\t\t");

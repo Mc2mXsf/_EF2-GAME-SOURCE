@@ -675,7 +675,12 @@ void EventArgDef::Setup( const char *eventName, const char *argName, const char 
 				qboolean second;
 				// one or two parameters
 				// see if there is anything behind the ','
-				if ( strlen( scratch ) > ( tokptr - scratch + 1) )
+
+
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+				//--------------------------------------------------------------
+				if ( strlen( scratch ) > (unsigned)( tokptr - scratch + 1) )
 					second = true;
 				else
 					second = false;
@@ -1457,10 +1462,13 @@ void Event::PrintDocumentation( FILE *event_file, qboolean html )
 	if ( documentation )
 	{
 		char new_doc[1024];
-		int old_index;
 		int new_index = 0;
 		
-		for ( old_index = 0 ; old_index < strlen ( documentation ) ; old_index++ )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		for ( unsigned int old_index = 0 ; old_index < strlen ( documentation ) ; old_index++ )
 		{
 			if ( documentation[old_index] == '\n' )
 			{
@@ -2934,7 +2942,12 @@ void Event::SetConsoleEdict( const gentity_t *consoleedict )
 gentity_t *Event::GetConsoleEdict( void )
 {
 	// linenumber does double duty in the case of the console commands
-	if ( ( info.source != EV_FROM_CONSOLE ) || ( info.linenumber >= game.maxclients ) )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( info.source != EV_FROM_CONSOLE ) || ( info.linenumber >= (unsigned)game.maxclients ) )
 	{
 		// default to player 1 for release
 		return &g_entities[ 0 ];

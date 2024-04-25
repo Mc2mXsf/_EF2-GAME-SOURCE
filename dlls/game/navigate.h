@@ -735,7 +735,12 @@ void PathFinder<Heuristic>::PropagateDown
 		child = thePathManager.GetNode( path->targetNodeIndex );
 
 		movecost = g + heuristic.cost( node, c );
-		if ( movecost < child->g )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( movecost < (unsigned)child->g )
 			{
 			child->g = movecost;
 			child->f = child->g + child->h;
@@ -760,7 +765,12 @@ void PathFinder<Heuristic>::PropagateDown
 			// we stop the propagation when the g value of the child is equal or better than
 			// the cost we're propagating
 			movecost = parent->g + path->moveCost;
-			if ( movecost < child->g )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+			//--------------------------------------------------------------
+			if ( movecost < (unsigned)child->g )
     			{
 				child->g = movecost;
 				child->f = child->g + child->h;

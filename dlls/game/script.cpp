@@ -670,11 +670,14 @@ char *Script::EvaluateMacroString( const char *theMacroString )
 	static char evalText[255];
 	char *bufferptr = temp_buffer, oper = '+', newoper = '+';
 	bool haveoper = false;
-	int i;
 	float value = 0.0f, val = 0.0f;
 	memset(temp_buffer, 0, 255);
 	
-	for ( i=0;i<=strlen(theMacroString);i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i=0;i<=strlen(theMacroString);i++ )
 	{
 		if ( theMacroString[i] == '+' ) { haveoper = true; newoper = '+'; }
 		if ( theMacroString[i] == '-' ) { haveoper = true; newoper = '-'; }

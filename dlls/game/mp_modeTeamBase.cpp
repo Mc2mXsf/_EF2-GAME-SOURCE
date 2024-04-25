@@ -117,7 +117,12 @@ bool ModeTeamBase::isEndOfMatch( void )
 	for (int idx=1; idx <= _teamList.NumObjects(); idx++) 
 	{
 		Team* team = _teamList.ObjectAt(idx);
-		if (team->getDeaths() > getPointLimit())
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		if (team->getDeaths() > (unsigned)getPointLimit())
 		{
 			multiplayerManager.centerPrintAllClients(va("$$%s$$ $$TeamLoses$$\n", team->getName().c_str() ), CENTERPRINT_IMPORTANCE_NORMAL );
 

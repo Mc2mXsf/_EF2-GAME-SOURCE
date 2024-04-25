@@ -178,13 +178,15 @@ void MultiplayerModeBase::initItems( void )
 
 int MultiplayerModeBase::findPlayer( const Player *player )
 {
-	int i;
-
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		if ( _playerGameData[ i ]._playing && _playerGameData[ i ]._entnum == player->entnum )
 			return i;
 	}
+
 
 	return -1;
 }
@@ -341,13 +343,16 @@ void MultiplayerModeBase::update( float frameTime )
 //================================================================
 bool MultiplayerModeBase::isEndOfMatch( void )
 {
-	int i;
-
 	// See if we have a gone over the point limit
 
 	if ( getPointLimit() > 0 ) 
 	{
-		for ( i = 0 ; i < _maxPlayers ; i++ )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------	
+		for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 		{
 			if ( _playerGameData[ i ]._playing )
 			{
@@ -445,7 +450,6 @@ void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlaye
 	str printString;
 	bool suicide;
 	bool printSomething;
-	int i;
 	char color;
 	bool sameTeam;
 
@@ -665,7 +669,11 @@ void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlaye
 
 		// Print to all of the players
 
-		for (i = 0; i < _maxPlayers; i++)
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		for (unsigned int i = 0; i < _maxPlayers; i++)
 		{
 			currentPlayer = multiplayerManager.getPlayer(i);
 
@@ -674,9 +682,13 @@ void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlaye
 
 			// Figure out which color to use 
 
-			if (killedPlayer && killedPlayer->entnum == i)
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+			//--------------------------------------------------------------
+			if (killedPlayer && (unsigned)killedPlayer->entnum == i)
 				color = COLOR_RED;
-			else if (attackingPlayer && attackingPlayer->entnum == i)
+			else if (attackingPlayer && (unsigned)attackingPlayer->entnum == i)
 				color = COLOR_GREEN;
 			else
 				color = COLOR_NONE;
@@ -930,7 +942,6 @@ bool MultiplayerModeBase::shouldStartMatch( void )
 {
 	int timeRemaining;
 	int numPlayers;
-	int i;
 
 	if ( _gameStarted )
 		return false;
@@ -982,13 +993,18 @@ bool MultiplayerModeBase::shouldStartMatch( void )
 
 	numPlayers = 0;
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		if ( _playerGameData[ i ]._playing )
 		{
 			numPlayers++;
 		}
 	}
+
 
 	if ( numPlayers < mp_minPlayers->integer )
 		return false;
@@ -1001,7 +1017,6 @@ int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
 	if ( statNum == STAT_MP_STATE )
 	{
 		int numPlayers;
-		int i;
 
 
 		//--------------------------------------------------------------
@@ -1025,7 +1040,11 @@ int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
 
 		numPlayers = 0;
 
-		for ( i = 0 ; i < _maxPlayers ; i++ )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 		{
 			temp_player = multiplayerManager.getPlayer( i );
 
@@ -1045,7 +1064,6 @@ int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
 
 void MultiplayerModeBase::startMatch( void )
 {
-	int i;
 	Player *player;
 
 	_gameStarted = true;
@@ -1053,7 +1071,11 @@ void MultiplayerModeBase::startMatch( void )
 
 	// Make everyone not a spectator and spawn them into the world
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		player = getPlayer( i );
 
@@ -1066,6 +1088,7 @@ void MultiplayerModeBase::startMatch( void )
 			multiplayerManager.playerSpawned( player );
 		}
 	}
+
 
 	// Tell everyone the match started
 
@@ -1083,14 +1106,17 @@ void MultiplayerModeBase::restartMatch( void )
 
 void MultiplayerModeBase::endMatch( void )
 {
-	int i;
 	Player *player;
 
 	_gameStarted = false;
 
 	// Make everyone a spectator
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		if ( _playerGameData[ i ]._playing )
 		{
@@ -1113,7 +1139,11 @@ Player *MultiplayerModeBase::getPlayer( int entnum )
 {
 	// Make sure everything is ok
 
-	if ( ( entnum < 0 ) || ( entnum >= _maxPlayers ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( entnum < 0 ) || ( (unsigned)entnum >= _maxPlayers ) )
 		return NULL;
 
 	if ( !g_entities[ entnum ].inuse || !g_entities[ entnum ].entity )
@@ -1176,7 +1206,6 @@ void MultiplayerModeBase::score( const Player *player )
 {
 	char		   string[1400];
 	char		   entry[1024];
-	int            i;
 	int            tempStringlength;
 	int            count        = 0;
 	int            stringlength = 0;
@@ -1195,7 +1224,11 @@ void MultiplayerModeBase::score( const Player *player )
 
 	// This for loop builds a string containing all the players scores.
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		currentPlayer = multiplayerManager.getPlayer( i );
 
@@ -1236,6 +1269,7 @@ void MultiplayerModeBase::score( const Player *player )
 		stringlength += tempStringlength;
 		count++;
 	}
+
 
 	gi.SendServerCommand( player->edict-g_entities, "scores 0 %i %s", count, string );
 }
@@ -1492,12 +1526,15 @@ void MultiplayerModeBase::_endMatch()
 
 void MultiplayerModeBase::declareWinner( void )
 {
-	int i;
 	Player *player;
 	int place;
 	bool tied;
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		player = getPlayer( i );
 
@@ -1618,10 +1655,14 @@ Entity* MultiplayerModeBase::getRandomSpawnpoint( bool useCounter )
 
 	if ( useCounter )
 	{
-		if ( _spawncounter > numPoints )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		//--------------------------------------------------------------
+		if ( _spawncounter > (unsigned)numPoints )
 		{
 			_spawncounter = 1; // reuse spawn points 
 		}
+
 
 		spot = ( Entity * )_spawnpointList.ObjectAt( _spawncounter );
 		_spawncounter++;
@@ -1915,11 +1956,14 @@ int MultiplayerModeBase::getPlace( Player *player, bool *tied )
 {
 	int place = 1;
 	bool isTied = false;
-	int i;
 	Player *currentPlayer;
 	int scoreDiff;
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		// Get this player and make sure everything is ok
 
@@ -1956,16 +2000,20 @@ int MultiplayerModeBase::getPlace( Player *player, bool *tied )
 
 int MultiplayerModeBase::getHighestPoints( void )
 {
-	int i;
 	int highestPoints = -999999999;
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		if ( _playerGameData[ i ]._points > highestPoints )
 		{
 			highestPoints = _playerGameData[ i ]._points;
 		}
 	}
+
 
 	return highestPoints;
 }

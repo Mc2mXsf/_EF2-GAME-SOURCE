@@ -444,7 +444,6 @@ float ModeCaptureTheFlag::findNearestTeamFlagDist( const str &teamName, const Ve
 
 float ModeCaptureTheFlag::findNearestTeamFlagCarrierDist( const str &teamName, const Vector &position )
 {
-	int i;
 	Player *currentPlayer;
 	Player *nearestFlagCarrier = NULL;
 	float nearestDistance = -1.0f;
@@ -454,7 +453,11 @@ float ModeCaptureTheFlag::findNearestTeamFlagCarrierDist( const str &teamName, c
 
 	// Go through all of the flags
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		if ( !_playerGameData[ i ]._playing )
 			continue;
@@ -996,7 +999,6 @@ void ModeCaptureTheFlag::score( const Player *player )
 {
 	char		   string[1400];
 	char		   entry[1024];
-	int            i;
 	int            tempStringlength;
 	int            count        = 0;
 	int            stringlength = 0;
@@ -1019,7 +1021,11 @@ void ModeCaptureTheFlag::score( const Player *player )
 
 	// This for loop builds a string containing all the players scores.
 
-	for ( i = 0 ; i < _maxPlayers ; i++ )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+	//--------------------------------------------------------------
+	for (unsigned int i = 0 ; i < _maxPlayers ; i++ )
 	{
 		currentPlayer = multiplayerManager.getPlayer( i );
 
@@ -1070,6 +1076,7 @@ void ModeCaptureTheFlag::score( const Player *player )
 		stringlength += tempStringlength;
 		count++;
 	}
+
 
 	redScore  = multiplayerManager.getTeamPoints( "Red" );
 	blueScore = multiplayerManager.getTeamPoints( "Blue" );

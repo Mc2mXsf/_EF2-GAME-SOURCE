@@ -874,11 +874,17 @@ Class * Archiver::ReadObject( void )
 	if ( !fileerror )
 	{
 		endpos = readfile.Pos();
-		if ( ( endpos - objstart ) > size )
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+		// 2 times cast to int
+		//--------------------------------------------------------------
+		if ( ( endpos - objstart ) > (int)size )
 		{
 			FileError( "Object read past end of object's data" );
 		}
-		else if ( ( endpos - objstart ) < size )
+		else if ( ( endpos - objstart ) < (int)size )
 		{
 			FileError( "Object didn't read entire data from file" );
 		}
@@ -956,11 +962,17 @@ void Archiver::ArchiveObject( Class *obj )
 		if ( !fileerror )
 		{
 			endpos = readfile.Pos();
-			if ( ( endpos - objstart ) > size )
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning C4018: Signed/unsigned mismatch. - chrissstrahl
+			// 2 times casted to unsigned
+			//--------------------------------------------------------------
+			if ( (unsigned)( endpos - objstart ) > size )
 			{
 				FileError( "Object read past end of object's data" );
 			}
-			else if ( ( endpos - objstart ) < size )
+			else if ( (unsigned)( endpos - objstart ) < size )
 			{
 				FileError( "Object didn't read entire data from file" );
 			}
