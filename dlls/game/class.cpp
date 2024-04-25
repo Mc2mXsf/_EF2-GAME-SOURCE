@@ -619,7 +619,17 @@ void ClassEvents( const char *classname, qboolean print_to_disk )
 	if ( print_to_disk )
 	{
 		class_filename = str ( classname ) + ".txt";
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Disabled: Warning C4996 ?: This function or variable may be unsafe.
+		//--------------------------------------------------------------
+		#pragma warning(push)
+		#pragma warning(disable : 4996)
 		class_file = fopen( class_filename.c_str(), "w" );
+		#pragma warning(pop)
+
+
 		if ( class_file == NULL )
 			return;
 	}

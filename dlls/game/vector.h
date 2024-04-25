@@ -171,8 +171,12 @@ inline Vector::Vector( const float init_x, const float init_y, const float init_
 }
 
 inline Vector::Vector( const char *text	): x( 0 ), y( 0 ), z( 0 )
-
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Disabled: Warning C4996 ?: This function or variable may be unsafe.
+	//--------------------------------------------------------------
+	#pragma warning(push)
+	#pragma warning(disable : 4996)
 	if ( text )
 	{
 		if (text[0] == '"') {
@@ -192,6 +196,7 @@ inline Vector::Vector( const char *text	): x( 0 ), y( 0 ), z( 0 )
 			}
 		}
 	}
+	#pragma warning(pop)
 }
 
 inline Vector::operator float * ( void )
