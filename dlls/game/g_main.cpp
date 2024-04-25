@@ -2234,7 +2234,12 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 		if( isBot ) {
 			ent->svflags |= SVF_BOT;
 			//ent->inuse = qtrue;
-			if( !G_BotConnect( clientNum, !firstTime ) ) {
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+			//--------------------------------------------------------------
+			if( !G_BotConnect( clientNum, (bool)!firstTime ) ) {
 				return "BotConnectfailed";
 			}
 		}
