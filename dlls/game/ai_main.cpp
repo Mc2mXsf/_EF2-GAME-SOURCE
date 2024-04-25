@@ -1218,11 +1218,15 @@ void BotReadSessionData(bot_state_t *bs) {
 	var = va( "botsession%i", bs->client );
 	gi.Cvar_VariableStringBuffer( var, s, sizeof(s) );
 
-	sscanf(s,
-			"%i %i %i %i %i %i %i %i"
-			" %f %f %f"
-			" %f %f %f"
-			" %f %f %f",
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!sscanf(s,
+		"%i %i %i %i %i %i %i %i"
+		" %f %f %f"
+		" %f %f %f"
+		" %f %f %f",
 		&bs->lastgoal_decisionmaker,
 		&bs->lastgoal_ltgtype,
 		&bs->lastgoal_teammate,
@@ -1240,7 +1244,9 @@ void BotReadSessionData(bot_state_t *bs) {
 		&bs->lastgoal_teamgoal.maxs[0],
 		&bs->lastgoal_teamgoal.maxs[1],
 		&bs->lastgoal_teamgoal.maxs[2]
-		);
+	)) {
+		gi.Error(ERR_FATAL, "BotReadSessionData(bot_state_t *bs) - Invalid Format");
+	}
 }
 
 /*

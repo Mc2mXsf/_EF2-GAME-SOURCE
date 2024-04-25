@@ -2817,7 +2817,17 @@ void CameraManager::UpdateEvent( Event* ev )
 
 	// get origin
 	cvar = gi.cvar( "cam_origin", "", 0 );
-	sscanf( cvar->string, "%f %f %f", &tempvec[ 0 ], &tempvec[ 1 ], &tempvec[ 2 ] );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6031 Return value ignored: sscanf. - chrissstrahl
+	//--------------------------------------------------------------
+	if (!sscanf(cvar->string, "%f %f %f", &tempvec[0], &tempvec[1], &tempvec[2])) {
+		gi.Error(ERR_DROP, "CameraManager::UpdateEvent - Bad Format or Bad Data");
+		return;
+	}
+	
+	
 	current->setOrigin( tempvec );
 
 	// get angles yaw
