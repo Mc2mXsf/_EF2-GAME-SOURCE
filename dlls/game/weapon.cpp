@@ -1648,6 +1648,18 @@ void Weapon::UseAmmo( int temp_amount, firemode_t mode )
 	else
 		clipToUse = mode;
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	// GAMEFIX - Warning C33010: The lower bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (clipToUse >= MAX_FIREMODES || mode >= MAX_FIREMODES ||
+		clipToUse < 0 || mode < 0)
+	{
+		return;
+	}
+
+
 	// Remove ammo from the clip if it's available
 
 	if ( ammo_clip_size[clipToUse] )
@@ -2838,6 +2850,15 @@ void Weapon::Fire( firemode_t mode )
 	
 	if ( !( ( mode >= 0 ) && ( mode < MAX_FIREMODES ) ) )
 		warning( "Weapon::Fire", "Invalid mode %d\n", mode );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if (mode < 0 || mode >= MAX_FIREMODES) {
+		warning("Weapon::Fire", "Invalid mode %d\n", mode);
+		return;
+	}
 	
 	realmode = mode;
 	
@@ -2898,7 +2919,7 @@ void Weapon::Fire( firemode_t mode )
 		//if ( animate->HasAnim( anim ) )
 		//	animate->RandomAnimate( anim, done_event );
 	}
-	
+
 	if ( world && world->isThingBroken( item_name.c_str() ) )
 	{
 		fireAnimName += "_broken";
@@ -5274,6 +5295,15 @@ void Weapon::UseActorAiming( Event *ev )
 //----------------------------------------------------------------
 void Weapon::updateViewShake( void )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Warning C33010: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if (curmode >= MAX_FIREMODES || !_viewMaxShake) {
+		return;
+	}
+
+
 	if ( _viewShakeMagnitude[ curmode ] > 0.0f )
 	{
 		// Apply simple view shake
@@ -5322,6 +5352,15 @@ void Weapon::startViewShake( Event *ev )
 }
 void Weapon::startViewShake( void )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Warning C33010: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if (curmode >= MAX_FIREMODES || !_viewMaxShake || !_viewMinShake) {
+		return;
+	}
+
+
 	if ( ( _viewShakeMagnitude[ curmode ] > 0.0f ) || ( _viewMinShake[ curmode ] != vec_zero ) || ( _viewMaxShake[ curmode ] != vec_zero ) )
 	{
 		//CancelEventsOfType( EV_Weapon_ClearViewShake );
@@ -5941,6 +5980,7 @@ void Weapon::Think( void )
 			modeToCheck = FIRE_MODE1;
 		else
 			modeToCheck = _fullAmmoMode;
+
 
 		if ( ammo_clip_size[ modeToCheck ] > 0 )
 		{

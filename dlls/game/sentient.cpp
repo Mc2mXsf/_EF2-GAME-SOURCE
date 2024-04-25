@@ -869,8 +869,20 @@ void Sentient::StartChargeFire( Event *ev )
 		return;
 	}
 	
+	
 	// start charging the active weapon
-	activeWeapon = activeWeaponList[ (int)hand ];
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if ((int)hand > 0 && (int)hand < MAX_ACTIVE_WEAPONS) {
+		activeWeapon = activeWeaponList[(int)hand];
+	}
+	else {
+		activeWeapon = nullptr;
+	}
+
 	
     // Save off firing animation and frame
 	/*firing_anim  = ev->GetAnimationNumber();
