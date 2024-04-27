@@ -1686,7 +1686,7 @@ void Weapon::UseAmmo( int temp_amount, firemode_t mode )
 
 
 	//--------------------------------------------------------------
-	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
 	// GAMEFIX - Fixed: Warning C33010/C33011: The lower bound for the enumeration used as an index ? has been disabled. - chrissstrahl
 	//--------------------------------------------------------------
 	if (clipToUse >= MAX_FIREMODES || mode >= MAX_FIREMODES ||
@@ -2907,7 +2907,7 @@ void Weapon::Fire( firemode_t mode )
 
 
 	//--------------------------------------------------------------
-	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
 	//--------------------------------------------------------------
 	if (mode < 0 || mode >= MAX_FIREMODES) {
 		warning("Weapon::Fire", "Invalid mode %d\n", mode);
@@ -5470,7 +5470,7 @@ void Weapon::updateViewShake( void )
 {
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
-	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
 	//--------------------------------------------------------------
 	if (curmode >= MAX_FIREMODES || !_viewMaxShake) {
 		return;
@@ -5527,7 +5527,7 @@ void Weapon::startViewShake( void )
 {
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
-	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
 	//--------------------------------------------------------------
 	if (curmode >= MAX_FIREMODES || !_viewMaxShake || !_viewMinShake) {
 		return;
