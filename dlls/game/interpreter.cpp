@@ -393,6 +393,12 @@ int Interpreter::EnterFunction( dfunction_t *f )
 	if ( pr_depth >= MAX_STACK_DEPTH )
 	{
 		RunError( "stack overflow" );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C6386: Buffer Overflow. - chrissstrahl
+		//--------------------------------------------------------------
+		return 0;
 	}
 	
 	if ( scr_printfunccalls->integer )
@@ -489,6 +495,12 @@ int Interpreter::LeaveFunction( void )
 	if ( pr_depth <= 0 )
 	{
 		gi.Error( ERR_DROP, "prog stack underflow" );
+		
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
+		//--------------------------------------------------------------
+		return 0;
 	}
 	
 	// remove locals from the stack
