@@ -174,8 +174,13 @@ int MOD_NameToNum( const str &meansOfDeath )
 
 const char *MOD_NumToName( int meansOfDeath )
 {
-	if ( ( meansOfDeath > MOD_TOTAL_NUMBER ) || ( meansOfDeath < 0 ) )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( meansOfDeath >= MOD_TOTAL_NUMBER ) || ( meansOfDeath < 0 ) )
 	{
+
+
 		gi.WDPrintf( "Unknown means of death num - %d\n", meansOfDeath );
 		return "";
 	}
