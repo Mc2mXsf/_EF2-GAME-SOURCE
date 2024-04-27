@@ -3667,7 +3667,7 @@ void Weapon::DoneReloading( Event *ev )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
 	//--------------------------------------------------------------
-	if (clipToUse > MAX_FIREMODES || clipToUse < 0 || mode > MAX_FIREMODES || mode < 0) {
+	if (clipToUse >= MAX_FIREMODES || clipToUse < 0 || mode >= MAX_FIREMODES || mode < 0) {
 		warning("Weapon::DoneReloading", "clipToUse OUT OF RANGE\n");
 		return;
 	}
@@ -3728,7 +3728,7 @@ void Weapon::DoneReloadingBurst( Event *ev )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
 	//--------------------------------------------------------------
-	if (mode > MAX_FIREMODES || mode < 0 || realmode > MAX_FIREMODES || realmode < 0) {
+	if (mode >= MAX_FIREMODES || mode < 0 || realmode >= MAX_FIREMODES || realmode < 0) {
 		warning("Weapon::DoneReloadingBurst", "mode/realmode OUT OF RANGE\n");
 		return;
 	}

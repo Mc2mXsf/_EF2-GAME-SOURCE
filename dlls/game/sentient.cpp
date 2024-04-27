@@ -976,11 +976,16 @@ void Sentient::FireWeapon( Event *ev )
 			number = atoi( side.c_str() );
 	}
 	
-	if ( ( number > MAX_ACTIVE_WEAPONS ) || ( number < 0 ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( number >= MAX_ACTIVE_WEAPONS ) || ( number < 0 ) )
 	{
 		warning( "Sentient::FireWeapon", "Weapon number \"%d\" is out of bounds of 0 to MAX_ACTIVE_WEAPONS:%d\n", number, MAX_ACTIVE_WEAPONS );
 		return;
 	}
+
 	
 	// Save off firing animation and frame
 	//firing_anim  = ev->GetAnimationNumber();
@@ -1025,12 +1030,17 @@ void Sentient::StopFireWeapon( Event *ev )
 			number = atoi( side.c_str() );
 	}
 	
-	if ( ( number > MAX_ACTIVE_WEAPONS ) || ( number < 0 ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( number >= MAX_ACTIVE_WEAPONS ) || ( number < 0 ) )
 	{
 		warning( "Sentient::StopFireWeapon", "Weapon number \"%d\" is out of bounds of 0 to MAX_ACTIVE_WEAPONS:%d\n", number, MAX_ACTIVE_WEAPONS );
 		return;
 	}
 	
+
 	activeWeapon = activeWeaponList[ number ];
 	
 	if ( activeWeapon )
@@ -1092,12 +1102,17 @@ void Sentient::ReleaseFireWeapon( Event *ev )
 			number = atoi( side.c_str() );
 	}
 	
-	if ( ( number > MAX_ACTIVE_WEAPONS ) || ( number < 0 ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C6385: Invalid data is being read from ?. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( ( number >= MAX_ACTIVE_WEAPONS ) || ( number < 0 ) )
 	{
 		warning( "Sentient::FireWeapon", "Weapon number \"%d\" is out of bounds of 0 to MAX_ACTIVE_WEAPONS:%d\n", number, MAX_ACTIVE_WEAPONS );
 		return;
 	}
 	
+
 	// Save off firing animation and frame
 	//firing_anim  = ev->GetAnimationNumber();
 	//firing_frame = ev->GetAnimationFrame();
