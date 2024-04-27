@@ -1454,14 +1454,27 @@ void Weapon::SetUseNoAmmo( Event *ev )
 void Weapon::SetStartAmmo( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	startammo[firemodeindex] = ev->GetInteger( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		startammo[firemodeindex] = ev->GetInteger( 1 );
+	}
 }
 
 void Weapon::setAmmoBoost( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
 
-	_ammoBoost[ firemodeindex ] = ev->GetInteger( 1 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		_ammoBoost[firemodeindex] = ev->GetInteger(1);
+	}
 }
 
 //======================
@@ -1470,7 +1483,14 @@ void Weapon::setAmmoBoost( Event *ev )
 void Weapon::SetMaxChargeTime( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	max_charge_time[firemodeindex] = ev->GetFloat( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		max_charge_time[firemodeindex] = ev->GetFloat(1);
+	}
 }
 
 //======================
@@ -1479,7 +1499,14 @@ void Weapon::SetMaxChargeTime( Event *ev )
 void Weapon::SetAmmoRequired( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	ammorequired[firemodeindex] = ev->GetInteger( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		ammorequired[firemodeindex] = ev->GetInteger(1);
+	}
 }
 
 //======================
@@ -1591,6 +1618,15 @@ int Weapon::GetRequiredAmmo( firemode_t mode )
 {
 	assert( ( mode >= 0 ) && ( mode < MAX_FIREMODES ) );
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (mode >= MAX_FIREMODES || mode < 0) {
+		return ammorequired[0];
+	}
+	
+	
 	return ammorequired[mode];
 }
 
@@ -1651,7 +1687,7 @@ void Weapon::UseAmmo( int temp_amount, firemode_t mode )
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
-	// GAMEFIX - Warning C33010: The lower bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower bound for the enumeration used as an index ? has been disabled. - chrissstrahl
 	//--------------------------------------------------------------
 	if (clipToUse >= MAX_FIREMODES || mode >= MAX_FIREMODES ||
 		clipToUse < 0 || mode < 0)
@@ -1954,7 +1990,14 @@ void Weapon::GetMuzzlePosition( Vector *position, Vector *forward, Vector *right
 void Weapon::SetAmmoClipSize( Event * ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	ammo_clip_size[firemodeindex] = ev->GetInteger( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		ammo_clip_size[firemodeindex] = ev->GetInteger(1);
+	}
 }
 
 //======================
@@ -1963,7 +2006,14 @@ void Weapon::SetAmmoClipSize( Event * ev )
 void Weapon::SetAmmoInClip( Event * ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	ammo_in_clip[firemodeindex] = ev->GetInteger( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		ammo_in_clip[firemodeindex] = ev->GetInteger(1);
+	}
 }
 
 //======================
@@ -2475,7 +2525,11 @@ qboolean Weapon::HasAmmoInClip( firemode_t mode, int numShots )
 		clipToUse = mode;
 	}
 	
-	if ( ammo_clip_size[clipToUse] )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (clipToUse < MAX_FIREMODES && mode < MAX_FIREMODES && clipToUse >= 0 && mode >= 0 && ammo_clip_size[clipToUse] )
 	{
 		if ( ammo_in_clip[clipToUse] >= ammorequired[mode] * numShots )
 		{
@@ -3608,6 +3662,16 @@ void Weapon::DoneReloading( Event *ev )
 		clipToUse = FIRE_MODE1;
 	else
 		clipToUse = mode;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (clipToUse > MAX_FIREMODES || clipToUse < 0 || mode > MAX_FIREMODES || mode < 0) {
+		warning("Weapon::DoneReloading", "clipToUse OUT OF RANGE\n");
+		return;
+	}
+
 	
 	// Calc the amount the clip should get
 	temp_amount = ammo_clip_size[clipToUse] - ammo_in_clip[clipToUse];
@@ -3659,6 +3723,16 @@ void Weapon::DoneReloadingBurst( Event *ev )
 	// Make sure we are actually in burst mode
 
 	inBurstMode = false;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (mode > MAX_FIREMODES || mode < 0 || realmode > MAX_FIREMODES || realmode < 0) {
+		warning("Weapon::DoneReloadingBurst", "mode/realmode OUT OF RANGE\n");
+		return;
+	}
+
 
 	if ( switchmode )
 		inBurstMode = burstmode[curmode];
@@ -4059,11 +4133,18 @@ int Weapon::ClipAmmo( firemode_t mode )
 		clipToUse = FIRE_MODE1;
 	else
 		clipToUse = mode;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (clipToUse < MAX_FIREMODES && clipToUse >= 0) {
+		if (ammo_clip_size[clipToUse])
+			return ammo_in_clip[clipToUse];	
+	}
+
 	
-	if (ammo_clip_size[clipToUse])
-		return ammo_in_clip[clipToUse];
-	else
-		return -1;
+	return -1;
 }
 
 //======================
@@ -4083,7 +4164,14 @@ void Weapon::ProcessWeaponCommandsEvent( Event *ev )
 void Weapon::SetActionLevelIncrement( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	action_level_increment[firemodeindex] = ev->GetInteger( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		action_level_increment[firemodeindex] = ev->GetInteger(1);
+	}
 }
 
 //======================
@@ -4127,6 +4215,15 @@ void Weapon::SetFireType( Event *ev )
 	ftype = ev->GetString( 1 );
 	
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex > MAX_FIREMODES || firemodeindex < 0) {
+		warning( "Weapon::SetFireType", "firemodeindex OUT OF RANGE\n");
+		return;
+	}
 	
 	if ( !ftype.icmp( "projectile" ) )
 		firetype[firemodeindex] = FT_PROJECTILE;
@@ -4164,8 +4261,15 @@ firetype_t Weapon::GetFireType( firemode_t mode )
 void Weapon::SetProjectile( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	projectileModel[firemodeindex] = ev->GetString( 1 );
-	CacheResource( projectileModel[firemodeindex].c_str(), this );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		projectileModel[firemodeindex] = ev->GetString(1);
+		CacheResource(projectileModel[firemodeindex].c_str(), this);
+	}
 }
 
 //======================
@@ -4174,7 +4278,14 @@ void Weapon::SetProjectile( Event *ev )
 void Weapon::SetBulletDamage( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	bulletdamage[firemodeindex] = ev->GetFloat( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		bulletdamage[firemodeindex] = ev->GetFloat(1);
+	}
 }
 
 //======================
@@ -4183,7 +4294,14 @@ void Weapon::SetBulletDamage( Event *ev )
 void Weapon::SetBulletKnockback( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	bulletknockback[firemodeindex] = ev->GetFloat( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		bulletknockback[firemodeindex] = ev->GetFloat(1);
+	}
 }
 
 //======================
@@ -4192,7 +4310,14 @@ void Weapon::SetBulletKnockback( Event *ev )
 void Weapon::SetBulletRange( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	bulletrange[firemodeindex] = ev->GetFloat( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		bulletrange[firemodeindex] = ev->GetFloat(1);
+	}
 }
 
 //======================
@@ -4209,14 +4334,28 @@ void Weapon::SetRange( Event *ev )
 void Weapon::SetBulletCount( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	bulletcount[firemodeindex] = ev->GetFloat( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		bulletcount[firemodeindex] = ev->GetFloat(1);
+	}
 }
 
 void Weapon::SetBulletSpread( float spreadX , float spreadY )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	bulletspread[firemodeindex].x = spreadX;
-	bulletspread[firemodeindex].y = spreadY;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		bulletspread[firemodeindex].x = spreadX;
+		bulletspread[firemodeindex].y = spreadY;
+	}
 }
 
 //======================
@@ -4225,21 +4364,28 @@ void Weapon::SetBulletSpread( float spreadX , float spreadY )
 void Weapon::SetBulletSpread( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	bulletspread[firemodeindex].x = ev->GetFloat( 1 );
-	if (ev->NumArgs() < 2) // this shouldn't happen, but there are assets that do it
-		bulletspread[firemodeindex].y = bulletspread[firemodeindex].x;
-	else
-		bulletspread[firemodeindex].y = ev->GetFloat( 2 );
-	if (ev->NumArgs() == 5) // expanding/shrinking spread
-	   {
-		endbulletspread[firemodeindex].x = ev->GetFloat(3);
-		endbulletspread[firemodeindex].y = ev->GetFloat(4);
-		endbulletspread[firemodeindex].z = ev->GetFloat(5); // time interval
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		bulletspread[firemodeindex].x = ev->GetFloat(1);
+		if (ev->NumArgs() < 2) // this shouldn't happen, but there are assets that do it
+			bulletspread[firemodeindex].y = bulletspread[firemodeindex].x;
+		else
+			bulletspread[firemodeindex].y = ev->GetFloat(2);
+		if (ev->NumArgs() == 5) // expanding/shrinking spread
+		{
+			endbulletspread[firemodeindex].x = ev->GetFloat(3);
+			endbulletspread[firemodeindex].y = ev->GetFloat(4);
+			endbulletspread[firemodeindex].z = ev->GetFloat(5); // time interval
+		}
+		else
+		{
+			endbulletspread[firemodeindex].z = 0; // make sure spread is constant if it's not variable (duh)
+		}
 	}
-	else
-	   {
-		endbulletspread[firemodeindex].z = 0; // make sure spread is constant if it's not variable (duh)
-	   }
 }
 
 //======================
@@ -4427,7 +4573,14 @@ void Weapon::SetQuiet( Event *ev )
 void Weapon::SetLoopFire( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	loopfire[firemodeindex] = true;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		loopfire[firemodeindex] = true;
+	}
 }
 /*
 void Weapon::SetFullAnimFire( Event *ev )
@@ -4443,7 +4596,14 @@ void Weapon::SetFullAnimFire( Event *ev )
 void Weapon::SetMeansOfDeath( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	meansofdeath[firemodeindex] = (meansOfDeath_t )MOD_NameToNum( ev->GetString( 1 ) );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		meansofdeath[firemodeindex] = (meansOfDeath_t)MOD_NameToNum(ev->GetString(1));
+	}
 }
 
 //======================
@@ -4491,7 +4651,14 @@ void Weapon::WorldHitSpawn( firemode_t mode, const Vector &temp_origin, const Ve
 void Weapon::SetWorldHitSpawn( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	worldhitspawn[firemodeindex] = ev->GetString( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		worldhitspawn[firemodeindex] = ev->GetString(1);
+	}
 }
 
 void Weapon::MakeNoise( Event *ev )
@@ -4736,7 +4903,13 @@ void Weapon::SetFireTimer( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
 	
-	fire_timer[firemodeindex] = ev->GetFloat( 1 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		fire_timer[firemodeindex] = ev->GetFloat(1);
+	}
 }
 
 void Weapon::UseSameClip( Event *ev )
@@ -5296,7 +5469,7 @@ void Weapon::UseActorAiming( Event *ev )
 void Weapon::updateViewShake( void )
 {
 	//--------------------------------------------------------------
-	// GAMEFIX - Warning C33010: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
 	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
 	//--------------------------------------------------------------
 	if (curmode >= MAX_FIREMODES || !_viewMaxShake) {
@@ -5353,7 +5526,7 @@ void Weapon::startViewShake( Event *ev )
 void Weapon::startViewShake( void )
 {
 	//--------------------------------------------------------------
-	// GAMEFIX - Warning C33010: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
 	// GAMEFIX - Warning C6385: Invalid data is being read from ?. - chrissstrahl
 	//--------------------------------------------------------------
 	if (curmode >= MAX_FIREMODES || !_viewMaxShake || !_viewMinShake) {
@@ -5796,7 +5969,14 @@ void Weapon::pauseRegen( Event *ev )
 void Weapon::setChargedModels( Event *ev )
 {
 	assert( ( firemodeindex >= 0 ) && ( firemodeindex < MAX_FIREMODES ) );
-	_chargedModels[ firemodeindex ] = ev->GetInteger( 1 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (firemodeindex < MAX_FIREMODES && firemodeindex >= 0) {
+		_chargedModels[firemodeindex] = ev->GetInteger(1);
+	}
 }
 
 void Weapon::setControllingProjectile( Event *ev )
@@ -5980,6 +6160,14 @@ void Weapon::Think( void )
 			modeToCheck = FIRE_MODE1;
 		else
 			modeToCheck = _fullAmmoMode;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+		//--------------------------------------------------------------
+		if (modeToCheck >= MAX_FIREMODES || modeToCheck < 0) {
+			return;
+		}
 
 
 		if ( ammo_clip_size[ modeToCheck ] > 0 )

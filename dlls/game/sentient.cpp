@@ -1446,10 +1446,19 @@ bool Sentient::ChangeWeapon( Weapon *weapon, weaponhand_t hand )
 		return false;
 	}
 
-	// Check if weapon is already active in the slot
-	if ( weapon == activeWeaponList[hand] )
-		return false;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled. - chrissstrahl
+	//--------------------------------------------------------------
+	if (hand < WEAPON_ANY && hand >= 0 ) {
+
+
+		// Check if weapon is already active in the slot
+		if ( weapon == activeWeaponList[hand] )
+			return false;		
+	}
 	
+
 	ActivateWeapon( weapon, hand );
 	return true;
 }
