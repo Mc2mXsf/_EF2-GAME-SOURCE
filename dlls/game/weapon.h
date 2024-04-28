@@ -171,14 +171,12 @@ class Weapon : public Item
 		friend			class WeaponDualWield;
 
 
+	private:
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
-		//
-		// Initialized all vars exect:  str
 		//--------------------------------------------------------------
-	private:
-		qboolean		attached = qtrue;					// Is this weapon attached to something?
-		float			nextweaponsoundtime = 0.0f;		// The next time this weapon should sound off
+		qboolean		attached = qtrue;			// Is this weapon attached to something?
+		float			nextweaponsoundtime = 0.0f;	// The next time this weapon should sound off
 		str				current_attachToTag;		// The current name of the tag to attach itself to on the owner
 		str				left_attachToTag;			// Tag to use when weapon is wielded in the left hand
 		str				right_attachToTag;			// ...right hand
@@ -207,16 +205,19 @@ class Weapon : public Item
 		float           _powerRating = 0.0f;       // how much damage per second the weapon will do
 		float           _projectileDamage = 0.0f;  // how much the projectile launched from this weapon will do -- needs to match the damage in the projectile .tik file ( used by AI )
 		float           _projectileSpeed = 0.0f;   // how fast the projectile launched from the weapon will move -- needs to match the damage in the projectile .tik file ( used by AI )
-		bool			_arcProjectile = false;			   // whether or not to arc the projectile
+		bool			_arcProjectile = false;		// whether or not to arc the projectile
 		float			_lowArcRange = 0.0f;		// range at which the projectile will switch from high trajectory to normal
 		bool			_playMissSound = true;	    //Play snd_ricochet if the bullet impact hits a non-damagable entity
+
 
 		Container<EntityPtr> meleeVictims;			// Melee victim list
 
 	protected:
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		float			maxrange = 0.0f;			// maximum effective firing distance (for AI)
 		float			minrange = 0.0f;			// minimum safe firing distance (for AI)
-		str 			viewmodel;					// the viewmodel of the weapon
 		weaponstate_t	weaponstate = WEAPON_ANIMATING; // current state of the weapon
 		int 			rank = 0;					// rank of the weapon (relative to other weapons)
 		int 			order = 0;					// The order of this weapon in the inventory
@@ -236,14 +237,25 @@ class Weapon : public Item
 		int 			burstcount = 0;				// The current amount of burst ammo used
 		int 			burstcountmax = 0;			// Max amount of ammo for a burst
 
+
+		str 			viewmodel;					// the viewmodel of the weapon
+
 		// Each of these arrays is used to describe the properties of the weapon
 		// in its primary(index 0) and alternate(index 1) mode
 
 		str 			ammo_type[MAX_FIREMODES];					// The type of ammo used
+		str 			projectileModel[MAX_FIREMODES];				// The model of the projectile fired
+		str 			worldhitspawn[MAX_FIREMODES];				// The models to spawn when the weapon strikes the world
+		str				_controlEmitterName;
+		str				_controlSoundName;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
 		int 			ammorequired[MAX_FIREMODES] = { 0 };	    // The amount of ammo required to fire this weapon
 		int 			startammo[MAX_FIREMODES] = { 0 };			// The starting amount of ammo when the weapon is picked up
 		int 			_ammoBoost[ MAX_FIREMODES ] = { 0 };
-		str 			projectileModel[MAX_FIREMODES];				// The model of the projectile fired
 		float			bulletdamage[MAX_FIREMODES] = { 0.0f };		// The amount of damate a single bullet causes
 		float			bulletcount[MAX_FIREMODES] = { 0.0f };		// The number of bullets the weapon fires
 		float			bulletrange[MAX_FIREMODES] = { 0.0f };		// The range of the bullet
@@ -257,16 +269,15 @@ class Weapon : public Item
 		float			max_charge_time[MAX_FIREMODES] = { 0.0f };	// The max amount of time the weapon may be charged.
 		meansOfDeath_t	meansofdeath[MAX_FIREMODES] = { MOD_LIGHTSWORD }; // The means of death for this mode
 		qboolean		loopfire[MAX_FIREMODES] = { qfalse };		// The weapon loopfires and will not idle when shooting
-		//qboolean		fullanimfire[MAX_FIREMODES];				// The weapon will play full fire anim even if key is released
+		//qboolean		fullanimfire[MAX_FIREMODES] = { qfalse };	// The weapon will play full fire anim even if key is released
 		int 			action_level_increment[MAX_FIREMODES] = { 0 }; // Increments the action level everytime the weapon is fired
-		str 			worldhitspawn[MAX_FIREMODES];				// The models to spawn when the weapon strikes the world
+
 		float			next_fire_time[MAX_FIREMODES] = { 0.0f };	// The next time the weapon can fire
 		float			fire_timer[MAX_FIREMODES] = { 0.0f };		// The times for each fire mode
 		float			accuracy[MAX_FIREMODES][MAX_ACCURACYTYPES] = { 0.0f }; // Accuracy values for this weapon
 		qboolean		burstmode[MAX_FIREMODES] = { qfalse };		// This mode is a burst fire mode
 		float			_burstModeDelay[MAX_FIREMODES] = { 0.0f };
 		float			shootingMoveSpeedModifier[MAX_FIREMODES] = { 0.0f }; // Move speed modifier while shooting
-
 		float			_viewShakeMagnitude[MAX_FIREMODES] = { 0.0f };
 		float			_viewShakeDuration[MAX_FIREMODES] = { 0.0f };
 		Vector			_viewMinShake[MAX_FIREMODES] = { Vector(0.0f, 0.0f, 0.0f) };
@@ -294,12 +305,12 @@ class Weapon : public Item
 		float			_maxViewShakeChange = 0.0f;
 
 		float			startfiretime = 0.0f;						// The time that the trigger was first depressed in an anim
-		int				autoAimTargetSelectionAngle;				// Whether or not the weapon will autoaim ( and the angle used to determine autoaiming)
-		int				autoAimLockonAngle;							// Angle within which a target will be locked on to, allowing 
-		float			charge_fraction = 0.0f;	// Fraction of a charge up time
-		qboolean		putaway;			// This is set to true by the state system to signal a weapon to be putaway
-		firemode_t		firemodeindex; 		// This is used as an internal index to indicate which mode to apply commands to
-		weaponhand_t	hand;				// which hand the weapon may be wielded in
+		int				autoAimTargetSelectionAngle = 0.0f;			// Whether or not the weapon will autoaim ( and the angle used to determine autoaiming)
+		int				autoAimLockonAngle = 0.0f;					// Angle within which a target will be locked on to, allowing 
+		float			charge_fraction = 0.0f;		// Fraction of a charge up time
+		qboolean		putaway = qfalse;			// This is set to true by the state system to signal a weapon to be putaway
+		firemode_t		firemodeindex = FIRE_ERROR;	// This is used as an internal index to indicate which mode to apply commands to
+		weaponhand_t	hand = WEAPON_ERROR;		// which hand the weapon may be wielded in
 
 		float			reticuletime = 0.0f;// Time it takes the reticule to settle.
 		float			zoomfov = 0.0f;		// zoomfov for this weapon
@@ -325,16 +336,10 @@ class Weapon : public Item
 
 		bool			_controllingProjectile = false;
 		bool			_controllingProjectileHidden = false;
-		str				_controlEmitterName;
-		str				_controlSoundName;
 		bool			_canInterruptFiringState = false;
-
 		ZoomStage		_zoomStage = ZOOM_NORMAL_FOV;
-
 		bool			_autoReload = false;
-
 		bool			_allowAutoSwitch = false;
-
 		float			_nextSwitchTime = 0.0f;
 
 
