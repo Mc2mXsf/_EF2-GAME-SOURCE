@@ -26,10 +26,15 @@
 #include <stdarg.h>
 #include <game/q_shared.h>
 
+/* 
+//--------------------------------------------------------------
+// GAMEFIX - Deactivated: Suppression of warnings - Chrissstrahl
+//--------------------------------------------------------------
 #ifdef _WIN32
 #pragma warning(disable : 4244)     // 'conversion' conversion from 'type1' to 'type2', possible loss of data
 #pragma warning(disable : 4710)     // function 'blah' not inlined
 #endif
+*/
 
 #if defined( GAME_DLL )
 
@@ -471,9 +476,14 @@ void str::snprintf( char *dst, int size, const char *fmt, ... )
 	Q_strncpyz(dst, buffer, size-1);
 }
 
+/*
+//--------------------------------------------------------------
+// GAMEFIX - Deactivated: Suppression of warnings - Chrissstrahl
+//--------------------------------------------------------------
 #ifdef _WIN32
 #pragma warning(disable : 4189)		// local variable is initialized but not referenced
 #endif
+*/
 
 /*
 =================
@@ -501,9 +511,17 @@ void TestStringClass( void )
 	i = a.length();					// i == 0
 	i = c.length();					// i == 4
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Disabled: Warning C4189: Local variable is initialized but not referenced. - chrissstrahl
+	//--------------------------------------------------------------
+	#pragma warning(push)
+	#pragma warning(disable : 4189)
 	const char *s1 = a.c_str();	// s1 == "\0"
 	const char *s2 = c.c_str();	// s2 == "test\0"
-	
+	#pragma warning(pop)
+
+
 	t = new str();						// t->len == 0, t->data == "\0"
 	delete t;							// t == ?
 	
@@ -596,7 +614,11 @@ void TestStringClass( void )
 	delete t;							// t == ?
 }
 
-#ifdef _WIN32
-#pragma warning(default : 4189)		// local variable is initialized but not referenced
-#pragma warning(disable : 4514)     // unreferenced inline function has been removed
-#endif
+
+//--------------------------------------------------------------
+// GAMEFIX - Deactivated: Suppression of warnings - Chrissstrahl
+//--------------------------------------------------------------
+//#ifdef _WIN32
+//#pragma warning(default : 4189)		// local variable is initialized but not referenced
+//#pragma warning(disable : 4514)     // unreferenced inline function has been removed
+//#endif

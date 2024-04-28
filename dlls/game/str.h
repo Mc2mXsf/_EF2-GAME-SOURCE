@@ -34,9 +34,13 @@
 #include "q_shared.h"
 
 
-#ifdef _WIN32
-#pragma warning(disable : 4710)     // function 'blah' not inlined
-#endif
+//--------------------------------------------------------------
+// GAMEFIX - Deactivated: C4710 Suppression of warning. - Chrissstrahl
+//--------------------------------------------------------------
+//#ifdef _WIN32
+//#pragma warning(disable : 4710)     // function 'blah' not inlined
+//#endif
+
 
 #define STRING_PREALLOC_SIZE 16
 
