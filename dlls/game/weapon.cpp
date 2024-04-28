@@ -1392,7 +1392,12 @@ Weapon::Weapon()
 Weapon::Weapon( const char *file )
 {
 	// The tik file holds all the information available for a weapon
-	Weapon();
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Warning C26444: Do not attempt to declare an unnamed local variable (es.84). - chrissstrahl
+	//--------------------------------------------------------------
+	//Weapon();
 }
 
 //======================
