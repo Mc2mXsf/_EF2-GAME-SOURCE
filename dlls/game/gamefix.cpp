@@ -167,6 +167,10 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 			continue;
 		}
 
+		if (gamefix_isPlayerInNotarget(player)) {
+			continue;
+		}
+
 		float distanceCurrent = VectorLength(player->centroid - entity->centroid);
 		
 		//always grab player closest as a backup
@@ -299,7 +303,7 @@ Player* gamefix_getClosestPlayerToFollow(Actor* actor)
 	Entity* ent = nullptr;
 	Player* player = nullptr;
 
-	Entity* ent = gamefix_getActorFollowTarget(actor);
+	ent = gamefix_getActorFollowTarget(actor);
 	
 	if (!ent->isSubclassOf(Player)) {
 		ent = nullptr;
