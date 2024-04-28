@@ -33,6 +33,8 @@
 #ifdef _WIN32
 
 
+
+
 //--------------------------------------------------------------
 // GAMEFIX - Added: Suppression of warnings on windows for sscanf, strcpy, strcat - chrissstrahl
 //--------------------------------------------------------------
@@ -45,27 +47,37 @@
 //#pragma warning(disable : 4136)     // conversion between different floating-point types
 
 
-#pragma warning(disable : 4018)     // signed/unsigned mismatch
+//--------------------------------------------------------------
+// GAMEFIX - Deactivated: Suppression of warnings - Chrissstrahl
+//--------------------------------------------------------------
+//#pragma warning(disable : 4018)     // signed/unsigned mismatch
+//#pragma warning(disable : 4201)     // nonstandard extension used : nameless struct/union
+//#pragma warning(disable : 4512)     // 'Class' : assignment operator could not be generated
+//#pragma warning(disable : 4115)     // 'type' : named type definition in parentheses
+//#pragma warning(disable : 4051)     // type conversion, possible loss of data
+//#pragma warning(disable : 4057)	// slightly different base types
+//#pragma warning(disable : 4514)     // unreferenced inline/local function has been removed
+//#pragma warning(disable : 4710)     // did not inline this function
+//#pragma warning(disable : 4711)		// selected for automatic inline expansion
+
+		
+//--------------------------------------------------------------
+// GAMEFIX - Info: These where already disabled - chrissstrahl
+//--------------------------------------------------------------
 //#pragma warning(disable : 4032)     // formal parameter 'number' has different type when promoted
-#pragma warning(disable : 4051)     // type conversion, possible loss of data
-#pragma warning(disable : 4057)		// slightly different base types
-#pragma warning(disable : 4100)		// unreferenced formal parameter
-#pragma warning(disable : 4115)     // 'type' : named type definition in parentheses
 //#pragma warning(disable : 4125)		// decimal digit terminates octal escape sequence
-#pragma warning(disable : 4127)		// conditional expression is constant
 //#pragma warning(disable : 4131)     // 'function' : uses old-style declarator
-#pragma warning(disable : 4201)     // nonstandard extension used : nameless struct/union
 //#pragma warning(disable : 4214)     // nonstandard extension used : bit field types other than int
 //#pragma warning(disable : 4220)		// varargs matches remaining parameters
 //#pragma warning(disable : 4239)     // nonstandard extension used, conversion from class b to class & b
+//#pragma warning(disable : 4310)		// cast truncates constant value	
+//#pragma warning(disable : 4611)     // interaction between '_setjmp' and C++ object destruction is non-portable
+
+
+#pragma warning(disable : 4100)		// unreferenced formal parameter
+#pragma warning(disable : 4127)		// conditional expression is constant
 #pragma warning(disable : 4244)     // 'conversion' conversion from 'type1' to 'type2', possible loss of data
 #pragma warning(disable : 4305)		// truncation from const double to float
-//#pragma warning(disable : 4310)		// cast truncates constant value
-#pragma warning(disable : 4512)     // 'Class' : assignment operator could not be generated
-#pragma warning(disable : 4514)     // unreferenced inline/local function has been removed
-//#pragma warning(disable : 4611)     // interaction between '_setjmp' and C++ object destruction is non-portable
-#pragma warning(disable : 4710)     // did not inline this function
-#pragma warning(disable : 4711)		// selected for automatic inline expansion
 
 
 // shut up warnings with Intel Compiler
@@ -566,10 +578,22 @@ typedef struct {
 #define SetLowestInt(dst,l) SetLowest ( int, dst, l )
 #define SetHighestInt(dst,l) SetHighest ( int, dst, l )
 
+
+
 #ifdef __cplusplus
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Disabled: Warning C4996 ?: This function or variable may be unsafe.
+//--------------------------------------------------------------
+#pragma warning(push)
+#pragma warning(disable : 4996)
 inline bool VectorFromString ( const char *ss, vec3_t v ) {
    return sscanf ( ss, "%f %f %f", &v[0], &v[1], &v[2] ) == 3;
 }
+#pragma warning(pop)
+
+
 #else
 #define VectorFromString(ss,v)   ( sscanf ( (ss), "%f %f %f", &(v)[0], &(v)[1], &(v)[2] ) == 3 )
 #endif
