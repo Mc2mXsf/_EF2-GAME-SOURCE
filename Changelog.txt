@@ -11,7 +11,120 @@ bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 
-g_gametype 2 -> botmatch starten -> g_gametype 0 -> devmap dm_kw -> archiver error -> wenn aber das match vorher verlassen wird, besteht das problem nicht
+Disabled warning supressions and fixed issues with the code if there where any:
+4136		conversion between different floating-point types
+4018		signed/unsigned mismatch
+4201		nonstandard extension used : nameless struct/union
+4512		Class: assignment operator could not be generated
+4115		type: named type definition in parentheses
+4051		type conversion, possible loss of data
+4057		slightly different base types
+4514		unreferenced inline/local function has been removed
+4710		did not inline this function
+4711		selected for automatic inline expansion
+
+IGNORING THE FOLLOWING CODE WARNINGS:
+Warning C4996: void ClassEvents( const char *classname, qboolean print_to_disk )
+Warning C4996: inline bool VectorFromString ( const char *ss, vec3_t v )
+Warning C4996: inline Vector::Vector( const char *text	): x( 0 ), y( 0 ), z( 0 )
+Warning #####: deleting void* is undefined: listener.cpp:888:14 [-Wdelete-incomplete]  ::delete[]( ( void * )event ); - No solution to hadle this right was found
+Warning C26495: class Event : public Class -> Event *next;
+Warning C26495: class Event : public Class -> Event *prev;
+Warning C6386: Buffer overflow while writing to objlist -> template< class Type > void Container<Type>::Resize
+Warning C6385: Invalid data is being read from objlist-> template< class Type > void Container<Type>::Resize
+WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
+
+DISABLED THE FOLLOWING CODE/WARNING:
+WARNING C4189: Local variable is initialized but not referenced. -> void TestStringClass( void )
+Code: Fakk2 relic, secret thread -> TriggerSecret::TriggerSecret()
+Code: Unknown server command, print out, we handle it as chat text anyway -> void G_ServerCommand( void )
+
+Fixed: Warning C33010/C33011: The lower/upper bound for the enumeration used as an index ? has been disabled.
+void Weapon::UseAmmo( int temp_amount, firemode_t mode )
+void Weapon::updateViewShake( void )
+void Weapon::startViewShake( void )
+void Weapon::Think( void )
+void Weapon::SetStartAmmo( Event *ev )
+void Weapon::setAmmoBoost( Event *ev )
+void Weapon::SetMaxChargeTime( Event *ev )
+void Weapon::SetAmmoRequired( Event *ev )
+void Weapon::SetAmmoClipSize( Event * ev )
+void Weapon::SetAmmoInClip( Event * ev )
+void Weapon::SetActionLevelIncrement( Event *ev )
+void Weapon::SetFireType( Event *ev )
+void Weapon::SetProjectile( Event *ev )
+void Weapon::SetBulletDamage( Event *ev )
+void Weapon::SetBulletKnockback( Event *ev )
+void Weapon::SetBulletRange( Event *ev )
+void Weapon::SetBulletSpread( float spreadX , float spreadY )
+void Weapon::SetBulletSpread( Event *ev )
+void Weapon::SetBulletCount( Event *ev )
+void Weapon::SetLoopFire( Event *ev )
+void Weapon::SetMeansOfDeath( Event *ev )
+void Weapon::SetWorldHitSpawn( Event *ev )
+void Weapon::SetFireTimer( Event *ev )
+qboolean Weapon::HasAmmoInClip( firemode_t mode, int numShots )
+void Weapon::setChargedModels( Event *ev )
+void Weapon::DoneReloading( Event *ev )
+void Weapon::DoneReloadingBurst( Event *ev )
+int Weapon::GetRequiredAmmo( firemode_t mode )
+int Weapon::ClipAmmo( firemode_t mode )
+bool Sentient::ChangeWeapon( Weapon *weapon, weaponhand_t hand )
+
+Fixed: Warning C26444: Do not attempt to declare an unnamed local variable (es.84).
+Weapon::Weapon( const char *file )
+
+Fixed: Warning C6292: Incorrectly defined for-loop.
+void ViewMaster::Save( Event *ev )
+
+Fixed: Warning C6386: Buffer Overflow.
+int Interpreter::EnterFunction( dfunction_t *f )
+
+Fixed: Warning C6385: Invalid data is being read from ?.
+int Interpreter::LeaveFunction( void )
+void Sentient::ReleaseFireWeapon( Event *ev )
+void Sentient::FireWeapon( Event *ev )
+void Sentient::StopFireWeapon( Event *ev )
+const char *MOD_NumToName( int meansOfDeath )
+void Weapon::updateViewShake( void )
+void Weapon::startViewShake( void )
+void Sentient::StartChargeFire( Event *ev )
+void Weapon::Fire( firemode_t mode )
+bool MultiplayerModeBase::isEndOfMatch( void )
+void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlayer, int meansOfDeath )
+bool MultiplayerModeBase::shouldStartMatch( void )
+int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
+Warning C4018: Signed/unsigned mismatch.
+int MultiplayerModeBase::findPlayer( const Player *player )
+void MultiplayerModeBase::obituary( Player *killedPlayer, Player *attackingPlayer, int meansOfDeath )
+int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
+int MultiplayerModeBase::getStat( Player *player, int statNum, int value )
+void MultiplayerModeBase::startMatch( void )
+void MultiplayerModeBase::endMatch( void )
+void ModeCaptureTheFlag::score( const Player *player )
+void ModeTeamDeathmatch::score( const Player *player )
+float ModeCaptureTheFlag::findNearestTeamFlagCarrierDist( const str &teamName, const Vector &position )
+int MultiplayerModeBase::getPlace( Player *player, bool *tied )
+void MultiplayerModeBase::_beginMatch()
+int ModeDeathmatch::getHighestPoints( int entnum )
+void ModeDeathmatch::update( float frameTime )
+void Event::PrintDocumentation( FILE *event_file, qboolean html )
+void HTMLDocFileOutput::OutputEvent(Event *ev)
+void ToolDocFileOutput::OutputEvent(Event *ev)
+void PathFinder<Heuristic>::PropagateDown(PathNode *node)
+Class * Archiver::ReadObject( void )
+void MultiplayerModeBase::declareWinner( void )
+int MultiplayerModeBase::getHighestPoints( void )
+extern "C" void G_ClientUserinfoChanged( gentity_t *ent, const char *userinfo )
+qboolean G_SendCommandToAllPlayers( const char *command )
+char *Script::EvaluateMacroString( const char *theMacroString )
+qboolean G_SetWidgetTextOfPlayer( const gentity_t *ent, const char *widgetName, const char *widgetText )
+Entity* MultiplayerModeBase::getRandomSpawnpoint( bool useCounter )
+bool ModeTeamBase::isEndOfMatch( void )
+void EventArgDef::Setup( const char *eventName, const char *argName, const char *argType, const char *argRange )
+void Sentient::CheckAnimations( Event *ev )
+Player *MultiplayerModeBase::getPlayer( int entnum )
+gentity_t *Event::GetConsoleEdict( void )
 
 Fixed: Warning C6031 Return value ignored: sscanf.
 void BotMatch_CheckPoint(bot_state_t *bs, bot_match_t *match)
@@ -19,6 +132,8 @@ void SoundManager::UpdateRandomSpeaker( RandomSpeaker * speaker )
 void SoundManager::UpdateSpeaker( TriggerSpeaker * speaker )
 void SoundManager::UpdateTriggerMusic( TriggerMusic * music )
 inline Vector::Vector( const char *text	): x( 0 ), y( 0 ), z( 0 )
+void CameraManager::UpdateEvent( Event* ev )
+void BotReadSessionData(bot_state_t *bs)
 
 Fixed: Warning C6011 Dereferencing NULL-Pointer.
 void MultiplayerManager::say( Player *player, const str &text, bool team )
@@ -51,10 +166,6 @@ void COM_StripExtension(const char* in, char* out, int destsize)
 
 Changed: Ammo Regeneration ammount given to player, rune was useless in fast paced combat, was 1 new 3 - chrissstrahl
 void RuneAmmoRegen::specificUpdate( float frameTime )
-
-IGNORING THE FOLLOWING CODE WARNINGS:
-Warning C4996 sscanf: This function or variable may be unsafe. - It is only used in conjunction with float or integer
-listener.cpp:888:14: warning: deleting void* is undefined [-Wdelete-incomplete]  ::delete[]( ( void * )event ); - No solution to hadle this right was found
 
 Fixed: Warning: C6053 Due to the previous call to strncpy, the string ? may not be null-terminated.
 int NumPlayersOnSameTeam(bot_state_t *bs)
@@ -827,6 +938,7 @@ qboolean Actor::checkdone ( Conditional &condition )
 qboolean Actor::checkpartdead( Conditional &condition )
 qboolean Actor::checkenemyranged( Conditional &condition )
 qboolean Actor::checkplayerranged()
+extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qboolean isBot, qboolean checkPassword )
 
 Fixed: Warning C4458: declaration of mode hides class member. Renamed to: temp_mode
 void Actor::SetTalkWatchMode( Event *ev )
@@ -1085,9 +1197,6 @@ void G_ServerCommand( void ) -> bool G_ServerCommand( void )
 Added: addip info print out that IP was added to bann list
 void SVCmd_AddIP_f( void )
 
-Disabled: Unknown server command, print out, we handle it as chat text anyway
-void G_ServerCommand( void )
-
 Changed: Server commands no longer using sv prefix before command
 void SVCmd_AddIP_f( void )
 void SVCmd_RemoveIP_f( void )
@@ -1102,9 +1211,6 @@ void SVCmd_ListIP_f( void )
 
 Fixed: Writing of banned IP-List to a file
 void SVCmd_WriteIP_f( void )
-
-Disabled: Fakk2 relic, secret thread
-TriggerSecret::TriggerSecret()
 
 Added: info_player_start Singleplayer Spawn being used if no other is found on a map - allows to spawn on Singleplayer maps
 void ModeDeathmatch::respawnPlayer( Player *player )
