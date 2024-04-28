@@ -304,3 +304,11 @@ str gameFix_getLanguage(Player* player)
 	}
 	return "Eng";
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function retrieving actor follow target entity - chrissstrahl
+//--------------------------------------------------------------
+Entity* gameFix_getActorFollowTargetEntity(Actor *actor) {
+	if (!actor) { return nullptr; }
+	return (Entity*)actor->followTarget.specifiedFollowTarget;
+}

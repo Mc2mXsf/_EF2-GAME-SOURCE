@@ -44,3 +44,4 @@ qboolean gameFix_languageEng(const gentity_t* ent);
 qboolean gameFix_languageDeu(const gentity_t* ent);
 str gameFix_getServerLanguage();
 str gameFix_getLanguage(Player* player);
+Entity* gameFix_getActorFollowTargetEntity(Actor* actor);
