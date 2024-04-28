@@ -23,3 +23,6 @@ Player*				gamefix_getAnyPlayerPreferably(bool noDead, bool noSpectator);
 int					gamefix_getCvarInt(str cvarName);
 float				gamefix_getCvarFloat(str cvarName);
 str					gamefix_getCvar(str cvarName);
+Entity*				gamefix_getActorFollowTarget(Actor* actor);
+Player*				gamefix_getClosestPlayerToFollow(Actor* actor);
+bool				gamefix_isPlayerInNotarget(Player* player);

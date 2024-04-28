@@ -188,9 +188,9 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 		}
 	}
 
-	//if we don't have player on same plane within range, fallback
+	//if we don't have player on same plane within range, fallback to our backup
 	if (!playerClosestSamePlane) {
-		playerClosestSamePlane = player;
+		playerClosestSamePlane = playerClosest;
 	}
 
 	return playerClosestSamePlane;
@@ -218,6 +218,10 @@ Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 		player = gamefix_getPlayer(i);
 
 		if (!player) {
+			continue;
+		}
+
+		if (gamefix_isPlayerInNotarget(player)) {
 			continue;
 		}
 
@@ -276,4 +280,44 @@ str gamefix_getCvar(str cvarName)
 {
 	cvar_t* cvar = gi.cvar_get(cvarName.c_str());
 	return (cvar ? cvar->string : "");
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if player is in notarget - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_isPlayerInNotarget(Player* player) {
+	if (!player) { return false; }
+	return (player->flags & FL_NOTARGET);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to get best closest Player to follow - chrissstrahl
+// //--------------------------------------------------------------
+Player* gamefix_getClosestPlayerToFollow(Actor* actor)
+{
+	if (!actor) { return nullptr; }
+	Entity* ent = nullptr;
+	Player* player = nullptr;
+
+	Entity* ent = gamefix_getActorFollowTarget(actor);
+	
+	if (!ent->isSubclassOf(Player)) {
+		ent = nullptr;
+	}
+	else if(!gameFix_isDead(ent) && !gameFix_isSpectator_stef2(ent) && !gamefix_isPlayerInNotarget((Player*)ent)){
+		player = (Player*)ent;
+	}
+	
+	if (!ent || gameFix_isDead(ent) || gameFix_isSpectator_stef2(ent) || gamefix_isPlayerInNotarget((Player*)ent)) {
+		player = gamefix_getClosestPlayerSamePlane( (Entity*)actor );
+	}
+	
+	return player;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function retrieving actor follow target entity - chrissstrahl
+//--------------------------------------------------------------
+Entity* gamefix_getActorFollowTarget(Actor* actor) {
+	return gameFix_getActorFollowTargetEntity(actor);
 }
