@@ -703,21 +703,24 @@ void ViewMaster::Save( Event *ev )
 		char* endPtr        = strPtr + (strlen(strPtr) - 1) ;
 		bool  found         = false ;
 		
-		for (int idx=strlen(strPtr); idx > 0; idx++)
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C6292: Incorrectly defined for-loop. - chrissstrahl
+		//--------------------------------------------------------------
+		for (int idx = strlen(strPtr) - 1; idx >= 0; idx--)
 		{
 			if (*endPtr == '/')
 			{
-				endPtr++ ;
-				found = true ;
-				break ;
+				found = true;
+				break;
 			}
-			endPtr-- ;
-		}			
-		
-		if (found)
-		{
-			strPtr = endPtr ;
+			endPtr--;
 		}
+		// Now endPtr will point to the '/' character, if found.
+		if (found) {
+			endPtr++; // Move to the character after '/'
+		}
+
 		
 		buf += va( "// Entity %d\n", count);
 		buf += va( "{\n");
