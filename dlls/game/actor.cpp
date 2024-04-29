@@ -8902,11 +8902,20 @@ qboolean Actor::checkenemyrelativeyaw( Conditional &condition )
 	
 	// Get our current enemy
 	Entity *currentEnemy;
-	//currentEnemy = enemyManager->GetCurrentEnemy();
-	//if ( !currentEnemy )
-	//	return false;
 
-   currentEnemy = GetPlayer(0);
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	// GAMEFIX - Fixed: Fallback to player
+	//--------------------------------------------------------------
+	currentEnemy = enemyManager->GetCurrentEnemy();
+	if (!currentEnemy) {
+		currentEnemy = gamefix_getClosestPlayer((Entity*)this);
+	}
+	if (!currentEnemy) {
+		return false;
+	}
+
 	
 	check_yaw_min = (float)atof( condition.getParm( 1 ) );
 
@@ -10295,15 +10304,14 @@ qboolean Actor::checkMeleeHitWorld(	Conditional &condition )
 
 qboolean Actor::checkPlayerValid( Conditional &condition )
 	{
- 	Player *player = GetPlayer(0);
 
-	if ( !player ) 
-		return false;
 
-	if ( EntityIsValidTarget( player ) )
-		return true;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	return gamefix_PlayerValid();
 
-	return false;
+
 	}
 
 qboolean Actor::checkInAbsoluteRange( Conditional &condition )
