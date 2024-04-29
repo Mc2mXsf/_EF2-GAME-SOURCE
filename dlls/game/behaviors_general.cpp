@@ -3615,8 +3615,19 @@ void GroupFollow::Begin( Actor &self )
 
 	if ( !self.followTarget.specifiedFollowTarget )
 		{
-		self.followTarget.specifiedFollowTarget = GetPlayer( 0 );
-		assert( self.followTarget.specifiedFollowTarget );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+		//--------------------------------------------------------------
+		Player* player = gamefix_getClosestPlayerToFollow(&self);
+		if (!player) {
+			return;
+		}
+		self.followTarget.specifiedFollowTarget = player;
+		//assert( self.followTarget.specifiedFollowTarget );
+
+
 		}
 
 	self.followTarget.currentFollowTarget = self.followTarget.specifiedFollowTarget;
@@ -4055,6 +4066,14 @@ BehaviorReturnCode_t GroupFollow::CloseWithTarget( Actor &self )
 	{
 		_follow.End( self );
 		GotoHoldState( self );
+	}
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Gamecode assuming Followtarget is always a valid entity - chrissstrahl
+	//--------------------------------------------------------------
+	if (!self.followTarget.currentFollowTarget) {
+		return BEHAVIOR_EVALUATING;
 	}
 
 
