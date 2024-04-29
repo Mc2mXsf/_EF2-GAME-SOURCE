@@ -18,6 +18,13 @@
 #include "player.h"
 #include "object.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 //======================================
 // SensoryPerception Implementation
 //======================================
@@ -190,7 +197,12 @@ void SensoryPerception::SenseEnemies()
 		}
 		
 		//In case we didn't find an enemy, but if the players nearby, we want to wake up anyway
-		_SenseEntity( GetPlayer( 0 ) );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+		//--------------------------------------------------------------
+		_SenseEntity( gamefix_getClosestPlayer((Entity*)act) );
 	}	
 	
 }
