@@ -10316,24 +10316,46 @@ qboolean Actor::checkPlayerValid( Conditional &condition )
 
 qboolean Actor::checkInAbsoluteRange( Conditional &condition )
 	{
-   
-	if ( !Q_stricmp( condition.getParm( 1 ) , "player" ) )
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Multiplayer compatibility, accepting numbered player targetnames (player127) - chrissstrahl
+	//--------------------------------------------------------------
+	if (strlen(condition.getParm(1)) < 10 && !Q_stricmpn( condition.getParm( 1 ) , "player",6 ) )
 		{
       Player *player;
       Entity *enemy;
 
 		Vector dist;
 		float length;
-			
-		player = GetPlayer( 0 );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Multiplayer compatibility - chrissstrahl
+		//--------------------------------------------------------------
+		enemy = enemyManager->GetCurrentEnemy();
+		if (enemy && enemy->isSubclassOf(Player)) {
+			player = (Player*)enemy;
+		}
+		else if (followTarget.specifiedFollowTarget && followTarget.specifiedFollowTarget->isSubclassOf(Player)) {
+			player = (Player*)(Entity*)followTarget.specifiedFollowTarget;
+		}
+		else {
+			player = gamefix_getClosestPlayer((Entity*)this);
+		}
+
+
 		if ( !player )
 			return false;
 
 		dist = origin - player->origin;
 		length = dist.length();
       
-      enemy = NULL;
-      enemy = enemyManager->GetCurrentEnemy();
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Multiplayer compatibility - chrissstrahl
+		//--------------------------------------------------------------
+      //enemy = NULL;
+      //enemy = enemyManager->GetCurrentEnemy();
+
 
       if ( enemy )
          {
