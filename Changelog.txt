@@ -1,15 +1,24 @@
 Added: File to provide a bridge between the general game code and elite force 2 specific code
 bool gameFix_inSingleplayer();
 bool gameFix_inMultiplayer();
-bool gamefix_isSpectator_stef2(Entity* ent);
+bool gameFix_isSpectator_stef2(Entity* ent);
 bool gameFix_isDead(Entity* ent);
-bool gameFix_isDedicatedServer();
 bool gameFix_isDedicatedServer();
 bool gameFix_isListenServer();
 bool gameFix_isWindowsServer();
 bool gameFix_isLinuxServer();
 void gameFix_hudPrint(Player* player, str sText);
+int gameFix_maxClients();
+bool gameFix_isBot(gentity_t* ent);
+bool gameFix_isBot(Player* player);
 void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
+Entity* gameFix_getTargetedEntity(Player* player);
+Player* gameFix_getClosestPlayerInCallvolume(Entity* entity);
+qboolean gameFix_languageEng(const gentity_t* ent);
+qboolean gameFix_languageDeu(const gentity_t* ent);
+str gameFix_getServerLanguage();
+str gameFix_getLanguage(Player* player);
+Entity* gameFix_getActorFollowTargetEntity(Actor* actor);
 
 Disabled warning supressions and fixed issues with the code if there where any:
 4136		conversion between different floating-point types
@@ -33,6 +42,31 @@ Warning C26495: class Event : public Class -> Event *prev;
 Warning C6386: Buffer overflow while writing to objlist -> template< class Type > void Container<Type>::Resize
 Warning C6385: Invalid data is being read from objlist-> template< class Type > void Container<Type>::Resize
 WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
+
+Fixed: Using/Checking for, client 0 only
+void SensoryPerception::SenseEnemies()
+void CloseInOnPlayer::findPlayer()
+void FollowInFormation::SetDefaultFollowTarget( Actor &self )
+void Actor::TurnTowardsPlayer( Event *ev )
+void Actor::Killed( Event *ev )
+qboolean Actor::checkenemyrelativeyaw( Conditional &condition )
+qboolean Actor::checkPlayerValid( Conditional &condition )
+qboolean Actor::checkInAbsoluteRange( Conditional &condition )
+void Actor::setBranchDialog( void )
+void Actor::SetHeadWatchTarget( Event *ev )
+void RotateToEntity::Begin( Actor &self )
+qboolean Actor::checkplayerranged()
+qboolean Actor::checkInPreferredRange( Conditional &condition )
+
+Fixed: Gamecode assuming Followtarget is always a valid entity
+BehaviorReturnCode_t GroupFollow::CloseWithTarget( Actor &self )
+
+Fixed: Kill of Teammate Actor always being tributed to a player, regardless who killed it
+void Actor::Killed( Event *ev )
+
+Added: Function to check quicky if there is any valid player
+bool gamefix_PlayerValid(Player *player)
+bool gamefix_PlayerValid()
 
 DISABLED THE FOLLOWING CODE/WARNING:
 WARNING C4189: Local variable is initialized but not referenced. -> void TestStringClass( void )
