@@ -9991,7 +9991,28 @@ qboolean Actor::checkplayerranged()
 	{
 	Player *player;
 	player = NULL;
-	player = GetPlayer( 0 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->integer == GT_SINGLE_PLAYER) {
+		player = GetPlayer(0);
+	}
+	else {
+		Entity* currentEnemy;
+		currentEnemy = enemyManager->GetCurrentEnemy();
+		if (currentEnemy && currentEnemy->isSubclassOf(Player)) {
+			player = (Player*)currentEnemy;
+		}
+		else if (followTarget.specifiedFollowTarget && followTarget.specifiedFollowTarget->isSubclassOf(Player)) {
+			player = (Player*)(Entity*)followTarget.specifiedFollowTarget;
+		}
+		else {
+			player = gamefix_getClosestPlayer((Entity*)this);
+		}
+	}
+
 
 	if ( !player ) return false;
 
@@ -10373,13 +10394,31 @@ qboolean Actor::checkInAbsoluteRange( Conditional &condition )
 
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 	{
-	if ( !Q_stricmp( condition.getParm( 1 ) , "player" ) )
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Multiplayer compatibility, accepting numbered player targetnames (player127) - chrissstrahl
+	//--------------------------------------------------------------
+	if (strlen(condition.getParm(1)) < 10 && !Q_stricmpn(condition.getParm(1), "player", 6))
 		{
       Player *player;
 		Vector dist;
 		float length;
 
-		player = GetPlayer( 0 );
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Multiplayer compatibility - chrissstrahl
+		//--------------------------------------------------------------
+		Entity* enemy = enemyManager->GetCurrentEnemy();
+		if (enemy && enemy->isSubclassOf(Player)) {
+			player = (Player*)enemy;
+		}
+		else if (followTarget.specifiedFollowTarget && followTarget.specifiedFollowTarget->isSubclassOf(Player)) {
+			player = (Player*)(Entity*)followTarget.specifiedFollowTarget;
+		}
+		else {
+			player = gamefix_getClosestPlayer((Entity*)this);
+		}
+
+
 		if ( !player )
 			return false;
 
@@ -11428,7 +11467,12 @@ void Actor::StopDialog()
 //-----------------------------------------------------
 void Actor::setBranchDialog( void )
 {
-	Player* player = GetPlayer(0);
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	Player* player = gamefix_getClosestPlayer((Entity*)this);
+
+
 	str commandString;
 	if( player )
 	{
@@ -16485,7 +16529,12 @@ void Actor::SetHeadWatchTarget( Event *ev )
    
    if ( !Q_stricmp( "player" , watchTarget.c_str() ) )
 		{
-		Player *player = GetPlayer(0);
+	   //--------------------------------------------------------------
+	   // GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	   //--------------------------------------------------------------
+	   Player* player = gamefix_getClosestPlayer((Entity*)this);
+
+
 		headWatcher->SetWatchTarget( player );
 		}
 
@@ -16493,8 +16542,15 @@ void Actor::SetHeadWatchTarget( Event *ev )
 		{
 		float bestDist = 99999;
 		Vector selfToTeammate;
-		Sentient *teammate = GetPlayer(0);
+		
 		Sentient *closestTeammate = NULL;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+		//--------------------------------------------------------------
+		Sentient *teammate = nullptr;
+
 
 		for ( int i = 1 ; i <= TeamMateList.NumObjects() ; i++ )
 			{
@@ -16511,8 +16567,13 @@ void Actor::SetHeadWatchTarget( Event *ev )
 		
 			}
 
-		if ( !closestTeammate )
-			closestTeammate = teammate;
+		if (!closestTeammate) {
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+			//--------------------------------------------------------------
+			closestTeammate = (Sentient*)gamefix_getClosestPlayer((Entity*)this);
+		}
+
 
 		headWatcher->SetWatchTarget( closestTeammate );
 		return;

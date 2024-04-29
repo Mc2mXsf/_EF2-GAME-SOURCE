@@ -28,6 +28,13 @@
 #include "actor.h"
 #include "rotateToEntity.hpp"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 //--------------------------------------------------------------
 //
 // Class Declaration and Event Registration
@@ -142,7 +149,11 @@ void RotateToEntity::Begin( Actor &self )
 			}
 		else
 			{
-			Entity *player = (Entity*)GetPlayer(0);
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+			//--------------------------------------------------------------
+			Entity* player = (Entity*)gamefix_getClosestPlayerSamePlane((Entity*)&self);
+
 
 			if ( player && !(player->flags & FL_NOTARGET) )
 				{
