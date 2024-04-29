@@ -3075,7 +3075,13 @@ void FollowInFormation::SetDefaultFollowTarget( Actor &self )
 	if ( !self.followTarget.specifiedFollowTarget )
 		{
 		Player *player;
-		player = GetPlayer( 0 );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+		//--------------------------------------------------------------
+		player = gamefix_getClosestPlayerSamePlane(&self);
+
 
 		if ( !player )
 			{

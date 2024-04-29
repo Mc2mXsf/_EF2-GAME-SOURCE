@@ -25,6 +25,14 @@
 #include "actor.h"
 #include "closeInOnPlayer.hpp"
 
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 //--------------------------------------------------------------
 //
 // Class Declaration and Event Registration
@@ -276,7 +284,11 @@ void CloseInOnPlayer::think()
 //--------------------------------------------------------------
 void CloseInOnPlayer::findPlayer()
 {
-	Entity *player = (Entity*)GetPlayer(0);
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	Entity* player = gamefix_getClosestPlayerToFollow(_self);
+
 
 	if ( !player || player->flags & FL_NOTARGET )
 		{
