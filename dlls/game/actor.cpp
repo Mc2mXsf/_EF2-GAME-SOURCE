@@ -41,6 +41,13 @@
 #include "talk.hpp"
 #include "equipment.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 Container<Actor *> SleepList;                   //All actors in the level that are asleep
 Container<Actor *> ActiveList;                  //All actors in the level that are active
 Container<Sentient *> TeamMateList;             //Global list of all teammates
@@ -3646,7 +3653,13 @@ void Actor::TurnTowardsPlayer( Event *ev )
 	float  extraYaw;
 
 	Player* player;
-	player = GetPlayer(0);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	player = gamefix_getClosestPlayerSamePlane((Entity*)this);
+
 
 	// don't target while player is not in the game or he's in notarget
 	if( !player || ( player->flags & FL_NOTARGET ) )
@@ -7185,16 +7198,26 @@ void Actor::Killed( Event *ev )
 	if(actortype == IS_TEAMMATE)
 	{
 		Player* player;
-		player = GetPlayer(0);
 
-		if(player->p_heuristics)
-		{
-			player->p_heuristics->IncrementTeammatesKilled();
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+		// GAMEFIX - Fixed: Kill of Teammate Actor always being tributed to a player, regardless who killed it - chrissstrahl
+		//--------------------------------------------------------------
+		if (attacker && attacker->isSubclassOf(Player)) {
+			player = (Player*)attacker;
+
+			if(player->p_heuristics)
+			{
+				player->p_heuristics->IncrementTeammatesKilled();
+			}
+			if( player->client )
+			{
+				++player->client->ps.stats[ STAT_TEAMMATES_KILLED ];
+			}
 		}
-		if( player->client )
-		{
-			++player->client->ps.stats[ STAT_TEAMMATES_KILLED ];
-		}
+
+
 	}
 	else
 	{
