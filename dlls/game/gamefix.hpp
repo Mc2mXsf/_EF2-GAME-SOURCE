@@ -26,3 +26,5 @@ str					gamefix_getCvar(str cvarName);
 Entity*				gamefix_getActorFollowTarget(Actor* actor);
 Player*				gamefix_getClosestPlayerToFollow(Actor* actor);
 bool				gamefix_isPlayerInNotarget(Player* player);
+bool				gamefix_PlayerValid(Player* player);
+bool				gamefix_PlayerValid();

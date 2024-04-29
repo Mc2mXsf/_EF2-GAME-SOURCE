@@ -129,16 +129,20 @@ bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 // GAMEFIX - Returns closest player to given entity - chrissstrahl
 //--------------------------------------------------------------
 Player* gamefix_getClosestPlayer(Entity* entity)
+//NO SPECTATOR, NO DEAD
 {
 	return gamefix_getClosestPlayer(entity, true, true, false, 0, 0);
 }
 
 Player* gamefix_getClosestPlayerSamePlane(Entity* entity)
+//NO SPECTATOR, NO DEAD, SAME PLANE, MAX Z-Difference (to match plane), MAX X-Difference (to match plane)
 {
 	return gamefix_getClosestPlayer(entity, true, true, true, 196, 1024);
 }
 
 Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bool samePlane,int planeMaxVertDiff, int planeMaxRange)
+//RETURNS nullptr IF CRITIRA (spec/dead/notarget) DON'T MATCH
+//GIVES PLAYER FROM OTHER PLANES (bigger Z-AXIS differences) IF NONE ON THE SAME PLANE BEFORE GIVING UP AND RETURNING nullptr
 {
 	if (gameFix_inSingleplayer()) {
 		return gamefix_getPlayer(0);
@@ -257,6 +261,28 @@ Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 	}
 
 	return player;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to check quicky if there is any valid player - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_PlayerValid(Player *player)
+{
+	if (!player || gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2((Entity*)player) || gamefix_isPlayerInNotarget(player)) {
+		return false;
+	}
+	return true;
+}
+bool gamefix_PlayerValid()
+{
+	Player* player = nullptr;
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+		if (gamefix_PlayerValid(player)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 //--------------------------------------------------------------
