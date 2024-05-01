@@ -19225,8 +19225,12 @@ qboolean Actor::checkSpecifiedFollowTargetOutOfRange( Conditional &condition )
 
 qboolean Actor::checkSpecifiedFollowTargetOutOfRange()
 {
-	if ( !followTarget.specifiedFollowTarget )
-		followTarget.specifiedFollowTarget = GetPlayer( 0 );
+	if (!followTarget.specifiedFollowTarget) {
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+		//--------------------------------------------------------------
+		followTarget.specifiedFollowTarget = gamefix_getClosestPlayerToFollow(this);
+	}
 
 	if ( followTarget.specifiedFollowTarget )
 		{
@@ -19505,8 +19509,12 @@ qboolean Actor::checkWithinFollowRangeMin( Conditional &condition )
 
 qboolean Actor::checkWithinFollowRangeMin()
 {
-	if ( !followTarget.specifiedFollowTarget )
-		followTarget.specifiedFollowTarget = GetPlayer( 0 );
+	if (!followTarget.specifiedFollowTarget) {
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+		//--------------------------------------------------------------
+		followTarget.specifiedFollowTarget = gamefix_getClosestPlayerToFollow(this);
+	}
 
 	if ( followTarget.specifiedFollowTarget )
 		{

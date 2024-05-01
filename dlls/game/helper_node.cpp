@@ -1776,9 +1776,21 @@ HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float ma
 
 
 			//--------------------------------------------------------------
-			// GAMEFIX - check with all players - grab any player on server - chrissstrahl
+			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
 			//--------------------------------------------------------------
-			player = gamefix_getAnyPlayerPreferably();
+			Entity* ent = gamefix_getActorFollowTarget(&self);
+			if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+				player = (Player*)ent;
+			}
+			else {
+				ent = gamefix_actorGetCurrentEnemy(&self);
+				if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+					player = (Player*)ent;
+				}
+				else {
+					player = gamefix_getClosestPlayerSamePlane((Entity*) & self);
+				}
+			}
 
 
 			//--------------------------------------------------------------

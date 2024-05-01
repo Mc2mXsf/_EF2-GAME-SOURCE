@@ -2025,7 +2025,17 @@ void MoveFromConeOfFire::_setDirectionVectors(Actor &self)
 	Vector	playerAngles;   
 	Player *player;   
    
-	player = GetPlayer( 0 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	player = gamefix_getClosestPlayerSamePlane((Entity*)&self);
+	if (!player) {
+		_state = MOVE_FCOF_FAILED;
+		return;
+	}
+
+
 	assert( player );
    
 	// Get our Direction Vectors set up   
@@ -2335,7 +2345,16 @@ PathNode *MoveFromConeOfFire::_FindNode( Actor &self )
 	testdot  = 0.0f;
 	bestnode = NULL;
 
-	player = GetPlayer( 0 );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	player = gamefix_getClosestPlayerSamePlane((Entity*) &self);
+	if (!player) {
+		return nullptr;
+	}
+
+
 	playerToSelf = self.origin - player->origin;
 
 	for ( i = 0 ; i < thePathManager.NumNodes() ; i++ )   
