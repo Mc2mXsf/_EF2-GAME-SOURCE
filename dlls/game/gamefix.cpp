@@ -334,10 +334,8 @@ Player* gamefix_getClosestPlayerToFollow(Actor* actor)
 
 	ent = gamefix_getActorFollowTarget(actor);
 
-	if (ent) {
-		if (ent->isSubclassOf(Player) && gamefix_EntityValid(ent)) {
-			return (Player*)ent;
-		}
+	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+		return (Player*)ent;
 	}
 
 	return gamefix_getClosestPlayerSamePlane((Entity*)actor);

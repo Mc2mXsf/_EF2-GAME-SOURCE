@@ -30,6 +30,7 @@ Player*				gamefix_getClosestPlayerToFollow(Actor* actor);
 Entity*				gamefix_getActorFollowTarget(Actor* actor);
 bool				gamefix_actorCanSee(Actor* actor, Entity* entity, qboolean useFOV, qboolean useVisionDistance);
 Player*				gamefix_getClosestPlayerActorCanSee(Actor* actor, qboolean useFOV);
+Entity*				gamefix_actorGetCurrentEnemy(Actor* actor);
 Player*				gamefix_actorGetPlayerCurEnemyOrClosestCansee(Actor* actor);
 bool				gamefix_actorHates(Actor* actor, Entity* entity);
 bool				gamefix_checkPlayerRanged(Actor* actor, Player* player);
