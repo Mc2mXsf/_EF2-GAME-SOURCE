@@ -2840,12 +2840,29 @@ void CircleStrafeEntity::End ( Actor &self	)
 //--------------------------------------------------------------
 Entity* CircleStrafeEntity::_getStrafeTarget( Actor &self, const str &target )
 	{
-	Entity *ent = NULL;
-	
-	if ( target == "player" )
-		ent = GetPlayer( 0 );
-	else if ( target == "enemy" )
-		ent = self.enemyManager->GetCurrentEnemy();
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	Entity *ent = self.enemyManager->GetCurrentEnemy();
+
+	if (Q_stricmpn(target.c_str(),"player",6)) {
+		Player* player = nullptr;
+
+		if (strlen(target.c_str()) > 6) {
+			player = gamefix_getPlayerByTargetname(target);
+			if (gamefix_EntityValid((Entity*)player)) {
+				return (Entity*)player;
+			}
+		}
+
+		if (ent->isSubclassOf(Player)) {
+			return ent;
+		}
+
+		ent = gamefix_getClosestPlayerActorCanSee(&self, qfalse);
+	}
+	//else if ( target == "enemy" ) return self.enemyManager->GetCurrentEnemy();
+
 
 	return ent;
 	}
@@ -7233,7 +7250,13 @@ void GotoLiftPosition::End ( Actor &self	)
 void GotoLiftPosition::_findLiftNode( Actor &self )
 	{
 	Player *player;
-	player = GetPlayer( 0 );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	player = gameFix_getClosestPlayerInCallvolume(&self);
+
 
 	if ( !player )
 		{

@@ -31,6 +31,13 @@
 #include "actor.h"
 #include "watchEntity.hpp"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 //--------------------------------------------------------------
 //
 // Class Declaration and Event Registration
@@ -269,8 +276,14 @@ void WatchEntity::init( Actor &self )
 		if ( !_ent )
 			{
 
-			if ( _forcePlayer )
-				_ent = (Entity*)GetPlayer( 0 );
+			if (_forcePlayer) {
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+				//--------------------------------------------------------------
+				_ent = (Entity*)gamefix_getClosestPlayerActorCanSee(&self, qfalse);
+
+
+			}
 
 			if ( !_ent )
 				{

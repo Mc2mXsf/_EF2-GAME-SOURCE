@@ -24,6 +24,13 @@
 #include "torsoAimAndFireWeapon.hpp"
 #include <qcommon/gameplaymanager.h>
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 //--------------------------------------------------------------
 //
 // Class Declaration and Event Registration
@@ -550,7 +557,13 @@ void TorsoAimAndFireWeapon::updateEnemy()
 		if ( !currentEnemy )
 			{
 			Player* player;
-			player = GetPlayer( 0 );
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+			//--------------------------------------------------------------
+			player = gamefix_getClosestPlayerActorCanSee(_self, qfalse);
+
 			
 			/*
 			if ( player && GetSelf()->enemyManager->Hates(player) && _forceAttack )

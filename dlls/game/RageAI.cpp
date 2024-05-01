@@ -21,6 +21,13 @@
 #include "RageAI.h"
 #include "player.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 void Strategos::DoArchive( Archiver &arc , Actor *actor )
 {
 	Archive( arc );
@@ -269,48 +276,71 @@ void DefaultStrategos::_CheckForInTheWay()
 	Vector check;
 	float relativeYaw;
 	float dist;
-	
-	player = GetPlayer( 0 );
-	
-	if (!player)
-		return;
-	
-	playerToSelf = act->origin - player->origin;
-	dist = playerToSelf.length();
-	
-	playerVelocity = player->velocity;
-	
-	float speed;
-	speed = playerVelocity.length();
-	speed = speed * .75;
-	
-	if ( dist > 200 )
-		return;
-	
-	if ( dist > speed )
-		return;
-	
-	if ( DotProduct( playerVelocity , playerToSelf ) <= 0 )
-		return;
-	
-	if ( act->EntityHasFireType( player, FT_BULLET ) || act->EntityHasFireType( player, FT_PROJECTILE ) )
-	{
-		_checkYawMin = -30.0f;
-		_checkYawMax =  30.0f;
-		
-		check = player->GetVAngles();
-		dir = playerToSelf.toAngles();
-		
-		relativeYaw = AngleNormalize180( AngleNormalize180(check[YAW]) - AngleNormalize180(dir[YAW]) );
-		
-		if ( (relativeYaw <= _checkYawMax) && (relativeYaw >= _checkYawMin ) )
-		{
-			act->AddStateFlag( STATE_FLAG_TOUCHED_BY_PLAYER );
-			act->AddStateFlag( STATE_FLAG_IN_THE_WAY );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+
+		if (!player || gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2((Entity*)player)) {
+			continue;
 		}
-		
+
+		playerToSelf = act->origin - player->origin;
+		dist = playerToSelf.length();
+
+		playerVelocity = player->velocity;
+
+		float speed;
+		speed = playerVelocity.length();
+		speed = speed * .75;
+
+		if (dist > 200) {
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+			//--------------------------------------------------------------
+			continue;
+		}
+
+		if (dist > speed) {
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+			//--------------------------------------------------------------
+			continue;
+		}
+
+		if (DotProduct(playerVelocity, playerToSelf) <= 0) {
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+			//--------------------------------------------------------------
+			continue;
+		}
+
+		if (act->EntityHasFireType(player, FT_BULLET) || act->EntityHasFireType(player, FT_PROJECTILE))
+		{
+			_checkYawMin = -30.0f;
+			_checkYawMax = 30.0f;
+
+			check = player->GetVAngles();
+			dir = playerToSelf.toAngles();
+
+			relativeYaw = AngleNormalize180(AngleNormalize180(check[YAW]) - AngleNormalize180(dir[YAW]));
+
+			if ((relativeYaw <= _checkYawMax) && (relativeYaw >= _checkYawMin))
+			{
+				act->AddStateFlag(STATE_FLAG_TOUCHED_BY_PLAYER);
+				act->AddStateFlag(STATE_FLAG_IN_THE_WAY);
+
+
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+				//--------------------------------------------------------------
+				return;
+			}
+		}
 	}
-	
 }
 
 float DefaultStrategos::GetCheckYawMax()

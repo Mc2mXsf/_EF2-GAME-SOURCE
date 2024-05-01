@@ -18507,8 +18507,11 @@ qboolean Actor::checkPlayerWeaponNamed( Conditional &condition )
 //--------------------------------------------------------------
 qboolean Actor::checkPlayerWeaponNamed( const str& weaponNameOfPlayer )
 {
-	Player *player;
-	player = GetPlayer ( 0 );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	Player *player = gamefix_actorGetPlayerCurEnemyOrClosestCansee(this);
+
 
 	if ( player )
 	{
