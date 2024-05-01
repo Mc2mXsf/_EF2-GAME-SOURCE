@@ -44,6 +44,18 @@ Warning C6385: Invalid data is being read from objlist-> template< class Type > 
 WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
 
 Fixed: Using/Checking for, client 0 only
+HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float maxDist , float minDistanceFromPlayer, bool unreserveCurrentNode )
+qboolean Actor::checkSpecifiedFollowTargetOutOfRange()
+qboolean Actor::checkWithinFollowRangeMin()
+void MoveFromConeOfFire::_setDirectionVectors(Actor &self)
+PathNode *MoveFromConeOfFire::_FindNode( Actor &self )
+Entity* CircleStrafeEntity::_getStrafeTarget( Actor &self, const str &target )
+qboolean Actor::checkPlayerWeaponNamed( const str& weaponNameOfPlayer )
+void GotoLiftPosition::_findLiftNode( Actor &self )
+void DefaultStrategos::_CheckForInTheWay()
+void StationaryFireCombatEX::updateEnemy()
+void TorsoAimAndFireWeapon::updateEnemy()
+void WatchEntity::init( Actor &self )
 void SensoryPerception::SenseEnemies()
 void CloseInOnPlayer::findPlayer()
 void FollowInFormation::SetDefaultFollowTarget( Actor &self )
@@ -57,6 +69,7 @@ void Actor::SetHeadWatchTarget( Event *ev )
 void RotateToEntity::Begin( Actor &self )
 qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
+void SnipeEnemy::updateEnemy()
 
 Fixed: Gamecode assuming Followtarget is always a valid entity
 BehaviorReturnCode_t GroupFollow::CloseWithTarget( Actor &self )
