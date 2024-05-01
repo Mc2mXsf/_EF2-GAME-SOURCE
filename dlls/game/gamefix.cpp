@@ -171,7 +171,7 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 			continue;
 		}
 
-		if (gamefix_isPlayerInNotarget(player)) {
+		if (gamefix_checkNotarget((Entity*)player)) {
 			continue;
 		}
 
@@ -229,7 +229,7 @@ Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 			continue;
 		}
 
-		if (gamefix_isPlayerInNotarget(player)) {
+		if (gamefix_checkNotarget((Entity*)player)) {
 			continue;
 		}
 
@@ -264,28 +264,6 @@ Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function to check quicky if there is any valid player - chrissstrahl
-//--------------------------------------------------------------
-bool gamefix_PlayerValid(Player *player)
-{
-	if (!player || gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2((Entity*)player) || gamefix_isPlayerInNotarget(player)) {
-		return false;
-	}
-	return true;
-}
-bool gamefix_PlayerValid()
-{
-	Player* player = nullptr;
-	for (int i = 0; i < gameFix_maxClients(); i++) {
-		player = gamefix_getPlayer(i);
-		if (gamefix_PlayerValid(player)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-//--------------------------------------------------------------
 // GAMEFIX - Added: Function to return interger value from cVar - chrissstrahl
 //--------------------------------------------------------------
 int gamefix_getCvarInt(str cvarName)
@@ -313,11 +291,37 @@ str gamefix_getCvar(str cvarName)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function checking if player is in notarget - chrissstrahl
+// GAMEFIX - Added: Function to check quicky if GIVEN entity exists,alive,nospec,targetable - chrissstrahl
 //--------------------------------------------------------------
-bool gamefix_isPlayerInNotarget(Player* player) {
-	if (!player) { return false; }
-	return (player->flags & FL_NOTARGET);
+bool gamefix_EntityValid(Entity* entity)
+{
+	if (entity && !gameFix_isDead(entity) && !gameFix_isSpectator_stef2(entity) && !gamefix_checkNotarget(entity)) {
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to check quicky if ANY player is alive,nospec,targetable - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_PlayerValid()
+{
+	Player* player = nullptr;
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+		if (gamefix_EntityValid(player)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if entity is in notarget - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_checkNotarget(Entity* entity) {
+	if (!entity) { return false; }
+	return (entity->flags & FL_NOTARGET);
 }
 
 //--------------------------------------------------------------
@@ -327,27 +331,178 @@ Player* gamefix_getClosestPlayerToFollow(Actor* actor)
 {
 	if (!actor) { return nullptr; }
 	Entity* ent = nullptr;
-	Player* player = nullptr;
 
 	ent = gamefix_getActorFollowTarget(actor);
-	
-	if (!ent->isSubclassOf(Player)) {
-		ent = nullptr;
+
+	if (ent) {
+		if (ent->isSubclassOf(Player) && gamefix_EntityValid(ent)) {
+			return (Player*)ent;
+		}
 	}
-	else if(!gameFix_isDead(ent) && !gameFix_isSpectator_stef2(ent) && !gamefix_isPlayerInNotarget((Player*)ent)){
-		player = (Player*)ent;
-	}
-	
-	if (!ent || gameFix_isDead(ent) || gameFix_isSpectator_stef2(ent) || gamefix_isPlayerInNotarget((Player*)ent)) {
-		player = gamefix_getClosestPlayerSamePlane( (Entity*)actor );
-	}
-	
-	return player;
+
+	return gamefix_getClosestPlayerSamePlane((Entity*)actor);
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function retrieving actor follow target entity - chrissstrahl
+// GAMEFIX - Added: Function returning actor follow target entity - chrissstrahl
 //--------------------------------------------------------------
 Entity* gamefix_getActorFollowTarget(Actor* actor) {
 	return gameFix_getActorFollowTargetEntity(actor);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if actor can actually see the given entity - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_actorCanSee(Actor* actor, Entity* entity, qboolean useFOV, qboolean useVisionDistance)
+{
+	return gameFix_actorCanSee(actor,entity,useFOV,useVisionDistance);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning closest player that given actor can see - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getClosestPlayerActorCanSee(Actor *actor, qboolean useFOV)
+{
+	if (!actor || gameFix_isDead(actor)) {
+		return nullptr;
+	}
+
+	Player* playerClosest = nullptr;
+	float distanceClosest = 999999;
+
+	Player* player = nullptr;
+
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+
+		if (!gamefix_EntityValid((Entity*)player) || !gamefix_actorCanSee(actor,(Entity*)player, useFOV, qtrue)) {
+			continue;
+		}
+
+		float distanceCurrent = VectorLength(player->centroid - actor->centroid);
+
+		//always grab player closest as a backup
+		if (distanceClosest > distanceCurrent) {
+			distanceClosest = distanceCurrent;
+			playerClosest = player;
+		}
+	}
+	
+	return playerClosest;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning current enemy of actor - chrissstrahl
+//--------------------------------------------------------------
+Entity* gamefix_actorGetCurrentEnemy(Actor* actor)
+{
+	return gameFix_actorGetCurrentEnemy(actor);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning current enemy if player or the closest player actor cansee - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_actorGetPlayerCurEnemyOrClosestCansee(Actor* actor)
+{
+	Entity* ent = gamefix_actorGetCurrentEnemy(actor);
+	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+		return (Player*)ent;
+	}
+	return gamefix_getClosestPlayerActorCanSee(actor,qfalse);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if actor hates given entity - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_actorHates(Actor* actor, Entity* entity)
+{
+	if (actor && entity && entity->isSubclassOf(Sentient)) {
+		return gameFix_actorHates(actor, (Sentient*)entity);
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if given player uses currently a ranged weapon - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_checkPlayerRanged(Actor* actor,Player* player)
+{
+	if (!actor || !player || !gamefix_EntityValid((Entity*)player)) { return false; }
+	return (actor->EntityHasFireType((Entity*)player, FT_BULLET) == qboolean(qtrue) || actor->EntityHasFireType((Entity*)player, FT_PROJECTILE) == qboolean(qtrue));
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if GIVEN player has ranged weapon + valid,cansee - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_checkPlayerRangedCanidate(Actor* actor,Player* player)
+{
+	if (actor && gamefix_EntityValid((Entity*)player) &&
+		gamefix_checkPlayerRanged(actor, player) &&
+		//within vision distance 360-FOV check if ai could see the given player
+		gamefix_actorCanSee(actor, (Entity*)player, qfalse, qtrue))
+	{
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if ANY player has ranged weapon + curEnemy,followTarget,valid,cansee - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_checkPlayerRanged(Actor* actor, bool closestOnly)
+{
+	if (!actor) { return false; }
+
+	if (gameFix_inSingleplayer()) {
+		return gamefix_checkPlayerRanged(actor,GetPlayer(0));
+	}
+	
+	Player* player = nullptr;
+	if (closestOnly) {
+		return gamefix_checkPlayerRangedCanidate(actor,gamefix_getClosestPlayerActorCanSee(actor,qfalse));
+	}
+	
+	Entity* ent = gamefix_actorGetCurrentEnemy(actor);
+	if (ent && ent->isSubclassOf(Player) && gamefix_checkPlayerRanged(actor,(Player*)ent)) {
+		return true;
+	}
+
+	//meant for teammates - but this might also applay to enemies, I didn't bother to check
+	ent = gamefix_getActorFollowTarget(actor);
+	if (ent && ent->isSubclassOf(Player) && gamefix_checkPlayerRanged(actor, (Player*)ent)) {
+		return true;
+	}
+	
+	//if all else fails, we get to the expensive part
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+		if (gamefix_checkPlayerRangedCanidate(actor, player)){
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if given player uses given weapon - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer)
+{
+	return gameFix_checkPlayerUsingWeaponNamed(player,weaponNameOfPlayer);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning player by giventargetname - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getPlayerByTargetname(const str& targetname)
+{
+	Player* player = nullptr;
+	for (int i = 0; i < gameFix_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+		if (player && Q_stricmp(player->targetname.c_str(),targetname.c_str())) {
+			return player;
+		}
+	}
+	return nullptr;
 }
