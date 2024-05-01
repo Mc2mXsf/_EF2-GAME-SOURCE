@@ -312,3 +312,74 @@ Entity* gameFix_getActorFollowTargetEntity(Actor *actor) {
 	if (!actor) { return nullptr; }
 	return (Entity*)actor->followTarget.specifiedFollowTarget;
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if actor can actually see the given entity - chrissstrahl
+//--------------------------------------------------------------
+bool gameFix_actorCanSee(Actor* actor, Entity* entity,bool useFOV,bool useVisionDistance)
+{
+	if (actor && entity){
+		actor->sensoryPerception->CanSeeEntity((Entity*)actor, entity, useFOV, useVisionDistance);
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning current enemy of given actor - chrissstrahl
+//--------------------------------------------------------------
+Entity* gameFix_actorGetCurrentEnemy(Actor* actor)
+{
+	if (actor){
+		return actor->enemyManager->GetCurrentEnemy();
+	}
+	return nullptr;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function cecking if actor hates given sentient - chrissstrahl
+//--------------------------------------------------------------
+bool gameFix_actorHates(Actor* actor, Sentient *sentient)
+{
+	if (actor && sentient && gamefix_EntityValid((Entity*)sentient)) {
+		return (bool)actor->enemyManager->Hates((Entity*)sentient);
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function checking if given player uses given weapon by name - chrissstrahl
+//--------------------------------------------------------------
+bool gameFix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer)
+{
+	bool checkForNone = false;
+	if (!strlen(weaponNameOfPlayer.c_str()) || !Q_stricmp(weaponNameOfPlayer.c_str(), "none")) {
+		checkForNone = true;
+	}
+
+	//nullptr,dead/spec/notarget - No active weapon check on - invalid player
+	if (!gamefix_EntityValid(player) && checkForNone) {
+		return true;
+	}
+
+	if (gamefix_EntityValid(player)) {
+		//check for actual weapon match
+		Weapon* pWeapon;
+		pWeapon = player->GetActiveWeapon(WEAPON_DUAL);
+		if (pWeapon && pWeapon->getName() == weaponNameOfPlayer)
+			return true;
+
+		pWeapon = player->GetActiveWeapon(WEAPON_LEFT);
+		if (pWeapon && pWeapon->getName() == weaponNameOfPlayer)
+			return true;
+
+		pWeapon = player->GetActiveWeapon(WEAPON_RIGHT);
+		if (pWeapon && pWeapon->getName() == weaponNameOfPlayer)
+			return true;
+		
+		//No active weapon check on - valid player
+		if (checkForNone && !pWeapon) {
+			return true;
+		}
+	}
+	return false;
+}

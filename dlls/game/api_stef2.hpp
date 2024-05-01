@@ -45,3 +45,7 @@ qboolean gameFix_languageDeu(const gentity_t* ent);
 str gameFix_getServerLanguage();
 str gameFix_getLanguage(Player* player);
 Entity* gameFix_getActorFollowTargetEntity(Actor* actor);
+bool gameFix_actorCanSee(Actor* actor, Entity* entity, bool useFOV, bool useVisionDistance);
+Entity* gameFix_actorGetCurrentEnemy(Actor* actor);
+bool gameFix_actorHates(Actor* actor,Sentient *sentient);
+bool gameFix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer);
