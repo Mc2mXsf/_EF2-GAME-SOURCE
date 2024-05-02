@@ -2834,6 +2834,14 @@ Listener::~Listener()
 
 void L_ClearEventList( void )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Added check to prevent crash if a error is thrown before the level is loaded fully - chrissstrahl
+	//--------------------------------------------------------------
+	if (numEvents == 0) {
+		return;
+	}
+
+
 	Event *event;
 	
 	// go through active and event queue lists
