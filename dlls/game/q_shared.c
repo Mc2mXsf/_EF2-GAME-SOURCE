@@ -735,7 +735,14 @@ const char *va( const char *format, ... )
 	index++;
 
 	va_start (argptr, format);
-	vsprintf (buf, format,argptr);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using vsnprintf to prevent possible buffer overflow - chrissstrahl
+	//--------------------------------------------------------------
+	vsnprintf(buf, sizeof(string[0]), format, argptr);
+
+
 	va_end (argptr);
 
 	return buf;
