@@ -4205,8 +4205,14 @@ float GroupFollow::ComputeAnimationRate( Actor &self, const str &animationName, 
 {
 	const float myNewAnimationSpeed = GetAnimationRate( self, animationName);
 	
-	if ( !fSmallEnough( myNewAnimationSpeed, fEpsilon() )  )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Added NULL check for followtarget - chrissstrahl
+	//--------------------------------------------------------------
+	if ( self.followTarget.currentFollowTarget && !fSmallEnough( myNewAnimationSpeed, fEpsilon() )  )
 	{
+
+
 		const float targetAnimationSpeed = GetAnimationRate( *self.followTarget.currentFollowTarget, self.followTarget.currentFollowTarget->CurrentAnim( legs ) );
 		if ( !fSmallEnough( targetAnimationSpeed, fEpsilon() ) )
 		{
