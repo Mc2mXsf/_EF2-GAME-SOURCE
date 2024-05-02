@@ -1086,6 +1086,12 @@
     <ClInclude Include="api_stef2.hpp">
       <Filter>Gamefix Files</Filter>
     </ClInclude>
+    <ClInclude Include="api_stef2_strings.hpp">
+      <Filter>Gamefix Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gamefix_strings.hpp">
+      <Filter>Gamefix Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="game.def">
