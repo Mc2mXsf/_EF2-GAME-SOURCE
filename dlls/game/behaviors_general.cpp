@@ -7274,7 +7274,7 @@ void GotoLiftPosition::_findLiftNode( Actor &self )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
 	//--------------------------------------------------------------
-	player = gameFix_getClosestPlayerInCallvolume(&self);
+	player = gameFixAPI_getClosestPlayerInCallvolume(&self);
 
 
 	if ( !player )
@@ -7519,7 +7519,7 @@ void GotoLiftPosition::FindNodes(Actor &self )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: GotoLiftPosition::FindNodes always refering to client 0 - chrissstrahl
 	//--------------------------------------------------------------
-	Player* player = gameFix_getClosestPlayerInCallvolume((Entity*)&self);
+	Player* player = gameFixAPI_getClosestPlayerInCallvolume((Entity*)&self);
 	if (!player) { return; }
 
 

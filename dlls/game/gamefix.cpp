@@ -28,7 +28,7 @@ Player* gamefix_getPlayer(int index)
 {
 	gentity_t* ed;
 
-	if (index > gameFix_maxClients())
+	if (index > gameFixAPI_maxClients())
 		return nullptr;
 
 	ed = &g_entities[index];
@@ -44,7 +44,7 @@ Player* gamefix_getPlayer(int index)
 //--------------------------------------------------------------
 int gamefix_getPlayers(bool state)
 {
-	return gameFix_getPlayers(state);
+	return gameFixAPI_getPlayers(state);
 }
 
 //--------------------------------------------------------------
@@ -55,15 +55,15 @@ Player* gamefix_getPlayerInsideOfEntity(Entity* eTheBox)
 	Player* player = nullptr;
 	Player* playerReturn = nullptr;
 
-	if (!eTheBox || gameFix_isDead(eTheBox) || gameFix_isSpectator_stef2(player)) {
+	if (!eTheBox || gameFixAPI_isDead(eTheBox) || gameFixAPI_isSpectator_stef2(player)) {
 		return nullptr;
 	}
 
 
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 
-		if (!player || gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2(eTheBox)) {
+		if (!player || gameFixAPI_isDead((Entity*)player) || gameFixAPI_isSpectator_stef2(eTheBox)) {
 			continue;
 		}
 
@@ -92,11 +92,11 @@ bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
 		return false;
 	}
 
-	if (gameFix_isDead(eCheck) || gameFix_isDead(eTheBox)) {
+	if (gameFixAPI_isDead(eCheck) || gameFixAPI_isDead(eTheBox)) {
 		return false;
 	}
 
-	if (gameFix_isSpectator_stef2(eCheck) || gameFix_isSpectator_stef2(eTheBox)) {
+	if (gameFixAPI_isSpectator_stef2(eCheck) || gameFixAPI_isSpectator_stef2(eTheBox)) {
 		return false;
 	}
 
@@ -117,14 +117,14 @@ bool gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox)
 //--------------------------------------------------------------
 bool gamefix_targetedByOtherPlayer(Player* player, Entity* entity)
 {
-	if (player && !gameFix_inSingleplayer()) {
-		for (int i = 0; i < gameFix_maxClients(); ++i) {
+	if (player && !gameFixAPI_inSingleplayer()) {
+		for (int i = 0; i < gameFixAPI_maxClients(); ++i) {
 			gentity_t* ent = g_entities + i;
-			if (!ent || !ent->inuse || !ent->client || !ent->entity || player->entnum == i || gameFix_isDead(ent->entity) || gameFix_isSpectator_stef2(ent->entity)) {
+			if (!ent || !ent->inuse || !ent->client || !ent->entity || player->entnum == i || gameFixAPI_isDead(ent->entity) || gameFixAPI_isSpectator_stef2(ent->entity)) {
 				continue;
 			}
 
-			Entity* curTarget = gameFix_getTargetedEntity(player);
+			Entity* curTarget = gameFixAPI_getTargetedEntity(player);
 			if (curTarget && curTarget == entity) {
 				return true;
 			}
@@ -152,7 +152,7 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 //RETURNS nullptr IF CRITIRA (spec/dead/notarget) DON'T MATCH
 //GIVES PLAYER FROM OTHER PLANES (bigger Z-AXIS differences) IF NONE ON THE SAME PLANE BEFORE GIVING UP AND RETURNING nullptr
 {
-	if (gameFix_inSingleplayer()) {
+	if (gameFixAPI_inSingleplayer()) {
 		return gamefix_getPlayer(0);
 	}
 
@@ -168,14 +168,14 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 
 	Player* player = nullptr;
 
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 
 		if (!player) {
 			continue;
 		}
 
-		if (noDead && gameFix_isDead((Entity*)player) || noSpectator && gameFix_isSpectator_stef2((Entity*)player)) {
+		if (noDead && gameFixAPI_isDead((Entity*)player) || noSpectator && gameFixAPI_isSpectator_stef2((Entity*)player)) {
 			continue;
 		}
 
@@ -222,7 +222,7 @@ Player* gamefix_getAnyPlayerPreferably()
 
 Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 {
-	if (gameFix_inSingleplayer()) {
+	if (gameFixAPI_inSingleplayer()) {
 		return gamefix_getPlayer(0);
 	}
 
@@ -230,7 +230,7 @@ Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 	Player* playerDead = nullptr;
 	Player* playerSpec = nullptr;
 
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 
 		if (!player) {
@@ -241,14 +241,14 @@ Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 			continue;
 		}
 
-		if (noDead && gameFix_isDead((Entity*)player)) {
+		if (noDead && gameFixAPI_isDead((Entity*)player)) {
 			if (!playerDead) {
 				playerDead = player;
 			}
 			continue;
 		}
 		
-		if(noSpectator && gameFix_isSpectator_stef2((Entity*)player)) {
+		if(noSpectator && gameFixAPI_isSpectator_stef2((Entity*)player)) {
 			if (!playerSpec) {
 				playerSpec = player;
 			}
@@ -303,7 +303,7 @@ str gamefix_getCvar(str cvarName)
 //--------------------------------------------------------------
 bool gamefix_EntityValid(Entity* entity)
 {
-	if (entity && !gameFix_isDead(entity) && !gameFix_isSpectator_stef2(entity) && !gamefix_checkNotarget(entity)) {
+	if (entity && !gameFixAPI_isDead(entity) && !gameFixAPI_isSpectator_stef2(entity) && !gamefix_checkNotarget(entity)) {
 		return true;
 	}
 	return false;
@@ -315,7 +315,7 @@ bool gamefix_EntityValid(Entity* entity)
 bool gamefix_PlayerValid()
 {
 	Player* player = nullptr;
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 		if (gamefix_EntityValid(player)) {
 			return true;
@@ -353,7 +353,7 @@ Player* gamefix_getClosestPlayerToFollow(Actor* actor)
 // GAMEFIX - Added: Function returning actor follow target entity - chrissstrahl
 //--------------------------------------------------------------
 Entity* gamefix_getActorFollowTarget(Actor* actor) {
-	return gameFix_getActorFollowTargetEntity(actor);
+	return gameFixAPI_getActorFollowTargetEntity(actor);
 }
 
 //--------------------------------------------------------------
@@ -361,7 +361,7 @@ Entity* gamefix_getActorFollowTarget(Actor* actor) {
 //--------------------------------------------------------------
 bool gamefix_actorCanSee(Actor* actor, Entity* entity, qboolean useFOV, qboolean useVisionDistance)
 {
-	return gameFix_actorCanSee(actor,entity,useFOV,useVisionDistance);
+	return gameFixAPI_actorCanSee(actor,entity,useFOV,useVisionDistance);
 }
 
 //--------------------------------------------------------------
@@ -369,7 +369,7 @@ bool gamefix_actorCanSee(Actor* actor, Entity* entity, qboolean useFOV, qboolean
 //--------------------------------------------------------------
 Player* gamefix_getClosestPlayerActorCanSee(Actor *actor, qboolean useFOV)
 {
-	if (!actor || gameFix_isDead(actor)) {
+	if (!actor || gameFixAPI_isDead(actor)) {
 		return nullptr;
 	}
 
@@ -378,7 +378,7 @@ Player* gamefix_getClosestPlayerActorCanSee(Actor *actor, qboolean useFOV)
 
 	Player* player = nullptr;
 
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 
 		if (!gamefix_EntityValid((Entity*)player) || !gamefix_actorCanSee(actor,(Entity*)player, useFOV, qtrue)) {
@@ -402,7 +402,7 @@ Player* gamefix_getClosestPlayerActorCanSee(Actor *actor, qboolean useFOV)
 //--------------------------------------------------------------
 Entity* gamefix_actorGetCurrentEnemy(Actor* actor)
 {
-	return gameFix_actorGetCurrentEnemy(actor);
+	return gameFixAPI_actorGetCurrentEnemy(actor);
 }
 
 //--------------------------------------------------------------
@@ -423,7 +423,7 @@ Player* gamefix_actorGetPlayerCurEnemyOrClosestCansee(Actor* actor)
 bool gamefix_actorHates(Actor* actor, Entity* entity)
 {
 	if (actor && entity && entity->isSubclassOf(Sentient)) {
-		return gameFix_actorHates(actor, (Sentient*)entity);
+		return gameFixAPI_actorHates(actor, (Sentient*)entity);
 	}
 	return false;
 }
@@ -459,7 +459,7 @@ bool gamefix_checkPlayerRanged(Actor* actor, bool closestOnly)
 {
 	if (!actor) { return false; }
 
-	if (gameFix_inSingleplayer()) {
+	if (gameFixAPI_inSingleplayer()) {
 		return gamefix_checkPlayerRanged(actor,GetPlayer(0));
 	}
 	
@@ -480,7 +480,7 @@ bool gamefix_checkPlayerRanged(Actor* actor, bool closestOnly)
 	}
 	
 	//if all else fails, we get to the expensive part
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 		if (gamefix_checkPlayerRangedCanidate(actor, player)){
 			return true;
@@ -495,7 +495,7 @@ bool gamefix_checkPlayerRanged(Actor* actor, bool closestOnly)
 //--------------------------------------------------------------
 bool gamefix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer)
 {
-	return gameFix_checkPlayerUsingWeaponNamed(player,weaponNameOfPlayer);
+	return gameFixAPI_checkPlayerUsingWeaponNamed(player,weaponNameOfPlayer);
 }
 
 //--------------------------------------------------------------
@@ -504,7 +504,7 @@ bool gamefix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOf
 Player* gamefix_getPlayerByTargetname(const str& targetname)
 {
 	Player* player = nullptr;
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 		if (player && Q_stricmp(player->targetname.c_str(),targetname.c_str())) {
 			return player;
@@ -518,14 +518,14 @@ Player* gamefix_getPlayerByTargetname(const str& targetname)
 //--------------------------------------------------------------
 str gamefix_getServerLanguage()
 {
-	return gameFix_getServerLanguage();
+	return gameFixAPI_getServerLanguage();
 }
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function retrieving Player Language - chrissstrahl
 //--------------------------------------------------------------
 str gamefix_getLanguage(Player* player) {
-	return gameFix_getLanguage(player);
+	return gameFixAPI_getLanguage(player);
 }
 
 //--------------------------------------------------------------
@@ -533,7 +533,7 @@ str gamefix_getLanguage(Player* player) {
 //--------------------------------------------------------------
 qboolean gamefix_languageEng(const gentity_t* ent)
 {
-	return gameFix_languageEng(ent);
+	return gameFixAPI_languageEng(ent);
 }
 
 //--------------------------------------------------------------
@@ -541,7 +541,7 @@ qboolean gamefix_languageEng(const gentity_t* ent)
 //--------------------------------------------------------------
 qboolean gamefix_languageDeu(const gentity_t* ent)
 {
-	return gameFix_languageDeu(ent);
+	return gameFixAPI_languageDeu(ent);
 }
 
 //--------------------------------------------------------------
@@ -550,7 +550,7 @@ qboolean gamefix_languageDeu(const gentity_t* ent)
 str gamefix_getLocalizedString(Player* player,str sEnglish,str sGerman)
 {
 	if (player) {
-		if (gameFix_getLanguage(player) == "Deu") {
+		if (gameFixAPI_getLanguage(player) == "Deu") {
 			return sGerman;
 		}
 	}
@@ -565,7 +565,7 @@ str gamefix_getLocalizedString(Player* player,str sEnglish,str sGerman)
 //--------------------------------------------------------------
 void gamefix_vstrLocalLanguage(gentity_t* ent)
 {
-	if (ent && gameFix_inMultiplayer()) {
+	if (ent && gameFixAPI_inMultiplayer()) {
 		gi.SendServerCommand(ent->client->ps.clientNum, "stufftext \"vstr local_language\n\"");
 	}
 }
@@ -575,7 +575,7 @@ void gamefix_vstrLocalLanguage(gentity_t* ent)
 //--------------------------------------------------------------
 void gamefix_aiTurnOff()
 {
-	if (gameFix_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
+	if (gameFixAPI_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
 		level.ai_on = false;
 		gi.Printf(_GFixEF2_INFO_FUNC_ClientDisconnect);
 	}
@@ -586,7 +586,7 @@ void gamefix_aiTurnOff()
 //--------------------------------------------------------------
 void gamefix_aiTurnOn()
 {
-	if (gameFix_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
+	if (gameFixAPI_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
 		level.ai_on = true;
 		gi.Printf(_GFixEF2_INFO_FUNC_ClientBegin);
 	}
@@ -597,5 +597,5 @@ void gamefix_aiTurnOn()
 //--------------------------------------------------------------
 void gamefix_printAllClients(const str text)
 {
-	gameFix_hudPrintAllClients(text);
+	gameFixAPI_hudPrintAllClients(text);
 }

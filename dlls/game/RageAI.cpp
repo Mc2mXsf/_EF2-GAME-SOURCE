@@ -281,10 +281,10 @@ void DefaultStrategos::_CheckForInTheWay()
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
 	//--------------------------------------------------------------
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 
-		if (!player || gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2((Entity*)player)) {
+		if (!player || gameFixAPI_isDead((Entity*)player) || gameFixAPI_isSpectator_stef2((Entity*)player)) {
 			continue;
 		}
 

@@ -3715,7 +3715,7 @@ void Player::InitView( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Archetype still showing as targeted when player enters spectator, related to Player::ProcessTargetedEntity - chrissstrahl
 	//--------------------------------------------------------------
-	gameFix_clearArchetypeInfoDisplay(this,_targetedEntity);
+	gameFixAPI_clearArchetypeInfoDisplay(this,_targetedEntity);
 
 
 	// view stuff
@@ -3948,7 +3948,7 @@ void Player::Killed( Event *ev )
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Archetype cleared, regardless if other players are targeting the given entity - chrissstrahl
 		//--------------------------------------------------------------
-		gameFix_clearArchetypeInfoDisplay(this,_targetedEntity);
+		gameFixAPI_clearArchetypeInfoDisplay(this,_targetedEntity);
 
 
 		_targetedEntity = NULL;
@@ -5855,8 +5855,8 @@ void Player::ProcessTargetedEntity( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Spectators being able to show/trigger Archetypes - chrissstrahl
 	//--------------------------------------------------------------
-	if (gameFix_inMultiplayer()) {
-		if (gameFix_isSpectator_stef2((Entity*)this)) {
+	if (gameFixAPI_inMultiplayer()) {
+		if (gameFixAPI_isSpectator_stef2((Entity*)this)) {
 			return;
 		}
 	}

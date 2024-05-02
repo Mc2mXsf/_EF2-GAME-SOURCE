@@ -668,8 +668,8 @@ void World::UpdateDynamicLights(void)
 	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
 	// Triggered from MultiplayerManager::addPlayer
 	//--------------------------------------------------------------
-	if (multiplayerManager.inMultiplayer() && multiplayerManager.gameFix_updateDynamicLights) {
-		multiplayerManager.gameFix_updateDynamicLights = false;
+	if (multiplayerManager.inMultiplayer() && multiplayerManager.gamefixEF2_updateDynamicLights) {
+		multiplayerManager.gamefixEF2_updateDynamicLights = false;
 		for (int i = 0; i < MAX_LIGHTING_GROUPS; i++) {
 			gi.SetDynamicLight(i, 0.0f);
 			gi.SetDynamicLightDefault(i, 0.0f);

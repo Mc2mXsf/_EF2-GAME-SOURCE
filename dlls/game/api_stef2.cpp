@@ -15,15 +15,15 @@
 //--------------------------------------------------------------
 // GAMEFIX - Returns if we are in Singleplayer - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_inSingleplayer()
+bool gameFixAPI_inSingleplayer()
 {
-	return !gameFix_inMultiplayer();
+	return !gameFixAPI_inMultiplayer();
 }
 
 //--------------------------------------------------------------
 // GAMEFIX - Returns if we are in Multiplayer - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_inMultiplayer()
+bool gameFixAPI_inMultiplayer()
 {
 	if (g_gametype->integer == GT_SINGLE_PLAYER) {
 		return false;
@@ -38,9 +38,9 @@ bool gameFix_inMultiplayer()
 //--------------------------------------------------------------
 // GAMEFIX - Returns if given entity(Player) is a spectator - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isSpectator_stef2(Entity* ent)
+bool gameFixAPI_isSpectator_stef2(Entity* ent)
 {
-	if (!ent || !gameFix_inMultiplayer()) {
+	if (!ent || !gameFixAPI_inMultiplayer()) {
 		return false;
 	}
 
@@ -54,7 +54,7 @@ bool gameFix_isSpectator_stef2(Entity* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Returns if given entity(Sentient) is dead - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isDead(Entity* ent)
+bool gameFixAPI_isDead(Entity* ent)
 {
 	if (!ent || ent->isSubclassOf(Sentient) && ent->deadflag) {
 		return true;
@@ -65,7 +65,7 @@ bool gameFix_isDead(Entity* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Returns if server is dedicated - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isDedicatedServer()
+bool gameFixAPI_isDedicatedServer()
 {
 	return dedicated->integer;
 }
@@ -73,7 +73,7 @@ bool gameFix_isDedicatedServer()
 //--------------------------------------------------------------
 // GAMEFIX - Returns if this is a Listen Server - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isListenServer()
+bool gameFixAPI_isListenServer()
 {
 	return !dedicated->integer;
 }
@@ -82,7 +82,7 @@ bool gameFix_isListenServer()
 //--------------------------------------------------------------
 // GAMEFIX - Returns if server is running on Windows - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isWindowsServer()
+bool gameFixAPI_isWindowsServer()
 {
 #ifdef WIN32
 	return true;
@@ -95,7 +95,7 @@ bool gameFix_isWindowsServer()
 //--------------------------------------------------------------
 // GAMEFIX - Returns if server is running on Linux - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isLinuxServer()
+bool gameFixAPI_isLinuxServer()
 {
 #ifdef __linux__
 	return true;
@@ -107,7 +107,7 @@ bool gameFix_isLinuxServer()
 //--------------------------------------------------------------
 // GAMEFIX - Returns if player is host - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isHost(Player *player)
+bool gameFixAPI_isHost(Player *player)
 {
 #ifdef __linux__
 	return false;
@@ -128,7 +128,7 @@ bool gameFix_isHost(Player *player)
 //--------------------------------------------------------------
 // GAMEFIX - Prints Text to player hud/chat - chrissstrahl
 //--------------------------------------------------------------
-void gameFix_hudPrint(Player* player, str sText)
+void gameFixAPI_hudPrint(Player* player, str sText)
 {
 	if (player && sText && sText.length()) {
 		player->hudPrint(sText.c_str());
@@ -139,7 +139,7 @@ void gameFix_hudPrint(Player* player, str sText)
 //--------------------------------------------------------------
 // GAMEFIX - Returns current maxclients - chrissstrahl
 //--------------------------------------------------------------
-int gameFix_maxClients()
+int gameFixAPI_maxClients()
 {
 	return game.maxclients;
 }
@@ -147,14 +147,14 @@ int gameFix_maxClients()
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to check if player is a BOT - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_isBot(Player* player) {
+bool gameFixAPI_isBot(Player* player) {
 	gentity_t* ent = &g_entities[player->entnum];
-	return gameFix_isBot(ent);
+	return gameFixAPI_isBot(ent);
 }
 
-bool gameFix_isBot(gentity_t* ent)
+bool gameFixAPI_isBot(gentity_t* ent)
 {
-	if (!ent || !ent->client || gameFix_inSingleplayer()) {
+	if (!ent || !ent->client || gameFixAPI_inSingleplayer()) {
 		return false;
 	}
 
@@ -168,7 +168,7 @@ bool gameFix_isBot(gentity_t* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Return Entity the Player is currently targeting - chrissstrahl
 //--------------------------------------------------------------
-Entity* gameFix_getTargetedEntity(Player* player)
+Entity* gameFixAPI_getTargetedEntity(Player* player)
 {
 	if (!player) {
 		return nullptr;
@@ -181,7 +181,7 @@ Entity* gameFix_getTargetedEntity(Player* player)
 //--------------------------------------------------------------
 // GAMEFIX - Returns CallvolumeTrigger Name this player is currently inside of - chrissstrahl
 //--------------------------------------------------------------
-str gameFix_getCurrentCallVolume(Player* player)
+str gameFixAPI_getCurrentCallVolume(Player* player)
 {
 	if (!player) {
 		return "";
@@ -193,7 +193,7 @@ str gameFix_getCurrentCallVolume(Player* player)
 //--------------------------------------------------------------
 // GAMEFIX - Clears Archetype if no other player is targeting the given entity - chrissstrahl
 //--------------------------------------------------------------
-void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
+void gameFixAPI_clearArchetypeInfoDisplay(Player* player, Entity* entity)
 {
 	if (player && entity) {
 		Entity* curTarget = player->GetTargetedEntity();
@@ -207,9 +207,9 @@ void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity)
 //--------------------------------------------------------------
 // GAMEFIX - Returns closest player to given entity that also is inside a callvolume-trigger - chrissstrahl
 //--------------------------------------------------------------
-Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
+Player* gameFixAPI_getClosestPlayerInCallvolume(Entity* entity)
 {
-	if (gameFix_inSingleplayer()) {
+	if (gameFixAPI_inSingleplayer()) {
 		return gamefix_getPlayer(0);
 	}
 
@@ -221,18 +221,18 @@ Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
 	float distanceClosest = 999999;
 
 	Player* player = nullptr;
-	for (int i = 0; i < gameFix_maxClients(); i++) {
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 
 		if (!player) {
 			continue;
 		}
 
-		if (gameFix_isDead((Entity*)player) || gameFix_isSpectator_stef2((Entity*)player)) {
+		if (gameFixAPI_isDead((Entity*)player) || gameFixAPI_isSpectator_stef2((Entity*)player)) {
 			continue;
 		}
 
-		if (!strlen(gameFix_getCurrentCallVolume(player))) {
+		if (!strlen(gameFixAPI_getCurrentCallVolume(player))) {
 			continue;
 		}
 		
@@ -249,14 +249,14 @@ Player* gameFix_getClosestPlayerInCallvolume(Entity* entity)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function that allows Language selection English - chrissstrahl
 //--------------------------------------------------------------
-qboolean gameFix_languageEng(const gentity_t* ent)
+qboolean gameFixAPI_languageEng(const gentity_t* ent)
 {
 	Player* player = (Player*)ent->entity;
 	gamefix_client_persistant_t[ent->client->ps.clientNum].language = "Eng";
 	
 	//after x sec on server assume client typed the command
 	if ((player->client->pers.enterTime + 5) < level.time) {	
-		gameFix_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_ENG);
+		gameFixAPI_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_ENG);
 	}
 	return true;
 }
@@ -264,14 +264,14 @@ qboolean gameFix_languageEng(const gentity_t* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function that allows Language selection German - chrissstrahl
 //--------------------------------------------------------------
-qboolean gameFix_languageDeu(const gentity_t* ent)
+qboolean gameFixAPI_languageDeu(const gentity_t* ent)
 {
 	Player* player = (Player*)ent->entity;
 	gamefix_client_persistant_t[ent->client->ps.clientNum].language = "Deu";
 	
 	//after x sec on server assume client typed the command
 	if ((player->client->pers.enterTime + 5) < level.time) {
-		gameFix_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_DEU);
+		gameFixAPI_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_DEU);
 	}
 	return true;
 }
@@ -279,7 +279,7 @@ qboolean gameFix_languageDeu(const gentity_t* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function retrieving Server Language - chrissstrahl
 //--------------------------------------------------------------
-str gameFix_getServerLanguage()
+str gameFixAPI_getServerLanguage()
 {
 	if (local_language->string) {
 		return local_language->string;
@@ -290,10 +290,10 @@ str gameFix_getServerLanguage()
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function retrieving Player Language - chrissstrahl
 //--------------------------------------------------------------
-str gameFix_getLanguage(Player* player)
+str gameFixAPI_getLanguage(Player* player)
 {
 	if (player) {
-		if (gameFix_inSingleplayer()) {
+		if (gameFixAPI_inSingleplayer()) {
 			if (local_language->string) {
 				return local_language->string;
 			}
@@ -308,7 +308,7 @@ str gameFix_getLanguage(Player* player)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function retrieving actor follow target entity - chrissstrahl
 //--------------------------------------------------------------
-Entity* gameFix_getActorFollowTargetEntity(Actor *actor) {
+Entity* gameFixAPI_getActorFollowTargetEntity(Actor *actor) {
 	if (!actor) { return nullptr; }
 	return (Entity*)actor->followTarget.specifiedFollowTarget;
 }
@@ -316,7 +316,7 @@ Entity* gameFix_getActorFollowTargetEntity(Actor *actor) {
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function checking if actor can actually see the given entity - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_actorCanSee(Actor* actor, Entity* entity,bool useFOV,bool useVisionDistance)
+bool gameFixAPI_actorCanSee(Actor* actor, Entity* entity,bool useFOV,bool useVisionDistance)
 {
 	if (actor && entity){
 		actor->sensoryPerception->CanSeeEntity((Entity*)actor, entity, useFOV, useVisionDistance);
@@ -327,7 +327,7 @@ bool gameFix_actorCanSee(Actor* actor, Entity* entity,bool useFOV,bool useVision
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function returning current enemy of given actor - chrissstrahl
 //--------------------------------------------------------------
-Entity* gameFix_actorGetCurrentEnemy(Actor* actor)
+Entity* gameFixAPI_actorGetCurrentEnemy(Actor* actor)
 {
 	if (actor){
 		return actor->enemyManager->GetCurrentEnemy();
@@ -338,7 +338,7 @@ Entity* gameFix_actorGetCurrentEnemy(Actor* actor)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function cecking if actor hates given sentient - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_actorHates(Actor* actor, Sentient *sentient)
+bool gameFixAPI_actorHates(Actor* actor, Sentient *sentient)
 {
 	if (actor && sentient && gamefix_EntityValid((Entity*)sentient)) {
 		return (bool)actor->enemyManager->Hates((Entity*)sentient);
@@ -349,7 +349,7 @@ bool gameFix_actorHates(Actor* actor, Sentient *sentient)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function checking if given player uses given weapon by name - chrissstrahl
 //--------------------------------------------------------------
-bool gameFix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer)
+bool gameFixAPI_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer)
 {
 	bool checkForNone = false;
 	if (!strlen(weaponNameOfPlayer.c_str()) || !Q_stricmp(weaponNameOfPlayer.c_str(), "none")) {
@@ -387,9 +387,9 @@ bool gameFix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOf
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function returning number of player on the server - chrissstrahl
 //--------------------------------------------------------------
-int gameFix_getPlayers(bool state)
+int gameFixAPI_getPlayers(bool state)
 {
-	if (gameFix_inMultiplayer()) {
+	if (gameFixAPI_inMultiplayer()) {
 		return multiplayerManager.getTotalPlayers(state);
 	}
 
@@ -401,9 +401,9 @@ int gameFix_getPlayers(bool state)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to print text to all players - chrissstrahl
 //--------------------------------------------------------------
-void gameFix_hudPrintAllClients(const str text)
+void gameFixAPI_hudPrintAllClients(const str text)
 {
-	if (gameFix_inMultiplayer()) {
+	if (gameFixAPI_inMultiplayer()) {
 		multiplayerManager.HUDPrintAllClients(text);
 	}
 }
