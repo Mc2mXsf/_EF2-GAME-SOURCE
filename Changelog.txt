@@ -22,6 +22,7 @@ Warning C6385: Invalid data is being read from objlist-> template< class Type > 
 WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
 
 Fixed: Using/Checking for, client 0 only
+HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , int mask , unsigned int clipMask , float maxDist , float minDist , Entity *ent , float minDistFromPlayer )
 HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float maxDist , float minDistanceFromPlayer, bool unreserveCurrentNode )
 qboolean Actor::checkSpecifiedFollowTargetOutOfRange()
 qboolean Actor::checkWithinFollowRangeMin()
@@ -52,8 +53,16 @@ void SnipeEnemy::updateEnemy()
 Fixed: Use vsnprintf to prevent possbile buffer overflow
 const char *va( const char *format, ... )
 
+Fixed: Added NULL check to prevent crash
+void G_CacheStateMachineAnims( Entity *ent, const char *stateMachineName )
+
+Fixed: Added check to prevent crash if a error is thrown before the level is loaded fully
+void L_ClearEventList( void )
+
 Fixed: Gamecode assuming Followtarget is always a valid entity
 BehaviorReturnCode_t GroupFollow::CloseWithTarget( Actor &self )
+BehaviorReturnCode_t GroupFollow::FindFollowTarget( Actor &self )
+float GroupFollow::ComputeAnimationRate( Actor &self, const str &animationName, const float scale )
 
 Fixed: Kill of Teammate Actor always being tributed to a player, regardless who killed it
 void Actor::Killed( Event *ev )
