@@ -211,7 +211,7 @@ extern "C" void G_InitGame( int startTime, int randomSeed )
 #ifdef __linux__	
 	sLibrarayName = "ef2gamei386.so";
 #endif
-	gi.Printf(va("==== GAMEFIX %s ====\n==== Compiled %s @ %s====\n",sLibrarayName.c_str(), __DATE__, __TIME__));
+	gi.Printf(va(_GFixEF2_INFO_FUNC_InitGame,sLibrarayName.c_str(), __DATE__, __TIME__));
 
 	
 	// Install our own error handler, since we can't
@@ -1840,10 +1840,8 @@ extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
 			//--------------------------------------------------------------
 			// GAMEFIX - Added: Turn ON LEVEL AI if server no longer empty, is turned off again if server is empty - chrissstrahl
 			//--------------------------------------------------------------
-			if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
-				level.ai_on = true;
-				gi.Printf("level_ai - ON - Server no longer empty!\n");
-			}
+			gamefix_aiTurnOn();
+
 
 			// Record the time entered
 			ent->client->pers.enterTime = level.time;
@@ -1852,9 +1850,8 @@ extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
 			//--------------------------------------------------------------
 			// GAMEFIX - Added: Detection of Player local_language cvar, for Eng/Deu Language detection - chrissstrahl
 			//--------------------------------------------------------------
-			if (multiplayerManager.inMultiplayer()) {
-				gi.SendServerCommand(ent->client->ps.clientNum,"stufftext \"vstr local_language\n\"");
-			}
+			gamefix_vstrLocalLanguage(ent);
+
 
 			// send effect if in a multiplayer game
 			if ( game.maxclients > 1 )
@@ -2304,10 +2301,7 @@ extern "C" void G_ClientDisconnect( gentity_t *ent )
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Turn OFF LEVEL AI if server empty, prevent issues with ai - chrissstrahl
 		//--------------------------------------------------------------
-		if (multiplayerManager.inMultiplayer() && multiplayerManager.getTotalPlayers(true) <= 0) {
-			level.ai_on = false;
-			gi.Printf("level_ai - OFF - Server is now empty!\n");
-		}
+		gamefix_aiTurnOff();
 	}
 	
 	catch( const char *error )

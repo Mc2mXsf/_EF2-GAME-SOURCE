@@ -25,6 +25,12 @@
 
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
 //--------------------------------------------------------------
 #include "mp_manager.hpp"
@@ -1833,7 +1839,7 @@ void CThread::TriggerEntityEvent( Event *ev )
 	// GAMEFIX - Added: Print out on triggerEntity command failure for feedback - chrissstrahl
 	//--------------------------------------------------------------
 	if (!ent) {
-		gi.Printf("triggerEntity($...) - given entity does not exist\n");
+		gi.Printf(_GFixEF2_WARN_EVENT_CTHREAD_triggerEntity_FAILED);
 		return;
 	}
 	
@@ -2010,7 +2016,7 @@ void CThread::FakePlayer( Event *ev )
 	// GAMEFIX - Fixed: crash when using fakeplayer script command in multiplayer  - chrissstrahl
 	//--------------------------------------------------------------
 	if (g_gametype->value != GT_SINGLE_PLAYER) {
-		gi.Printf("WARNING: fakeplayer script command can only be used in Singleplayer\n");
+		gi.Printf(_GFixEF2_WARN_EVENT_CTHREAD_fakePlayer_ONLYSP);
 		return;
 	}
 
@@ -2029,7 +2035,7 @@ void CThread::RemoveFakePlayer( Event *ev )
 	// GAMEFIX - Fixed: crash when using fakeplayer script command in multiplayer - chrissstrahl
 	//--------------------------------------------------------------
 	if (g_gametype->value != GT_SINGLE_PLAYER) {
-		gi.Printf("WARNING: fakeplayer script command can only be used in Singleplayer\n");
+		gi.Printf(_GFixEF2_WARN_EVENT_CTHREAD_fakePlayer_ONLYSP);
 		return;
 	}
 
@@ -3291,7 +3297,7 @@ void CThread::SendClientCommand( Event *ev )
 	// GAMEFIX - crash if given entity does not exist - chrissstrahl
 	//--------------------------------------------------------------
 	if (!entity) {
-		gi.Printf("SendClientCommand: Given Entity does not exist!\n");
+		gi.Printf(_GFixEF2_WARN_EVENT_CTHREAD_sendClientCommand_FAILED);
 		return;
 	}
 	
@@ -3330,7 +3336,7 @@ void CThread::GetNumFreeReliableServerCommands( Event* ev )
 	// GAMEFIX - crash if given entity does not exist - chrissstrahl
 	//--------------------------------------------------------------
 	if (!entity) {
-		gi.Printf("GetNumFreeReliableServerCommands: Given Entity does not exist!\n");
+		gi.Printf(_GFixEF2_WARN_EVENT_CTHREAD_getNumFreeRelSVCmds_FAILED);
 		ev->ReturnFloat( 0.0 );
 		return;
 	}

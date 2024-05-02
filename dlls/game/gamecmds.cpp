@@ -47,8 +47,8 @@ consolecmd_t G_ConsoleCmds[] =
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Commands for german/english Language detection - G_ConsoleCmds - chrissstrahl
 	//--------------------------------------------------------------
-	{ "Eng",				gameFix_languageEng,	true },
-	{ "Deu",				gameFix_languageDeu,	true },
+	{ "Eng",				gamefix_languageEng,	true },
+	{ "Deu",				gamefix_languageDeu,	true },
 
 
 	{ "vtaunt",				G_VTaunt,				true },

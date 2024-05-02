@@ -594,7 +594,7 @@ qboolean SensoryPerception::InFOV( const Vector &pos, float check_fov, float che
 	// GAMEFIX - Fixed: Return value being bool instead of qboolean. - chrissstrahl
 	//--------------------------------------------------------------
 	if (!act) {
-		gi.Error(ERR_DROP, "SensoryPerception::InFOV -- actor is NULL");
+		gi.Error(ERR_DROP, _GFixEF2_ERR_FUNC_SensoryInFov_act_NULL);
 		return qfalse;
 	}
 

@@ -25,6 +25,13 @@
 #include "mp_manager.hpp"
 #include <qcommon/gameplaymanager.h>
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 char means_of_death_strings[ MOD_TOTAL_NUMBER ][ 32 ] =
 {
 	"none",
@@ -2402,8 +2409,8 @@ void G_FinishMissionFailed( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Print info of mission failure to player huds - chrissstrahl
 	//--------------------------------------------------------------
-	else if(multiplayerManager.inMultiplayer()){
-		multiplayerManager.HUDPrintAllClients("^1=/\\=^3 Mission Failed ^1=/\\=\n");
+	else{
+		gamefix_printAllClients(_GFixEF2_MSG_FUNC_FinishMissionFailed);
 	}
 
 	// Fade everything out
