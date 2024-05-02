@@ -9,6 +9,9 @@
 
 #pragma once
 #include "_pch_cpp.h"
+#include "api_stef2_strings.hpp"
+#include "gamefix_strings.hpp"
+#include "gamefix.hpp"
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
@@ -49,3 +52,5 @@ bool gameFix_actorCanSee(Actor* actor, Entity* entity, bool useFOV, bool useVisi
 Entity* gameFix_actorGetCurrentEnemy(Actor* actor);
 bool gameFix_actorHates(Actor* actor,Sentient *sentient);
 bool gameFix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer);
+int gameFix_getPlayers(bool state);
+void gameFix_hudPrintAllClients(const str text);

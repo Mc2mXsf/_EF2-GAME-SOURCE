@@ -8,7 +8,7 @@
 
 
 #include "api_stef2.hpp"
-#include "gamefix.hpp"
+
 #include "mp_manager.hpp"
 
 
@@ -256,7 +256,7 @@ qboolean gameFix_languageEng(const gentity_t* ent)
 	
 	//after x sec on server assume client typed the command
 	if ((player->client->pers.enterTime + 5) < level.time) {	
-		gameFix_hudPrint(player,"Your Language was set to English\n");
+		gameFix_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_ENG);
 	}
 	return true;
 }
@@ -271,7 +271,7 @@ qboolean gameFix_languageDeu(const gentity_t* ent)
 	
 	//after x sec on server assume client typed the command
 	if ((player->client->pers.enterTime + 5) < level.time) {
-		gameFix_hudPrint(player,"Ihre Sprache wurde auf deutsch festgelegt\n");
+		gameFix_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_DEU);
 	}
 	return true;
 }
@@ -288,7 +288,7 @@ str gameFix_getServerLanguage()
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function retrieving Server Language - chrissstrahl
+// GAMEFIX - Added: Function retrieving Player Language - chrissstrahl
 //--------------------------------------------------------------
 str gameFix_getLanguage(Player* player)
 {
@@ -382,4 +382,28 @@ bool gameFix_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOf
 		}
 	}
 	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning number of player on the server - chrissstrahl
+//--------------------------------------------------------------
+int gameFix_getPlayers(bool state)
+{
+	if (gameFix_inMultiplayer()) {
+		return multiplayerManager.getTotalPlayers(state);
+	}
+
+	Player* player = gamefix_getPlayer(0);
+	if (player) { return 1; }
+	return 0;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to print text to all players - chrissstrahl
+//--------------------------------------------------------------
+void gameFix_hudPrintAllClients(const str text)
+{
+	if (gameFix_inMultiplayer()) {
+		multiplayerManager.HUDPrintAllClients(text);
+	}
 }

@@ -40,6 +40,14 @@ Player* gamefix_getPlayer(int index)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function returning number of player on the server - chrissstrahl
+//--------------------------------------------------------------
+int gamefix_getPlayers(bool state)
+{
+	return gameFix_getPlayers(state);
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function to get player that is inside of the given entity boundingbox - chrissstrahl
 //--------------------------------------------------------------
 Player* gamefix_getPlayerInsideOfEntity(Entity* eTheBox)
@@ -503,4 +511,91 @@ Player* gamefix_getPlayerByTargetname(const str& targetname)
 		}
 	}
 	return nullptr;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function retrieving Server Language - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_getServerLanguage()
+{
+	return gameFix_getServerLanguage();
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function retrieving Player Language - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_getLanguage(Player* player) {
+	return gameFix_getLanguage(player);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function that allows Language selection English - chrissstrahl
+//--------------------------------------------------------------
+qboolean gamefix_languageEng(const gentity_t* ent)
+{
+	return gameFix_languageEng(ent);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function that allows Language selection German - chrissstrahl
+//--------------------------------------------------------------
+qboolean gamefix_languageDeu(const gentity_t* ent)
+{
+	return gameFix_languageDeu(ent);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning player by giventargetname - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_getLocalizedString(Player* player,str sEnglish,str sGerman)
+{
+	if (player) {
+		if (gameFix_getLanguage(player) == "Deu") {
+			return sGerman;
+		}
+	}
+	return sEnglish;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function making the client send the contents of his local_language cvar as console-command - chrissstrahl
+// Expected return values: Eng/Deu need to be catched in gamecmds.cpp -> consolecmd_t G_ConsoleCmds[] add:
+// {"Eng",gamefix_languageEng,true},
+// {"Deu",gamefix_languageDeu,true},
+//--------------------------------------------------------------
+void gamefix_vstrLocalLanguage(gentity_t* ent)
+{
+	if (ent && gameFix_inMultiplayer()) {
+		gi.SendServerCommand(ent->client->ps.clientNum, "stufftext \"vstr local_language\n\"");
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to turn OFF LEVEL AI if server empty, prevent issues with ai - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_aiTurnOff()
+{
+	if (gameFix_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
+		level.ai_on = false;
+		gi.Printf(_GFixEF2_INFO_FUNC_ClientDisconnect);
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to turn ON LEVEL AI if server no longer empty - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_aiTurnOn()
+{
+	if (gameFix_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
+		level.ai_on = true;
+		gi.Printf(_GFixEF2_INFO_FUNC_ClientBegin);
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to print text to all players - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_printAllClients(const str text)
+{
+	gameFix_hudPrintAllClients(text);
 }
