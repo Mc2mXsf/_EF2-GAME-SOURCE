@@ -3767,7 +3767,13 @@ BehaviorReturnCode_t GroupFollow::FindFollowTarget( Actor &self )
 {
 
 	// FindFollowTarget is expensive, we're putting a timer on it to keep it throttled
-	if ( level.time <= _nextFindFollowTime ) return BEHAVIOR_EVALUATING;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Added NULL check for followtarget - chrissstrahl
+	//--------------------------------------------------------------
+	if ( level.time <= _nextFindFollowTime || !self.followTarget.specifiedFollowTarget ) return BEHAVIOR_EVALUATING;
+
 
 	_nextFindFollowTime = level.time + (G_Random() + 0.25 );
 
