@@ -1993,7 +1993,7 @@ void CThread::CuePlayer( Event *ev )
 	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
 	//--------------------------------------------------------------
 	if (multiplayerManager.inMultiplayer()) {
-		multiplayerManager.gameFix_currentCamera = nullptr;
+		multiplayerManager.gamefixEF2_currentCamera = nullptr;
 	}
 	
 

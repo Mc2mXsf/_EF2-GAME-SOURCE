@@ -99,12 +99,12 @@ MultiplayerManager::MultiplayerManager()
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
 	//--------------------------------------------------------------
-	gameFix_updateDynamicLights = false;
+	gamefixEF2_updateDynamicLights = false;
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
 	//--------------------------------------------------------------
-	gameFix_currentCamera = nullptr;
+	gamefixEF2_currentCamera = nullptr;
 }
 
 MultiplayerManager::~MultiplayerManager()
@@ -162,12 +162,12 @@ void MultiplayerManager::cleanup( qboolean restart )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
 	//--------------------------------------------------------------
-	gameFix_updateDynamicLights = false;
+	gamefixEF2_updateDynamicLights = false;
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
 	//--------------------------------------------------------------
-	gameFix_currentCamera = nullptr;
+	gamefixEF2_currentCamera = nullptr;
 }
 
 void MultiplayerManager::init( void )
@@ -777,7 +777,7 @@ void MultiplayerManager::addPlayer( Player *player )
 	// GAMEFIX - Fixed: Dynamic lights appearing off if they have switched on before the player was in game - chrissstrahl
 	// Signal World::UpdateDynamicLights to update the dynamic lights
 	//--------------------------------------------------------------
-	multiplayerManager.gameFix_updateDynamicLights = true;
+	multiplayerManager.gamefixEF2_updateDynamicLights = true;
 }
 
 void MultiplayerManager::removePlayer( Player *player )
@@ -2794,8 +2794,8 @@ void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spe
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
 		//--------------------------------------------------------------
-		if (level.cinematic == 1 && multiplayerManager.gameFix_currentCamera) {
-			player->SetCamera(multiplayerManager.gameFix_currentCamera, 0);
+		if (level.cinematic == 1 && multiplayerManager.gamefixEF2_currentCamera) {
+			player->SetCamera(multiplayerManager.gamefixEF2_currentCamera, 0);
 		}
 	}
 }
@@ -2971,8 +2971,8 @@ void MultiplayerManager::playerEnterArena( int entnum, float health )
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
 	//--------------------------------------------------------------
-	if (level.cinematic == 1 && multiplayerManager.gameFix_currentCamera) {
-		player->SetCamera(multiplayerManager.gameFix_currentCamera, 0);
+	if (level.cinematic == 1 && multiplayerManager.gamefixEF2_currentCamera) {
+		player->SetCamera(multiplayerManager.gamefixEF2_currentCamera, 0);
 	}
 }
 

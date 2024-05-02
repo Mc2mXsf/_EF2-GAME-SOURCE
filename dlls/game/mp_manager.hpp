@@ -99,8 +99,8 @@ class MultiplayerManager : public Class
 // GAMEFIX - Functions and Variables - chrissstrahl
 //--------------------------------------------------------------
    public:
-	   bool						gameFix_updateDynamicLights = false;
-	   Camera*					gameFix_currentCamera = nullptr;
+	   bool						gamefixEF2_updateDynamicLights = false;
+	   Camera*					gamefixEF2_currentCamera = nullptr;
 	   float					getNextTauntTime(Player* player);
 	   void						setNextTauntTime(Player* player);
 
