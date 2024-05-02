@@ -1,25 +1,3 @@
-Added: File to provide a bridge between the general game code and elite force 2 specific code
-bool gameFix_inSingleplayer();
-bool gameFix_inMultiplayer();
-bool gameFix_isSpectator_stef2(Entity* ent);
-bool gameFix_isDead(Entity* ent);
-bool gameFix_isDedicatedServer();
-bool gameFix_isListenServer();
-bool gameFix_isWindowsServer();
-bool gameFix_isLinuxServer();
-void gameFix_hudPrint(Player* player, str sText);
-int gameFix_maxClients();
-bool gameFix_isBot(gentity_t* ent);
-bool gameFix_isBot(Player* player);
-void gameFix_clearArchetypeInfoDisplay(Player* player, Entity* entity);
-Entity* gameFix_getTargetedEntity(Player* player);
-Player* gameFix_getClosestPlayerInCallvolume(Entity* entity);
-qboolean gameFix_languageEng(const gentity_t* ent);
-qboolean gameFix_languageDeu(const gentity_t* ent);
-str gameFix_getServerLanguage();
-str gameFix_getLanguage(Player* player);
-Entity* gameFix_getActorFollowTargetEntity(Actor* actor);
-
 Disabled warning supressions and fixed issues with the code if there where any:
 4136		conversion between different floating-point types
 4018		signed/unsigned mismatch
@@ -70,6 +48,9 @@ void RotateToEntity::Begin( Actor &self )
 qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
+
+Fixed: Use vsnprintf to prevent possbile buffer overflow
+const char *va( const char *format, ... )
 
 Fixed: Gamecode assuming Followtarget is always a valid entity
 BehaviorReturnCode_t GroupFollow::CloseWithTarget( Actor &self )
