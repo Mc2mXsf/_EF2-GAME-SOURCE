@@ -1780,6 +1780,12 @@ void CacheResource( const char * stuff, Entity * ent )
 
 void G_CacheStateMachineAnims( Entity *ent, const char *stateMachineName )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Added NULL check to prevent crash - chrissstrahl
+	//--------------------------------------------------------------
+	if (!ent) { return; }
+
+
 	Container<const char *> animNames;
 	const char *animName;
 	StateMap *stateMap;
