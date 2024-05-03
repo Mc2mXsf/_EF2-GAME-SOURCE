@@ -250,10 +250,7 @@ CLASS_DECLARATION( ScriptSlave, Door, "NormalDoor" )
 
 Door::Door()
 {
-	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
-	//--------------------------------------------------------------
-	float t = 0.0f;
+	float t;
 
 
 	const char *text;
@@ -348,10 +345,7 @@ Door::Door()
 
 void Door::SetDir( Event *ev )
 {
-	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
-	//--------------------------------------------------------------
-	float t = 0.0f;
+	float t;
 	
 
 	//--------------------------------------------------------------
