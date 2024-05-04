@@ -407,3 +407,110 @@ void gameFixAPI_hudPrintAllClients(const str text)
 		multiplayerManager.HUDPrintAllClients(text);
 	}
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function grabbing given entity, like in scripts - chrissstrahl
+//--------------------------------------------------------------
+Entity* gameFixAPI_getEntity(str &name)
+{
+	TargetList* tlist;
+	if ((name.length() > 0) && name[0] == '*')
+	{
+		return G_GetEntity(atoi(&name[1]));
+	}
+	tlist = world->GetTargetList(name, false);
+
+	if (tlist){
+		return tlist->GetNextEntity(NULL);
+	}
+
+	return nullptr;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to fix spawnlocations on dm_ctf_voy1 - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_spawnlocations_dm_ctf_voy1()
+{
+	if (!gameFixAPI_inMultiplayer() || Q_stricmpn(level.mapname,"dm_ctf_voy1",11) != 0) {
+		return;
+	}
+
+	//The Spawnlocations in the Level are broken, they are placed and targetnamed, but they have no origin
+	//This makes players spawn outside at 0 0 0 during HM/TDM (mp_gametype 0/1)
+	//This fixes this issue by moving the spawnloacations
+	Entity* ent;
+	Vector spawnlocations[64];
+	spawnlocations[0] = Vector(4672.0f, -4352.0f, -384.0f);
+	spawnlocations[1] = Vector(4224.0f, -3584.0f, 64.0f);
+	spawnlocations[2] = Vector(4416.0f, -4352.0f, -384.0f);
+	spawnlocations[3] = Vector(4288.0f, -4352.0f, -384.0f);
+	spawnlocations[4] = Vector(4800.0f, -4352.0f, -384.0f);
+	spawnlocations[5] = Vector(4224.0f, -3584.0f, -128.0f);
+	spawnlocations[6] = Vector(4544.0f, -4352.0f, -384.0f);
+	spawnlocations[7] = Vector(5184.0f, -2752.0f, -384.0f);
+	spawnlocations[8] = Vector(5056.0f, -2752.0f, -384.0f);
+	spawnlocations[9] = Vector(2912.0f, -3840.0f, -144.0f);
+	spawnlocations[10] = Vector(2976.0f, -3968.0f, -144.0f);
+	spawnlocations[11] = Vector(5280.0f, -3648.0f, -144.0f);
+	spawnlocations[12] = Vector(5216.0f, -3776.0f, -144.0f);
+	spawnlocations[13] = Vector(4672.0f, -4096.0f, -384.0f);
+	spawnlocations[14] = Vector(4800.0f, -4096.0f, -384.0f);
+	spawnlocations[15] = Vector(4800.0f, -4096.0f, -384.0f);
+	spawnlocations[16] = Vector(3520.0f, -4352.0f, -384.0f);
+	spawnlocations[17] = Vector(3776.0f, -4352.0f, -384.0f);
+	spawnlocations[18] = Vector(3904.0f, -4352.0f, -384.0f);
+	spawnlocations[19] = Vector(3392.0f, -4352.0f, -384.0f);
+	spawnlocations[20] = Vector(3648.0f, -4352.0f, -384.0f);
+	spawnlocations[21] = Vector(3520.0f, -4096.0f, -384.0f);
+	spawnlocations[22] = Vector(3392.0f, -4096.0f, -384.0f);
+	spawnlocations[23] = Vector(3968.0f, -3584.0f, 64.0f);
+	spawnlocations[24] = Vector(3968.0f, -3584.0f, -128.0f);
+	spawnlocations[25] = Vector(5056.0f, -2496.0f, -384.0f);
+	spawnlocations[26] = Vector(4928.0f, -2496.0f, -384.0f);
+	spawnlocations[27] = Vector(4928.0f, -2752.0f, -384.0f);
+	spawnlocations[28] = Vector(3008.0f, -2752.0f, -384.0f);
+	spawnlocations[29] = Vector(3136.0f, -2752.0f, -384.0f);
+	spawnlocations[30] = Vector(3136.0f, -2496.0f, -384.0f);
+	spawnlocations[31] = Vector(3264.0f, -2496.0f, -384.0f);
+	spawnlocations[32] = Vector(3264.0f, -2752.0f, -384.0f);
+	spawnlocations[33] = Vector(3520.0f, 3904.0f, -384.0f);
+	spawnlocations[34] = Vector(3968.0f, 3136.0f, 64.0f);
+	spawnlocations[35] = Vector(3776.0f, 3904.0f, -384.0f);
+	spawnlocations[36] = Vector(3904.0f, 3904.0f, -384.0f);
+	spawnlocations[37] = Vector(3392.0f, 3904.0f, -384.0f);
+	spawnlocations[38] = Vector(3968.0f, 3136.0f, -128.0f);
+	spawnlocations[39] = Vector(3648.0f, 3904.0f, -384.0f);
+	spawnlocations[40] = Vector(3008.0f, 2304.0f, -384.0f);
+	spawnlocations[41] = Vector(3136.0f, 2304.0f, -384.0f);
+	spawnlocations[42] = Vector(5280.0f, 3392.0f, -144.0f);
+	spawnlocations[43] = Vector(5216.0f, 3520.0f, -144.0f);
+	spawnlocations[44] = Vector(2912.0f, 3200.0f, -144.0f);
+	spawnlocations[45] = Vector(2976.0f, 3328.0f, -144.0f);
+	spawnlocations[46] = Vector(3520.0f, 3648.0f, -384.0f);
+	spawnlocations[47] = Vector(3392.0f, 3648.0f, -384.0f);
+	spawnlocations[48] = Vector(4672.0f, 3904.0f, -384.0f);
+	spawnlocations[49] = Vector(4416.0f, 3904.0f, -384.0f);
+	spawnlocations[50] = Vector(4288.0f, 3904.0f, -384.0f);
+	spawnlocations[51] = Vector(4800.0f, 3904.0f, -384.0f);
+	spawnlocations[52] = Vector(4544.0f, 3904.0f, -384.0f);
+	spawnlocations[53] = Vector(4672.0f, 3648.0f, -384.0f);
+	spawnlocations[54] = Vector(4800.0f, 3648.0f, -384.0f);
+	spawnlocations[55] = Vector(4224.0f, 3136.0f, 64.0f);
+	spawnlocations[56] = Vector(4224.0f, 3136.0f, -128.0f);
+	spawnlocations[57] = Vector(3136.0f, 2048.0f, -384.0f);
+	spawnlocations[58] = Vector(3264.0f, 2048.0f, -384.0f);
+	spawnlocations[59] = Vector(3264.0f, 2304.0f, -384.0f);
+	spawnlocations[60] = Vector(5184.0f, 2304.0f, -384.0f);
+	spawnlocations[61] = Vector(5056.0f, 2304.0f, -384.0f);
+	spawnlocations[62] = Vector(5056.0f, 2048.0f, -384.0f);
+	spawnlocations[63] = Vector(4928.0f, 2048.0f, -384.0f);
+	
+	for (int i = 0; i < 64;i++) {
+		str targetname = va("sp%d", i);
+		ent = gameFixAPI_getEntity(targetname);
+		if (ent) {
+			ent->setOrigin( spawnlocations[i]);
+		}
+	}
+}

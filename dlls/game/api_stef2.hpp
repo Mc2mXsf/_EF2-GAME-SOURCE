@@ -42,3 +42,5 @@ bool gameFixAPI_actorHates(Actor* actor,Sentient *sentient);
 bool gameFixAPI_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNameOfPlayer);
 int gameFixAPI_getPlayers(bool state);
 void gameFixAPI_hudPrintAllClients(const str text);
+Entity* gameFixAPI_getEntity(str& name);
+void gameFixAPI_spawnlocations_dm_ctf_voy1();
