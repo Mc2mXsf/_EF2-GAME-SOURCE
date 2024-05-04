@@ -22,6 +22,8 @@ Warning C6385: Invalid data is being read from objlist-> template< class Type > 
 WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
 
 Fixed: Using/Checking for, client 0 only
+BehaviorReturnCode_t	FlyCloseToPlayer::Evaluate
+BehaviorReturnCode_t	FlyToNodeNearestPlayer::Evaluate
 HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , int mask , unsigned int clipMask , float maxDist , float minDist , Entity *ent , float minDistFromPlayer )
 HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float maxDist , float minDistanceFromPlayer, bool unreserveCurrentNode )
 qboolean Actor::checkSpecifiedFollowTargetOutOfRange()
@@ -957,6 +959,8 @@ void PathManager::SetNodeFlagsEvent( Event *ev )
 void ScriptSlave::FollowPath( Event *ev )
 
 Fixed: Warning lnt-logical-bitwise-mismatch
+BehaviorReturnCode_t	FlyCircleRandomPoint::Evaluate
+BehaviorReturnCode_t	CircleAttack::Evaluate
 qboolean KillBox( Entity *ent )
 inline void TriggerPlaySound::Archive(Archiver &arc)
 void TriggerSetVariable::SetVariable( Event *ev )
