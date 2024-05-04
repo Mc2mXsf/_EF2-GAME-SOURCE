@@ -22,6 +22,14 @@ Entity* gamefix_returnInfoPlayerStart()
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function grabbing given entity, like in scripts - chrissstrahl
+//--------------------------------------------------------------
+Entity* gamefix_getEntity(str& name)
+{
+	return gameFixAPI_getEntity(name);
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Return Player by client number - chrissstrahl
 //--------------------------------------------------------------
 Player* gamefix_getPlayer(int index)

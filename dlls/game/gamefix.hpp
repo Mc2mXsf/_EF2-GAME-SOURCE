@@ -22,6 +22,7 @@ struct gamefix_client_persistant_s
 extern gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 
 Entity*				gamefix_returnInfoPlayerStart();
+Entity*				gamefix_getEntity(str& name);
 Player*				gamefix_getPlayer(int index);
 int					gamefix_getPlayers(bool state);
 Player*				gamefix_getPlayerInsideOfEntity(Entity* eTheBox);
