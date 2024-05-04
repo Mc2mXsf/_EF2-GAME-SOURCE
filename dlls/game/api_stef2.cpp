@@ -428,13 +428,26 @@ Entity* gameFixAPI_getEntity(str &name)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function manage level related fixes - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_levelFixes()
+{
+	if (!gameFixAPI_inMultiplayer()){
+		return;
+	}
+
+	if (Q_stricmpn(level.mapname, "dm_ctf_voy1", 11) == 0) {
+		gameFixAPI_spawnlocations_dm_ctf_voy1();
+	}
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function to fix spawnlocations on dm_ctf_voy1 - chrissstrahl
 //--------------------------------------------------------------
 void gameFixAPI_spawnlocations_dm_ctf_voy1()
 {
-	if (!gameFixAPI_inMultiplayer() || Q_stricmpn(level.mapname,"dm_ctf_voy1",11) != 0) {
-		return;
-	}
+	//check if server has the script based fix installed - comes with the coop mod 6.xxxx and can be downloaded seperately
+	//if (gamefix_functionExists("isPowerOfGiven")) {return;}
 
 	//The Spawnlocations in the Level are broken, they are placed and targetnamed, but they have no origin
 	//This makes players spawn outside at 0 0 0 during HM/TDM (mp_gametype 0/1)
@@ -506,11 +519,21 @@ void gameFixAPI_spawnlocations_dm_ctf_voy1()
 	spawnlocations[62] = Vector(5056.0f, 2048.0f, -384.0f);
 	spawnlocations[63] = Vector(4928.0f, 2048.0f, -384.0f);
 	
+	Vector vAngle = Vector(0.0f,0.0f,0.0f);
 	for (int i = 0; i < 64;i++) {
 		str targetname = va("sp%d", i);
 		ent = gameFixAPI_getEntity(targetname);
 		if (ent) {
+			if (i < 32) {
+				vAngle[1] = 90.f;
+			}
+			else {
+				vAngle[1] = 270.f;
+			}
+			ent->setAngles(vAngle);
 			ent->setOrigin( spawnlocations[i]);
 		}
 	}
+
+	gi.Printf(_GFixEF2_INFO_GAMEFIX, _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1);
 }

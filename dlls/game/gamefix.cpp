@@ -16,8 +16,11 @@ gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to return the singleplayer spawnspot if no multiplayer spawn spot was found - chrissstrahl
 //--------------------------------------------------------------
-Entity* gamefix_returnInfoPlayerStart()
+Entity* gamefix_returnInfoPlayerStart(str info)
 {
+	if (developer->integer > 0) {
+		gi.Printf(va(_GFixEF2_INFO_GAMEFIX, info.c_str()));
+	}
 	return G_FindClass(NULL, "info_player_start");
 }
 
@@ -606,4 +609,12 @@ void gamefix_aiTurnOn()
 void gamefix_printAllClients(const str text)
 {
 	gameFixAPI_hudPrintAllClients(text);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function manage level related fixes - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_levelFixes()
+{
+	gameFixAPI_levelFixes();
 }

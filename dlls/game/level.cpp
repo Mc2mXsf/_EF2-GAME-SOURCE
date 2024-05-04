@@ -29,6 +29,13 @@
 #include "earthquake.h"
 #include "teammateroster.hpp"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 Level level;
 
 //--------------------------------------------------------------
@@ -358,6 +365,12 @@ void Level::Start( void )
 	levelVars.SetVariable( "total_specialItems" , total_specialItems );
 	levelVars.SetVariable( "found_specialItems" , found_specialItems );
 	levelVars.SetVariable( "total_enemies_spawned", _totalEnemiesSpawned );
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Fix for Spawnpoints/Spawnlocations on level in HM/TDM (mp_gametype < 2) dm_ctf_voy1
+	//--------------------------------------------------------------
+	gamefix_levelFixes();
 	
 
 	FindTeams();

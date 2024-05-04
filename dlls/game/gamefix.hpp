@@ -21,7 +21,7 @@ struct gamefix_client_persistant_s
 };
 extern gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 
-Entity*				gamefix_returnInfoPlayerStart();
+Entity*				gamefix_returnInfoPlayerStart(str info);
 Entity*				gamefix_getEntity(str& name);
 Player*				gamefix_getPlayer(int index);
 int					gamefix_getPlayers(bool state);
@@ -59,3 +59,4 @@ str					gamefix_getLocalizedString(Player* player, const str sEnglish,const str 
 void				gamefix_aiTurnOff();
 void				gamefix_aiTurnOn();
 void				gamefix_printAllClients(const str text);
+void				gamefix_levelFixes();

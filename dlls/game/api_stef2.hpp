@@ -43,4 +43,5 @@ bool gameFixAPI_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNam
 int gameFixAPI_getPlayers(bool state);
 void gameFixAPI_hudPrintAllClients(const str text);
 Entity* gameFixAPI_getEntity(str& name);
+void gameFixAPI_levelFixes();
 void gameFixAPI_spawnlocations_dm_ctf_voy1();
