@@ -23,6 +23,13 @@
 #include "powerups.h"
 #include "weaputils.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 // Setup constants
 const float	MultiplayerModeBase::_defaultStartinghealth = 100.0f;
 const int	MultiplayerModeBase::_defaultPointsPerKill = 1;
@@ -1882,6 +1889,18 @@ Entity *MultiplayerModeBase::getSpawnPoint( Player *player )
 		}
 
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: For bad spawnlocation (info_player_deathmatch) at 0 0 0 - chrissstrahl
+	//--------------------------------------------------------------
+	if (spawnPoint) {
+		if (spawnPoint->origin == Vector(0.0f, 0.0f, 0.0f)) {
+			gi.Printf(_GFix_INFO_MapError, va(_GFixEF2_ERR_LEVEL_InfoPlayerDeathmatch_AT_ZERO, spawnPoint->targetname.c_str()));
+			spawnPoint = nullptr;
+		}
+	}
+
 
 	return spawnPoint;
 }

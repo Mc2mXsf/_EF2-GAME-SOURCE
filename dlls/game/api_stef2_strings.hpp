@@ -21,11 +21,11 @@ constexpr auto _GFixEF2_INFO_FUNC_ClientBegin = "level_ai - ON - Server no longe
 constexpr auto _GFixEF2_INFO_FUNC_ClientDisconnect = "level_ai - OFF - Server is now empty!\n";
 
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1 = "Badly placed info_player_deathmatch - dm_ctf_voy1\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_HoldableTransporter = "Missing valid info_player_deathmatch - HoldableItemTransporter::use\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseRespawnPlayer = "Missing valid info_player_deathmatch - ModeTeamBase::respawnPlayer\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "Missing valid info_player_deathmatch - ModeTeamBase::addPlayerToTeam\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missing valid info_player_deathmatch - ModeDeathmatch::AddPlayer\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_HoldableTransporter = "Missing currently valid info_player_deathmatch - HoldableItemTransporter::use\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseRespawnPlayer = "Missing currently valid info_player_deathmatch - ModeTeamBase::respawnPlayer\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "Missing currently valid info_player_deathmatch - ModeTeamBase::addPlayerToTeam\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::AddPlayer\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
 
@@ -35,4 +35,5 @@ constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_fakePlayer_ONLYSP = "WARNING: fakepla
 constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_sendClientCommand_FAILED = "SendClientCommand: Given Entity does not exist!\n";
 constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_getNumFreeRelSVCmds_FAILED = "GetNumFreeReliableServerCommands: Given Entity does not exist!\n";
 
-constexpr auto _GFixEF2_ERR_FUNC_SensoryInFov_act_NULL = "SensoryPerception::InFOV -- actor is NULL";
+constexpr auto _GFixEF2_ERR_FUNC_SensoryInFov_act_NULL = "SensoryPerception::InFOV -- actor is NULL\n";
+constexpr auto _GFixEF2_ERR_LEVEL_InfoPlayerDeathmatch_AT_ZERO = "info_player_deathmatch ($%s) is at (0 0 0)\n";
