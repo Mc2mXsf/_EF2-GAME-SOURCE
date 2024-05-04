@@ -18,9 +18,7 @@ gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 //--------------------------------------------------------------
 Entity* gamefix_returnInfoPlayerStart(str info)
 {
-	if (developer->integer > 0) {
-		gi.Printf(va(_GFixEF2_INFO_GAMEFIX, info.c_str()));
-	}
+	gi.Printf(va(_GFix_INFO_FAILSAFE, info.c_str()));
 	return G_FindClass(NULL, "info_player_start");
 }
 

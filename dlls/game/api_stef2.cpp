@@ -535,5 +535,5 @@ void gameFixAPI_spawnlocations_dm_ctf_voy1()
 		}
 	}
 
-	gi.Printf(_GFixEF2_INFO_GAMEFIX, _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1);
+	gi.Printf(_GFix_INFO_APPLIED, _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1);
 }

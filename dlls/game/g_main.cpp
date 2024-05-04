@@ -211,7 +211,7 @@ extern "C" void G_InitGame( int startTime, int randomSeed )
 #ifdef __linux__	
 	sLibrarayName = "ef2gamei386.so";
 #endif
-	gi.Printf(va(_GFixEF2_INFO_FUNC_InitGame,sLibrarayName.c_str(), __DATE__, __TIME__));
+	gi.Printf(va(_GFix_INFO_Identity,sLibrarayName.c_str(), __DATE__, __TIME__));
 
 	
 	// Install our own error handler, since we can't

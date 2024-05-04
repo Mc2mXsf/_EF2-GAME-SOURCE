@@ -17,17 +17,15 @@ constexpr auto _GFixAPI_YOUR_LANG_WAS_SET_TO_DEU = "Ihre Sprache wurde auf deuts
 
 
 //--- GAME CODE --- regular gamecode files SPECIFIC
-constexpr auto _GFixEF2_INFO_GAMEFIX = "=== GAMEFIX === Applied: %s\n";
-constexpr auto _GFixEF2_INFO_FUNC_InitGame = "=== GAMEFIX %s ===\n=== Compiled %s @ %s===\n";
 constexpr auto _GFixEF2_INFO_FUNC_ClientBegin = "level_ai - ON - Server no longer empty!\n";
 constexpr auto _GFixEF2_INFO_FUNC_ClientDisconnect = "level_ai - OFF - Server is now empty!\n";
 
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1 = "SPAWNLOCATIONS - gameFixAPI_spawnlocations_dm_ctf_voy1\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_HoldableTransporter = "SPAWNLOCATIONS - HoldableItemTransporter::use\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseRespawnPlayer = "SPAWNLOCATIONS - ModeTeamBase::respawnPlayer\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "SPAWNLOCATIONS - ModeTeamBase::addPlayerToTeam\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "SPAWNLOCATIONS - ModeDeathmatch::AddPlayer\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "SPAWNLOCATIONS - ModeDeathmatch::respawnPlayer\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1 = "Badly placed info_player_deathmatch - dm_ctf_voy1\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_HoldableTransporter = "Missing valid info_player_deathmatch - HoldableItemTransporter::use\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseRespawnPlayer = "Missing valid info_player_deathmatch - ModeTeamBase::respawnPlayer\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "Missing valid info_player_deathmatch - ModeTeamBase::addPlayerToTeam\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missing valid info_player_deathmatch - ModeDeathmatch::AddPlayer\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
 

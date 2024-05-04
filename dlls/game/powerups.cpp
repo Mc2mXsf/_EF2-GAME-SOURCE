@@ -898,7 +898,7 @@ bool HoldableItemTransporter::use( void )
 			// GAMEFIX - Use info_player_start Singleplayer Spawn if no other is found - chrissstrahl
 			//--------------------------------------------------------------
 			if (!spawnPoint) {
-				spawnPoint = gamefix_returnInfoPlayerStart();
+				spawnPoint = gamefix_returnInfoPlayerStart(_GFixEF2_INFO_GAMEFIX_spawnlocations_HoldableTransporter);
 			}
 
 
