@@ -213,6 +213,68 @@ Player* gamefix_getClosestPlayer(Entity* entity,bool noSpectator, bool noDead,bo
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function to get best closest Player to follow - chrissstrahl
+// //--------------------------------------------------------------
+Player* gamefix_getClosestPlayerToFollow(Actor* actor)
+{
+	if (!actor) { return nullptr; }
+	Entity* ent = nullptr;
+
+	ent = gamefix_getActorFollowTarget(actor);
+
+	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+		return (Player*)ent;
+	}
+
+	return gamefix_getClosestPlayerSamePlane((Entity*)actor);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning closest player that given actor can see - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getClosestPlayerActorCanSee(Actor* actor, qboolean useFOV)
+{
+	if (!actor || gameFixAPI_isDead(actor)) {
+		return nullptr;
+	}
+
+	Player* playerClosest = nullptr;
+	float distanceClosest = 999999;
+
+	Player* player = nullptr;
+
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+
+		if (!gamefix_EntityValid((Entity*)player) || !gamefix_actorCanSee(actor, (Entity*)player, useFOV, qtrue)) {
+			continue;
+		}
+
+		float distanceCurrent = VectorLength(player->centroid - actor->centroid);
+
+		//always grab player closest as a backup
+		if (distanceClosest > distanceCurrent) {
+			distanceClosest = distanceCurrent;
+			playerClosest = player;
+		}
+	}
+
+	return playerClosest;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning current enemy if player or the closest player actor cansee - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getClosestPlayerCanseeIfNoCurEnemy(Actor* actor)
+{
+	Entity* ent = gamefix_actorGetCurrentEnemy(actor);
+	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+		return (Player*)ent;
+	}
+	return gamefix_getClosestPlayerActorCanSee(actor, qfalse);
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function that returns any player preferably not dead or spectator - chrissstrahl
 //--------------------------------------------------------------
 Player* gamefix_getAnyPlayerPreferably()
@@ -333,23 +395,6 @@ bool gamefix_checkNotarget(Entity* entity) {
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function to get best closest Player to follow - chrissstrahl
-// //--------------------------------------------------------------
-Player* gamefix_getClosestPlayerToFollow(Actor* actor)
-{
-	if (!actor) { return nullptr; }
-	Entity* ent = nullptr;
-
-	ent = gamefix_getActorFollowTarget(actor);
-
-	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
-		return (Player*)ent;
-	}
-
-	return gamefix_getClosestPlayerSamePlane((Entity*)actor);
-}
-
-//--------------------------------------------------------------
 // GAMEFIX - Added: Function returning actor follow target entity - chrissstrahl
 //--------------------------------------------------------------
 Entity* gamefix_getActorFollowTarget(Actor* actor) {
@@ -365,56 +410,11 @@ bool gamefix_actorCanSee(Actor* actor, Entity* entity, qboolean useFOV, qboolean
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function returning closest player that given actor can see - chrissstrahl
-//--------------------------------------------------------------
-Player* gamefix_getClosestPlayerActorCanSee(Actor *actor, qboolean useFOV)
-{
-	if (!actor || gameFixAPI_isDead(actor)) {
-		return nullptr;
-	}
-
-	Player* playerClosest = nullptr;
-	float distanceClosest = 999999;
-
-	Player* player = nullptr;
-
-	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
-		player = gamefix_getPlayer(i);
-
-		if (!gamefix_EntityValid((Entity*)player) || !gamefix_actorCanSee(actor,(Entity*)player, useFOV, qtrue)) {
-			continue;
-		}
-
-		float distanceCurrent = VectorLength(player->centroid - actor->centroid);
-
-		//always grab player closest as a backup
-		if (distanceClosest > distanceCurrent) {
-			distanceClosest = distanceCurrent;
-			playerClosest = player;
-		}
-	}
-	
-	return playerClosest;
-}
-
-//--------------------------------------------------------------
 // GAMEFIX - Added: Function returning current enemy of actor - chrissstrahl
 //--------------------------------------------------------------
 Entity* gamefix_actorGetCurrentEnemy(Actor* actor)
 {
 	return gameFixAPI_actorGetCurrentEnemy(actor);
-}
-
-//--------------------------------------------------------------
-// GAMEFIX - Added: Function returning current enemy if player or the closest player actor cansee - chrissstrahl
-//--------------------------------------------------------------
-Player* gamefix_actorGetPlayerCurEnemyOrClosestCansee(Actor* actor)
-{
-	Entity* ent = gamefix_actorGetCurrentEnemy(actor);
-	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
-		return (Player*)ent;
-	}
-	return gamefix_getClosestPlayerActorCanSee(actor,qfalse);
 }
 
 //--------------------------------------------------------------
@@ -547,7 +547,7 @@ qboolean gamefix_languageDeu(const gentity_t* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function returning player by giventargetname - chrissstrahl
 //--------------------------------------------------------------
-str gamefix_getLocalizedString(Player* player,str sEnglish,str sGerman)
+str gamefix_getLocalizedString(Player* player,const str sEnglish,const str sGerman)
 {
 	if (player) {
 		if (gameFixAPI_getLanguage(player) == "Deu") {
