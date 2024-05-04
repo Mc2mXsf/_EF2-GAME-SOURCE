@@ -25,6 +25,13 @@
 #include "weaputils.h"
 #include "player.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 Event EV_Behavior_Args
 	(
 	"args",
@@ -4568,7 +4575,10 @@ BehaviorReturnCode_t	FlyCloseToPlayer::Evaluate
 	Entity *player;
 
 
-	player = g_entities[ 0 ].entity;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	player = gamefix_getClosestPlayerActorCanSee(&self, qfalse);
 
 
    if ( !self.IsEntityAlive( player ) )
@@ -5341,7 +5351,13 @@ BehaviorReturnCode_t	FlyToNodeNearestPlayer::Evaluate
 				}
 			else
 				{
-				Entity* player = g_entities[0].entity;
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+				//--------------------------------------------------------------
+				Entity* player = gamefix_getClosestPlayerActorCanSee(&self,qfalse);
+				if (!self.IsEntityAlive((Entity*)player)) {return BEHAVIOR_SUCCESS;}
+
+
 				dir = Pnode->origin - player->centroid;
 				}
 
@@ -5931,7 +5947,12 @@ BehaviorReturnCode_t	FlyCircleRandomPoint::Evaluate
 			dir.z = 0;
 			length = dir.length();
 			
-			fly_clockwise = !fly_clockwise;
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+			//--------------------------------------------------------------
+			fly_clockwise = static_cast<bool>(!fly_clockwise);
+
 
 			for( goal_try = 0 ; goal_try < 5 ; goal_try++ )
 				{
@@ -9684,7 +9705,10 @@ BehaviorReturnCode_t	CircleAttack::Evaluate
 
 			if ( G_Random( 1.0f ) < .3f )
             {
-				current_direction = !current_direction;
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Warning lnt-logical-bitwise-mismatch - chrissstrahl
+				//--------------------------------------------------------------
+				current_direction = static_cast<bool>(!current_direction);
             }
 			}
 
