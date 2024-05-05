@@ -3384,7 +3384,7 @@ Player::Player()
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Function handling player game event - chrissstrahl
 	//--------------------------------------------------------------
-	gameFixAPI_playerEntered(this);
+	gamefix_playerEntered(this);
 }
 
 Player::~Player()
