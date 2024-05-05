@@ -26,6 +26,7 @@ constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseRespawnPlayer = "Mis
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "Missing currently valid info_player_deathmatch - ModeTeamBase::addPlayerToTeam\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::AddPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_maxLevelitems_ctf_grey = "Cvar max_levelitems set to 384, to many info_helpernodes - ctf_grey\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
 

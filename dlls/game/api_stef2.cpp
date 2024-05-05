@@ -480,6 +480,7 @@ void gameFixAPI_maxLevelitems_ctf_grey()
 	if (maxLevelitems < 384) {
 		gi.cvar_set("max_levelitems", "384");
 		gi.SendServerCommand((int)NULL, "map ctf_grey");
+		gi.Printf(_GFix_INFO_MapError,_GFixEF2_INFO_GAMEFIX_maxLevelitems_ctf_grey);
 	}
 }
 
