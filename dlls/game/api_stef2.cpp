@@ -579,3 +579,48 @@ void gameFixAPI_spawnlocations_dm_ctf_voy1()
 
 	gi.Printf(_GFix_INFO_APPLIED, _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1);
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage Puzzle Modulation in Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+Player* gameFixAPI_puzzleGetActivator(Entity* puzzle)
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return (Player*)g_entities[0].entity;
+	}
+	Player *player = (Player*)(Entity*)gamefix_entity_extraData_t[puzzle->entnum].activator;
+
+	if (!gameFixAPI_isDead((Entity*)player) && !gameFixAPI_isSpectator_stef2((Entity*)player)) {
+		return player;
+	}
+	return nullptr;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage Puzzle Modulation in Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_puzzleSetActivator(Entity* entity, Entity* puzzle)
+{
+	if (puzzle && gameFixAPI_inMultiplayer()) {
+		if (entity) {
+			Player* player = nullptr;
+			Sentient* sentient = nullptr;
+			if (entity->isSubclassOf(Equipment)) {
+				Equipment* equipment = (Equipment*)entity;
+				sentient = equipment->GetOwner();
+				if (sentient->isSubclassOf(Player)) {
+					player = (Player*)sentient;
+				}
+			}
+			else if (entity->isSubclassOf(Player)) {
+				player = (Player*)entity;
+			}
+
+			if (player && !gameFixAPI_isDead((Entity*)player) && !gameFixAPI_isSpectator_stef2((Entity*)player)) {
+				gamefix_entity_extraData_t[puzzle->entnum].activator = (EntityPtr)(Entity*)player;
+				return;
+			}
+		}
+		gamefix_entity_extraData_t[puzzle->entnum].activator = nullptr;
+	}
+}

@@ -51,3 +51,6 @@ Entity* gameFixAPI_getEntity(str& name);
 void gameFixAPI_levelFixes();
 void gameFixAPI_maxLevelitems_ctf_grey();
 void gameFixAPI_spawnlocations_dm_ctf_voy1();
+
+Player* gameFixAPI_puzzleGetActivator(Entity* puzzle);
+void gameFixAPI_puzzleSetActivator(Entity* entity, Entity* puzzle);
