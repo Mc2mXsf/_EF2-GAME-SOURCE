@@ -439,6 +439,22 @@ void gameFixAPI_levelFixes()
 	if (Q_stricmpn(level.mapname, "dm_ctf_voy1", 11) == 0) {
 		gameFixAPI_spawnlocations_dm_ctf_voy1();
 	}
+	else if(Q_stricmpn(level.mapname, "ctf_grey", 8) == 0) {
+		gameFixAPI_maxLevelitems_ctf_grey();
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to fix warning message spam on ctf_grey - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_maxLevelitems_ctf_grey()
+{
+	cvar_t* cvar = gi.cvar_get("max_levelitems");
+	int maxLevelitems = (cvar ? cvar->integer : 0);
+	if (maxLevelitems < 384) {
+		gi.cvar_set("max_levelitems", "384");
+		gi.SendServerCommand((int)NULL, "map ctf_grey");
+	}
 }
 
 //--------------------------------------------------------------
