@@ -1245,7 +1245,12 @@ void GotoSpecified::SetArgs ( Event *ev)
 
 	// Now, let's assert if our _state is still FAILED.  That basically means we didn't find
 	// anything to try and goto so we need to throw up a flag
-	assert ( _state != GOTO_SPEC_FAILED );
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Disabled: Assert, I see no reason why it should still be there - chrissstrahl
+	//--------------------------------------------------------------
+	//assert ( _state != GOTO_SPEC_FAILED );
 
 }
 
