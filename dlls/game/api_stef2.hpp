@@ -27,6 +27,11 @@ int gameFixAPI_maxClients();
 bool gameFixAPI_isBot(gentity_t* ent);
 bool gameFixAPI_isBot(Player* player);
 
+void gameFixAPI_playerSpectator(Player* player);
+void gameFixAPI_playerKilled(Player* player);
+void gameFixAPI_playerEntered(Player* player);
+void gameFixAPI_playerSpawn(Player* player);
+void gameFixAPI_playerModelChanged(Player* player);
 
 void gameFixAPI_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 Entity* gameFixAPI_getTargetedEntity(Player* player);

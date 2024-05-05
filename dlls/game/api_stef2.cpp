@@ -166,6 +166,32 @@ bool gameFixAPI_isBot(gentity_t* ent)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function handling player game event - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_playerSpectator(Player* player)
+//multiplayer only
+{
+}
+void gameFixAPI_playerModelChanged(Player* player)
+//multiplayer only
+{
+
+}
+void gameFixAPI_playerKilled(Player* player)
+{
+}
+void gameFixAPI_playerEntered(Player* player)
+{
+	if (gameFixAPI_inSingleplayer()) {
+		gameFixAPI_playerSpawn(player);
+	}
+}
+void gameFixAPI_playerSpawn(Player* player)
+{
+}
+
+
+//--------------------------------------------------------------
 // GAMEFIX - Return Entity the Player is currently targeting - chrissstrahl
 //--------------------------------------------------------------
 Entity* gameFixAPI_getTargetedEntity(Player* player)
