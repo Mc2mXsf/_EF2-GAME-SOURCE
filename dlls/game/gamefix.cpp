@@ -9,9 +9,14 @@
 #include "api_stef2.hpp"
 
 //--------------------------------------------------------------
-//Added: Information we want to persist over level changes and restarts - See g_local.h for the struct - chrissstrahl
+//Added: Information we want to persist over level changes and restarts - multiplayer only - See g_local.h for the struct - chrissstrahl
 //--------------------------------------------------------------
 gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
+
+//--------------------------------------------------------------
+//Added: Extra Information we can attach to entities - multiplayer only - chrissstrahl
+//--------------------------------------------------------------
+gamefix_entity_extraData_s gamefix_entity_extraData_t[MAX_GENTITIES];
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to return the singleplayer spawnspot if no multiplayer spawn spot was found - chrissstrahl
@@ -374,7 +379,7 @@ str gamefix_getCvar(str cvarName)
 //--------------------------------------------------------------
 bool gamefix_EntityValid(Entity* entity)
 {
-	if (entity && !gameFixAPI_isDead(entity) && !gameFixAPI_isSpectator_stef2(entity) && !gamefix_checkNotarget(entity)) {
+	if (!gameFixAPI_isDead(entity) && !gameFixAPI_isSpectator_stef2(entity) && !gamefix_checkNotarget(entity)) {
 		return true;
 	}
 	return false;
@@ -615,4 +620,28 @@ void gamefix_printAllClients(const str text)
 void gamefix_levelFixes()
 {
 	gameFixAPI_levelFixes();
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function handling player game event - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_playerSpectator(Player* player)
+{
+	gameFixAPI_playerSpectator(player);
+}
+void gamefix_playerKilled(Player* player)
+{
+	gameFixAPI_playerKilled(player);
+}
+void gamefix_playerEntered(Player* player)
+{
+	gameFixAPI_playerEntered(player);
+}
+void gamefix_playerSpawn(Player* player)
+{
+	gameFixAPI_playerSpawn(player);
+}
+void gamefix_playerModelChanged(Player* player)
+{
+	gameFixAPI_playerModelChanged(player);
 }

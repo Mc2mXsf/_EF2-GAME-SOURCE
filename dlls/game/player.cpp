@@ -3379,6 +3379,12 @@ Player::Player()
 
 	_needToSendBranchDialog = false;
 	_branchDialogActor = NULL;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function handling player game event - chrissstrahl
+	//--------------------------------------------------------------
+	gameFixAPI_playerEntered(this);
 }
 
 Player::~Player()
@@ -3906,6 +3912,13 @@ void Player::Killed( Event *ev )
 	pain_type = (meansOfDeath_t)meansofdeath;
 
 	damage_from = direction;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function handling player game event - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_playerKilled(this);
+
 	
 	if ( multiplayerManager.inMultiplayer() )
 	{

@@ -21,6 +21,15 @@ struct gamefix_client_persistant_s
 };
 extern gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 
+//--------------------------------------------------------------
+// GAMEFIX - Added:  - chrissstrahl
+//--------------------------------------------------------------
+struct gamefix_entity_extraData_s
+{
+	EntityPtr		activator = nullptr;
+};
+extern gamefix_entity_extraData_s gamefix_entity_extraData_t[MAX_GENTITIES];
+
 Entity*				gamefix_returnInfoPlayerStart(str info);
 Entity*				gamefix_getEntity(str& name);
 Player*				gamefix_getPlayer(int index);
@@ -60,3 +69,8 @@ void				gamefix_aiTurnOff();
 void				gamefix_aiTurnOn();
 void				gamefix_printAllClients(const str text);
 void				gamefix_levelFixes();
+void				gamefix_playerSpectator(Player* player);
+void				gamefix_playerKilled(Player* player);
+void				gamefix_playerEntered(Player* player);
+void				gamefix_playerSpawn(Player* player);
+void				gamefix_playerModelChanged(Player* player);

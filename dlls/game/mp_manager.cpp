@@ -23,6 +23,13 @@
 #include "mp_modeCtf.hpp"
 #include "powerups.h"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 MultiplayerManager multiplayerManager;
 
 str playersLastTeam[ MAX_CLIENTS ];
@@ -885,6 +892,12 @@ void MultiplayerManager::changePlayerModel( Player *player, const char *modelNam
 		_multiplayerGame->playerChangedModel( player );
 
 		player->modelChanged();
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Function handling player game event - chrissstrahl
+		//--------------------------------------------------------------
+		gamefix_playerModelChanged(player);
 	}
 }
 
@@ -2716,6 +2729,12 @@ void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spe
 
 	if ( player )
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Function handling player game event - chrissstrahl
+		//--------------------------------------------------------------
+		gamefix_playerSpectator(player);
+
+
 		initPlayer( player );
 
 		_playerData[ player->entnum ]._spectator = true;
@@ -2967,6 +2986,11 @@ void MultiplayerManager::playerEnterArena( int entnum, float health )
 	else
 		setTeamHud( player, "mp_teamblue" );
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function handling player game event - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_playerSpawn(player);
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
