@@ -289,6 +289,18 @@ Player* gamefix_getClosestPlayerCanseeIfNoCurEnemy(Actor* actor)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function returning activator or the closest player actor cansee - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getActivatorOrClosestPlayerCansee(Actor* actor)
+{
+	Entity* activator = gameFixAPI_getActivator(actor);
+	if (!activator || !activator->isSubclassOf(Player)) {
+		activator = gamefix_getClosestPlayerActorCanSee(actor, qfalse);
+	}
+	return (Player*)activator;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function that returns any player preferably not dead or spectator - chrissstrahl
 //--------------------------------------------------------------
 Player* gamefix_getAnyPlayerPreferably()
@@ -644,4 +656,12 @@ void gamefix_playerSpawn(Player* player)
 void gamefix_playerModelChanged(Player* player)
 {
 	gameFixAPI_playerModelChanged(player);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function handling player game event - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay)
+{
+	gameFixAPI_dialogSetupPlayers(speaker, localizedDialogName,headDisplay);
 }
