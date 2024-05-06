@@ -717,6 +717,17 @@ void Level::NewMap( const char *temp_mapname, const char *entities, int levelTim
 	theCinematicArmature.deleteAllCinematics();
 	current_map = temp_mapname;
 	current_entities = entities;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Linux Server possibly starting in Singleplayer - chrissstrahl
+	//--------------------------------------------------------------
+#ifdef __linux__
+	if (g_gametype->integer == 0) {
+		gi.cvar_set("g_gametype", "1");
+	}
+#endif // __linux__
+	
 	
 	SpawnEntities( current_map, current_entities, levelTime );
 }
