@@ -25,14 +25,19 @@ bool gameFixAPI_inSingleplayer()
 //--------------------------------------------------------------
 bool gameFixAPI_inMultiplayer()
 {
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	if (g_gametype->integer == GT_SINGLE_PLAYER) {
 		return false;
 	}
 	if (!multiplayerManager.inMultiplayer()) {
 		return false;
 	}
+#else //FAKK2 / MOHAA
+	if (!deathmatch->integer) {
+		return false;
+	}
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 	return true;
-	//FAKK2 Equivalent is probably just a check for deathmatch->integer == 0
 }
 
 //--------------------------------------------------------------
@@ -44,8 +49,13 @@ bool gameFixAPI_isSpectator_stef2(Entity* ent)
 		return false;
 	}
 
-	if ( ent->isSubclassOf(Player) && multiplayerManager.isPlayerSpectator((Player*)ent)) {
-		return true;
+	if (ent->isSubclassOf(Player)) {
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
+		if (multiplayerManager.isPlayerSpectator((Player*)ent)) {
+			return true;
+		}
+#else //MOHAA
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 	}
 	return false;
 	//FAKK2 Equivalent does not exist, there is just PM_NOCLIP
@@ -84,12 +94,19 @@ bool gameFixAPI_isListenServer()
 //--------------------------------------------------------------
 bool gameFixAPI_isWindowsServer()
 {
-#ifdef WIN32
-	return true;
-#else
-	return false;
-#endif
-	//FAKK2 Equivalent is _WIN32
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
+	#ifdef WIN32
+		return true;
+	#else
+		return false;
+	#endif
+#else //FAKK2 / MOHAA
+	#ifdef _WIN32
+		return true;
+	#else
+		return false;
+	#endif
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 }
 
 //--------------------------------------------------------------
@@ -113,9 +130,11 @@ bool gameFixAPI_isHost(Player *player)
 	return false;
 #endif
 
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	if (g_gametype->integer == GT_SINGLE_PLAYER || g_gametype->integer == GT_BOT_SINGLE_PLAYER) {
 		return true;
 	}
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 
 	cvar_t* cl_running = gi.cvar_get("cl_running");
 	if (dedicated->integer == 0 && player->entnum == 0 && (cl_running ? cl_running->integer : 0)) {
@@ -131,9 +150,13 @@ bool gameFixAPI_isHost(Player *player)
 void gameFixAPI_hudPrint(Player* player, str sText)
 {
 	if (player && sText && sText.length()) {
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 		player->hudPrint(sText.c_str());
+#else
+		gentity_t* edict = player->entnum;
+		gi.centerprintf(edict, sText.c_str());
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 	}
-	//FAKK2 Equivalent or the clostest thing to that would be gi.centerprintf and probably gi.SendServerCommand( NULL, "print \"%s\"", text );
 }
 
 //--------------------------------------------------------------
@@ -199,7 +222,11 @@ Entity* gameFixAPI_getTargetedEntity(Player* player)
 	if (!player) {
 		return nullptr;
 	}
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	return player->GetTargetedEntity();
+#else
+	gi.Error(ERR_DROP,"gameFixAPI_getTargetedEntity - NOT IMPLEMETENT, please FIX\n");
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 
 	//FAKK2 Equivalent can probably be deduced from Player::AcquireTarget
 }
@@ -212,8 +239,11 @@ str gameFixAPI_getCurrentCallVolume(Player* player)
 	if (!player) {
 		return "";
 	}
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	return player->GetCurrentCallVolume();
-	//FAKK2 Equivalent does not exist - trigger_volume_callvolume
+#else
+	gi.Error(ERR_DROP, "gameFixAPI_getCurrentCallVolume - trigger_volume_callvolume NOT IN GAME\n");
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 }
 
 //--------------------------------------------------------------
@@ -295,10 +325,13 @@ qboolean gameFixAPI_languageDeu(const gentity_t* ent)
 	Player* player = (Player*)ent->entity;
 	gamefix_client_persistant_t[ent->client->ps.clientNum].language = "Deu";
 	
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	//after x sec on server assume client typed the command
 	if ((player->client->pers.enterTime + 5) < level.time) {
 		gameFixAPI_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_DEU);
 	}
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
+
 	return true;
 }
 
@@ -336,7 +369,11 @@ str gameFixAPI_getLanguage(Player* player)
 //--------------------------------------------------------------
 Entity* gameFixAPI_getActorFollowTargetEntity(Actor *actor) {
 	if (!actor) { return nullptr; }
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	return (Entity*)actor->followTarget.specifiedFollowTarget;
+#else //FAKK2 MOHAA
+	gi.Error(ERR_DROP, "gameFixAPI_getActorFollowTargetEntity - followTarget.specifiedFollowTarget NOT IN GAME\n");
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 }
 
 //--------------------------------------------------------------
@@ -345,7 +382,17 @@ Entity* gameFixAPI_getActorFollowTargetEntity(Actor *actor) {
 bool gameFixAPI_actorCanSee(Actor* actor, Entity* entity,bool useFOV,bool useVisionDistance)
 {
 	if (actor && entity){
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 		actor->sensoryPerception->CanSeeEntity((Entity*)actor, entity, useFOV, useVisionDistance);
+#else //FAKK2 MOHAA
+		if (useFOV)
+		{
+			actor->CanSeeFOV(entity);
+		}
+		else {
+			actor->CanSee(entity);
+		}
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 	}
 	return false;
 }
@@ -356,7 +403,11 @@ bool gameFixAPI_actorCanSee(Actor* actor, Entity* entity,bool useFOV,bool useVis
 Entity* gameFixAPI_actorGetCurrentEnemy(Actor* actor)
 {
 	if (actor){
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 		return actor->enemyManager->GetCurrentEnemy();
+#else //FAKK2 MOHAA
+		return actor->currentEnemy;
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 	}
 	return nullptr;
 }
@@ -367,7 +418,11 @@ Entity* gameFixAPI_actorGetCurrentEnemy(Actor* actor)
 bool gameFixAPI_actorHates(Actor* actor, Sentient *sentient)
 {
 	if (actor && sentient && gamefix_EntityValid((Entity*)sentient)) {
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 		return (bool)actor->enemyManager->Hates((Entity*)sentient);
+#else //FAKK2 MOHAA
+		return (bool)actor->Hates((Entity*)sentient);
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 	}
 	return false;
 }
@@ -416,7 +471,17 @@ bool gameFixAPI_checkPlayerUsingWeaponNamed(Player* player, const str& weaponNam
 int gameFixAPI_getPlayers(bool state)
 {
 	if (gameFixAPI_inMultiplayer()) {
-		return multiplayerManager.getTotalPlayers(state);
+		Player* player;
+		int numPlayers = 0;
+		for (int i = 0; i < gameFixAPI_maxClients(); i++){
+			player = gamefix_getPlayer(i);
+			if (player){
+				if (!gameFixAPI_isSpectator_stef2(player) || !state){
+					numPlayers++;
+				}
+			}
+		}
+		return numPlayers;
 	}
 
 	Player* player = gamefix_getPlayer(0);
@@ -430,7 +495,22 @@ int gameFixAPI_getPlayers(bool state)
 void gameFixAPI_hudPrintAllClients(const str text)
 {
 	if (gameFixAPI_inMultiplayer()) {
-		multiplayerManager.HUDPrintAllClients(text);
+		Player* player;
+		for (int i = 0; i < gameFixAPI_maxClients(); i++){
+			player = gamefix_getPlayer(i);
+			if (player){
+				gameFixAPI_hudPrint(player,text);
+			}
+		}
+	}
+	else {
+		gentity_t* edict = nullptr;
+		if (!edict) { return; }
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
+		gi.centerprintf(edict,CENTERPRINT_IMPORTANCE_CRITICAL,text.c_str());
+#else //FAKK2 MOHAA
+		gi.centerprintf(edict,text.c_str());
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 	}
 }
 
@@ -445,6 +525,10 @@ Entity* gameFixAPI_getEntity(str &name)
 		return G_GetEntity(atoi(&name[1]));
 	}
 	tlist = world->GetTargetList(name, false);
+
+#ifndef GAME_STAR_TREK_ELITE_FORCE_2
+	gi.Error(ERR_DROP,"gameFixAPI_getEntity - GetNextEntity differs from ELITE FORCE 2, please fix");
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 
 	if (tlist){
 		return tlist->GetNextEntity(NULL);
@@ -462,12 +546,14 @@ void gameFixAPI_levelFixes()
 		return;
 	}
 
+#ifndef GAME_STAR_TREK_ELITE_FORCE_2
 	if (Q_stricmpn(level.mapname, "dm_ctf_voy1", 11) == 0) {
 		gameFixAPI_spawnlocations_dm_ctf_voy1();
 	}
 	else if(Q_stricmpn(level.mapname, "ctf_grey", 8) == 0) {
 		gameFixAPI_maxLevelitems_ctf_grey();
 	}
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 }
 
 //--------------------------------------------------------------
@@ -582,46 +668,128 @@ void gameFixAPI_spawnlocations_dm_ctf_voy1()
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function to manage Puzzle Modulation in Multiplayer - chrissstrahl
+// GAMEFIX - Added: Function to get Owner of given entity - chrissstrahl
 //--------------------------------------------------------------
-Player* gameFixAPI_puzzleGetActivator(Entity* puzzle)
+Sentient* gamefixAPI_getOwner(Entity* entity)
+{
+	if (entity) {
+		Sentient* sentient = nullptr;
+		if (entity->isSubclassOf(Item)) {
+			Item* equipment = (Equipment*)entity;
+			sentient = equipment->GetOwner();
+			if (sentient->isSubclassOf(Player)) {
+				return sentient;
+			}
+		}
+		else if (entity->isSubclassOf(PushObject)) {
+			PushObject* pushObject = (PushObject*)entity;
+			sentient = (Sentient*)pushObject->getOwner();
+			if (sentient->isSubclassOf(Player)) {
+				return sentient;
+			}
+		}
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
+		if (entity->isSubclassOf(Equipment)) {
+			Equipment* equipment = (Equipment*)entity;
+			sentient = equipment->GetOwner();
+			if (sentient->isSubclassOf(Player)) {
+				return sentient;
+			}
+		}
+#endif // GAME_STAR_TREK_ELITE_FORCE_2
+	}
+	return nullptr;
+}
+
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to handle activation time in Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+float gameFixAPI_getActivationTime(Entity* entity)
 {
 	if (gameFixAPI_inSingleplayer()) {
-		return (Player*)g_entities[0].entity;
+		gi.Error(ERR_DROP, "gameFixAPI_getActivationTime - Used in Singleplayer\n");
+		return -1.0f;
 	}
-	Player *player = (Player*)(Entity*)gamefix_entity_extraData_t[puzzle->entnum].activator;
+	if (!entity) {
+		return 99999.0f;
+	}
+	return gamefix_entity_extraData_t[entity->entnum].lastActivated;
+}
 
-	if (!gameFixAPI_isDead((Entity*)player) && !gameFixAPI_isSpectator_stef2((Entity*)player)) {
-		return player;
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to handle activator in Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+Player* gameFixAPI_getActivator(Entity* entity)
+{
+	if (entity) {
+		//if (entity->isSubclassOf(Trigger)) {
+			//Trigger* trigger = (Trigger*)entity;
+			//Entity* activator = (Entity*)trigger->getActivator();
+			//Entity* activator = (Entity*)trigger->activator;
+		//}
+
+		if (gameFixAPI_inSingleplayer()) {
+			return (Player*)g_entities[0].entity;
+		}
+
+		Player *player = (Player*)(Entity*)gamefix_entity_extraData_t[entity->entnum].activator;
+
+		if (!gameFixAPI_isDead((Entity*)player) && !gameFixAPI_isSpectator_stef2((Entity*)player)) {
+			return player;
+		}		
 	}
 	return nullptr;
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function to manage Puzzle Modulation in Multiplayer - chrissstrahl
+// GAMEFIX - Added: Function to handle activator in Multiplayer - chrissstrahl
 //--------------------------------------------------------------
-void gameFixAPI_puzzleSetActivator(Entity* entity, Entity* puzzle)
+void gameFixAPI_setActivator(Entity* entity, Entity* activator)
 {
-	if (puzzle && gameFixAPI_inMultiplayer()) {
-		if (entity) {
-			Player* player = nullptr;
-			Sentient* sentient = nullptr;
-			if (entity->isSubclassOf(Equipment)) {
-				Equipment* equipment = (Equipment*)entity;
-				sentient = equipment->GetOwner();
-				if (sentient->isSubclassOf(Player)) {
-					player = (Player*)sentient;
-				}
-			}
-			else if (entity->isSubclassOf(Player)) {
-				player = (Player*)entity;
-			}
+	if (entity && gameFixAPI_inMultiplayer()) {
 
-			if (player && !gameFixAPI_isDead((Entity*)player) && !gameFixAPI_isSpectator_stef2((Entity*)player)) {
-				gamefix_entity_extraData_t[puzzle->entnum].activator = (EntityPtr)(Entity*)player;
-				return;
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
+		if (activator->isSubclassOf(Equipment)) {
+			Equipment* equipment = (Equipment*)activator;
+			activator = equipment->GetOwner();
+			if (!activator || !activator->isSubclassOf(Sentient)) {
+				activator = nullptr;
 			}
 		}
-		gamefix_entity_extraData_t[puzzle->entnum].activator = nullptr;
+#endif // GAME_STAR_TREK_ELITE_FORCE_2
+
+		if (activator && activator->isSubclassOf(Player)) {
+			if (gameFixAPI_isDead(activator) || gameFixAPI_isSpectator_stef2(activator) ) {
+				activator = nullptr;
+			}
+		}
+		gamefix_entity_extraData_t[entity->entnum].activator = (EntityPtr)activator;
+		if (activator) {
+			gamefix_entity_extraData_t[entity->entnum].lastActivated = level.time;
+		}
 	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage Actor-Dialog in Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay)
+{
+	Player* player = nullptr;
+	Actor* eActor = nullptr;
+
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
+	if (headDisplay && speaker) {
+		eActor = speaker;
+		eActor->SetActorFlag(ACTOR_FLAG_USING_HUD, true);
+	}
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+		if (player && player->client && player->isSubclassOf(Player)) {
+//			player->SetupDialog(eActor, localizedDialogName);
+		}
+	}
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
 }

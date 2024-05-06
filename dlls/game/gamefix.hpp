@@ -38,7 +38,7 @@ int					gamefix_getPlayers(bool state);
 Player*				gamefix_getPlayerInsideOfEntity(Entity* eTheBox);
 bool				gamefix_checkEntityInsideOfEntity(Entity* eCheck, Entity* eTheBox);
 bool				gamefix_targetedByOtherPlayer(Player* player, Entity* entity);
-Player*				gamefix_getActivatorOrClosestPlayerCansee(Entity* entity);
+Player*				gamefix_getActivatorOrClosestPlayerCansee(Actor* actor);
 Player*				gamefix_getClosestPlayer(Entity* entity);
 Player*				gamefix_getClosestPlayerSamePlane(Entity* entity);
 Player*				gamefix_getClosestPlayer(Entity* entity, bool noSpectator, bool noDead, bool samePlane, int planeMaxVertDiff, int planeMaxRange);

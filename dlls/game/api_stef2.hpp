@@ -13,6 +13,9 @@
 #include "gamefix_strings.hpp"
 #include "gamefix.hpp"
 
+#define GAME_STAR_TREK_ELITE_FORCE_2
+//#define GAME_HEAVY_METAL_FAKK_2
+//#define GAME_MEDAL_OF_HONOR_ALLIED_ASSAULT
 
 bool gameFixAPI_inSingleplayer();
 bool gameFixAPI_inMultiplayer();
@@ -52,5 +55,7 @@ void gameFixAPI_levelFixes();
 void gameFixAPI_maxLevelitems_ctf_grey();
 void gameFixAPI_spawnlocations_dm_ctf_voy1();
 
-Player* gameFixAPI_puzzleGetActivator(Entity* puzzle);
-void gameFixAPI_puzzleSetActivator(Entity* entity, Entity* puzzle);
+float gameFixAPI_getActivationTime(Entity* entity);
+Player* gameFixAPI_getActivator(Entity* puzzle);
+void gameFixAPI_setActivator(Entity* entity, Entity* activator);
+void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
