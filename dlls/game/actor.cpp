@@ -11211,19 +11211,28 @@ void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char
 	dialog_done_time = level.time + dialog_length;
 	
 	// Add dialog to player
-	
-	Player *player = GetPlayer( 0 );
-	
-	if ( player )
-	{
-		if ( headDisplay )
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function to manage Actor-Dialog in Multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->integer == GT_SINGLE_PLAYER) {
+		Player *player = GetPlayer( 0 );
+		if (player)
+		{
+			if (headDisplay)
 			{
-			player->SetupDialog( this, localizedDialogName );
-			SetActorFlag( ACTOR_FLAG_USING_HUD,	true );
+				player->SetupDialog(this, localizedDialogName);
+				SetActorFlag(ACTOR_FLAG_USING_HUD, true);
 			}
-		else
-			player->SetupDialog( NULL, localizedDialogName );
+			else
+				player->SetupDialog(NULL, localizedDialogName);
+		}
 	}
+	else {
+		gameFixAPI_dialogSetupPlayers(this,localizedDialogName,headDisplay);
+	}
+
 	
 	if ( dialog_length > 0.0f )
 	{
