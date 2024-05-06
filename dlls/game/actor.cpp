@@ -11479,7 +11479,16 @@ void Actor::setBranchDialog( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
 	//--------------------------------------------------------------
-	Player* player = gamefix_getClosestPlayer((Entity*)this);
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Multiplayer compatibility - chrissstrahl
+	//--------------------------------------------------------------
+	Player* player = nullptr;
+	if (gameFixAPI_inMultiplayer()) {
+		player = gamefix_getActivatorOrClosestPlayer((Entity*)this);
+	}
+	else {
+		player = GetPlayer(0);
+	}
 
 
 	str commandString;
@@ -11524,7 +11533,28 @@ void Actor::clearBranchDialog( void )
 //-----------------------------------------------------
 void Actor::BranchDialog(Event* ev)
 {
-	Player* player = GetPlayer( 0 );
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+
+	Player* player = gamefix_getClosestPlayer((Entity*)this);
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Multiplayer compatibility - chrissstrahl
+	//--------------------------------------------------------------
+	if (!player || gameFixAPI_isSpectator_stef2((Entity*)player) || gameFixAPI_isDead((Entity*)player)) {
+		//no valid player, wait and retry
+		CancelEventsOfType(EV_Actor_BranchDialog);
+		Event* new_event = new Event(EV_Actor_BranchDialog);
+		new_event->AddString(ev->GetString(1));
+		PostEvent(new_event,4.444f);
+		return;
+	}
+	if (gameFixAPI_inMultiplayer()) {
+		gameFixAPI_setActivator((Entity*)this,(Entity*)player);
+	}
+
 	player->setBranchDialogActor(this);
 
 	_branchDialogName = ev->GetString(1);
