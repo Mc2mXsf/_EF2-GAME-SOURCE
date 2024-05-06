@@ -105,13 +105,19 @@ void Object::SetAnim( Event *ev )
 	}
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Deactivated: Because this was not in the Officially released game version - chrissstrahl
+// Also Membervariables are now inizialised, so this is not needed
+//--------------------------------------------------------------
 void Object::Setup( Event *ev )
 {
+	/*
 	if ( !health )
 	{
 		health = ( maxs - mins ).length();
 		max_health = health;
 	}
+	*/
 }
 
 void Object::MakeShootable( Event *ev )
