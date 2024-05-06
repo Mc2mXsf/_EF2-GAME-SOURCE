@@ -634,10 +634,10 @@ void PuzzleObject::useEvent(Event* event)
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: multiplayer compatibility - chrissstrahl
 	//--------------------------------------------------------------
-	if (gameFixAPI_inMultiplayer() && gameFixAPI_puzzleGetActivator(entity)) {
+	if (gameFixAPI_inMultiplayer() && gameFixAPI_getActivator(entity)) {
 		return;
 	}
-	gameFixAPI_puzzleSetActivator(entity, (Entity*)this);
+	gameFixAPI_setActivator(entity, (Entity*)this);
 	
 
 	if ( _timed || (level.getSkill() <= _minSkill) )
@@ -673,7 +673,7 @@ void PuzzleObject::timedUse( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: multiplayer compatibility - chrissstrahl
 	//--------------------------------------------------------------
-	player = gameFixAPI_puzzleGetActivator(this);
+	player = gameFixAPI_getActivator(this);
 
 
 	// Turn on the timed hud if we haven't yet
@@ -707,7 +707,7 @@ void PuzzleObject::timedPuzzleSolved( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: multiplayer compatibility - chrissstrahl
 	//--------------------------------------------------------------
-	gameFixAPI_puzzleSetActivator(this, nullptr);
+	gameFixAPI_setActivator((Entity*)this, nullptr);
 }
 
 void PuzzleObject::timedPuzzleCanceled( void )
@@ -722,7 +722,7 @@ void PuzzleObject::timedPuzzleCanceled( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: multiplayer compatibility - chrissstrahl
 	//--------------------------------------------------------------
-	gameFixAPI_puzzleSetActivator(this,nullptr);
+	gameFixAPI_setActivator((Entity*)this,nullptr);
 }
 
 void PuzzleObject::showTimerHud( void )
@@ -734,7 +734,7 @@ void PuzzleObject::showTimerHud( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: multiplayer compatibility - chrissstrahl
 	//--------------------------------------------------------------
-	player = gameFixAPI_puzzleGetActivator(this);
+	player = gameFixAPI_getActivator(this);
 
 
 	commandString = "pushmenu ";
@@ -755,7 +755,7 @@ void PuzzleObject::hideTimerHud( void )
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: multiplayer compatibility - chrissstrahl
 	//--------------------------------------------------------------
-	player = gameFixAPI_puzzleGetActivator(this);
+	player = gameFixAPI_getActivator(this);
 
 
 	commandString = "popmenu ";
