@@ -659,7 +659,7 @@ void gamefix_playerModelChanged(Player* player)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function handling player game event - chrissstrahl
+// GAMEFIX - Added: Function handling Dialog in Multiplayer - chrissstrahl
 //--------------------------------------------------------------
 void gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay)
 {

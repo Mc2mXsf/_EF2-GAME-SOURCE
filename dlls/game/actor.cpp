@@ -11230,7 +11230,7 @@ void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char
 		}
 	}
 	else {
-		gameFixAPI_dialogSetupPlayers(this,localizedDialogName,headDisplay);
+		gameFixAPI_dialogSetupPlayers(this,(char*)dialog_name,headDisplay);
 	}
 
 	
