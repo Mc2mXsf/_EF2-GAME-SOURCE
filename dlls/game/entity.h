@@ -375,15 +375,19 @@ class Program;
 class Entity : public Listener
 	{
 	private:
-		Vector					_localOrigin;
 		Container<EntityPtr>	_lastTouchedList ;
-		bool					_fulltrace ;
-		int						_groupID;
 		str						_archetype;
-		bool					_missionObjective;
 		str						_targetPos;
 
-		bool					_networkDetail;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector					_localOrigin = Vector(0.0f, 0.0f, 0.0f);
+		bool					_fulltrace = false;
+		int						_groupID = -9643399;
+		bool					_missionObjective = false;
+		bool					_networkDetail = false;
 
 	protected:
 		void					buildUseData();
@@ -396,43 +400,59 @@ class Entity : public Listener
 		Entity( int create_flag );
 		virtual ~Entity();
 
+
 		// Spawning variables
-		int					entnum;
-		gentity_t			*edict;
-		gclient_t			*client;
-		int					spawnflags;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int					entnum = -1;
+		gentity_t			*edict = nullptr;
+		gclient_t			*client = nullptr;
+		int					spawnflags = 0;
+
 
 		// Standard variables
 		str					model;
 
 		// Physics variables
-		Vector				total_delta;   // total unprocessed movement
-		Vector				mins;
-		Vector				maxs;
-		Vector				absmin;
-		Vector				absmax;
-		Vector				centroid;
-		Vector				velocity;
-		Vector				avelocity;
-		Vector				origin;
-		Vector				angles;
-		Vector				size;
-		int					movetype;
-		int					mass;
-		float				gravity;			// per entity gravity multiplier (1.0 is normal)
-		float				orientation[3][3];
-		Vector				localangles;
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		Vector				total_delta = Vector(0.0f, 0.0f, 0.0f);   // total unprocessed movement
+		Vector				mins = Vector(0.0f, 0.0f, 0.0f);
+		Vector				maxs = Vector(0.0f, 0.0f, 0.0f);
+		Vector				absmin = Vector(0.0f, 0.0f, 0.0f);
+		Vector				absmax = Vector(0.0f, 0.0f, 0.0f);
+		Vector				centroid = Vector(0.0f, 0.0f, 0.0f);
+		Vector				velocity = Vector(0.0f, 0.0f, 0.0f);
+		Vector				avelocity = Vector(0.0f, 0.0f, 0.0f);
+		Vector				origin = Vector(0.0f, 0.0f, 0.0f);
+		Vector				angles = Vector(0.0f, 0.0f, 0.0f);
+		Vector				size = Vector(0.0f, 0.0f, 0.0f);
+		int					movetype = 0;
+		int					mass = 0;
+		float				gravity = 0.0f;			// per entity gravity multiplier (1.0 is normal)
+		float				orientation[3][3] = {0.0f};
+		Vector				localangles = Vector(0.0f, 0.0f, 0.0f);
 		// Ground variables
-		gentity_t			*groundentity;
+		gentity_t			*groundentity = nullptr;
+
+
 		cplane_t			groundplane;
-		int					groundcontents;
 
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int					groundcontents = 0;
 		// Surface variables
-		int					numsurfaces;
-
+		int					numsurfaces = 0;
 		// Light variables
-		float				lightRadius;
+		float				lightRadius = 0.0f;
+
 
 		// Targeting variables
 		str					target;
@@ -440,38 +460,51 @@ class Entity : public Listener
 		str					killtarget;
 
 		// Character state
-		float				health;
-		float				max_health;
-		int					deadflag;
-		int					flags;
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		float				health = 0.0f;
+		float				max_health = 0.0f;
+		int					deadflag = 0;
+		int					flags = 0;
 
 		// underwater variables
-		int					watertype;
-		int					waterlevel;
+		int					watertype = 0;
+		int					waterlevel = 0;
+
 
 		// Pain and damage variables
 		damage_t			takedamage;
-		int					damage_type;
 
-		qboolean			look_at_me;
-		bool				projectilesCanStickToMe;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		int					damage_type = 0;
+		qboolean			look_at_me = qfalse;
+		bool				projectilesCanStickToMe = false;
+
 
 		str					explosionModel;
-
 		ScriptVariableList	entityVars;
 
-		unsigned int		_affectingViewModes;
-		Vector				watch_offset;
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C26495: The Variable ? was not initialized. A Membervariable needs always to be initialized (type.6) - chrissstrahl
+		//--------------------------------------------------------------
+		unsigned int		_affectingViewModes = 0;
+		Vector				watch_offset = Vector(0.0f, 0.0f, 0.0f);
 
 		// Pluggable modules
-
-		Animate						*animate;
-		Mover						*mover;
-		BindInfo					*bind_info;
-		MorphInfo					*morph_info;
-		Program						*ObjectProgram;
-		DamageModificationSystem	*damageModSystem;
-		UseData						*useData;
+		Animate						*animate = nullptr;
+		Mover						*mover = nullptr;
+		BindInfo					*bind_info = nullptr;
+		MorphInfo					*morph_info = nullptr;
+		Program						*ObjectProgram = nullptr;
+		DamageModificationSystem	*damageModSystem = nullptr;
+		UseData						*useData = nullptr;
 
 		void				Setup();
 
