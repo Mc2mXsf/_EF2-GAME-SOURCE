@@ -11230,6 +11230,7 @@ void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char
 		}
 	}
 	else {
+		dialog_length = gamefix_dialogGetSoundlength(localizedDialogName);
 		gameFixAPI_dialogSetupPlayers(this,(char*)dialog_name,headDisplay);
 	}
 
