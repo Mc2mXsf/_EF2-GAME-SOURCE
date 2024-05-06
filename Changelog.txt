@@ -10,6 +10,9 @@ Disabled warning supressions and fixed issues with the code if there where any:
 4710		did not inline this function
 4711		selected for automatic inline expansion
 
+DISABLED CODE POTENCIALLY CAUSING ISSUES
+void Object::Setup( Event *ev ) - is sets health on objects, as far as I recall this was not in the original game release
+
 IGNORING THE FOLLOWING CODE WARNINGS:
 Warning C4996: void ClassEvents( const char *classname, qboolean print_to_disk )
 Warning C4996: inline bool VectorFromString ( const char *ss, vec3_t v )
@@ -21,7 +24,9 @@ Warning C6386: Buffer overflow while writing to objlist -> template< class Type 
 Warning C6385: Invalid data is being read from objlist-> template< class Type > void Container<Type>::Resize
 WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
 
-Fixed: Using/Checking for, client 0 only
+Fixed: Using/Checking for, client 0 only / Added: Multiplayer compatibility 
+void Actor::BranchDialog(Event* ev)
+void Actor::setBranchDialog( void )
 BehaviorReturnCode_t	FlyCloseToPlayer::Evaluate
 BehaviorReturnCode_t	FlyToNodeNearestPlayer::Evaluate
 HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , int mask , unsigned int clipMask , float maxDist , float minDist , Entity *ent , float minDistFromPlayer )
@@ -51,6 +56,49 @@ void RotateToEntity::Begin( Actor &self )
 qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
+
+Fixed: Linux Server possibly starting in Singleplayer
+void Level::NewMap( const char *temp_mapname, const char *entities, int levelTime )
+
+Added: Function returning activator or the closest player actor cansee
+Player* gamefix_getActivatorOrClosestPlayerCansee(Actor* actor)
+
+Added: Multiplayer compatibility - BranchDialog
+void Actor::BranchDialog(Event* ev)
+void Actor::setBranchDialog( void )
+
+Added: Multiplayer compatibility - SimplePlayDialog
+void Entity::simplePlayDialog( Event *ev )
+
+Added: Multiplayer compatibility - PlayDialog
+void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char *dialog_name, const char *state_name, qboolean headDisplay , bool useTalk , bool important )
+void gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
+
+Added: Multiplayer compatibility - Puzzle Modulation
+void PuzzleObject::useEvent(Event* event)
+void PuzzleObject::timedUse( void )
+void PuzzleObject::timedPuzzleSolved( void )
+void PuzzleObject::timedPuzzleCanceled( void )
+void PuzzleObject::showTimerHud( void )
+void PuzzleObject::hideTimerHud( void )
+
+Added: Multiplayer compatibility - Camera Fov
+void Camera::SetFOV( float fov, float time )
+
+Disabled: Assert
+void GotoSpecified::SetArgs ( Event *ev)
+
+Added: Function handling player game event
+void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
+void gamefix_playerSpectator(Player* player); - multiplayer only
+void Player::Killed( Event *ev )
+void gamefix_playerKilled(Player* player);
+Player::Player()
+void gamefix_playerEntered(Player* player);
+void MultiplayerManager::playerEnterArena( int entnum, float health )
+void gamefix_playerSpawn(Player* player);
+void MultiplayerManager::changePlayerModel( Player *player, const char *modelName, bool force )
+void gamefix_playerModelChanged(Player* player); - multiplayer only
 
 Fixed: Use vsnprintf to prevent possbile buffer overflow
 const char *va( const char *format, ... )
@@ -278,6 +326,8 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 void BotTeamOrders(bot_state_t *bs)
 
 Fixed: Warning C26495: The Variable ? was not initialized. A Variable needs always to be initialized (type.6)
+class Entity : public Listener
+class Quaternion
 class WatchEntityEX : public Behavior
 class Work : public Behavior
 class WatchEntity : public Behavior
@@ -712,9 +762,6 @@ void ThrowObject::Throw( Event *ev )
 void GooDebris::Touch( Event *ev )
 void GooProjectile::Explode( Event *ev )
 void PowerupBase::init( const str &modelName, Sentient *temp_owner )
-
-Fixed: Warning C26495: The Variable _w/_x/_y/_z was not initialized. A Membervariable needs always to be initialized (type.6)
-class Quaternion
 
 Fixed: Warning C4459: declaration of p hides global definition.
 int BoxOnPlaneSide2 ( const vec3_t emins, const vec3_t emaxs, const struct cplane_s *temp_p )
@@ -1253,6 +1300,16 @@ void SVCmd_ListIP_f( void )
 Fixed: Writing of banned IP-List to a file
 void SVCmd_WriteIP_f( void )
 
+Added: Function manage level related fixes
+void Level::Start( void )
+void gamefix_levelFixes();
+
+Added: Function to fix warning message spam on ctf_grey
+void gameFixAPI_maxLevelitems_ctf_grey()
+
+Added: Fix for Spawnpoints/Spawnlocations on level in HM/TDM (mp_gametype < 2) dm_ctf_voy1
+void gameFixAPI_spawnlocations_dm_ctf_voy1()
+
 Added: info_player_start Singleplayer Spawn being used if no other is found on a map - allows to spawn on Singleplayer maps
 void ModeDeathmatch::respawnPlayer( Player *player )
 void ModeDeathmatch::AddPlayer( Player *player )
@@ -1271,9 +1328,6 @@ void CThread::TriggerEntityEvent( Event *ev )
 
 Fixed: Crash if client 0 does not exist
 void Actor::SpawnItems( void )
-
-Added: Multiplayer compatibility for Camera Fov
-void Camera::SetFOV( float fov, float time )
 
 Fixed: Crash if Client 0 is missing while Camera Fov is set
 void Camera::SetFOV( float fov, float time )
