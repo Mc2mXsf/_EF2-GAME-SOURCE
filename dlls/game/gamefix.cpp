@@ -289,6 +289,18 @@ Player* gamefix_getClosestPlayerCanseeIfNoCurEnemy(Actor* actor)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function returning activator or the closest player - chrissstrahl
+//--------------------------------------------------------------
+Player* gamefix_getActivatorOrClosestPlayer(Entity* entity)
+{
+	Entity* activator = gameFixAPI_getActivator(entity);
+	if (!activator || !activator->isSubclassOf(Player)) {
+		activator = gamefix_getClosestPlayerSamePlane(entity);
+	}
+	return (Player*)activator;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function returning activator or the closest player actor cansee - chrissstrahl
 //--------------------------------------------------------------
 Player* gamefix_getActivatorOrClosestPlayerCansee(Actor* actor)
@@ -664,4 +676,77 @@ void gamefix_playerModelChanged(Player* player)
 void gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay)
 {
 	gameFixAPI_dialogSetupPlayers(speaker, localizedDialogName,headDisplay);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning the higher dialog playtime of Eng/Deu - chrissstrahl
+//--------------------------------------------------------------
+float gamefix_dialogGetSoundlength(char sound[MAX_QPATH])
+{
+	char stripped[MAX_QPATH];
+
+	str sLoc = sound;
+
+	gamefix_replaceSubstring(sound,"loc/Deu/","");
+	gamefix_replaceSubstring(sound,"loc/Eng/","");
+
+	str sRaw = va("%s",sound);
+	COM_StripExtension(sRaw, stripped, sizeof(stripped));
+	sRaw = stripped;
+
+	str sUnLoc = va("localization/%s",sound);
+	str sEng = va("loc/Eng/%s",sound);
+	str sDeu = va("loc/Deu/%s",sound);
+	str sEngVlp = va("loc/Eng/%s.vlp", sRaw.c_str());
+	str sDeuVlp = va("loc/Deu/%s.vlp", sRaw.c_str());
+
+	//grab time from vlp - and take the higher one
+	Script vlpPathFile = va("%s", sEngVlp.c_str());
+	float fDialogTimeENG = vlpPathFile.GetFloat(false);
+	
+	vlpPathFile = va("%s", sDeuVlp.c_str());
+	float fDialogTimeDeu = vlpPathFile.GetFloat(false);
+
+	float fLength = max(fDialogTimeENG, fDialogTimeDeu);
+	if (fLength <= 0.0f) {
+		fLength = gi.SoundLength(sLoc);
+	}
+
+	return fLength;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function handling Dialog in Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_replaceSubstring(char* str, const char* find, const char* replace) {
+	char buffer[1024];  // Ensure buffer is sufficiently large
+	char* result = buffer;  // Write result to the buffer
+	char* pos;
+	int find_len = strlen(find);
+	int replace_len = strlen(replace);
+
+	// Temporary pointer for non-destructive scanning
+	char* current = str;
+
+	while ((pos = strstr(current, find)) != NULL) {
+		// Calculate the length of the initial segment
+		size_t len = pos - current;
+
+		// Copy the part of the original string before the found substring
+		memcpy(result, current, len);
+		result += len;
+
+		// Append the replacement substring
+		memcpy(result, replace, replace_len);
+		result += replace_len;
+
+		// Move the current pointer past the found substring
+		current = pos + find_len;
+	}
+
+	// Append the rest of the string after the last match
+	strcpy(result, current);
+
+	// Copy the buffer back to the original string
+	strcpy(str, buffer);
 }
