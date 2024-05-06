@@ -54,6 +54,12 @@
 #include <qcommon/gameplaymanager.h>
 
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 // Player events
 Event EV_ClientMove
 	(
@@ -10277,11 +10283,20 @@ void Entity::simplePlayDialog( Event *ev )
 
 	// Tell the player about the dialog
 
-	player = GetPlayer( 0 );
-	
-	if ( player )
-	{
-		player->SetupDialog( NULL, localizedDialogName );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Multiplayer compatibility - SimplePlayDialog - chrissstrahl
+	//--------------------------------------------------------------
+	if (g_gametype->integer == GT_SINGLE_PLAYER) {
+		player = GetPlayer(0);
+
+		if (player)
+		{
+			player->SetupDialog(NULL, localizedDialogName);
+		}
+	}
+	else {
+		gameFixAPI_dialogSetupPlayers(NULL, (char*)dialogName.c_str(), false);
 	}
 }
 

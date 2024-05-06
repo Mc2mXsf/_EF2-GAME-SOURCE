@@ -778,7 +778,7 @@ void gameFixAPI_setActivator(Entity* entity, Entity* activator)
 void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay)
 {
 	Player* player = nullptr;
-	Actor* eActor = nullptr;
+	Actor* eActor = NULL;
 
 #ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	if (headDisplay && speaker) {
@@ -788,7 +788,7 @@ void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_
 	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
 		player = gamefix_getPlayer(i);
 		if (player && player->client && player->isSubclassOf(Player)) {
-//			player->SetupDialog(eActor, localizedDialogName);
+			player->SetupDialog(eActor, localizedDialogName);
 		}
 	}
 #endif //GAME_STAR_TREK_ELITE_FORCE_2
