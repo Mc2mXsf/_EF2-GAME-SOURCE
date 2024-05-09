@@ -673,44 +673,47 @@ void gamefix_playerModelChanged(Player* player)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function handling Dialog in Multiplayer - chrissstrahl
 //--------------------------------------------------------------
-void gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay)
+void gamefix_dialogSetupPlayers(Actor* speaker,char unlocalDialogName[MAX_QPATH], bool headDisplay)
 {
-	gameFixAPI_dialogSetupPlayers(speaker, localizedDialogName,headDisplay);
+	gameFixAPI_dialogSetupPlayers(speaker, unlocalDialogName, headDisplay);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning the localized path for player, depending on their language Eng/Deu - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_localizeStringForPlayer(Player* player,char unlocal[MAX_QPATH])
+{
+	if (player) {
+		//localize if it is unlocalized
+		if (Q_stricmpn(unlocal, "localization/", 13) == 0) {
+			gamefix_replaceSubstring(unlocal, "localization/", "");
+			str sLoc =  va("loc/%s/%s", gamefix_getLanguage(player).c_str(), unlocal);
+			gi.Printf("gamefix_localizeStringForPlayer - %s\n", sLoc.c_str());
+			return sLoc;
+		}
+		//if it is not unlocalized, assume the path is eigther already localized or there is no localization for it
+		return unlocal;
+	}
+	return "";
 }
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function returning the higher dialog playtime of Eng/Deu - chrissstrahl
 //--------------------------------------------------------------
-float gamefix_dialogGetSoundlength(char sound[MAX_QPATH])
+float gamefix_dialogGetSoundlength(char realDialogName[MAX_QPATH])
 {
-	char stripped[MAX_QPATH];
+	float fLength = 0.0f;
+	str sLoc = realDialogName;
 
-	str sLoc = sound;
-
-	gamefix_replaceSubstring(sound,"loc/Deu/","");
-	gamefix_replaceSubstring(sound,"loc/Eng/","");
-
-	str sRaw = va("%s",sound);
-	COM_StripExtension(sRaw, stripped, sizeof(stripped));
-	sRaw = stripped;
-
-	str sUnLoc = va("localization/%s",sound);
-	str sEng = va("loc/Eng/%s",sound);
-	str sDeu = va("loc/Deu/%s",sound);
-	str sEngVlp = va("loc/Eng/%s.vlp", sRaw.c_str());
-	str sDeuVlp = va("loc/Deu/%s.vlp", sRaw.c_str());
-
-	//grab time from vlp - and take the higher one
-	Script vlpPathFile = va("%s", sEngVlp.c_str());
-	float fDialogTimeENG = vlpPathFile.GetFloat(false);
-	
-	vlpPathFile = va("%s", sDeuVlp.c_str());
-	float fDialogTimeDeu = vlpPathFile.GetFloat(false);
-
-	float fLength = max(fDialogTimeENG, fDialogTimeDeu);
-	if (fLength <= 0.0f) {
-		fLength = gi.SoundLength(sLoc);
+	//get english and german version of the file and compare them - if their *.vlp exist and it is unlocalized
+	if (Q_stricmpn(realDialogName,"localization/",13) == 0) {
+		gamefix_replaceSubstring(realDialogName,"localization/","");
+		fLength = max(gi.SoundLength(va("loc/Eng/%s",realDialogName)), gi.SoundLength(va("loc/Deu/%s",realDialogName)));
 	}
+
+	//get real dialog length - usually starting with localization/... - this will always work
+	//if it is not unlocalized, assume the path is eigther already localized or there is no localization for it
+	fLength = max(gi.SoundLength(sLoc.c_str()), fLength);
 
 	return fLength;
 }

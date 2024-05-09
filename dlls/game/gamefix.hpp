@@ -78,5 +78,6 @@ void				gamefix_playerEntered(Player* player);
 void				gamefix_playerSpawn(Player* player);
 void				gamefix_playerModelChanged(Player* player);
 void				gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
+str					gamefix_localizeStringForPlayer(Player* player, char unlocal[MAX_QPATH]);
 float				gamefix_dialogGetSoundlength(char sound[MAX_QPATH]);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
