@@ -637,7 +637,7 @@ void PuzzleObject::useEvent(Event* event)
 	if (gameFixAPI_inMultiplayer() && gameFixAPI_getActivator(entity)) {
 		return;
 	}
-	gameFixAPI_setActivator(entity, (Entity*)this);
+	gameFixAPI_setActivator((Entity*)this, entity);
 	
 
 	if ( _timed || (level.getSkill() <= _minSkill) )
@@ -735,6 +735,9 @@ void PuzzleObject::showTimerHud( void )
 	// GAMEFIX - Added: multiplayer compatibility - chrissstrahl
 	//--------------------------------------------------------------
 	player = gameFixAPI_getActivator(this);
+	if (!player) {
+		return;
+	}
 
 
 	commandString = "pushmenu ";
