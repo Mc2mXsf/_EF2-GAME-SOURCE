@@ -11203,12 +11203,20 @@ void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char
 	}
 	
 	
-	Sound( str( localizedDialogName ), CHAN_DIALOG, volume, min_dist );
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Multiplayer compatibility - chrissstrahl
+	// 
+	// USING real_dialog instead of localizedDialogName
+	// 
+	// Send soundpath EXACTLY as given in the scripts to players
+	// so if it uses "localization/..." client game code will then
+	// automatically localize it to what ever language version the
+	// client is currently using (usually loc/Eng/ or loc/Deu/)
+	//--------------------------------------------------------------
+	Sound( str(real_dialog), CHAN_DIALOG, volume, min_dist );
+
+
 	SetActorFlag( ACTOR_FLAG_DIALOG_PLAYING, true );
-	
-	dialog_length = gi.SoundLength( localizedDialogName );
-	
-	dialog_done_time = level.time + dialog_length;
 	
 	// Add dialog to player
 
@@ -11228,11 +11236,18 @@ void Actor::PlayDialog( Sentient *user, float volume, float min_dist, const char
 			else
 				player->SetupDialog(NULL, localizedDialogName);
 		}
+		dialog_length = gi.SoundLength(localizedDialogName);
 	}
 	else {
-		dialog_length = gamefix_dialogGetSoundlength(localizedDialogName);
-		gameFixAPI_dialogSetupPlayers(this,(char*)dialog_name,headDisplay);
+		gamefix_dialogSetupPlayers(this, localizedDialogName,headDisplay);
+		dialog_length = gamefix_dialogGetSoundlength((char*)dialog_name);
 	}
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function to manage Actor-Dialog in Multiplayer - chrissstrahl
+	// - moved var down here to grab both sp/mp version length
+	//--------------------------------------------------------------
+	dialog_done_time = level.time + dialog_length;
 
 	
 	if ( dialog_length > 0.0f )
