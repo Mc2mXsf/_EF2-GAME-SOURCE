@@ -749,26 +749,29 @@ Player* gameFixAPI_getActivator(Entity* entity)
 void gameFixAPI_setActivator(Entity* entity, Entity* activator)
 {
 	if (entity && gameFixAPI_inMultiplayer()) {
-
+		if (activator) {
 #ifdef GAME_STAR_TREK_ELITE_FORCE_2
-		if (activator->isSubclassOf(Equipment)) {
-			Equipment* equipment = (Equipment*)activator;
-			activator = equipment->GetOwner();
-			if (!activator || !activator->isSubclassOf(Sentient)) {
-				activator = nullptr;
+			if (activator->isSubclassOf(Equipment)) {
+				Equipment* equipment = (Equipment*)activator;
+				activator = equipment->GetOwner();
+				if (!activator || !activator->isSubclassOf(Sentient)) {
+					activator = nullptr;
+				}
 			}
-		}
 #endif // GAME_STAR_TREK_ELITE_FORCE_2
 
-		if (activator && activator->isSubclassOf(Player)) {
-			if (gameFixAPI_isDead(activator) || gameFixAPI_isSpectator_stef2(activator) ) {
-				activator = nullptr;
+			if (activator && activator->isSubclassOf(Player)) {
+				if (gameFixAPI_isDead(activator) || gameFixAPI_isSpectator_stef2(activator)) {
+					activator = nullptr;
+				}
+			}
+
+			if (activator) {
+				gamefix_entity_extraData_t[entity->entnum].lastActivated = level.time;
 			}
 		}
+		
 		gamefix_entity_extraData_t[entity->entnum].activator = (EntityPtr)activator;
-		if (activator) {
-			gamefix_entity_extraData_t[entity->entnum].lastActivated = level.time;
-		}
 	}
 }
 
