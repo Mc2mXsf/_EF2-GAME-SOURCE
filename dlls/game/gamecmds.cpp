@@ -1037,6 +1037,14 @@ qboolean G_SendCommandToAllPlayers( const char *command )
 //===============================================================
 qboolean G_SendCommandToPlayer( const gentity_t *ent, const char *command )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Added NULL check to prevent crash - chrissstrahl
+	//--------------------------------------------------------------
+	if (!ent) {
+		gi.Printf("G_SendCommandToPlayer - gentity_t/Player was NULL\n");
+		return true;
+	}
+
 	assert( ent );
 	Entity *entity = ent->entity ;
 	
