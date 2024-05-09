@@ -105,6 +105,7 @@ const char *va( const char *format, ... )
 
 Fixed: Added NULL check to prevent crash
 void G_CacheStateMachineAnims( Entity *ent, const char *stateMachineName )
+qboolean G_SendCommandToPlayer( const gentity_t *ent, const char *command )
 
 Fixed: Added check to prevent crash if a error is thrown before the level is loaded fully
 void L_ClearEventList( void )
