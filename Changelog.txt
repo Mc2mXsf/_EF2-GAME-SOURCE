@@ -57,6 +57,27 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Fixed: Drowning making normal pain instead of a gulp sound
+void Player::WorldEffects( void )
+void Player::Pain( Event *ev )
+
+Added: Restoring part of health, after starting to drown
+void Player::WorldEffects( void )
+
+Fixed: Drowning for Players, waterlevel always being 0
+void Player::CalcBlend( void )
+void Player::GetMoveInfo( pmove_t *pm )
+void Player::TouchStuff( const pmove_t *pm )
+
+Fixed: Water Color not being set when crouching to get under water
+void Player::CalcBlend( void )
+
+Fixed: Crouch, Stand and View Heights
+CROUCH_HEIGHT
+CROUCH_EYE_HEIGHT
+STAND_HEIGHT
+STAND_EYE_HEIGHT
+
 Fixed: Linux Server possibly starting in Singleplayer
 void Level::NewMap( const char *temp_mapname, const char *entities, int levelTime )
 
