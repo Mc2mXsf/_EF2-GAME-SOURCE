@@ -7234,7 +7234,7 @@ void Player::WorldEffects( void )
 	else
 	{
 		//--------------------------------------------------------------
-		// GAMEFIX - Added: Restoring part of health, after drowning - chrissstrahl
+		// GAMEFIX - Added: Restoring part of health, after starting to drown - chrissstrahl
 		//--------------------------------------------------------------
 		float addHealth = drown_damage;
 		if (air_finished < level.time && getHealth() > 0){
