@@ -753,3 +753,40 @@ void gamefix_replaceSubstring(char* str, const char* find, const char* replace) 
 	// Copy the buffer back to the original string
 	strcpy(str, buffer);
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to fix m11l3a-drull_ruins3_boss, hole in floor player falling out of level - chrissstrahl
+// Adds a clip to a specific location at the level start at the pillar where we fight the first stalker in the level
+// Player can fall out of the level if circeling the pillar to closely, this clip fixes this - SP/MP
+//--------------------------------------------------------------
+Entity* gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags)
+{
+	Entity* ent;
+	ClassDef* cls;
+
+	// create a new entity
+	SpawnArgs args;
+
+	cls = getClassForID(className);
+	if (!cls) {
+		cls = getClass(className);
+	}
+
+	args.setArg("classname", className);
+	args.setArg("model", model);
+	args.setArg("origin", origin);
+	if (strlen(targetname)) {
+		args.setArg("targetname", targetname);
+	}
+
+	cls = args.getClassDef();
+	if (!cls)
+	{
+		gi.Printf("'%s' is not a valid entity name", className);
+		return nullptr;
+	}
+	level.spawnflags = spawnflags;
+	ent = args.Spawn();
+	if (!ent) { return nullptr; }
+	return ent;
+}

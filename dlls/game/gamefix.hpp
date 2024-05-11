@@ -89,3 +89,4 @@ void				gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_
 str					gamefix_localizeStringForPlayer(Player* player, char unlocal[MAX_QPATH]);
 float				gamefix_dialogGetSoundlength(char sound[MAX_QPATH]);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
+Entity*				gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags);
