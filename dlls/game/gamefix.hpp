@@ -9,6 +9,14 @@
 #include "_pch_cpp.h"
 #include "api_stef2.hpp"
 
+//WATER DROWN AND DAMAGE VALUES
+constexpr auto _GFix_PLAYER_air_finished = 20.0f; //was 20
+constexpr auto _GFix_PLAYER_drown_damage = 2.0f; //was 2.0f
+constexpr auto _GFix_PLAYER_drown_damage_max = 15.0f; //was 15.0f
+constexpr auto _GFix_PLAYER_increase = 1.0f; //was 2.0f
+constexpr auto _GFix_PLAYER_next_drown_time_delay = 3.0f; //was 2.0f
+constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
+
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 //--------------------------------------------------------------

@@ -3695,7 +3695,7 @@ void Player::InitWorldEffects( void )
 	// world effects
 	next_drown_time    = 0;
 	next_painsound_time    = 0;
-	air_finished       = level.time + 20.0f;
+	air_finished       = level.time + _GFix_PLAYER_air_finished;
 	old_waterlevel     = 0;
 	drown_damage       = 0.0f;
 }
@@ -4051,7 +4051,13 @@ void Player::Pain( Event *ev )
 		pain = damage;
 	}
 
-	if ( ( level.time > next_painsound_time ) && ( health > 0.0f ) )
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Drowning making normal pain instead of a gulp sound - chrissstrahl
+	// Added: Checking for waterlevel != 3
+	// Also see: void Player::WorldEffects( void )
+	//--------------------------------------------------------------
+	if (waterlevel != 3 && ( level.time > next_painsound_time ) && ( health > 0.0f ) )
 	{
 		if ( G_GetDatabaseFloat( "MOD", MOD_NumToName( meansofdeath ), "DoPainSound" ) )
 		{
@@ -4059,6 +4065,7 @@ void Player::Pain( Event *ev )
 			Sound( "snd_pain", CHAN_VOICE, DEFAULT_VOL, 300.0f );
 		}
 	}
+
 	
 	// add to the damage inflicted on a player this frame
 	// the total will be turned into screen blends and view angle kicks
@@ -4273,6 +4280,17 @@ void Player::TouchStuff( const pmove_t *pm )
 			G_TouchTeleporters( this );
 		else
 			G_TouchTriggers( this );
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Drowning for Players, waterlevel always being 0 - chrissstrahl
+		// See: Player::CalcBlend - water effect
+		// See: Player::GetMoveInfo - disabled vars
+		// See: Player::TouchStuff - added vars
+		// See: void Player::WorldEffects( void )
+		// See: void Player::Pain( Event *ev )
+		//--------------------------------------------------------------
+		waterlevel = pm->waterlevel;
+		watertype = pm->watertype;
 	}
 	
 	// touch other objects
@@ -4381,9 +4399,18 @@ void Player::GetMoveInfo( pmove_t *pm )
 			setSize( vehicle->_DriverBBoxMins , vehicle->_DriverBBoxMaxs );
 	}
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Drowning for Players, waterlevel always being 0 - chrissstrahl
+	// See: Player::CalcBlend - water effect
+	// See: Player::GetMoveInfo - disabled vars
+	// See: Player::TouchStuff - added vars
+	// See: void Player::WorldEffects( void )
+	// See: void Player::Pain( Event *ev )
+	//--------------------------------------------------------------
 	// water type and level is set in the predicted code
-	waterlevel = pm->waterlevel;
-	watertype = pm->watertype;
+	//waterlevel = pm->waterlevel;
+	//watertype = pm->watertype;
 	
 	// Set the ground entity
 	groundentity = NULL;
@@ -7101,7 +7128,7 @@ void Player::WorldEffects( void )
 	if ( movetype == MOVETYPE_NOCLIP )
 	{
 		// don't need air
-		air_finished = level.time + 20.0f;
+		air_finished = level.time + _GFix_PLAYER_air_finished;
 		return;
 	}
 	
@@ -7154,6 +7181,11 @@ void Player::WorldEffects( void )
 	//
 	// check for drowning
 	//
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Adjusted various variables/code to make the fixes work - chrissstrahl
+	//--------------------------------------------------------------
 	if ( waterlevel == 3 )
 	{
 		// if out of air, start drowning
@@ -7162,31 +7194,38 @@ void Player::WorldEffects( void )
 			// drown!
 			if ( ( next_drown_time < level.time ) && ( health > 0 ) )
 			{
-				next_drown_time = level.time + 1.0f;
+				next_drown_time = level.time + _GFix_PLAYER_next_drown_time_delay;
 				
 				// take more damage the longer underwater
-				drown_damage += 2.0f;
-				if ( drown_damage  > 15.0f )
+				drown_damage += _GFix_PLAYER_increase;
+				if ( drown_damage  > _GFix_PLAYER_drown_damage_max)
 				{
-					drown_damage = 15.0f;
+					drown_damage = _GFix_PLAYER_drown_damage_max;
 				}
-				
+
+
+				//--------------------------------------------------------------
+				// GAMEFIX - Fixed: Drowning making normal pain instead of a gulp sound - chrissstrahl
+				// Also see: void Player::Pain( Event *ev )
+				//--------------------------------------------------------------
+				SpawnSound("sound/player/player_gulp.wav", origin, 1.4f, 1.0f);
 				// play a gurp sound instead of a normal pain sound
-				if ( health <= drown_damage )
-				{
-					Sound( "snd_drown", CHAN_LOCAL );
-					BroadcastSound();
-				}
-				else if ( rand() & 1 )
-				{
-					Sound( "snd_choke", CHAN_LOCAL );
-					BroadcastSound();
-				}
-				else
-				{
-					Sound( "snd_choke", CHAN_LOCAL );
-					BroadcastSound();
-				}
+				//if ( health <= drown_damage )
+				//{
+				//	Sound( "snd_drown", CHAN_LOCAL );
+				//	BroadcastSound();
+				//}
+				//else if ( rand() & 1 )
+				//{
+				//	Sound( "snd_choke", CHAN_LOCAL );
+				//	BroadcastSound();
+				//}
+				//else
+				//{
+				//	Sound( "snd_choke", CHAN_LOCAL );
+				//	BroadcastSound();
+				//}
+
 				
 				Damage( world, world, drown_damage, origin, vec_zero, vec_zero, 0, DAMAGE_NO_ARMOR, MOD_DROWN );
 			}
@@ -7194,8 +7233,23 @@ void Player::WorldEffects( void )
 	}
 	else
 	{
-		air_finished = level.time + 20.0f;
-		drown_damage = 2.0f;
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Restoring part of health, after drowning - chrissstrahl
+		//--------------------------------------------------------------
+		float addHealth = drown_damage;
+		if (air_finished < level.time && getHealth() > 0){
+			if (getHealth() + drown_damage > max_health) {
+				addHealth = (max_health - getHealth());
+			}
+			Event* e = new Event(EV_AddHealthOverTime);
+			e->AddFloat(addHealth);
+			e->AddFloat(3);
+			PostEvent(e, level.frametime);
+		}
+
+
+		air_finished = level.time + _GFix_PLAYER_air_finished;
+		drown_damage = _GFix_PLAYER_drown_damage;
 	}
 	
 	GravityNodes();
@@ -7283,6 +7337,14 @@ void Player::CalcBlend( void )
 	
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: Water Color not being set when crouching to get under water - chrissstrahl
+	//--------------------------------------------------------------
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Drowning for Players, waterlevel always being 0 - chrissstrahl
+	// See: Player::CalcBlend - water effect
+	// See: Player::GetMoveInfo - disabled vars
+	// See: Player::TouchStuff - added vars
+	// See: void Player::WorldEffects( void )
+	// See: void Player::Pain( Event *ev )
 	//--------------------------------------------------------------
 	if (GetCrouch()){
 		vieworg[2] += CROUCH_EYE_HEIGHT;
