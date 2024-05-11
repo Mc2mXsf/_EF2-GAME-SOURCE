@@ -7279,7 +7279,18 @@ void Player::CalcBlend( void )
 	
 	// add for contents
 	vieworg = origin;
-	vieworg[ 2 ] += viewheight;	
+
+	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Water Color not being set when crouching to get under water - chrissstrahl
+	//--------------------------------------------------------------
+	if (GetCrouch()){
+		vieworg[2] += CROUCH_EYE_HEIGHT;
+	}
+	else{
+		vieworg[2] += viewheight;
+	}
+
 	
 	contents = gi.pointcontents( vieworg, 0 );
 	
