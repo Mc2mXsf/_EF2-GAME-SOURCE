@@ -1725,10 +1725,15 @@ typedef struct {
 #define  MDL_SURFACE_CROSSFADE_SKINS  ( 1 << 6 )
 #define  MDL_SURFACE_SKIN_NO_DAMAGE   ( 1 << 7 )
 
-#define CROUCH_HEIGHT		36
-#define CROUCH_EYE_HEIGHT	30
-#define STAND_HEIGHT			72
-#define STAND_EYE_HEIGHT	66
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Crouch, Stand and View Heights - chrissstrahl
+//--------------------------------------------------------------
+#define CROUCH_HEIGHT		49
+#define CROUCH_EYE_HEIGHT	43
+#define STAND_HEIGHT			96
+#define STAND_EYE_HEIGHT	85
+
 
 #define NUM_BONE_CONTROLLERS 5
 
