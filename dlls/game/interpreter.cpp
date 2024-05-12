@@ -297,8 +297,14 @@ void Interpreter::RunError( const char *error, ... )
 	
 	//PrintStatement( program->statements + pr_xstatement );
 	StackTrace();
-	Com_Printf( "%s\n", string );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Changed: Printout to always print - chrissstrahl
+	//--------------------------------------------------------------
+	gi.Printf( "%s\n", string );
 	
+
 	// dump the stack so host_error can shutdown functions
 	pr_depth = 0;
 	

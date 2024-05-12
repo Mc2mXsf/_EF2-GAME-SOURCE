@@ -783,7 +783,12 @@ bool Program::FinishCompilation( void )
 			// function parms are ok
 			if (!d->initialized)
 			{
-				gi.WPrintf( "function %s was not defined\n", d->name.c_str() );
+				//--------------------------------------------------------------
+				// GAMEFIX - Changed: Printout to always print - chrissstrahl
+				//--------------------------------------------------------------
+				gi.Printf( "function %s was not defined\n", d->name.c_str() );
+
+
 				errors = true;
 			}
 		}
@@ -810,7 +815,14 @@ void Program::Compile( const char *filename )
 	if ( gi.FS_ReadFile( filename, ( void ** )&src, true ) < 0 )
 	{
 		s_file = oldfile;
-		gi.WPrintf( "***\n***\n***\n*** Couldn't load %s\n***\n***\n***\n", filename );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Changed: Printout to always print - chrissstrahl
+		//--------------------------------------------------------------
+		gi.Printf( "***\n***\n***\n*** Couldn't load %s\n***\n***\n***\n", filename );
+		
+		
 		throw "Error";
 	}
 	
