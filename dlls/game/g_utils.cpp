@@ -791,8 +791,14 @@ void SelectSpawnPoint( Vector &org, Vector &ang, str &thread )
 	{
 		//--------------------------------------------------------------
 		// GAMEFIX - changed error message to spell out the object type - chrissstrahl
+		// Made error message less confusing if no name was given, which is usually the case
 		//--------------------------------------------------------------
-		gi.Error( ERR_DROP, "No info_player_start named '%s'.  Can't spawn player.\n", level.spawnpoint.c_str() );
+		if (level.spawnpoint.length()) {
+			gi.Error(ERR_DROP, "No info_player_start named '%s'.  Can't spawn player.\n", level.spawnpoint.c_str());
+		}
+		else {
+			gi.Error(ERR_DROP, "No info_player_start.  Can't spawn player.\n");
+		}
 		
 		
 		//--------------------------------------------------------------
