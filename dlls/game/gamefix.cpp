@@ -773,7 +773,9 @@ Entity* gamefix_spawn(char const* className, char const* model, char const* orig
 	}
 
 	args.setArg("classname", className);
-	args.setArg("model", model);
+	if (strlen(model)) {
+		args.setArg("model", model);
+	}
 	args.setArg("origin", origin);
 	if (strlen(targetname)) {
 		args.setArg("targetname", targetname);
