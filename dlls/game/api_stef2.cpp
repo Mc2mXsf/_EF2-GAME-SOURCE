@@ -542,22 +542,32 @@ Entity* gameFixAPI_getEntity(str &name)
 //--------------------------------------------------------------
 void gameFixAPI_levelFixes()
 {
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
+	if (Q_stricmpn(level.mapname, "m11l3a-drull_ruins3_boss", 24) == 0) {
+		gameFixAPI_levelfix_m11l3a_drull_ruins3_boss();
+	}
+#endif //GAME_STAR_TREK_ELITE_FORCE_2
+
 	if (!gameFixAPI_inMultiplayer()){
 		return;
 	}
 
-#ifndef GAME_STAR_TREK_ELITE_FORCE_2
+#ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	if (Q_stricmpn(level.mapname, "dm_ctf_voy1", 11) == 0) {
 		gameFixAPI_spawnlocations_dm_ctf_voy1();
 	}
 	else if(Q_stricmpn(level.mapname, "ctf_grey", 8) == 0) {
 		gameFixAPI_maxLevelitems_ctf_grey();
 	}
+	else if(Q_stricmpn(level.mapname, "swsglobe", 8) == 0) {
+		gameFixAPI_levelfix_swsglobe();
+	}
 #endif //GAME_STAR_TREK_ELITE_FORCE_2
 }
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to fix warning message spam on ctf_grey - chrissstrahl
+// Level: ctf_grey
 //--------------------------------------------------------------
 void gameFixAPI_maxLevelitems_ctf_grey()
 {
@@ -572,6 +582,7 @@ void gameFixAPI_maxLevelitems_ctf_grey()
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to fix spawnlocations on dm_ctf_voy1 - chrissstrahl
+// Level: dm_ctf_voy1
 //--------------------------------------------------------------
 void gameFixAPI_spawnlocations_dm_ctf_voy1()
 {
@@ -665,6 +676,93 @@ void gameFixAPI_spawnlocations_dm_ctf_voy1()
 	}
 
 	gi.Printf(_GFix_INFO_APPLIED, _GFixEF2_INFO_GAMEFIX_spawnlocations_dm_ctf_voy1);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: script_model to fix a hole in floor making player fall out of level - chrissstrahl
+// Level: m11l3a-drull_ruins3_boss
+// Adds a clip to a specific location at the level start at the pillar where we fight the first stalker in the level
+// Player can fall out of the level if circeling the pillar to closely, this clip fixes this - SP/MP
+//--------------------------------------------------------------
+void gameFixAPI_levelfix_m11l3a_drull_ruins3_boss()
+{
+	Entity *ent = gamefix_spawn("script_model", "fx/fx-dummy.tik", "-1277 17591 -152","",0);
+	if (ent) {
+		ent->setSize(Vector(-200.0f, -200.0f, -32.0f), Vector(200.0f, 200.0f, 1.0f));
+		ent->setSolidType(SOLID_BBOX);
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to fix swsglobe - chrissstrahl
+// Level: swsglobe
+// Disabled actor ai - actors twitched and tried to execute ai behaviours
+// Removed snow effect it was causing performance issues - Out of Tempmodels
+// Added push triggers
+//--------------------------------------------------------------
+extern Event EV_TriggerPushAny_SetSpeed;
+void gameFixAPI_levelfix_swsglobe()
+{
+	//check if server has a script with a fix - exit if it does
+	CThread* pThread;
+	pThread = Director.CreateThread("removeSnow");
+	if (pThread){
+		return;
+	}
+
+	//server does not have a fix script
+	for (int i = maxclients->integer; i < maxentities->integer;i++) {
+		Entity* ent = G_GetEntity(i);
+		if (ent) {
+			//disable all actor AI
+			if (ent->isSubclassOf(Actor)) {
+				Actor *actor = (Actor*)ent;
+				actor->TurnAIOff();
+			}
+			//remove snow - it tanks the performance real bad
+			if (ent->model == "models/fx/fx-fallingsnow-movieset.tik") {
+				ent->PostEvent(Event(EV_Remove), 0.0f);
+			}
+		}
+	}
+
+	//spawn triggers to simulate effect of the slopes with Patch 1.1 gamex86.dll and prevent falldamage
+	Entity* ent = gamefix_spawn("trigger_pushany", "", "7528 -6140 -150", "", 0);
+	if (ent) {
+		ent->setSize(Vector(-68, -16, 0), Vector(68, 16, 24));
+		ent->setAngles(Vector(350, 270, 0));
+		TriggerPushAny *trigger = (TriggerPushAny*)ent;
+		Event *ev = new Event(EV_TriggerPushAny_SetSpeed);
+		ev->AddInteger(950);
+		trigger->PostEvent(ev, 0.0f);	
+	}
+	ent = gamefix_spawn("trigger_pushany", "", "7528 -5284 -150", "", 0);
+	if (ent) {
+		ent->setSize(Vector(-68, -16, 0), Vector(68, 16, 24));
+		ent->setAngles(Vector(350, 90, 0));
+		TriggerPushAny* trigger = (TriggerPushAny*)ent;
+		Event* ev = new Event(EV_TriggerPushAny_SetSpeed);
+		ev->AddInteger(950);
+		trigger->PostEvent(ev, 0.0f);
+	}
+	ent = gamefix_spawn("trigger_pushany", "", "7924 -5712 -150", "", 0);
+	if (ent) {
+		ent->setSize(Vector(-16, -68, 0), Vector(16, 68, 24));
+		ent->setAngles(Vector(350, 360, 0));
+		TriggerPushAny* trigger = (TriggerPushAny*)ent;
+		Event* ev = new Event(EV_TriggerPushAny_SetSpeed);
+		ev->AddInteger(950);
+		trigger->PostEvent(ev, 0.0f);
+	}
+	ent = gamefix_spawn("trigger_pushany", "", "7124 -5712 -150", "", 0);
+	if (ent) {
+		ent->setSize(Vector(-16, -68, 0), Vector(16, 68, 24));
+		ent->setAngles(Vector(350, 180, 0));
+		TriggerPushAny* trigger = (TriggerPushAny*)ent;
+		Event* ev = new Event(EV_TriggerPushAny_SetSpeed);
+		ev->AddInteger(950);
+		trigger->PostEvent(ev, 0.0f);
+	}
 }
 
 //--------------------------------------------------------------

@@ -59,3 +59,5 @@ float gameFixAPI_getActivationTime(Entity* entity);
 Player* gameFixAPI_getActivator(Entity* puzzle);
 void gameFixAPI_setActivator(Entity* entity, Entity* activator);
 void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
+void gameFixAPI_levelfix_m11l3a_drull_ruins3_boss();
+void gameFixAPI_levelfix_swsglobe();
