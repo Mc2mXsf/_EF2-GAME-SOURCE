@@ -57,6 +57,15 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Changed: Printout to always print
+bool Program::FinishCompilation( void )
+void Program::Compile( const char *filename )
+void Interpreter::RunError( const char *error, ... )
+
+Fixed: String operations
+int Program::AllocString()
+void Program::setString( int offset, const char *text )
+
 Fixed: Drowning making normal pain instead of a gulp sound
 void Player::WorldEffects( void )
 void Player::Pain( Event *ev )
@@ -1326,11 +1335,11 @@ Added: Function manage level related fixes
 void Level::Start( void )
 void gamefix_levelFixes();
 
-Added: Function to fix warning message spam on ctf_grey
-void gameFixAPI_maxLevelitems_ctf_grey()
-
-Added: Fix for Spawnpoints/Spawnlocations on level in HM/TDM (mp_gametype < 2) dm_ctf_voy1
+Added: Various fixes for Maps and Level-Scripts: dm_ctf_voy1, ctf_grey, swsglobe, 
 void gameFixAPI_spawnlocations_dm_ctf_voy1()
+void gameFixAPI_maxLevelitems_ctf_grey()
+void gameFixAPI_levelfix_swsglobe()
+void gameFixAPI_levelfix_m11l3a_drull_ruins3_boss()
 
 Added: info_player_start Singleplayer Spawn being used if no other is found on a map - allows to spawn on Singleplayer maps
 void ModeDeathmatch::respawnPlayer( Player *player )
