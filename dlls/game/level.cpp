@@ -366,13 +366,6 @@ void Level::Start( void )
 	levelVars.SetVariable( "found_specialItems" , found_specialItems );
 	levelVars.SetVariable( "total_enemies_spawned", _totalEnemiesSpawned );
 
-	
-	//--------------------------------------------------------------
-	// GAMEFIX - Added: Fix for Spawnpoints/Spawnlocations on level in HM/TDM (mp_gametype < 2) dm_ctf_voy1
-	//--------------------------------------------------------------
-	gamefix_levelFixes();
-	
-
 	FindTeams();
 
 	// call the precache scripts
@@ -411,6 +404,14 @@ void Level::Start( void )
 			gamescript->DelayedStart( 0.0f );
 		}
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Various fixes for Maps and Level-Scripts - chrissstrahl
+	// Moved down here, so we can access level scripts
+	//--------------------------------------------------------------
+	gamefix_levelFixes();
+
 
 	loadLevelStrings();
 	started = true;
