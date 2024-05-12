@@ -3555,7 +3555,12 @@ float GetAnimationRate( Entity &entity, const int animation )
 
 	if ( time == 0.0f )
 	{
-		gi.DPrintf( "Invalid animation for %d\n", entity.entnum );
+		//--------------------------------------------------------------
+		// GAMEFIX - Changed: Printout to always print - chrissstrahl
+		//--------------------------------------------------------------
+		gi.Printf( "Invalid animation for %d\n", entity.entnum );
+
+
 		return 0.0f;
 	}
 
