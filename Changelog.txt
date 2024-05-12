@@ -61,6 +61,7 @@ Changed: Printout to always print
 bool Program::FinishCompilation( void )
 void Program::Compile( const char *filename )
 void Interpreter::RunError( const char *error, ... )
+float GetAnimationRate( Entity &entity, const int animation )
 
 Fixed: String operations
 int Program::AllocString()
@@ -1335,7 +1336,7 @@ Added: Function manage level related fixes
 void Level::Start( void )
 void gamefix_levelFixes();
 
-Added: Various fixes for Maps and Level-Scripts: dm_ctf_voy1, ctf_grey, swsglobe, 
+Added: Various fixes for Maps and Level-Scripts: dm_ctf_voy1, ctf_grey, swsglobe, m11l3a-drull_ruins3_boss
 void gameFixAPI_spawnlocations_dm_ctf_voy1()
 void gameFixAPI_maxLevelitems_ctf_grey()
 void gameFixAPI_levelfix_swsglobe()
