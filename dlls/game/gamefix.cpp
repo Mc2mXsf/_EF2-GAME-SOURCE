@@ -604,6 +604,7 @@ str gamefix_getLocalizedString(Player* player,const str sEnglish,const str sGerm
 void gamefix_vstrLocalLanguage(gentity_t* ent)
 {
 	if (ent && gameFixAPI_inMultiplayer()) {
+		//this does not always work if sv_floodprotect (clientcommand is stalled) is enabled
 		gi.SendServerCommand(ent->client->ps.clientNum, "stufftext \"vstr local_language\n\"");
 	}
 }
