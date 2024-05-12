@@ -670,9 +670,11 @@ returns an unused string index
 */
 int Program::AllocString()
 {
-	int i;
-
-	for ( i = 0; i < MAX_STRINGS; i++ )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: String operations - Start index - Daggolin - chrissstrahl
+	// I do not recall the details and no commentary was given
+	//--------------------------------------------------------------
+	for (int i = RESERVED_OFS; i < MAX_STRINGS; i++ )
 	{
 		if ( !strings[i].inuse ) {
 			strings[i].inuse = true;
@@ -1099,8 +1101,20 @@ void Program::setTargetList( int offset, const TargetList *list )
 
 void Program::setString( int offset, const char *text )
 {
-	strings[ offset ].s = text;
-	*( int * )&pr_globals[ offset ] = offset;
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: String operations - Daggolin - chrissstrahl
+	// Workaround for incorrect assumption that offset equals stringid
+	// (Global Scope) String variables set via script did not always work, under specific circumstances they remained empty
+	//--------------------------------------------------------------
+	// Reserved ops are a bit problematic, so we reserve a string for each of them leading to offset == stringid...
+	if (offset < RESERVED_OFS){ 
+		strings[offset].s = text;
+		*(int*)&pr_globals[offset] = offset;
+	}
+	// Update existing value using stringid retrieved from offset
+	else{ 
+		strings[*(int*)&pr_globals[offset]].s = text;
+	}
 }
 
 void Program::setFloat( int offset, float value )
