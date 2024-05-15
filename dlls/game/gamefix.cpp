@@ -654,7 +654,10 @@ void gamefix_playerSpectator(Player* player)
 {
 	gameFixAPI_playerSpectator(player);
 }
-void gamefix_playerChangeTeam(Player* player,const str &realTeamName)
+void gamefix_playerChangedTeam(Player* player,const str &realTeamName)
+{
+	gameFixAPI_playerChangeTeam(player,realTeamName);
+}
 void gamefix_playerKilled(Player* player)
 {
 	gameFixAPI_playerKilled(player);
@@ -670,6 +673,28 @@ void gamefix_playerSpawn(Player* player)
 void gamefix_playerModelChanged(Player* player)
 {
 	gameFixAPI_playerModelChanged(player);
+}
+void gamefix_playerUseItem(Player* player, const char* name)
+{
+	gameFixAPI_playerUseItem(player, name);
+}
+void gamefix_playerScore(Player* player)
+{
+	gameFixAPI_playerScore(player);
+}
+void gamefix_playerClientBegin(gentity_t* ent)
+{
+	gi.Printf("gamefix_playerClientBegin\n");
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Turn ON LEVEL AI if server no longer empty, is turned off again if server is empty - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_aiTurnOn();
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Detection of Player local_language cvar, for Eng/Deu Language detection - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_vstrLocalLanguage(ent);
 }
 
 //--------------------------------------------------------------
@@ -793,4 +818,21 @@ Entity* gamefix_spawn(char const* className, char const* model, char const* orig
 	ent = args.Spawn();
 	if (!ent) { return nullptr; }
 	return ent;
+}
+
+void gamefix_svFloodProtectDisable()
+{
+	if (gameFixAPI_inSingleplayer()) { return; }
+
+	//disable sv_floodprotect as it creates many issues in mp with command not being detected, such as:
+	//player disconnect, huds and menus not being added to client (if teams are switched fast)
+	//gamefix has its own floodfilter in place, allowing important commands like "disconnect" to pass at any time
+	// 
+	//see also: G_ConsoleCommand
+
+	cvar_t* cvar = gi.cvar_get("sv_floodprotect");
+	if (cvar && cvar->integer == 1 || !cvar) {
+		gi.Printf(_GFix_INFO_APPLIED, _GFix_MSG_sv_floodProtect);
+		gi.cvar_set("sv_floodprotect", "0");
+	}
 }

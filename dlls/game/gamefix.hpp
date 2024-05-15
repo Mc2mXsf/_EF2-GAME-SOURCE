@@ -22,10 +22,13 @@ constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 //--------------------------------------------------------------
 struct gamefix_client_persistant_s
 {
-	int				entNum = -1;
 	bool			isBot = false;
 	str				language = "Eng";
 	bool			admin = false;
+	int				commands = 0;
+	int				commandsLast = 0;
+	str				currentModel = "models/char/munro.tik";
+	str				currentTeam = "none";
 };
 extern gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 
@@ -81,12 +84,17 @@ void				gamefix_aiTurnOn();
 void				gamefix_printAllClients(const str text);
 void				gamefix_levelFixes();
 void				gamefix_playerSpectator(Player* player);
+void				gamefix_playerChangedTeam(Player* player,const str &realTeamName);
 void				gamefix_playerKilled(Player* player);
 void				gamefix_playerEntered(Player* player);
 void				gamefix_playerSpawn(Player* player);
 void				gamefix_playerModelChanged(Player* player);
+void				gamefix_playerUseItem(Player* player, const char* name);
+void				gamefix_playerScore(Player* player);
+void				gamefix_playerClientBegin(gentity_t* ent);
 void				gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
 str					gamefix_localizeStringForPlayer(Player* player, char unlocal[MAX_QPATH]);
 float				gamefix_dialogGetSoundlength(char sound[MAX_QPATH]);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
 Entity*				gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags);
+void				gamefix_svFloodProtectDisable();
