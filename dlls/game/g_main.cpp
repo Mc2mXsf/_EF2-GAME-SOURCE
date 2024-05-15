@@ -1837,21 +1837,8 @@ extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
 		}
 		else
 		{
-			//--------------------------------------------------------------
-			// GAMEFIX - Added: Turn ON LEVEL AI if server no longer empty, is turned off again if server is empty - chrissstrahl
-			//--------------------------------------------------------------
-			gamefix_aiTurnOn();
-
-
 			// Record the time entered
 			ent->client->pers.enterTime = level.time;
-
-
-			//--------------------------------------------------------------
-			// GAMEFIX - Added: Detection of Player local_language cvar, for Eng/Deu Language detection - chrissstrahl
-			//--------------------------------------------------------------
-			gamefix_vstrLocalLanguage(ent);
-
 
 			// send effect if in a multiplayer game
 			if ( game.maxclients > 1 )
@@ -1859,6 +1846,13 @@ extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
 				gi.Printf ( "%s entered the game\n", ent->client->pers.netname );
 			}
 		}
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Function handling player game event - chrissstrahl
+		//--------------------------------------------------------------
+		gamefix_playerClientBegin(ent);
+
 		
 		// make sure all view stuff is valid
 		if ( ent->entity )
@@ -2173,12 +2167,7 @@ extern "C" const char *G_ClientConnect( int clientNum, qboolean firstTime, qbool
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 		//--------------------------------------------------------------
-		if (g_gametype->integer != GT_SINGLE_PLAYER && firstTime) {
-			gamefix_client_persistant_t[clientNum].entNum	= clientNum;
-			gamefix_client_persistant_t[clientNum].language	= "Eng";
-			gamefix_client_persistant_t[clientNum].isBot	= (bool)isBot;
-			gamefix_client_persistant_t[clientNum].admin	= false;
-		}
+		gameFixAPI_initPersistant(clientNum,(bool)isBot);
 
 
 		ent = &g_entities[ clientNum ];
@@ -2282,13 +2271,8 @@ extern "C" void G_ClientDisconnect( gentity_t *ent )
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 		//--------------------------------------------------------------
-		if (g_gametype->integer != GT_SINGLE_PLAYER) {
-			gamefix_client_persistant_t[ent->s.clientNum].entNum	= -1;
-			gamefix_client_persistant_t[ent->s.clientNum].language	= "Eng";
-			gamefix_client_persistant_t[ent->s.clientNum].isBot		= false;
-			gamefix_client_persistant_t[ent->s.clientNum].admin		= false;
-		}
-		
+		gameFixAPI_initPersistant(ent->s.clientNum, gameFixAPI_isBot(ent));
+
 
 		Player *player;
 		

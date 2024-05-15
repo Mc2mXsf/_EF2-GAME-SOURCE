@@ -654,6 +654,7 @@ void gamefix_playerSpectator(Player* player)
 {
 	gameFixAPI_playerSpectator(player);
 }
+void gamefix_playerChangeTeam(Player* player,const str &realTeamName)
 void gamefix_playerKilled(Player* player)
 {
 	gameFixAPI_playerKilled(player);
