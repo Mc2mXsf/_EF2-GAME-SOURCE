@@ -2150,6 +2150,12 @@ void MultiplayerManager::joinTeam( Player *player, const str &teamName )
 			modifier->joinedTeam( player, realTeamName );
 		}
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function handling player game event - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_playerChangedTeam(player, realTeamName);
 }
 
 void MultiplayerManager::say( Player *player, const str &text, bool team )
@@ -2729,12 +2735,6 @@ void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spe
 
 	if ( player )
 	{
-		//--------------------------------------------------------------
-		// GAMEFIX - Added: Function handling player game event - chrissstrahl
-		//--------------------------------------------------------------
-		gamefix_playerSpectator(player);
-
-
 		initPlayer( player );
 
 		_playerData[ player->entnum ]._spectator = true;
@@ -2809,13 +2809,10 @@ void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spe
 
 		player->clearItemText();
 
-
 		//--------------------------------------------------------------
-		// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
+		// GAMEFIX - Added: Function handling player game event - chrissstrahl
 		//--------------------------------------------------------------
-		if (level.cinematic == 1 && multiplayerManager.gamefixEF2_currentCamera) {
-			player->SetCamera(multiplayerManager.gamefixEF2_currentCamera, 0);
-		}
+		gamefix_playerSpectator(player);
 	}
 }
 
