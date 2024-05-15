@@ -30,6 +30,13 @@
 #include "mp_manager.hpp"
 #include "groupcoordinator.hpp"
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 WorldPtr  world;
 
 #define DEFAULT_ENTITY_FADE_DIST  3000
@@ -506,6 +513,12 @@ CLASS_DECLARATION( Entity, World, "worldspawn" )
 
 World::World()
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: sv_floodprotect disable to fix various issues in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_svFloodProtectDisable();
+
+
 	const char  *text;
 	str         mapname;
 	int		   i;
