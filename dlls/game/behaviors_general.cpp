@@ -3989,6 +3989,15 @@ BehaviorReturnCode_t GroupFollow::Hold( Actor &self )
 {
 	assert( _stopDistance * _maxRangeMultiplier < _paceDistance * _minRangeMultiplier );
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Added NULL check to prevent crash - chrissstrahl
+	//--------------------------------------------------------------
+	if (!self.followTarget.currentFollowTarget){
+		return BEHAVIOR_EVALUATING;
+	}
+
+
 	//float distanceToTarget = Vector::DistanceXY( self.origin, self.followTarget.currentFollowTarget->origin );
 	float distanceToTarget = Vector::Distance( self.origin, self.followTarget.currentFollowTarget->origin );
 
