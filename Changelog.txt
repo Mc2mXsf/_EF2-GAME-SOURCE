@@ -57,6 +57,11 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: sv_floodprotect disable to fix various issues in multiplayer
+World::World()
+void G_ClientCommand( gentity_t *ent )
+int gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
+
 Changed: Printout to always print
 bool Program::FinishCompilation( void )
 void Program::Compile( const char *filename )
@@ -120,6 +125,9 @@ Disabled: Assert
 void GotoSpecified::SetArgs ( Event *ev)
 
 Added: Function handling player game event
+extern "C" void G_ClientBegin( gentity_t *ent, const usercmd_t *cmd )
+void MultiplayerManager::joinTeam( Player *player, const str &teamName )
+void gamefix_playerChangedTeam(Player* player,const str &realTeamName)
 void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
 void gamefix_playerSpectator(Player* player); - multiplayer only
 void Player::Killed( Event *ev )
@@ -130,6 +138,10 @@ void MultiplayerManager::playerEnterArena( int entnum, float health )
 void gamefix_playerSpawn(Player* player);
 void MultiplayerManager::changePlayerModel( Player *player, const char *modelName, bool force )
 void gamefix_playerModelChanged(Player* player); - multiplayer only
+void Player::EventUseItem( Event *ev )
+void gamefix_playerUseItem(Player* player, const char* name)
+void Player::Score( Event *ev )
+void gamefix_playerScore(Player* player)
 
 Fixed: Use vsnprintf to prevent possbile buffer overflow
 const char *va( const char *format, ... )
@@ -137,6 +149,7 @@ const char *va( const char *format, ... )
 Fixed: Added NULL check to prevent crash
 void G_CacheStateMachineAnims( Entity *ent, const char *stateMachineName )
 qboolean G_SendCommandToPlayer( const gentity_t *ent, const char *command )
+BehaviorReturnCode_t GroupFollow::Hold( Actor &self )
 
 Fixed: Added check to prevent crash if a error is thrown before the level is loaded fully
 void L_ClearEventList( void )
