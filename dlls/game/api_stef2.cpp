@@ -191,28 +191,70 @@ bool gameFixAPI_isBot(gentity_t* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function handling player game event - chrissstrahl
 //--------------------------------------------------------------
-void gameFixAPI_playerSpectator(Player* player)
-//multiplayer only
-{
-}
-void gameFixAPI_playerModelChanged(Player* player)
-//multiplayer only
-{
-
-}
-void gameFixAPI_playerKilled(Player* player)
-{
-}
 void gameFixAPI_playerEntered(Player* player)
 {
 	if (gameFixAPI_inSingleplayer()) {
 		gameFixAPI_playerSpawn(player);
+		return;
 	}
+	gi.Printf("gameFixAPI_playerEntered\n");
 }
 void gameFixAPI_playerSpawn(Player* player)
 {
+	gi.Printf("gameFixAPI_playerSpawn\n");
 }
+void gameFixAPI_playerUseItem(Player* player, const char* name)
+{
+	gi.Printf("gameFixAPI_playerUseItem %s\n",name);
+}
+void gameFixAPI_playerKilled(Player* player)
+{
+	gi.Printf("gameFixAPI_playerKilled\n");
+}
+void gameFixAPI_playerChangeTeam(Player* player,const str &realTeamName)
+//multiplayer only
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return;
+	}
+	
+	if (gamefix_client_persistant_t[player->entnum].currentTeam != realTeamName) {
+		gi.Printf("gameFixAPI_playerChangeTeam %s\n", realTeamName.c_str());
+		gamefix_client_persistant_t[player->entnum].currentTeam == realTeamName;
+	}
+}
+void gameFixAPI_playerSpectator(Player* player)
+//multiplayer only
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return;
+	}
 
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
+	//--------------------------------------------------------------
+	if (level.cinematic == 1 && multiplayerManager.gamefixEF2_currentCamera) {
+		player->SetCamera(multiplayerManager.gamefixEF2_currentCamera, 0);
+	}
+
+	gi.Printf("gameFixAPI_playerSpectator\n");
+}
+void gameFixAPI_playerModelChanged(Player* player)
+//multiplayer only
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return;
+	}
+	
+	if (gamefix_client_persistant_t[player->entnum].currentModel != player->model) {
+		gi.Printf("gameFixAPI_playerModelChanged %s\n", player->model.c_str());
+		gamefix_client_persistant_t[player->entnum].currentModel == player->model;
+	}
+}
+void gameFixAPI_playerScore(Player* player)
+{
+	gi.Printf("gameFixAPI_playerScore\n");
+}
 
 //--------------------------------------------------------------
 // GAMEFIX - Return Entity the Player is currently targeting - chrissstrahl
@@ -303,6 +345,90 @@ Player* gameFixAPI_getClosestPlayerInCallvolume(Entity* entity)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Handles for Persistant Player data - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_initPersistant(int clientNum, bool isBot)
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return;
+	}
+
+	if (clientNum < 0 || clientNum > MAX_CLIENTS) {
+		gi.Error(ERR_DROP, _GFixEF2_ERR_gameFixAPI_initPersistantClNum, clientNum);
+		return;
+	}
+
+	gamefix_client_persistant_t[clientNum].isBot = isBot;
+	gamefix_client_persistant_t[clientNum].language = "Eng";
+	gamefix_client_persistant_t[clientNum].admin = false;
+	gamefix_client_persistant_t[clientNum].commands = 0;
+	gamefix_client_persistant_t[clientNum].commandsLast = -90119.0f;
+	gamefix_client_persistant_t[clientNum].currentModel = "";
+	gamefix_client_persistant_t[clientNum].currentTeam = "none";
+}
+//--------------------------------------------------------------
+// GAMEFIX - Used to keep track of client commands - part of the replacments for sv_floodProtect- chrissstrahl
+//--------------------------------------------------------------
+int gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return 0;
+	}
+
+	if (clientNum < 0 || clientNum > MAX_CLIENTS) {
+		gi.Error(ERR_DROP, _GFixEF2_ERR_gamefixAPI_commandsUpdateClNum, clientNum);
+		return 0;
+	}
+
+	//allow these commands to always pass
+	if (Q_stricmp(cmd,"disconnect") == 0 ||
+		cmd == "Eng" ||
+		cmd == "Deu")
+	{
+		return 0;
+	}
+
+	if (gamefix_client_persistant_t[clientNum].commandsLast < level.time) {
+		gamefix_client_persistant_t[clientNum].commandsLast = (level.time + 1.0f);
+		gamefix_client_persistant_t[clientNum].commands = 0;
+	}
+
+	return ++gamefix_client_persistant_t[clientNum].commands;
+}
+//--------------------------------------------------------------
+// GAMEFIX - Used to keep track of client commands - part of the replacments for sv_floodProtect- chrissstrahl
+//--------------------------------------------------------------
+void gamefixAPI_commandsReset(int clientNum)
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return;
+	}
+
+	if (clientNum < 0 || clientNum > MAX_CLIENTS) {
+		gi.Error(ERR_DROP, _GFixEF2_ERR_gamefixAPI_commandsResetClNum, clientNum);
+		return;
+	}
+
+	gamefix_client_persistant_t[clientNum].commands = 0;
+}
+//--------------------------------------------------------------
+// GAMEFIX - Used to keep track of client commands - part of the replacments for sv_floodProtect- chrissstrahl
+//--------------------------------------------------------------
+int gamefixAPI_commandsGet(int clientNum)
+{
+	if (gameFixAPI_inSingleplayer()) {
+		return 0;
+	}
+
+	if (clientNum < 0 || clientNum > MAX_CLIENTS) {
+		gi.Error(ERR_DROP, _GFixEF2_ERR_gamefixAPI_commandsGetClNum, clientNum);
+		return 0;
+	}
+
+	return gamefix_client_persistant_t[clientNum].commands;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function that allows Language selection English - chrissstrahl
 //--------------------------------------------------------------
 qboolean gameFixAPI_languageEng(const gentity_t* ent)
@@ -327,7 +453,7 @@ qboolean gameFixAPI_languageDeu(const gentity_t* ent)
 	
 #ifdef GAME_STAR_TREK_ELITE_FORCE_2
 	//after x sec on server assume client typed the command
-	if ((player->client->pers.enterTime + 5) < level.time) {
+	if (player->client && (player->client->pers.enterTime + 5) < level.time) {
 		gameFixAPI_hudPrint(player, _GFixAPI_YOUR_LANG_WAS_SET_TO_DEU);
 	}
 #endif //GAME_STAR_TREK_ELITE_FORCE_2

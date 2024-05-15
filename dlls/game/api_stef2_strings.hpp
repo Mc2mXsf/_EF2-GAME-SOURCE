@@ -38,3 +38,8 @@ constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_getNumFreeRelSVCmds_FAILED = "GetNumF
 
 constexpr auto _GFixEF2_ERR_FUNC_SensoryInFov_act_NULL = "SensoryPerception::InFOV -- actor is NULL\n";
 constexpr auto _GFixEF2_ERR_LEVEL_InfoPlayerDeathmatch_AT_ZERO = "info_player_deathmatch ($%s) is at (0 0 0)\n";
+
+constexpr auto _GFixEF2_ERR_gameFixAPI_initPersistantClNum = "gameFixAPI_initPersistant - clientnum out of range, was %d\n";
+constexpr auto _GFixEF2_ERR_gamefixAPI_commandsUpdateClNum = "gamefixAPI_commandsUpdate - clientnum out of range, was %d\n";
+constexpr auto _GFixEF2_ERR_gamefixAPI_commandsResetClNum = "gamefixAPI_commandsReset - clientnum out of range, was %d\n";
+constexpr auto _GFixEF2_ERR_gamefixAPI_commandsGetClNum = "gamefixAPI_commandsGet - clientnum out of range, was %d\n";

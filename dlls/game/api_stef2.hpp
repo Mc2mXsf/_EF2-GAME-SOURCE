@@ -30,15 +30,24 @@ int gameFixAPI_maxClients();
 bool gameFixAPI_isBot(gentity_t* ent);
 bool gameFixAPI_isBot(Player* player);
 
-void gameFixAPI_playerSpectator(Player* player);
-void gameFixAPI_playerKilled(Player* player);
 void gameFixAPI_playerEntered(Player* player);
 void gameFixAPI_playerSpawn(Player* player);
+void gameFixAPI_playerUseItem(Player* player, const char* name);
+void gameFixAPI_playerKilled(Player* player);
+void gameFixAPI_playerChangeTeam(Player* player,const str &realTeamName);
+void gameFixAPI_playerSpectator(Player* player);
 void gameFixAPI_playerModelChanged(Player* player);
+void gameFixAPI_playerScore(Player* player);
 
 void gameFixAPI_clearArchetypeInfoDisplay(Player* player, Entity* entity);
 Entity* gameFixAPI_getTargetedEntity(Player* player);
 Player* gameFixAPI_getClosestPlayerInCallvolume(Entity* entity);
+
+void gameFixAPI_initPersistant(int clientNum, bool isBot);
+int gamefixAPI_commandsUpdate(int clientNum, const str &cmd);
+void gamefixAPI_commandsReset(int clientNum);
+int gamefixAPI_commandsGet(int clientNum);
+
 qboolean gameFixAPI_languageEng(const gentity_t* ent);
 qboolean gameFixAPI_languageDeu(const gentity_t* ent);
 str gameFixAPI_getServerLanguage();

@@ -172,6 +172,10 @@ void G_ClientCommand( gentity_t *ent )
 {
 	try
 	{
+		gi.Printf("add own filter here -- cmd: %s\n", gi.argv(0));
+		gi.Printf("add own filter here -- cmd: %s\n", gi.argv(0));
+		gi.Printf("add own filter here -- cmd: %s\n", gi.argv(0));
+
 		if ( ent && !G_ProcessClientCommand( ent ) )
 		{
 			//--------------------------------------------------------------
