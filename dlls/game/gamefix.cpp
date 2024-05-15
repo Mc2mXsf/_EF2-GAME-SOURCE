@@ -828,7 +828,7 @@ void gamefix_svFloodProtectDisable()
 	//player disconnect, huds and menus not being added to client (if teams are switched fast)
 	//gamefix has its own floodfilter in place, allowing important commands like "disconnect" to pass at any time
 	// 
-	//see also: G_ConsoleCommand
+	//see also: G_ClientCommand
 
 	cvar_t* cvar = gi.cvar_get("sv_floodprotect");
 	if (cvar && cvar->integer == 1 || !cvar) {
