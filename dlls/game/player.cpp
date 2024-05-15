@@ -6594,6 +6594,13 @@ void Player::EventUseItem( Event *ev )
 	
 	name = ev->GetString( 1 );
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function handling player game event - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_playerUseItem(this,name);
+	
+
 	GameplayManager *gpm = GameplayManager::getTheGameplayManager();
 	
 	str objectName("CurrentPlayer.");
@@ -12803,6 +12810,12 @@ str	Player::GetCurrentCallVolume()
 
 void Player::Score( Event *ev )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function handling player game event - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_playerScore(this);
+
+
 	multiplayerManager.score( this );
 }
 
