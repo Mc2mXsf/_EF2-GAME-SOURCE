@@ -2117,6 +2117,15 @@ void MultiplayerManager::joinTeam( Player *player, const str &teamName )
 	if ( !_multiplayerGame->canJoinTeam( player, realTeamName ) )
 		return;
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: sv_floodProtect replacement functions - chrissstrahl
+	//--------------------------------------------------------------
+	if (!gamefixAPI_commandsUpdate(player->entnum,"joinmpteam")) {
+		return;
+	}
+
+
 	// Tell the modifiers that player left game
 
 	for ( i = 1 ; i <= _modifiers.NumObjects() ; i++ )
@@ -2168,6 +2177,14 @@ void MultiplayerManager::say( Player *player, const str &text, bool team )
 
 	if ( player )
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: sv_floodProtect replacement functions - chrissstrahl
+		//--------------------------------------------------------------
+		if (!gamefixAPI_chatUpdate(player->entnum, text)) {
+			return;
+		}
+
+
 		name = player->client->pers.netname;
 	}
 	else
@@ -2263,6 +2280,14 @@ void MultiplayerManager::say( Player *player, const str &text, bool team )
 
 void MultiplayerManager::tell( Player *player, const str &text, int entnum )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: sv_floodProtect replacement functions - chrissstrahl
+	//--------------------------------------------------------------
+	if (!gamefixAPI_chatUpdate(player->entnum, text)) {
+		return;
+	}
+
+
 	str realText;
 	str tempText;
 	int i;
@@ -2729,6 +2754,13 @@ Player *MultiplayerManager::getPlayerSpectating( Player *player )
 
 void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: sv_floodProtect replacement functions - chrissstrahl
+	//--------------------------------------------------------------
+	if (byChoice && !gamefixAPI_commandsUpdate(player->entnum,"spectator")) {
+		return;
+	}
+
 	Team *team;
 
 	// Make the player into a spectator
