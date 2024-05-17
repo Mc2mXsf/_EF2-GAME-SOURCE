@@ -26,7 +26,9 @@ struct gamefix_client_persistant_s
 	str				language = "Eng";
 	bool			admin = false;
 	int				commands = 0;
-	int				commandsLast = 0;
+	float			commandsLast = 0.0f;
+	int				chats = 0;
+	float			chatsLast = 0.0f;
 	str				currentModel = "models/char/munro.tik";
 	str				currentTeam = "none";
 };

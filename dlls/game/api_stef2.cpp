@@ -363,29 +363,41 @@ void gameFixAPI_initPersistant(int clientNum, bool isBot)
 	gamefix_client_persistant_t[clientNum].admin = false;
 	gamefix_client_persistant_t[clientNum].commands = 0;
 	gamefix_client_persistant_t[clientNum].commandsLast = -90119.0f;
+	gamefix_client_persistant_t[clientNum].chats = 0;
+	gamefix_client_persistant_t[clientNum].chatsLast = -90119.0f;
 	gamefix_client_persistant_t[clientNum].currentModel = "";
 	gamefix_client_persistant_t[clientNum].currentTeam = "none";
 }
+
 //--------------------------------------------------------------
-// GAMEFIX - Used to keep track of client commands - part of the replacments for sv_floodProtect- chrissstrahl
+// GAMEFIX - Used to keep track of client commands - part of the replacements for sv_floodProtect- chrissstrahl
 //--------------------------------------------------------------
-int gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
+bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
 {
 	if (gameFixAPI_inSingleplayer()) {
-		return 0;
+		return true;
 	}
 
 	if (clientNum < 0 || clientNum > MAX_CLIENTS) {
 		gi.Error(ERR_DROP, _GFixEF2_ERR_gamefixAPI_commandsUpdateClNum, clientNum);
-		return 0;
+		return false;
 	}
+
+	gi.Printf(va("gamefixAPI_commandsUpdate: %s\n",cmd.c_str()));
 
 	//allow these commands to always pass
 	if (Q_stricmp(cmd,"disconnect") == 0 ||
+		Q_stricmp(cmd,"say") == 0 ||
+		Q_stricmp(cmd,"tsay") == 0 ||
+		Q_stricmp(cmd,"vsay") == 0 ||
+		Q_stricmp(cmd,"vosay") == 0 ||
+		Q_stricmp(cmd,"vosay_team") == 0 ||
+		Q_stricmp(cmd,"vsay_team") == 0 ||
+		Q_stricmp(cmd,"say_team") == 0 ||
 		cmd == "Eng" ||
 		cmd == "Deu")
 	{
-		return 0;
+		return true;
 	}
 
 	if (gamefix_client_persistant_t[clientNum].commandsLast < level.time) {
@@ -393,39 +405,47 @@ int gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
 		gamefix_client_persistant_t[clientNum].commands = 0;
 	}
 
-	return ++gamefix_client_persistant_t[clientNum].commands;
+	if (++gamefix_client_persistant_t[clientNum].commands > 3) {
+		gi.Printf(va("gamefixAPI_commandsUpdate %d - rejected: %s\n",gamefix_client_persistant_t[clientNum].commands, cmd.c_str()));
+		return false;
+	}
+	return true;
 }
+
 //--------------------------------------------------------------
-// GAMEFIX - Used to keep track of client commands - part of the replacments for sv_floodProtect- chrissstrahl
+// GAMEFIX - Used to keep track of client chat - part of the replacements for sv_floodProtect- chrissstrahl
 //--------------------------------------------------------------
-void gamefixAPI_commandsReset(int clientNum)
+bool gamefixAPI_chatUpdate(int clientNum, const str &text)
 {
 	if (gameFixAPI_inSingleplayer()) {
-		return;
+		return true;
 	}
 
 	if (clientNum < 0 || clientNum > MAX_CLIENTS) {
-		gi.Error(ERR_DROP, _GFixEF2_ERR_gamefixAPI_commandsResetClNum, clientNum);
-		return;
+		gi.Error(ERR_DROP, _GFixEF2_ERR_gamefixAPI_chatUpdateClNum, clientNum);
+		return false;
 	}
 
-	gamefix_client_persistant_t[clientNum].commands = 0;
-}
-//--------------------------------------------------------------
-// GAMEFIX - Used to keep track of client commands - part of the replacments for sv_floodProtect- chrissstrahl
-//--------------------------------------------------------------
-int gamefixAPI_commandsGet(int clientNum)
-{
-	if (gameFixAPI_inSingleplayer()) {
-		return 0;
+	if (gamefix_client_persistant_t[clientNum].chatsLast < level.time) {
+		gamefix_client_persistant_t[clientNum].chatsLast = (level.time + GAMEFIX_API_CHAT_CYCLE);
+		gamefix_client_persistant_t[clientNum].chats = 0;
 	}
+	
+	gamefix_client_persistant_t[clientNum].chats++;
 
-	if (clientNum < 0 || clientNum > MAX_CLIENTS) {
-		gi.Error(ERR_DROP, _GFixEF2_ERR_gamefixAPI_commandsGetClNum, clientNum);
-		return 0;
+	if (gamefix_client_persistant_t[clientNum].chats >= GAMEFIX_API_CHAT_KICK) {
+		gi.Printf(va("gamefixAPI_chatsUpdate %d - Kick\n", gamefix_client_persistant_t[clientNum].chats));
+		Player* player = gamefix_getPlayer(clientNum);
+		if (player) {
+			gi.SendConsoleCommand(va("kick %d\n", clientNum));
+		}
 	}
-
-	return gamefix_client_persistant_t[clientNum].commands;
+	
+	if (gamefix_client_persistant_t[clientNum].chats > GAMEFIX_API_CHAT_MAX) {
+		gi.Printf(va("gamefixAPI_chatsUpdate %d - rejected: %s\n",gamefix_client_persistant_t[clientNum].chats,text.c_str()));
+		return false;
+	}
+	return true;
 }
 
 //--------------------------------------------------------------

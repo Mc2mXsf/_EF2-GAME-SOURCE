@@ -13,6 +13,10 @@
 #include "gamefix_strings.hpp"
 #include "gamefix.hpp"
 
+#define GAMEFIX_API_CHAT_MAX 3
+#define GAMEFIX_API_CHAT_CYCLE 3.0f
+#define GAMEFIX_API_CHAT_KICK 10
+
 #define GAME_STAR_TREK_ELITE_FORCE_2
 //#define GAME_HEAVY_METAL_FAKK_2
 //#define GAME_MEDAL_OF_HONOR_ALLIED_ASSAULT
@@ -44,9 +48,8 @@ Entity* gameFixAPI_getTargetedEntity(Player* player);
 Player* gameFixAPI_getClosestPlayerInCallvolume(Entity* entity);
 
 void gameFixAPI_initPersistant(int clientNum, bool isBot);
-int gamefixAPI_commandsUpdate(int clientNum, const str &cmd);
-void gamefixAPI_commandsReset(int clientNum);
-int gamefixAPI_commandsGet(int clientNum);
+bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd);
+bool gamefixAPI_chatUpdate(int clientNum, const str &text);
 
 qboolean gameFixAPI_languageEng(const gentity_t* ent);
 qboolean gameFixAPI_languageDeu(const gentity_t* ent);
