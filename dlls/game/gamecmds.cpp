@@ -172,9 +172,13 @@ void G_ClientCommand( gentity_t *ent )
 {
 	try
 	{
-		gi.Printf("add own filter here -- cmd: %s\n", gi.argv(0));
-		gi.Printf("add own filter here -- cmd: %s\n", gi.argv(0));
-		gi.Printf("add own filter here -- cmd: %s\n", gi.argv(0));
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: sv_floodProtect replacement functions - chrissstrahl
+		//--------------------------------------------------------------
+		if (ent && !gamefixAPI_commandsUpdate(ent->entity->entnum, gi.argv(0))) {
+			return;
+		}
+
 
 		if ( ent && !G_ProcessClientCommand( ent ) )
 		{
