@@ -364,7 +364,7 @@ void gameFixAPI_initPersistant(int clientNum, bool isBot)
 	gamefix_client_persistant_t[clientNum].commands = 0;
 	gamefix_client_persistant_t[clientNum].commandsLast = -90119.0f;
 	gamefix_client_persistant_t[clientNum].chats = 0;
-	gamefix_client_persistant_t[clientNum].chatsLast = -90119.0f;
+	gamefix_client_persistant_t[clientNum].chatsLast = -90118.0f;
 	gamefix_client_persistant_t[clientNum].currentModel = "";
 	gamefix_client_persistant_t[clientNum].currentTeam = "none";
 }
@@ -383,8 +383,6 @@ bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
 		return false;
 	}
 
-	gi.Printf(va("gamefixAPI_commandsUpdate: %s\n",cmd.c_str()));
-
 	//allow these commands to always pass
 	if (Q_stricmp(cmd,"disconnect") == 0 ||
 		Q_stricmp(cmd,"say") == 0 ||
@@ -401,11 +399,11 @@ bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
 	}
 
 	if (gamefix_client_persistant_t[clientNum].commandsLast < level.time) {
-		gamefix_client_persistant_t[clientNum].commandsLast = (level.time + 1.0f);
+		gamefix_client_persistant_t[clientNum].commandsLast = (level.time + GAMEFIX_API_COMMANDS_CYCLE);
 		gamefix_client_persistant_t[clientNum].commands = 0;
 	}
 
-	if (++gamefix_client_persistant_t[clientNum].commands > 3) {
+	if (++gamefix_client_persistant_t[clientNum].commands > GAMEFIX_API_COMMANDS_MAX) {
 		gi.Printf(va("gamefixAPI_commandsUpdate %d - rejected: %s\n",gamefix_client_persistant_t[clientNum].commands, cmd.c_str()));
 		return false;
 	}
@@ -432,17 +430,8 @@ bool gamefixAPI_chatUpdate(int clientNum, const str &text)
 	}
 	
 	gamefix_client_persistant_t[clientNum].chats++;
-
-	if (gamefix_client_persistant_t[clientNum].chats >= GAMEFIX_API_CHAT_KICK) {
-		gi.Printf(va("gamefixAPI_chatsUpdate %d - Kick\n", gamefix_client_persistant_t[clientNum].chats));
-		Player* player = gamefix_getPlayer(clientNum);
-		if (player) {
-			gi.SendConsoleCommand(va("kick %d\n", clientNum));
-		}
-	}
 	
 	if (gamefix_client_persistant_t[clientNum].chats > GAMEFIX_API_CHAT_MAX) {
-		gi.Printf(va("gamefixAPI_chatsUpdate %d - rejected: %s\n",gamefix_client_persistant_t[clientNum].chats,text.c_str()));
 		return false;
 	}
 	return true;

@@ -13,9 +13,11 @@
 #include "gamefix_strings.hpp"
 #include "gamefix.hpp"
 
-#define GAMEFIX_API_CHAT_MAX 3
-#define GAMEFIX_API_CHAT_CYCLE 3.0f
-#define GAMEFIX_API_CHAT_KICK 10
+constexpr auto GAMEFIX_API_CHAT_MAX = 3;
+constexpr auto GAMEFIX_API_CHAT_CYCLE = 3.0f;
+
+constexpr auto GAMEFIX_API_COMMANDS_MAX = 3;
+constexpr auto GAMEFIX_API_COMMANDS_CYCLE = 1.0f;
 
 #define GAME_STAR_TREK_ELITE_FORCE_2
 //#define GAME_HEAVY_METAL_FAKK_2
