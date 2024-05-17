@@ -10,6 +10,9 @@ Disabled warning supressions and fixed issues with the code if there where any:
 4710		did not inline this function
 4711		selected for automatic inline expansion
 
+THE FOLLOWING CODE NEEDS TO BE CHECK BEFORE ANY RELASE
+bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd) -> remove printout
+
 DISABLED CODE POTENCIALLY CAUSING ISSUES
 void Object::Setup( Event *ev ) - is sets health on objects, as far as I recall this was not in the original game release
 
@@ -59,8 +62,18 @@ void SnipeEnemy::updateEnemy()
 
 Added: sv_floodprotect disable to fix various issues in multiplayer
 World::World()
+
+Added: sv_floodProtect replacment functions
 void G_ClientCommand( gentity_t *ent )
-int gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
+void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
+void MultiplayerManager::joinTeam( Player *player, const str &teamName )
+bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
+void MultiplayerManager::say( Player *player, const str &text, bool team )
+void MultiplayerManager::tell( Player *player, const str &text, int entnum )
+bool gamefixAPI_chatUpdate(int clientNum)
+
+Fixed: Command tell discarding space char, gluing words together
+qboolean G_TellCmd( const gentity_t *ent )
 
 Changed: Printout to always print
 bool Program::FinishCompilation( void )
