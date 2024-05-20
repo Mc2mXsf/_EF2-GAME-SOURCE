@@ -25,6 +25,7 @@ struct gamefix_client_persistant_s
 	bool			isBot = false;
 	str				language = "Eng";
 	bool			admin = false;
+	str				commandsStalled = "";
 	int				commands = 0;
 	float			commandsLast = 0.0f;
 	int				chats = 0;
