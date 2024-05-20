@@ -687,6 +687,11 @@ void gamefix_playerClientBegin(gentity_t* ent)
 	gi.Printf("gamefix_playerClientBegin\n");
 
 	//--------------------------------------------------------------
+	// GAMEFIX - Added: sv_floodprotect disable to fix various issues in multiplayer - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_svFloodProtectDisable();
+
+	//--------------------------------------------------------------
 	// GAMEFIX - Added: Turn ON LEVEL AI if server no longer empty, is turned off again if server is empty - chrissstrahl
 	//--------------------------------------------------------------
 	gamefix_aiTurnOn();

@@ -513,12 +513,6 @@ CLASS_DECLARATION( Entity, World, "worldspawn" )
 
 World::World()
 {
-	//--------------------------------------------------------------
-	// GAMEFIX - Added: sv_floodprotect disable to fix various issues in multiplayer - chrissstrahl
-	//--------------------------------------------------------------
-	gamefix_svFloodProtectDisable();
-
-
 	const char  *text;
 	str         mapname;
 	int		   i;
