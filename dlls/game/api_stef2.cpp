@@ -197,19 +197,19 @@ void gameFixAPI_playerEntered(Player* player)
 		gameFixAPI_playerSpawn(player);
 		return;
 	}
-	gi.Printf("gameFixAPI_playerEntered\n");
+	//gi.Printf("gameFixAPI_playerEntered\n");
 }
 void gameFixAPI_playerSpawn(Player* player)
 {
-	gi.Printf("gameFixAPI_playerSpawn\n");
+	//gi.Printf("gameFixAPI_playerSpawn\n");
 }
 void gameFixAPI_playerUseItem(Player* player, const char* name)
 {
-	gi.Printf("gameFixAPI_playerUseItem %s\n",name);
+	//gi.Printf("gameFixAPI_playerUseItem %s\n",name);
 }
 void gameFixAPI_playerKilled(Player* player)
 {
-	gi.Printf("gameFixAPI_playerKilled\n");
+	//gi.Printf("gameFixAPI_playerKilled\n");
 }
 void gameFixAPI_playerChangeTeam(Player* player,const str &realTeamName)
 //multiplayer only
@@ -219,7 +219,7 @@ void gameFixAPI_playerChangeTeam(Player* player,const str &realTeamName)
 	}
 	
 	if (gamefix_client_persistant_t[player->entnum].currentTeam != realTeamName) {
-		gi.Printf("gameFixAPI_playerChangeTeam %s\n", realTeamName.c_str());
+		//gi.Printf("gameFixAPI_playerChangeTeam %s\n", realTeamName.c_str());
 		gamefix_client_persistant_t[player->entnum].currentTeam == realTeamName;
 	}
 }
@@ -236,8 +236,6 @@ void gameFixAPI_playerSpectator(Player* player)
 	if (level.cinematic == 1 && multiplayerManager.gamefixEF2_currentCamera) {
 		player->SetCamera(multiplayerManager.gamefixEF2_currentCamera, 0);
 	}
-
-	gi.Printf("gameFixAPI_playerSpectator\n");
 }
 void gameFixAPI_playerModelChanged(Player* player)
 //multiplayer only
@@ -247,13 +245,12 @@ void gameFixAPI_playerModelChanged(Player* player)
 	}
 	
 	if (gamefix_client_persistant_t[player->entnum].currentModel != player->model) {
-		gi.Printf("gameFixAPI_playerModelChanged %s\n", player->model.c_str());
+		//gi.Printf("gameFixAPI_playerModelChanged %s\n", player->model.c_str());
 		gamefix_client_persistant_t[player->entnum].currentModel == player->model;
 	}
 }
 void gameFixAPI_playerScore(Player* player)
 {
-	gi.Printf("gameFixAPI_playerScore\n");
 }
 
 //--------------------------------------------------------------
@@ -400,11 +397,20 @@ bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
 
 	if (gamefix_client_persistant_t[clientNum].commandsLast < level.time) {
 		gamefix_client_persistant_t[clientNum].commandsLast = (level.time + GAMEFIX_API_COMMANDS_CYCLE);
+		if (strlen(gamefix_client_persistant_t[clientNum].commandsStalled)) {
+			Player* player = GetPlayer(clientNum);
+			if (player) {
+				gi.Printf("Gamefix Stalled Commands (%s) for %s\n", gamefix_client_persistant_t[clientNum].commandsStalled.c_str(), player->client->pers.netname);
+			}
+		}
+		gamefix_client_persistant_t[clientNum].commandsStalled = "";
 		gamefix_client_persistant_t[clientNum].commands = 0;
 	}
 
 	if (++gamefix_client_persistant_t[clientNum].commands > GAMEFIX_API_COMMANDS_MAX) {
-		gi.Printf(va("gamefixAPI_commandsUpdate %d - rejected: %s\n",gamefix_client_persistant_t[clientNum].commands, cmd.c_str()));
+		if (!strstr(gamefix_client_persistant_t[clientNum].commandsStalled.c_str(),cmd.c_str())) {
+			gamefix_client_persistant_t[clientNum].commandsStalled += va(" %s", cmd.c_str());
+		}
 		return false;
 	}
 	return true;
