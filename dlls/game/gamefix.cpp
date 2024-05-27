@@ -614,7 +614,7 @@ void gamefix_vstrLocalLanguage(gentity_t* ent)
 //--------------------------------------------------------------
 void gamefix_aiTurnOff()
 {
-	if (gameFixAPI_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
+	if (level.ai_on && gameFixAPI_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
 		level.ai_on = false;
 		gi.Printf(_GFixEF2_INFO_FUNC_ClientDisconnect);
 	}
@@ -625,7 +625,7 @@ void gamefix_aiTurnOff()
 //--------------------------------------------------------------
 void gamefix_aiTurnOn()
 {
-	if (gameFixAPI_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
+	if (!level.ai_on && gameFixAPI_inMultiplayer() && gamefix_getPlayers(true) <= 0) {
 		level.ai_on = true;
 		gi.Printf(_GFixEF2_INFO_FUNC_ClientBegin);
 	}
@@ -751,7 +751,7 @@ float gamefix_dialogGetSoundlength(char realDialogName[MAX_QPATH])
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function handling Dialog in Multiplayer - chrissstrahl
+// GAMEFIX - Added: Function replacing specific part of a string - chrissstrahl
 //--------------------------------------------------------------
 void gamefix_replaceSubstring(char* str, const char* find, const char* replace) {
 	char buffer[1024];  // Ensure buffer is sufficiently large
@@ -784,6 +784,98 @@ void gamefix_replaceSubstring(char* str, const char* find, const char* replace) 
 
 	// Copy the buffer back to the original string
 	strcpy(str, buffer);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function finding first occurence of given single char, returning its position - chrissstrahl
+//--------------------------------------------------------------
+static int gamefix_findChar(char* str, char find)
+{
+	int pos = -1; //NoMatch
+	for (int i = 0; str[i] != '\0'; ++i) {
+		if (str[i] == find) {
+			pos = i;
+			break;
+		}
+	}
+	return pos;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function finding first occurence of given single char, returning its position - chrissstrahl
+//--------------------------------------------------------------
+//static int gamefix_findChar2(const char* str, char find)
+//{
+//	const char* pos = strchr(str, find);
+//
+//	if (pos != nullptr) {
+//		return pos - str;
+//	}
+//
+//	return -1;  // NoMatch
+//}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function finding first occurence of given any of the single chars, returning its position - chrissstrahl
+//--------------------------------------------------------------
+static int gamefix_findChars(char* str, const char* find)
+{
+	int pos = -1; // NoMatch
+	for (int i = 0; str[i] != '\0'; ++i) {
+		for (int j = 0; find[j] != '\0'; ++j) {
+			if (str[i] == find[j]) {
+				pos = i;
+				return pos;
+			}
+		}
+	}
+	return pos;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function finding first occurence of given string, returning its position - chrissstrahl
+//--------------------------------------------------------------
+static int gamefix_findString(const char* str, const char* find)
+{
+	const char* pos = strstr(str, find);
+
+	if (pos != nullptr) {
+		return pos - str;  // Berechnet die Position als Differenz der Zeiger
+	}
+	else {
+		return -1;  // NoMatch
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function finding first occurence of given char, returning string prior to its occurence - chrissstrahl
+//--------------------------------------------------------------
+static str gamefix_getStringUntilChar(const str* source, char delimiter)
+{
+	str result = "";
+	for (int i = 0; source[i] != '\0'; ++i) {
+		if (source[i] == delimiter) {
+			break;
+		}
+		result += source[i];
+	}
+	return result;
+}
+static char* gamefix_getStringUntilChar(const char* source, char delimiter)
+{
+	//get length
+	int length = 0;
+	while (source[length] != '\0' && source[length] != delimiter) {
+		++length;
+	}
+
+	//allocate
+	char* result = new char[length + 1];
+
+	//copy and terminate
+	Q_strncpyz(result, source, (length + 1));
+
+	return result;
 }
 
 //--------------------------------------------------------------
@@ -825,15 +917,17 @@ Entity* gamefix_spawn(char const* className, char const* model, char const* orig
 	return ent;
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to disable  sv_floodprotect as it creates many issues in mp with command not being detected - Chrissstrahl
+// Known Problems with sv_floodProtect enabled:
+// player disconnect, huds and menus not being added to client (if teams are switched fast)
+// gamefix has its own floodfilter in place, allowing important commands like "disconnect" to pass at any time
+// 
+// see also: G_ClientCommand
+//--------------------------------------------------------------
 void gamefix_svFloodProtectDisable()
 {
 	if (gameFixAPI_inSingleplayer()) { return; }
-
-	//disable sv_floodprotect as it creates many issues in mp with command not being detected, such as:
-	//player disconnect, huds and menus not being added to client (if teams are switched fast)
-	//gamefix has its own floodfilter in place, allowing important commands like "disconnect" to pass at any time
-	// 
-	//see also: G_ClientCommand
 
 	cvar_t* cvar = gi.cvar_get("sv_floodprotect");
 	if (cvar && cvar->integer == 1 || !cvar) {

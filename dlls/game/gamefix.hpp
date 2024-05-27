@@ -17,6 +17,7 @@ constexpr auto _GFix_PLAYER_increase = 1.0f; //was 2.0f
 constexpr auto _GFix_PLAYER_next_drown_time_delay = 3.0f; //was 2.0f
 constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 
+
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 //--------------------------------------------------------------
@@ -99,5 +100,10 @@ void				gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_
 str					gamefix_localizeStringForPlayer(Player* player, char unlocal[MAX_QPATH]);
 float				gamefix_dialogGetSoundlength(char sound[MAX_QPATH]);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
+static int			gamefix_findChar(const char* str, char find);
+static int			gamefix_findChars(char* str, const char* find);
+static int			gamefix_findString(const char* str, const char* find);
+static str			gamefix_getStringUntilChar(const str* source, char delimiter);
+static char*		gamefix_getStringUntilChar(const char* source, char delimiter);
 Entity*				gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags);
 void				gamefix_svFloodProtectDisable();
