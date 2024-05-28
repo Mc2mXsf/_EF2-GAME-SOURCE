@@ -175,7 +175,7 @@ void G_ClientCommand( gentity_t *ent )
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: sv_floodProtect replacement functions - chrissstrahl
 		//--------------------------------------------------------------
-		if (ent && !gamefixAPI_commandsUpdate(ent->entity->entnum, gi.argv(0))) {
+		if (ent && ent->entity && !gamefixAPI_commandsUpdate(ent->entity->entnum, gi.argv(0))) {
 			return;
 		}
 
