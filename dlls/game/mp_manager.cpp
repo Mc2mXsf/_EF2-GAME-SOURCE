@@ -3759,25 +3759,46 @@ void MultiplayerManager::setNextMap( void )
 	str nextMapName;
 	str fullMapName;
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Clearing nextmap cvar to allow mp_mapList to take over if nextmap is not on server - chrissstrahl
+	//--------------------------------------------------------------
+	if (strlen( sv_nextmap->string ) != 0) {
+		nextMapName = sv_nextmap->string;
+		fullMapName = va("maps/%s.bsp", nextMapName.c_str());
+		if (!gi.FS_Exists(fullMapName.c_str())) {
+			gi.Printf("nextmap: %s $$NotFoundOnServer$$\n", fullMapName.c_str());
+			gi.cvar_set("nextmap", "");
+		}
+	}
+
+
 	if ( ( strlen( sv_nextmap->string ) == 0 ) && ( mp_useMapList->integer ) && ( strlen( mp_mapList->string ) > 0 ) )
 	{
 		nextMapName = getNextMap();
 
-		fullMapName = "maps/";
-		fullMapName += nextMapName;
-		fullMapName += ".bsp";
 
-		if ( gi.FS_Exists( fullMapName ) )
-		{
-			gi.cvar_set( "nextmap", nextMapName.c_str() );
-		}
-		else
-		{
-			gi.Printf( "%s map not found\n", fullMapName.c_str() );
-		}
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Skipping maps in mp_mapList that the server does not have - chrissstrahl
+		//--------------------------------------------------------------
+		int short mapListTries = 0;
+		while (!gi.FS_Exists(va("maps/%s.bsp", nextMapName.c_str())) ) {
+			//give up after a few tries, if all the maps that follow do not exist, this limit is unlikley to ever be reached
+			mapListTries++;
+			if (mapListTries > 50) {
+				nextMapName = "";
+				gi.Printf("mp_maplist: More than %d entries invalid, giving up.\n", mapListTries - 1);
+				break;
+			}
 
-		gi.cvar_set( "mp_currentPosInMapList", va( "%d", mp_currentPosInMapList->integer + 1 ) );
-	
+			gi.Printf("mp_mapList: At position %d, map: %s $$NotFoundOnServer$$\n", mp_currentPosInMapList->integer, nextMapName.c_str());
+			gi.cvar_set( "mp_currentPosInMapList", va( "%d", mp_currentPosInMapList->integer + 1 ) );
+			nextMapName = getNextMap();
+		}
+		
+
+		gi.cvar_set( "nextmap", nextMapName.c_str() );
+		gi.cvar_set("mp_currentPosInMapList", va("%d", mp_currentPosInMapList->integer + 1));
 	}
 }
 
