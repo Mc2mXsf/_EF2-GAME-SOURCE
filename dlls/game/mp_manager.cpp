@@ -3821,12 +3821,17 @@ str MultiplayerManager::getNextMap( void )
 
 	// Get the position in the list
 	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: First map in the map list repeating on linux servers - chrissstrahl
+	// GAMEFIX - Fixed: First map in the map list repeating if it is also the startup map - chrissstrahl
 	//--------------------------------------------------------------
 	realCurrentPos = mp_currentPosInMapList->integer;
 	if (realCurrentPos >= numMaps) {
 		realCurrentPos = mp_currentPosInMapList->integer % numMaps;
 	}
+	// Skip the current start map, IF it's the first map in this list and this is the first level we loadedand we're on the first position and there are more maps in the list
+	if (realCurrentPos == 0 && strstr(mp_mapList->string, ";") != nullptr && mp_currentPosInMapList->integer == 0) {
+		realCurrentPos = 1;
+	}
+
 
 	// Get the next map string
 

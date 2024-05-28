@@ -1421,7 +1421,7 @@ void MultiplayerManager::cleanup( qboolean restart )
 void MultiplayerManager::playerEnterArena( int entnum, float health )
 void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
 
-Fixed: First map in the map list repeating on linux servers
+Fixed: First map in the map list repeating if it is also the startup map
 str MultiplayerManager::getNextMap( void )
 
 Fixed: Dynamic lights appearing off if they have switched on before the player was in game
