@@ -1421,6 +1421,10 @@ void MultiplayerManager::cleanup( qboolean restart )
 void MultiplayerManager::playerEnterArena( int entnum, float health )
 void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
 
+Added: Clearing nextmap cvar to allow mp_mapList to take over if nextmap is not on server
+Added: Skipping maps in mp_mapList that the server does not have
+void MultiplayerManager::setNextMap( void )
+
 Fixed: First map in the map list repeating if it is also the startup map
 str MultiplayerManager::getNextMap( void )
 
