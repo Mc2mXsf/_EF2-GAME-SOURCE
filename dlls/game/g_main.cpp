@@ -1416,7 +1416,10 @@ void G_ExitLevel( void )
 		} 
 out: */
 		// level.nextmap should be set now, but if it isn't use the same map
-		if ( level.nextmap.length() == 0 )
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: crash in multiplayer if set nextmap does not exist - chrissstrahl
+		//--------------------------------------------------------------
+		if ( level.nextmap.length() == 0 || !gi.FS_Exists(level.nextmap.c_str()))
 		{
 			// Stay on the same map since no nextmap was set
 			Com_sprintf( command, sizeof( command ), "gamemap \"%s\"\n", level.mapname.c_str() );
