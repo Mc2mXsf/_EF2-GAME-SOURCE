@@ -879,6 +879,21 @@ static char* gamefix_getStringUntilChar(const char* source, char delimiter)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function counting occurence of given char in a string - chrissstrahl
+//--------------------------------------------------------------
+static int gamefix_countCharOccurrences(const char* str, char ch)
+{
+	int count = 0;
+	while (*str) {
+		if (*str == ch) {
+			++count;
+		}
+		++str;
+	}
+	return count;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function to fix m11l3a-drull_ruins3_boss, hole in floor player falling out of level - chrissstrahl
 // Adds a clip to a specific location at the level start at the pillar where we fight the first stalker in the level
 // Player can fall out of the level if circeling the pillar to closely, this clip fixes this - SP/MP

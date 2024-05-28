@@ -105,5 +105,6 @@ static int			gamefix_findChars(char* str, const char* find);
 static int			gamefix_findString(const char* str, const char* find);
 static str			gamefix_getStringUntilChar(const str* source, char delimiter);
 static char*		gamefix_getStringUntilChar(const char* source, char delimiter);
+static int			gamefix_countCharOccurrences(const char* str, char ch);
 Entity*				gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags);
 void				gamefix_svFloodProtectDisable();
