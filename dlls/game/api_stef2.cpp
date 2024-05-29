@@ -1141,3 +1141,18 @@ void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_
 	}
 #endif //GAME_STAR_TREK_ELITE_FORCE_2
 }
+
+// GAMEFIX - Added: Function to manage game shutdown - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_shutdownGame()
+{
+	gameFixAPI_maplistContainer.FreeObjectList();
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage game startup - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_initGame()
+{
+
+}

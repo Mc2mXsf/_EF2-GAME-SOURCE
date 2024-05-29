@@ -684,7 +684,7 @@ void gamefix_playerScore(Player* player)
 }
 void gamefix_playerClientBegin(gentity_t* ent)
 {
-	gi.Printf("gamefix_playerClientBegin\n");
+	//gi.Printf("gamefix_playerClientBegin\n");
 
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: sv_floodprotect disable to fix various issues in multiplayer - chrissstrahl
@@ -965,4 +965,20 @@ void gamefix_kickBots()
 		}
 		gi.SendConsoleCommand(va("kick %d\n", i));
 	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage game shutdown - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_shutdownGame()
+{
+	gameFixAPI_shutdownGame();
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage game startup - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_initGame()
+{
+	gameFixAPI_initGame();
 }

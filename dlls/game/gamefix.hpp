@@ -109,3 +109,5 @@ static int			gamefix_countCharOccurrences(const char* str, char ch);
 Entity*				gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags);
 void				gamefix_svFloodProtectDisable();
 void				gamefix_kickBots();
+void				gamefix_shutdownGame();
+void				gamefix_initGame();

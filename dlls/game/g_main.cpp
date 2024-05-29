@@ -129,7 +129,7 @@ extern "C" void G_CleanupGame( qboolean restart )
 	try
 	{
 		//--------------------------------------------------------------
-		// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
+		// GAMEFIX - make sure to print always - chrissstrahl
 		//--------------------------------------------------------------
 		gi.Printf ("==== CleanupGame ====\n");
 		
@@ -158,6 +158,13 @@ extern "C" void G_ShutdownGame( void )
 		// GAMEFIX - make sure to printed in windows and linux - chrissstrahl
 		//--------------------------------------------------------------
 		gi.Printf ("==== ShutdownGame ====\n");
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Function manage game shutdown - chrissstrahl
+		//--------------------------------------------------------------
+		gamefix_shutdownGame();
+
 		
 		// close the player log file if necessary
 		ClosePlayerLogFile();
@@ -212,6 +219,12 @@ extern "C" void G_InitGame( int startTime, int randomSeed )
 	sLibrarayName = "ef2gamei386.so";
 #endif
 	gi.Printf(va(_GFix_INFO_Identity,sLibrarayName.c_str(), __DATE__, __TIME__));
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Function manage game startup - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_initGame();
 
 	
 	// Install our own error handler, since we can't
