@@ -60,6 +60,15 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Voteoption to kick all bots with callvote kick bots
+void MultiplayerManager::checkVote( void )
+
+Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+
+Added: Function to count how many occurences of a char are in a string
+static int gamefix_countCharOccurrences(const char* str, char ch)
+
 Added: sv_floodprotect disable to fix various issues in multiplayer
 World::World()
 
@@ -1421,11 +1430,14 @@ void MultiplayerManager::cleanup( qboolean restart )
 void MultiplayerManager::playerEnterArena( int entnum, float health )
 void MultiplayerManager::makePlayerSpectator( Player *player, SpectatorTypes spectatorType, bool byChoice )
 
+Fixed: crash in multiplayer if set nextmap does not exist
+void G_ExitLevel( void )
+
 Added: Clearing nextmap cvar to allow mp_mapList to take over if nextmap is not on server
 Added: Skipping maps in mp_mapList that the server does not have
 void MultiplayerManager::setNextMap( void )
 
-Fixed: First map in the map list repeating if it is also the startup map
+Fixed: First map in the map list repeating if it is also the current map
 str MultiplayerManager::getNextMap( void )
 
 Fixed: Dynamic lights appearing off if they have switched on before the player was in game
