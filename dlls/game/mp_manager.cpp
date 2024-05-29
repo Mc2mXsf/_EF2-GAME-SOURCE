@@ -3781,8 +3781,9 @@ void MultiplayerManager::setNextMap( void )
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Skipping maps in mp_mapList that the server does not have - chrissstrahl
 		//--------------------------------------------------------------
-		int short mapListTries = 0;
-		while (!gi.FS_Exists(va("maps/%s.bsp", nextMapName.c_str())) ) {
+		int mapListTries = 0;
+		bool sameMap = false;
+		while ( !gi.FS_Exists(va("maps/%s.bsp", nextMapName.c_str())) ) {
 			//give up after a few tries, if all the maps that follow do not exist, this limit is unlikley to ever be reached
 			mapListTries++;
 			if (mapListTries > 50) {
@@ -3791,7 +3792,7 @@ void MultiplayerManager::setNextMap( void )
 				break;
 			}
 
-			gi.Printf("mp_mapList: At position %d, map: %s $$NotFoundOnServer$$\n", mp_currentPosInMapList->integer, nextMapName.c_str());
+			gi.Printf("mp_mapList: map %s $$NotFoundOnServer$$\n", nextMapName.c_str());
 			gi.cvar_set( "mp_currentPosInMapList", va( "%d", mp_currentPosInMapList->integer + 1 ) );
 			nextMapName = getNextMap();
 		}
@@ -3842,13 +3843,17 @@ str MultiplayerManager::getNextMap( void )
 
 	// Get the position in the list
 	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: First map in the map list repeating if it is also the startup map - chrissstrahl
+	// GAMEFIX - Fixed: Avoid devision by ZERO - chrissstrahl
 	//--------------------------------------------------------------
 	realCurrentPos = mp_currentPosInMapList->integer;
 	if (realCurrentPos >= numMaps) {
 		realCurrentPos = mp_currentPosInMapList->integer % numMaps;
 	}
-	// Skip the current start map, IF it's the first map in this list and this is the first level we loadedand we're on the first position and there are more maps in the list
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: First map in the map list repeating if it is also the startup map - chrissstrahl
+	//--------------------------------------------------------------
 	if (realCurrentPos == 0 && strstr(mp_mapList->string, ";") != nullptr && mp_currentPosInMapList->integer == 0) {
 		realCurrentPos = 1;
 	}
