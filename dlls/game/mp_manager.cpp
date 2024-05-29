@@ -3823,7 +3823,6 @@ void MultiplayerManager::setNextMap( void )
 		// GAMEFIX - Added: Skipping maps in mp_mapList that the server does not have - chrissstrahl
 		//--------------------------------------------------------------
 		int mapListTries = 0;
-		bool sameMap = false;
 		while ( !gi.FS_Exists(va("maps/%s.bsp", nextMapName.c_str())) ) {
 			//give up after a few tries, if all the maps that follow do not exist, this limit is unlikley to ever be reached
 			mapListTries++;
