@@ -9,6 +9,11 @@
 #include "api_stef2.hpp"
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Information list for all standard levels - chrissstrahl
+//--------------------------------------------------------------
+gamefix_defaultMaps_s gamefix_defaultMaps_t[88];
+
+//--------------------------------------------------------------
 //Added: Information we want to persist over level changes and restarts - multiplayer only - See g_local.h for the struct - chrissstrahl
 //--------------------------------------------------------------
 gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];

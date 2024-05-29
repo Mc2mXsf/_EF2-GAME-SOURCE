@@ -1142,11 +1142,129 @@ void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_
 #endif //GAME_STAR_TREK_ELITE_FORCE_2
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to create default maps list - chrissstrahl
+//--------------------------------------------------------------
+static void gameFixAPI_addDefaultMaps()
+{
+	gameFixAPI_addMap("ent-training1", "sp", "training");
+	gameFixAPI_addMap("ent-training2", "sp", "training");
+	gameFixAPI_addMap("ent-training3", "sp", "training");
+	gameFixAPI_addMap("ent-training4", "sp", "training");
+
+	gameFixAPI_addMap("m0-intro", "sp", "cinematic");
+	gameFixAPI_addMap("m2l0-sfa", "sp", "cinematic");
+	gameFixAPI_addMap("m6l0-attack", "sp", "cinematic");
+	gameFixAPI_addMap("m12-end", "sp", "cinematic");
+	gameFixAPI_addMap("credits", "sp", "cinematic");
+
+	gameFixAPI_addMap("blackbox", "sp", "test");
+	gameFixAPI_addMap("ent-deck", "sp", "test");
+
+	gameFixAPI_addMap("m1l1a-borg_sphere", "sp", "mission");
+	gameFixAPI_addMap("m1l1b-borg_sphere", "sp", "mission");
+	gameFixAPI_addMap("m1l1c-borg_sphere", "sp", "mission");
+	gameFixAPI_addMap("m1l2a-borg_sphere", "sp", "mission");
+	gameFixAPI_addMap("m1l2b-borg_sphere", "sp", "mission");
+	gameFixAPI_addMap("m1l2c-borg_sphere", "sp", "mission");
+	gameFixAPI_addMap("m1l3-borg_boss", "sp", "mission");
+	gameFixAPI_addMap("m2l1-sfa", "sp", "mission");
+	gameFixAPI_addMap("m2l2-sfa", "sp", "mission");
+	gameFixAPI_addMap("m3l1a-forever", "sp", "mission");
+	gameFixAPI_addMap("m3l1b-forever", "sp", "mission");
+	gameFixAPI_addMap("m3l2-forever", "sp", "mission");
+	gameFixAPI_addMap("m4l1a-attrexian_station", "sp", "mission");
+	gameFixAPI_addMap("m4l1b-attrexian_station", "sp", "mission");
+	gameFixAPI_addMap("m4l2b-attrexian_station", "sp", "mission");
+	gameFixAPI_addMap("m5l1a-drull_ruins1", "sp", "mission");
+	gameFixAPI_addMap("m5l1b-drull_ruins1", "sp", "mission");
+	gameFixAPI_addMap("m5l2a-drull_ruins1", "sp", "mission");
+	gameFixAPI_addMap("m5l2b-drull_ruins1", "sp", "mission");
+	gameFixAPI_addMap("m5l2c-drull_ruins1", "sp", "mission");
+	gameFixAPI_addMap("m6-deck8_redalert", "sp", "mission");
+	gameFixAPI_addMap("m6-deck16_engineering", "sp", "mission");
+	gameFixAPI_addMap("m6-deck1_bridge_redalert", "sp", "mission");
+	gameFixAPI_addMap("m6-exterior", "sp", "mission");
+	gameFixAPI_addMap("m7l1a-attrexian_colony", "sp", "mission");
+	gameFixAPI_addMap("m7l1b-attrexian_colony", "sp", "mission");
+	gameFixAPI_addMap("m7l2a-attrexian_colony", "sp", "mission");
+	gameFixAPI_addMap("m7l2b-attrexian_colony", "sp", "mission");
+	gameFixAPI_addMap("m7l2c-attrexian_colony", "sp", "mission");
+	gameFixAPI_addMap("m8l1a-drull_ruins2", "sp", "mission");
+	gameFixAPI_addMap("m8l1b-drull_ruins2", "sp", "mission");
+	gameFixAPI_addMap("m8l2a-drull_ruins2", "sp", "mission");
+	gameFixAPI_addMap("m8l2b-drull_ruins2", "sp", "mission");
+	gameFixAPI_addMap("m9l1a-klingon_base", "sp", "mission");
+	gameFixAPI_addMap("m9l1b-klingon_base", "sp", "mission");
+	gameFixAPI_addMap("m9l2-klingon_base", "sp", "mission");
+	gameFixAPI_addMap("m10l1-romulan_installation", "sp", "mission");
+	gameFixAPI_addMap("m10l2a-romulan_installation", "sp", "mission");
+	gameFixAPI_addMap("m10l2b-romulan_installation", "sp", "mission");
+	gameFixAPI_addMap("m11l1a-drull_ruins3", "sp", "mission");
+	gameFixAPI_addMap("m11l2a-drull_ruins3", "sp", "mission");
+	gameFixAPI_addMap("m11l3a-drull_ruins3_boss", "sp", "mission");
+	gameFixAPI_addMap("m11l3b-drull_ruins3_boss", "sp", "mission");
+
+	gameFixAPI_addMap("ent-training_weap1", "sp", "mission");
+	gameFixAPI_addMap("ent-training_weap2", "sp", "mission");
+	gameFixAPI_addMap("ent-training_weap3", "sp", "mission");
+	gameFixAPI_addMap("ent-training_weap4", "sp", "mission");
+
+	gameFixAPI_addMap("ent-deck11", "sp", "igm");
+	gameFixAPI_addMap("ent-deck16_engineering", "sp", "igm");
+	gameFixAPI_addMap("ent-deck7c", "sp", "igm");
+	gameFixAPI_addMap("ent-deck7b", "sp", "igm");
+	gameFixAPI_addMap("ent-deck8", "sp", "igm");
+	gameFixAPI_addMap("ent-deck7a", "sp", "igm");
+	gameFixAPI_addMap("ent-deck1_bridge", "sp", "igm");
+
+	gameFixAPI_addMap("secret1", "sp", "secret");
+	gameFixAPI_addMap("secret2", "sp", "secret");
+	gameFixAPI_addMap("ef2_minigame2", "sp", "secret");
+	gameFixAPI_addMap("secret3", "sp", "secret");
+	gameFixAPI_addMap("zoo1", "sp", "secret");
+	gameFixAPI_addMap("testmorph", "sp", "secret");
+
+	gameFixAPI_addMap("dm_attrexian1", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_borgurvish", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_bridwag", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_idryll2", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_kirk", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_kw", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_quarterdeck", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_sewer", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_gullie", "mp", "dm tdm");
+
+	gameFixAPI_addMap("dm_ctf_station", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("dm_t2_new", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("aah_ctf_tartirus", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("ctf_vor2", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("dm_ctf_voy1", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("hm_ctf_exigent", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("dm_t4mobius", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("dm_trophonius", "mp", "dm tdm ctf bomb");
+}
+static void gameFixAPI_addMap(str name, str gametypes, str maptype)
+{
+	static int mapIndex = 0;
+	gamefix_defaultMaps_t[mapIndex].mapname = name;
+	gamefix_defaultMaps_t[mapIndex].gametypes = gametypes;
+	gamefix_defaultMaps_t[mapIndex].maptype = maptype;
+	mapIndex++;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Function to manage game shutdown - chrissstrahl
 //--------------------------------------------------------------
 void gameFixAPI_shutdownGame()
 {
 	gameFixAPI_maplistContainer.FreeObjectList();
+
+	/* int i = 0;
+	while (i < 89) {
+		gi.Printf("%d: %s\n",i,gamefix_defaultMaps_t[i].mapname.c_str());
+		i++;
+	}*/
 }
 
 //--------------------------------------------------------------
@@ -1154,5 +1272,5 @@ void gameFixAPI_shutdownGame()
 //--------------------------------------------------------------
 void gameFixAPI_initGame()
 {
-
+	gameFixAPI_addDefaultMaps();
 }

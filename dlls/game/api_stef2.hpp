@@ -83,5 +83,7 @@ int gameFixAPI_mapListGetCurrentPos();
 str gameFixAPI_mapListUp();
 str gameFixAPI_mapListDown();
 void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
+static void gameFixAPI_addDefaultMaps();
+static void gameFixAPI_addMap(str name, str gametypes, str maptype);
 void gameFixAPI_shutdownGame();
 void gameFixAPI_initGame();

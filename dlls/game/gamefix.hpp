@@ -19,6 +19,17 @@ constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Information list for all standard levels - chrissstrahl
+//--------------------------------------------------------------
+struct gamefix_defaultMaps_s
+{
+	str				mapname = "";
+	str				gametypes = "";
+	str				maptype = "";
+};
+extern gamefix_defaultMaps_s gamefix_defaultMaps_t[88];
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
 //--------------------------------------------------------------
 struct gamefix_client_persistant_s
