@@ -60,6 +60,10 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Fixed: Hudprint/Hudsay for bots, which creates crashes depending on the text
+void Player::hudPrint( const str &string )
+void MultiplayerManager::HUDSay( int entnum, const str &string )
+
 Added: Voteoption to kick all bots with callvote kick bots
 void MultiplayerManager::checkVote( void )
 
