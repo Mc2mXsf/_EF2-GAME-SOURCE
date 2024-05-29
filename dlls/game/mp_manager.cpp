@@ -2084,6 +2084,14 @@ void MultiplayerManager::checkVote( void )
 			// Vote passed - execute the command, then remove the vote
 
 			multiplayerManager.HUDPrintAllClients( "$$VotePassed$$\n" );
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Added: Voteoption to kick all bots with callvote kick bots - chrissstrahl
+			//--------------------------------------------------------------
+			if (Q_stricmp(_voteString.c_str(), "kick bots") == 0 || Q_stricmp(_voteString.c_str(), "kick allbots") == 0) {
+				gamefix_kickBots();
+			}
+
 			gi.SendConsoleCommand( va("%s\n", _voteString.c_str() ) );
 		}
 		else if ( _voteNo >= ( _numVoters / 2.0f ) )

@@ -950,3 +950,19 @@ void gamefix_svFloodProtectDisable()
 		gi.cvar_set("sv_floodprotect", "0");
 	}
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function kick all bots from server - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_kickBots()
+{
+	Player* player = nullptr;
+	for (int i = 0; i < gameFixAPI_maxClients(); i++) {
+		player = gamefix_getPlayer(i);
+
+		if (!player || !gameFixAPI_isBot(player)) {
+			continue;
+		}
+		gi.SendConsoleCommand(va("kick %d\n", i));
+	}
+}
