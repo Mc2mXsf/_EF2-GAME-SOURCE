@@ -194,7 +194,7 @@ void G_ClientCommand( gentity_t *ent )
 				bFiltered = true;
 			}
 
-			if (bFiltered && gi.GetNumFreeReliableServerCommands(ent->entity->entnum) > 32)
+			if (bFiltered && ent->entity && gi.GetNumFreeReliableServerCommands(ent->entity->entnum) > 32)
 			{
 				int cmdNum = 1;
 				str cmdGlueUp = "";
