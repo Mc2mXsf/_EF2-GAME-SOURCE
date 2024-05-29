@@ -1890,6 +1890,39 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	//--------------------------------------------------------------
 	if ( Q_stricmp( command.c_str(), "map" ) == 0 || Q_stricmp(command.c_str(), "nextmap") == 0)
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - chrissstrahl
+		//--------------------------------------------------------------
+		if (!strlen(arg.c_str()) && Q_stricmp(command.c_str(), "nextmap") == 0 || Q_stricmp(arg.c_str(), "+") == 0 || Q_stricmp(arg.c_str(), "++") == 0 || Q_stricmp(arg.c_str(), ">") == 0 || Q_stricmp(arg.c_str(), "->") == 0) {
+			if ((mp_useMapList->integer) && (strlen(mp_mapList->string) > 0)) {
+				//get current maplist inti a container list
+				gameFixAPI_mapList();
+				//get next map in the maplist
+				str nextMapName = gameFixAPI_mapListUp();
+				//issue command to player to start the desired vote
+				gi.SendServerCommand(player->entnum, "stufftext \"callvote %s %s\"\n", command.c_str(), nextMapName.c_str());
+				
+			}
+			else {
+				HUDPrint(player->entnum,"cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n");
+			}
+			return;
+		}
+		else if (Q_stricmp(arg.c_str(), "-") == 0 || Q_stricmp(arg.c_str(), "--") == 0 || Q_stricmp(arg.c_str(), "<") == 0 || Q_stricmp(arg.c_str(), "<-") == 0) {
+			if ((mp_useMapList->integer) && (strlen(mp_mapList->string) > 0)) {
+				//get current maplist inti a container list
+				gameFixAPI_mapList();
+				//get next map in the maplist
+				str nextMapName = gameFixAPI_mapListDown();
+				//issue command to player to start the desired vote
+				gi.SendServerCommand(player->entnum, "stufftext \"callvote %s %s\"\n", command.c_str(), nextMapName.c_str());
+			}
+			else {
+				HUDPrint(player->entnum, "cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n");
+			}
+			return;
+		}
+
 		str fullMapName;
 		str printString;
 
