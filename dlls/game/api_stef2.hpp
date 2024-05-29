@@ -13,6 +13,9 @@
 #include "gamefix_strings.hpp"
 #include "gamefix.hpp"
 
+
+extern Container<str> gameFixAPI_maplistContainer;
+
 constexpr auto GAMEFIX_API_CHAT_MAX = 3;
 constexpr auto GAMEFIX_API_CHAT_CYCLE = 3.0f;
 
@@ -66,12 +69,18 @@ int gameFixAPI_getPlayers(bool state);
 void gameFixAPI_hudPrintAllClients(const str text);
 Entity* gameFixAPI_getEntity(str& name);
 void gameFixAPI_levelFixes();
+void gameFixAPI_levelfix_m11l3a_drull_ruins3_boss();
+void gameFixAPI_levelfix_swsglobe();
 void gameFixAPI_maxLevelitems_ctf_grey();
 void gameFixAPI_spawnlocations_dm_ctf_voy1();
-
 float gameFixAPI_getActivationTime(Entity* entity);
 Player* gameFixAPI_getActivator(Entity* puzzle);
 void gameFixAPI_setActivator(Entity* entity, Entity* activator);
+str gameFixAPI_mapListGetAtPos(int currentPos);
+int gameFixAPI_mapListCount();
+void gameFixAPI_mapList();
+int gameFixAPI_mapListGetCurrentPos();
+str gameFixAPI_mapListUp();
+str gameFixAPI_mapListDown();
 void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
-void gameFixAPI_levelfix_m11l3a_drull_ruins3_boss();
-void gameFixAPI_levelfix_swsglobe();
+

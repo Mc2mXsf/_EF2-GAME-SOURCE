@@ -12,6 +12,8 @@
 #include "mp_manager.hpp"
 
 
+Container<str> gameFixAPI_maplistContainer;
+
 //--------------------------------------------------------------
 // GAMEFIX - Returns if we are in Singleplayer - chrissstrahl
 //--------------------------------------------------------------
@@ -1011,6 +1013,107 @@ void gameFixAPI_setActivator(Entity* entity, Entity* activator)
 		}
 		
 		gamefix_entity_extraData_t[entity->entnum].activator = (EntityPtr)activator;
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage maplist in Multiplayer, because the actual functions are not as flexible as we need them to be - chrissstrahl
+//--------------------------------------------------------------
+int gameFixAPI_mapListGetCurrentPos()
+{
+	int currentPos = gamefix_getCvarInt("mp_currentPosInMapList");
+	currentPos = (currentPos % gameFixAPI_mapListCount());
+	return currentPos;
+}
+
+str gameFixAPI_mapListUp()
+{
+	int currentPos = gameFixAPI_mapListGetCurrentPos();
+	currentPos++;
+	gi.cvar_set("mp_currentPosInMapList", va("%d", currentPos));
+	return gameFixAPI_mapListGetAtPos(currentPos);
+}
+
+str gameFixAPI_mapListDown()
+{
+	int currentPos = gameFixAPI_mapListGetCurrentPos();
+	currentPos--;
+	if (currentPos < 0) {
+		currentPos = (gameFixAPI_mapListCount() - 1);
+	}
+	gi.cvar_set("mp_currentPosInMapList", va("%d", currentPos));
+	return gameFixAPI_mapListGetAtPos(currentPos);
+}
+
+str gameFixAPI_mapListGetAtPos(int currentPos)
+{
+	int iPos = currentPos;
+	iPos++; //mp_currentPosInMapList -> starts at 0, container list at 1, compensate offset
+	int count = gameFixAPI_mapListCount();
+
+	//out of bounds
+	if (count > 0) {
+		if (iPos > count) { iPos = 1; }
+		else if (iPos < 1) { iPos = count; }
+
+		return gameFixAPI_maplistContainer.ObjectAt(iPos).c_str();
+	}
+	return level.mapname;
+}
+
+int gameFixAPI_mapListCount()
+{
+	return gameFixAPI_maplistContainer.NumObjects();
+}
+
+void gameFixAPI_mapList()
+{
+	gameFixAPI_maplistContainer.FreeObjectList();
+
+	str mapList = mp_mapList->string;
+	int maplistStrLength = strlen(mapList.c_str());
+	if (maplistStrLength) {
+		int currentCharPos = 0;
+		str mapname = "";
+		bool addMap = false;
+
+		while (currentCharPos < maplistStrLength || addMap == true) {
+			if (addMap) {
+				if (strlen(mapname.c_str())) {
+					if (gi.FS_Exists(va("maps/%s.bsp", mapname.c_str()))) {
+						gameFixAPI_maplistContainer.AddObject(mapname);
+					}
+					else {
+						gi.Printf("mp_mapList: maps/%s.bsp does not exist on server\n", mapname.c_str());
+					}
+					mapname = "";
+				}
+				addMap = false;
+				if (currentCharPos == maplistStrLength) {
+					break;
+				}
+			}
+
+			if (mapList[currentCharPos] == ';') {
+				addMap = true;
+			}
+			else if (mapList[currentCharPos] != ' ') {
+				mapname += mapList[currentCharPos];
+			}
+
+			currentCharPos++;
+
+			if (currentCharPos == maplistStrLength) {
+				addMap = true;
+			}
+		}
+
+		int numObjects = gameFixAPI_maplistContainer.NumObjects();
+		int curObj = 1;
+		while (curObj <= numObjects) {
+			gi.Printf("map in list: %s at %d\n", gameFixAPI_maplistContainer.ObjectAt(curObj).c_str(), curObj);
+			curObj++;
+		}
 	}
 }
 
