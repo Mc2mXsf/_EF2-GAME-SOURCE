@@ -1022,7 +1022,10 @@ void gameFixAPI_setActivator(Entity* entity, Entity* activator)
 int gameFixAPI_mapListGetCurrentPos()
 {
 	int currentPos = gamefix_getCvarInt("mp_currentPosInMapList");
-	currentPos = (currentPos % gameFixAPI_mapListCount());
+	int iCount = gameFixAPI_mapListCount();
+	if (iCount > 0) {
+		currentPos = (currentPos % iCount);
+	}
 	return currentPos;
 }
 
