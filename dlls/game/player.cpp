@@ -14023,6 +14023,16 @@ void Player::hudPrint( Event *ev )
 
 void Player::hudPrint( const str &string )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Hudprint/Hudsay for bots, which creates crashes depending on the text - chrissstrahl
+	// Level which raised awareness: ctf_faceoff - if a bot jumps off
+	// Example: e.hudPrint("^5Thanks to: ^7Avenger,Explorer,GSIO,Mystiqe,Stupidus,Modboy,Ronnin,Marvelman,Metar\n");
+	//--------------------------------------------------------------
+	if (gameFixAPI_isBot(this)) {
+		return;
+	}
+
+
 	str command;
 
 	// Build the hud print command to send to the client
