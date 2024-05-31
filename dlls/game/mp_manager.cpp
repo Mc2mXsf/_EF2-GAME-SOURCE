@@ -3995,7 +3995,32 @@ void MultiplayerManager::checkModifiedCvars( bool informPlayers )
 
 		checkCvar( mp_pointlimit, "$$PointLimit$$", MP_CVAR_TYPE_INTEGER );
 		checkCvar( mp_timelimit, "$$TimeLimit$$", MP_CVAR_TYPE_INTEGER );
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: mp_pointlimit cvar will update game instantly - chrissstrahl
+		// GAMEFIX - Added: mp_timelimit cvar will update game instantly - chrissstrahl
+		// Usually we have to wait for map restart/change, this makes changes instant
+		//--------------------------------------------------------------
+		if (mp_pointlimit->modified) {
+			_multiplayerGame->setPointLimit(mp_pointlimit->value);
+		}
+		if (mp_timelimit->modified) {
+			Player* player = nullptr;
+			for (int i = 0; i < maxclients->integer; i++) {
+				player = getPlayer(i);
+				if (player && !gameFixAPI_isBot(player)) {
+					str sCommand = "disable";
+					if (mp_timelimit->integer > 0) {
+						sCommand = "enable";
+					}
+					gi.SendServerCommand(player->entnum, va("stufftext \"globalwidgetcommand dmTimer %s\"\n", sCommand.c_str()));
+				}
+			}
+			_multiplayerGame->setTimeLimit(mp_timelimit->value * 60.0f);
+		}
 		
+
 		checkCvar( mp_itemRespawnMultiplier, "$$ItemRespawnMultiplier$$", MP_CVAR_TYPE_FLOAT );
 		checkCvar( mp_weaponRespawnMultiplier, "$$WeaponRespawnMultiplier$$", MP_CVAR_TYPE_FLOAT );
 		checkCvar( mp_powerupRespawnMultiplier, "$$PowerupRespawnMultiplier$$", MP_CVAR_TYPE_FLOAT );
