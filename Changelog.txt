@@ -1297,6 +1297,10 @@ Player* gamefix_getAnyPlayerPreferably(bool noDead,bool noSpectator)
 Added: Players get targetnames with their client-ID attached in multiplayer
 Player::Player()
 
+Added: mp_pointlimit cvar will update game instantly
+Added: mp_timelimit cvar will update game instantly
+void MultiplayerManager::checkModifiedCvars( bool informPlayers )
+
 Added: Allow SKILL cvar to be changed on the fly
 void CVAR_Init( void )
 void MultiplayerManager::checkModifiedCvars( bool informPlayers ) - Multiplayer
