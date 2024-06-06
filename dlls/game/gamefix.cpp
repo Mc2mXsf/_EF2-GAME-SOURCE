@@ -8,6 +8,12 @@
 #include "gamefix.hpp"
 #include "api_stef2.hpp"
 
+
+
+
+pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
+
+
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information list for all standard levels - chrissstrahl
 //--------------------------------------------------------------
@@ -944,6 +950,59 @@ static char* gamefix_getStringUntilChar(const char* source, char delimiter)
 	return result;
 }
 
+static char* gamefix_getStringUntil(char* sString, const int iStart, int iEnd)
+{
+	const int iLength = strlen(sString);
+	if (iStart >= iLength) {
+		throw("Contact HZM with this info data: COOP PROGRAMMING ERROR IN: manipulateFromWithLength ERROR INFORMATION READS: start pos > then strlen");
+	}
+
+	int actualEnd = iEnd;
+	if (iStart + iEnd > iLength) {
+		actualEnd = iLength - iStart;
+	}
+
+	char* sPartial = new char[actualEnd + 1];
+	for (int i = 0; i < actualEnd; ++i) {
+		sPartial[i] = sString[iStart + i];
+	}
+	sPartial[actualEnd] = '\0';
+
+	for (int i = 0; i <= actualEnd; ++i) {
+		sString[i] = sPartial[i];
+	}
+	
+	delete[] sPartial;
+	return sString;
+}
+
+static str gamefix_getStringUntil(str &sString, const int iStart, int iEnd)
+{
+	const int iLength = strlen(sString);
+	if (iStart >= iLength) {
+		throw("Contact HZM with this info data: COOP PROGRAMMING ERROR IN: manipulateFromWithLength ERROR INFORMATION READS: start pos > then strlen");
+	}
+
+	int actualEnd = iEnd;
+	if (iStart + iEnd > iLength) {
+		actualEnd = iLength - iStart;
+	}
+
+	char* sPartial = new char[actualEnd + 1];
+	for (int i = 0; i < actualEnd; ++i) {
+		sPartial[i] = sString[iStart + i];
+	}
+	sPartial[actualEnd] = '\0';
+
+	for (int i = 0; i <= actualEnd; ++i) {
+		sString[i] = sPartial[i];
+	}
+	
+	delete[] sPartial;
+	return sString;
+}
+
+
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function counting occurence of given char in a string - chrissstrahl
 //--------------------------------------------------------------
@@ -1031,6 +1090,185 @@ void gamefix_kickBots()
 		}
 		gi.SendConsoleCommand(va("kick %d\n", i));
 	}
+}
+
+//--------------------------------------------------------------
+// Description: This adds a serverCommand to a player's list of delayed commands - daggolin
+//--------------------------------------------------------------
+void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
+{
+	//hzm chrissstrahl - I have a hunch this fixes the current issue that this fuc causes
+	if (entNum < 0 || entNum >(game.maxclients - 1)) {
+		return;
+	}
+
+	pendingServerCommand* command;
+	pendingServerCommand* temp;
+	gentity_t* edict = &g_entities[entNum];
+	Player* player;
+	int					  commandLength;
+
+	if (!edict || !edict->inuse || !edict->client) {
+		return;
+	}
+
+	player = (Player*)edict->entity;
+
+	if (!player) {
+		return;
+	}
+
+	// Get the memory...
+	command = (pendingServerCommand*)malloc(sizeof(pendingServerCommand));
+	temp = pendingServerCommandList[entNum];
+
+	if (command == NULL) {
+		gi.Printf("DelayedServerCommand: Couldn't allocate memory for new pendingServerCommand -> Dropping command.\n");
+		return;
+	}
+
+	//gi.Printf( va( "A command: %s\n" , commandText ) );//debug
+
+	// Prepare the new pendingServerCommand
+	commandLength = strlen(commandText);
+	commandLength++;//hzm chrissstrahl - fix text being cut off - what the fuck ???
+	command->command = (char*)malloc(commandLength * sizeof(char));
+
+	if (command->command == NULL) {
+		gi.Printf("DelayedServerCommand: Couldn't allocate memory for new pendingServerCommandText -> Dropping command.\n");
+		free(command);
+		return;
+	}
+
+	Q_strncpyz(command->command, commandText, commandLength);
+	command->next = NULL;
+
+	//gi.Printf( va( "???command->command: %s\n" , command->command ) );//debug
+
+	// Append the new command to the list (or start the list)
+	if (pendingServerCommandList[entNum] == NULL) {
+		pendingServerCommandList[entNum] = command;
+	}
+	else {
+		while (temp->next)
+		{
+			temp = temp->next;
+		}
+		//gi.Printf("gamefix_playerDelayedServerCommand (%s): %s\n", player->client->pers.netname, command->command);
+		temp->next = command;
+	}
+}
+
+//--------------------------------------------------------------
+// Description: This handles the still delayed serverCommands of all players. - daggolin
+//--------------------------------------------------------------
+void gamefix_playerHandleDelayedServerCommand(void)
+{
+	for (int i = 0; i < maxclients->integer; i++) {
+
+		if (!&g_entities[i].inuse || !g_entities[i].entity || !g_entities[i].client) {
+			continue;
+		}
+		Player* player = (Player*)g_entities[i].entity;
+
+		pendingServerCommand* pendingCommand = pendingServerCommandList[i];
+
+		while (pendingCommand) {
+			//[b607] chrissstrahl, testedt value 71, result was that the mission succsess and sublevelLoading hud did stay on at the next level
+			//the command ui_removehuds in coop_huds_setupMultiplayerUI did no longer work
+			//the client 0 player name was set empty and player was named redshirt 105 WORKED FOR A LONG TIME but we are testing 90 now
+			//the lower the number the potentially faster the commands get send, which is good for tricorder puzzles
+			if (gi.GetNumFreeReliableServerCommands(player->entnum) > 90) { //chrissstrahl - used to be 105 changed, due to cyceling out cmds, was 32, 32 is to low! 105 might be to high... ...but coop mod used 122 for ages, 128 are usually the max
+				//gi.Printf( va( "command: %s\n" , pendingCommand->command ) );
+
+				int foundSpace = 0;
+				unsigned int startIndex = 0;
+				str sCmd;
+				str sNewText = "";
+				str sText = "";
+
+				//[b607] chrissstrahl - optimize data string by not adding stufftext when not needed
+				//[b608] chrissstrahl - popmenu with a menuname does not work purly clientside, it needs stufftext prefix which is why it has been removed from the checks
+				foundSpace = gamefix_findChar(pendingCommand->command, ' ');
+				if (Q_stricmpn("hudprint ", pendingCommand->command, foundSpace) == 0 ||
+					Q_stricmpn("status ", pendingCommand->command, foundSpace) == 0 ||
+					Q_stricmpn("score ", pendingCommand->command, foundSpace) == 0
+					)
+				{
+					sCmd = gamefix_getStringUntilChar(pendingCommand->command, ' ');
+					startIndex = (sCmd.length() + 1);
+				}
+				else {
+					sCmd = "stufftext";
+					startIndex = 0;
+				}
+				sCmd += " \"";
+
+				//[b607] chrissstrahl - printout all commands for debugging and optimisatzion purpose
+				//gi.Printf(va("handleDelayedServerCommand: %s\n",pendingCommand->command));
+
+				//hzm gameupdate chrissstrahl - cleanup string
+				for (unsigned int j = startIndex; j < strlen(pendingCommand->command); j++) {
+					sText += pendingCommand->command[j];
+				}
+
+				//hzm coop mod chrissstrahl - phrase coop localstrings, replace with normal chars if player does not have coop
+				//sNewText = gamefix_replaceUmlaut(sText);
+
+				sNewText = sText;
+
+				//make sure the text is no longer than 287 units or it will crash the game
+				if (sNewText.length() > 287) {
+					sNewText = gamefix_getStringUntil(sNewText, 0, 286);
+					gi.Printf("handleDelayedServerCommands: String to long, was cut down to 286\n");
+					gi.Printf("%s", sNewText.c_str());
+				}
+				sCmd += sNewText;
+				sCmd += "\"\n";
+
+				gi.SendServerCommand(i, sCmd.c_str());
+
+				// Free the just used command
+				pendingServerCommandList[i] = pendingCommand->next;
+				free(pendingCommand->command);
+				free(pendingCommand);
+				pendingCommand = pendingServerCommandList[i];
+			}
+			else {
+				//chrissstrahl - put the info into one print command [b607]
+				//gi.Printf( va( "=====================\nhandleDelayedServerCommands freereliable: %i\ncommand delayed: %s\n==========================\n" , gi.GetNumFreeReliableServerCommands( i ) , pendingCommand->command) );
+				break;
+			}
+		}
+	}
+}
+
+//--------------------------------------------------------------
+// Description: This clears the still delayed serverCommands of a player. - daggolin
+//--------------------------------------------------------------
+void gamefix_playerClearDelayedServerCommand(int entNum)
+{
+	pendingServerCommand* current;
+	pendingServerCommand* temp;
+
+	current = pendingServerCommandList[entNum];
+
+	while (current != NULL) {
+		temp = current;
+		current = current->next;
+		free(temp->command);
+		free(temp);
+	}
+
+	pendingServerCommandList[entNum] = NULL;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to handle each frame call - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_runFrame(int levelTime, int frameTime)
+{
+	gamefix_playerHandleDelayedServerCommand();
 }
 
 //--------------------------------------------------------------

@@ -18,6 +18,14 @@ constexpr auto _GFix_PLAYER_next_drown_time_delay = 3.0f; //was 2.0f
 constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 
 
+typedef struct pendingServerCommand_s
+{
+	char* command;
+	pendingServerCommand_s* next;
+} pendingServerCommand;
+extern pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
+
+
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information list for all standard levels - chrissstrahl
 //--------------------------------------------------------------
@@ -117,10 +125,16 @@ int					gamefix_findString(const char* str, const char* find);
 static int			gamefix_findStringCase(str latinumstack, str find);
 static int			gamefix_findStringCase(str latinumstack, str find,bool wholeWord);
 static str			gamefix_getStringUntilChar(const str* source, char delimiter);
+static char*		gamefix_getStringUntil(char* sString, const int iStart, int iEnd);
+static str			gamefix_getStringUntil(str &sString, const int iStart, int iEnd);
 static char*		gamefix_getStringUntilChar(const char* source, char delimiter);
 static int			gamefix_countCharOccurrences(const char* str, char ch);
 Entity*				gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags);
 void				gamefix_svFloodProtectDisable();
 void				gamefix_kickBots();
+void				gamefix_playerDelayedServerCommand(int entNum, const char* commandText);
+void				gamefix_playerHandleDelayedServerCommand(void);
+void				gamefix_playerClearDelayedServerCommand(int entNum);
+void				gamefix_runFrame(int levelTime, int frameTime);
 void				gamefix_shutdownGame();
 void				gamefix_initGame();

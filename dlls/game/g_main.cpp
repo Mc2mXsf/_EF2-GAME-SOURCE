@@ -1641,6 +1641,13 @@ extern "C" void G_RunFrame( int levelTime, int frameTime )
 			}
 		}
 		
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Function to handle each frame call - chrissstrahl
+		//--------------------------------------------------------------
+		gamefix_runFrame(levelTime, frameTime);
+
+
 		// reset out count of the number of game traces
 		sv_numtraces = 0;
 		
