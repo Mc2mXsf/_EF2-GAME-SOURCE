@@ -3321,7 +3321,11 @@ void CThread::SendClientCommand( Event *ev )
 	
 	builtCommand += "\"\n";
 	
-	gi.SendServerCommand( player->edict - g_entities, builtCommand.c_str() );
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Script Code based client commands allowing delayed handle to prevent overflow - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_playerDelayedServerCommand(player->edict - g_entities, builtCommand.c_str());
 }
 
 void CThread::GetNumFreeReliableServerCommands( Event* ev )

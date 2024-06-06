@@ -1094,7 +1094,7 @@ void gamefix_kickBots()
 }
 
 //--------------------------------------------------------------
-// Description: This adds a serverCommand to a player's list of delayed commands - daggolin
+// GAMEFIX - Description: This adds a serverCommand to a player's list of delayed commands - daggolin
 //--------------------------------------------------------------
 void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
 {
@@ -1143,7 +1143,7 @@ void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
 }
 
 //--------------------------------------------------------------
-// Description: This handles the still delayed serverCommands of all players. - daggolin
+// GAMEFIX - Description: This handles the still delayed serverCommands of all players. - daggolin
 //--------------------------------------------------------------
 void gamefix_playerHandleDelayedServerCommand(void)
 {
@@ -1198,7 +1198,7 @@ void gamefix_playerHandleDelayedServerCommand(void)
 }
 
 //--------------------------------------------------------------
-// Description: This clears the still delayed serverCommands of a player. - daggolin
+// GAMEFIX - Description: This clears the still delayed serverCommands of a player. - daggolin
 //--------------------------------------------------------------
 void gamefix_playerClearDelayedServerCommand(int entNum)
 {
