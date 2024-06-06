@@ -25,9 +25,9 @@ struct gamefix_defaultMaps_s
 {
 	str				mapname = "";
 	str				gametypes = "";
-	str				maptype = "";
+	str				gamemodes = "";
 };
-extern gamefix_defaultMaps_s gamefix_defaultMaps_t[88];
+extern gamefix_defaultMaps_s gamefix_defaultMaps_t[gamefix_defaultMapsSize];
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information we want to persist over level changes and restarts - chrissstrahl
@@ -113,7 +113,9 @@ float				gamefix_dialogGetSoundlength(char sound[MAX_QPATH]);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
 static int			gamefix_findChar(const char* str, char find);
 static int			gamefix_findChars(char* str, const char* find);
-static int			gamefix_findString(const char* str, const char* find);
+int					gamefix_findString(const char* str, const char* find);
+static int			gamefix_findStringCase(str latinumstack, str find);
+static int			gamefix_findStringCase(str latinumstack, str find,bool wholeWord);
 static str			gamefix_getStringUntilChar(const str* source, char delimiter);
 static char*		gamefix_getStringUntilChar(const char* source, char delimiter);
 static int			gamefix_countCharOccurrences(const char* str, char ch);

@@ -840,16 +840,77 @@ static int gamefix_findChars(char* str, const char* find)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function finding first occurence of given string, returning its position - chrissstrahl
 //--------------------------------------------------------------
-static int gamefix_findString(const char* str, const char* find)
+int gamefix_findString(const char* str, const char* find)
 {
 	const char* pos = strstr(str, find);
 
 	if (pos != nullptr) {
-		return pos - str;  // Berechnet die Position als Differenz der Zeiger
+		return pos - str;
 	}
-	else {
-		return -1;  // NoMatch
+	return -1;  // NoMatch
+}
+
+static int gamefix_findStringCase(str latinumstack, str find)
+{
+	int latinumLength = latinumstack.length();
+	int findLength = find.length();
+
+	if (findLength == 0 || latinumLength < findLength) {
+		return -1;
 	}
+
+	for (int latinumIndex = 0; latinumIndex <= latinumLength - findLength; ++latinumIndex) {
+		int findIndex = 0;
+		while (findIndex < findLength && tolower(latinumstack[latinumIndex + findIndex]) == tolower(find[findIndex])) {
+			++findIndex;
+		}
+		if (findIndex == findLength) {
+			return latinumIndex;
+		}
+	}
+	return -1;
+}
+
+static int gamefix_findStringCase(str latinumstack, str find, bool wholeWord)
+{
+	int latinumLength = latinumstack.length();
+	int findLength = find.length();
+
+	if (findLength == 0 || latinumLength < findLength) {
+		return -1;
+	}
+
+	for (int latinumIndex = 0; latinumIndex <= latinumLength - findLength; ++latinumIndex) {
+		int findIndex = 0;
+		while (findIndex < findLength && tolower(latinumstack[latinumIndex + findIndex]) == tolower(find[findIndex])) {
+			++findIndex;
+		}
+		if (findIndex == findLength) {
+			if (!wholeWord) {
+				return latinumIndex;
+			}
+			// Check if next char is a separator
+			if ((latinumIndex + findLength == latinumLength) ||
+				!isalnum(latinumstack[latinumIndex + findLength])) {
+				return latinumIndex;
+			}
+
+			/*
+			//check if next char is not a letter, but any kind of seperator
+			if (latinumIndex + 1 <= latinumLength) {
+				gi.Printf("---- Found, now checking for whole word ------\n");
+				static char seperators[] = { ' ','|','.',':',';' ,',' ,'#' ,'~' ,'^', '\n','\0','\r','-','_','+','*','?','=','&','"','\'','!','%' };
+				int seperatorsSize = sizeof(seperators) / sizeof(seperators[0]);
+				for (int seperatorIndex = 0; seperatorIndex < seperatorsSize; seperatorIndex++) {
+					if (tolower(latinumstack[latinumIndex + findIndex] + 1) == seperators[seperatorIndex]) {
+						return latinumIndex;
+					}
+				}
+			}
+			*/
+		}
+	}
+	return -1;
 }
 
 //--------------------------------------------------------------
