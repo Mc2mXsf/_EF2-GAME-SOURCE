@@ -1891,6 +1891,15 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	if ( Q_stricmp( command.c_str(), "map" ) == 0 || Q_stricmp(command.c_str(), "nextmap") == 0)
 	{
 		//--------------------------------------------------------------
+		// GAMEFIX - Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps - chrissstrahl
+		//--------------------------------------------------------------
+		if (!gamefix_getCvarInt("gfix_allowSpMaps")) {
+			HUDPrint(player->entnum, "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n");
+			return;
+		}
+
+
+		//--------------------------------------------------------------
 		// GAMEFIX - Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - chrissstrahl
 		//--------------------------------------------------------------
 		if (!strlen(arg.c_str()) && Q_stricmp(command.c_str(), "nextmap") == 0 || Q_stricmp(arg.c_str(), "+") == 0 || Q_stricmp(arg.c_str(), "++") == 0 || Q_stricmp(arg.c_str(), ">") == 0 || Q_stricmp(arg.c_str(), "->") == 0) {
@@ -1923,6 +1932,15 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 			return;
 		}
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Warning if a non standard/stock map is voted - chrissstrahl
+		//--------------------------------------------------------------
+		if (!gameFixAPI_mapIsStock(arg.c_str())) {
+			multiplayerManager.HUDPrintAllClients(va(_GFixEF2_WARN_CALLVOTE_map_NOTSTOCK, arg.c_str()));
+		}
+
+
 		str fullMapName;
 		str printString;
 
@@ -1954,6 +1972,14 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		else
 		{
 			_voteString = va( "%s %s", command.c_str(), arg.c_str() );
+		}
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Warning if a non standard/stock map is voted - chrissstrahl
+		//--------------------------------------------------------------
+		if (!gameFixAPI_mapIsStock(arg.c_str())) {
+			multiplayerManager.HUDPrintAllClients(va(_GFixEF2_WARN_CALLVOTE_map_NOTSTOCK, arg.c_str()));
 		}
 	}
 	else
