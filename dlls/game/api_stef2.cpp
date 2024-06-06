@@ -1243,12 +1243,12 @@ static void gameFixAPI_addDefaultMaps()
 	gameFixAPI_addMap("dm_ctf_voy1", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints");
 	gameFixAPI_addMap("hm_ctf_exigent", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints powerstruggle");
 	gameFixAPI_addMap("dm_t4mobius", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints powerstruggle oneflag specialties");
-	
 }
-static bool gameFixAPI_mapIsStock(str name)
+
+bool gameFixAPI_mapIsStock(str name)
 {
 	int i = 0;
-	while (i <= gamefix_defaultMapsSize) {
+	while (i < gamefix_defaultMapsSize) {
 		//find map
 		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
 			return true;
@@ -1257,10 +1257,11 @@ static bool gameFixAPI_mapIsStock(str name)
 	}
 	return false;
 }
+
 static bool gameFixAPI_mapForSingleplayer(str name)
 {
 	int i = 0;
-	while (i <= gamefix_defaultMapsSize) {
+	while (i < gamefix_defaultMapsSize) {
 		//find map
 		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
 			//check for gametype
@@ -1272,10 +1273,11 @@ static bool gameFixAPI_mapForSingleplayer(str name)
 	}
 	return false;
 }
+
 static bool gameFixAPI_mapForMultiplayer(str name)
 {
 	int i = 0;
-	while (i <= gamefix_defaultMapsSize) {
+	while (i < gamefix_defaultMapsSize) {
 		//find map
 		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
 			//check for gametype
@@ -1287,10 +1289,11 @@ static bool gameFixAPI_mapForMultiplayer(str name)
 	}
 	return false;
 }
+
 static bool gameFixAPI_mapHasGameMode(str name,str gamemode)
 {
 	int i = 0;
-	while (i <= gamefix_defaultMapsSize) {
+	while (i < gamefix_defaultMapsSize) {
 		//find map
 		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
 			//check for given gamemode
@@ -1302,6 +1305,7 @@ static bool gameFixAPI_mapHasGameMode(str name,str gamemode)
 	}
 	return false;
 }
+
 static void gameFixAPI_addMap(str name, str gametypes, str gamemodes)
 {
 	static int mapIndex = 0;
