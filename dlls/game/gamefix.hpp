@@ -18,12 +18,15 @@ constexpr auto _GFix_PLAYER_next_drown_time_delay = 3.0f; //was 2.0f
 constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 
 
-typedef struct pendingServerCommand_s
+//--------------------------------------------------------------
+// GAMEFIX - For delayed server commands - daggolin
+//--------------------------------------------------------------
+typedef struct gamefix_pendingServerCommand_s
 {
-	char* command;
-	pendingServerCommand_s* next;
-} pendingServerCommand;
-extern pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
+	char* command = nullptr;
+	gamefix_pendingServerCommand_s* next = nullptr;
+} gamefix_pendingServerCommand;
+extern gamefix_pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
 
 
 //--------------------------------------------------------------

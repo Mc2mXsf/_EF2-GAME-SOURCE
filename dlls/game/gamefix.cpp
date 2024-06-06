@@ -11,7 +11,7 @@
 
 
 
-pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
+gamefix_pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
 
 
 //--------------------------------------------------------------
@@ -671,6 +671,7 @@ void gamefix_playerChangedTeam(Player* player,const str &realTeamName)
 }
 void gamefix_playerKilled(Player* player)
 {
+	gamefix_playerDelayedServerCommand(player->entnum, "hudprint 12345699\n");
 	gameFixAPI_playerKilled(player);
 }
 void gamefix_playerEntered(Player* player)
@@ -1111,7 +1112,7 @@ void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
 		return;
 	}
 
-	pendingServerCommand* command = (pendingServerCommand*)malloc(sizeof(pendingServerCommand));
+	gamefix_pendingServerCommand* command = (gamefix_pendingServerCommand*)malloc(sizeof(gamefix_pendingServerCommand));
 	if (command == NULL) {
 		gi.Printf("gamefix_playerDelayedServerCommand: Couldn't allocate memory for new pendingServerCommand -> Dropping command.\n");
 		return;
@@ -1128,7 +1129,7 @@ void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
 	Q_strncpyz(command->command, commandText, commandLength);
 	command->next = NULL;
 
-	pendingServerCommand* temp = pendingServerCommandList[entNum];
+	gamefix_pendingServerCommand* temp = pendingServerCommandList[entNum];
 	if (temp == NULL) {
 		pendingServerCommandList[entNum] = command;
 	}
@@ -1153,7 +1154,7 @@ void gamefix_playerHandleDelayedServerCommand(void)
 		}
 		Player* player = (Player*)edict->entity;
 
-		pendingServerCommand* pendingCommand = pendingServerCommandList[i];
+		gamefix_pendingServerCommand* pendingCommand = pendingServerCommandList[i];
 		while (pendingCommand) {
 			if (gi.GetNumFreeReliableServerCommands(player->entnum) > 90) {
 				str sCmd;
@@ -1201,9 +1202,9 @@ void gamefix_playerHandleDelayedServerCommand(void)
 //--------------------------------------------------------------
 void gamefix_playerClearDelayedServerCommand(int entNum)
 {
-    pendingServerCommand* current = pendingServerCommandList[entNum];
+    gamefix_pendingServerCommand* current = pendingServerCommandList[entNum];
     while (current != NULL) {
-        pendingServerCommand* temp = current;
+        gamefix_pendingServerCommand* temp = current;
         current = current->next;
         free(temp->command);
         free(temp);
