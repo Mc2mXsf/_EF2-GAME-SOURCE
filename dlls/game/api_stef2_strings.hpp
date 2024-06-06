@@ -27,6 +27,8 @@ constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "M
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::AddPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_maxLevelitems_ctf_grey = "Cvar max_levelitems set to 384, to many info_helpernodes - ctf_grey\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_callvote_singleplayer_not_allowed = "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_CALLVOTE_maplist = "cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
 
@@ -35,6 +37,7 @@ constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_triggerEntity_FAILED = "triggerEntity
 constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_fakePlayer_ONLYSP = "WARNING: fakeplayer script command can only be used in Singleplayer\n";
 constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_sendClientCommand_FAILED = "SendClientCommand: Given Entity does not exist!\n";
 constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_getNumFreeRelSVCmds_FAILED = "GetNumFreeReliableServerCommands: Given Entity does not exist!\n";
+constexpr auto _GFixEF2_WARN_CALLVOTE_map_NOTSTOCK = "^3WARNING^8: ^3Some players might not have map:^5 %s ^3-> They will get dropped!\n";
 
 constexpr auto _GFixEF2_ERR_FUNC_SensoryInFov_act_NULL = "SensoryPerception::InFOV -- actor is NULL\n";
 constexpr auto _GFixEF2_ERR_LEVEL_InfoPlayerDeathmatch_AT_ZERO = "info_player_deathmatch ($%s) is at (0 0 0)\n";

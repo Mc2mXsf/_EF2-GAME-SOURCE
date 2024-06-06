@@ -1894,7 +1894,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		// GAMEFIX - Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps - chrissstrahl
 		//--------------------------------------------------------------
 		if (!gamefix_getCvarInt("gfix_allowSpMaps")) {
-			HUDPrint(player->entnum, "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n");
+			HUDPrint(player->entnum, _GFixEF2_INFO_GAMEFIX_callvote_singleplayer_not_allowed);
 			return;
 		}
 
@@ -1913,7 +1913,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 				
 			}
 			else {
-				HUDPrint(player->entnum,"cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n");
+				HUDPrint(player->entnum, _GFixEF2_INFO_GAMEFIX_CALLVOTE_maplist);
 			}
 			return;
 		}
@@ -1927,7 +1927,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 				gi.SendServerCommand(player->entnum, "stufftext \"callvote %s %s\"\n", command.c_str(), nextMapName.c_str());
 			}
 			else {
-				HUDPrint(player->entnum, "cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n");
+				HUDPrint(player->entnum, _GFixEF2_INFO_GAMEFIX_CALLVOTE_maplist);
 			}
 			return;
 		}
