@@ -671,7 +671,6 @@ void gamefix_playerChangedTeam(Player* player,const str &realTeamName)
 }
 void gamefix_playerKilled(Player* player)
 {
-	gamefix_playerDelayedServerCommand(player->entnum, "hudprint 12345699\n");
 	gameFixAPI_playerKilled(player);
 }
 void gamefix_playerEntered(Player* player)
