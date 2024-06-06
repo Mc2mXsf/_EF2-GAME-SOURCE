@@ -8,6 +8,18 @@
 
 
 #pragma once
+
+constexpr auto gamefix_defaultMapsSize = 88;
+constexpr auto GAMEFIX_API_CHAT_MAX = 3;
+constexpr auto GAMEFIX_API_CHAT_CYCLE = 3.0f;
+constexpr auto GAMEFIX_API_COMMANDS_MAX = 3;
+constexpr auto GAMEFIX_API_COMMANDS_CYCLE = 1.0f;
+
+#define GAME_STAR_TREK_ELITE_FORCE_2
+//#define GAME_HEAVY_METAL_FAKK_2
+//#define GAME_MEDAL_OF_HONOR_ALLIED_ASSAULT
+
+
 #include "_pch_cpp.h"
 #include "api_stef2_strings.hpp"
 #include "gamefix_strings.hpp"
@@ -16,15 +28,6 @@
 
 extern Container<str> gameFixAPI_maplistContainer;
 
-constexpr auto GAMEFIX_API_CHAT_MAX = 3;
-constexpr auto GAMEFIX_API_CHAT_CYCLE = 3.0f;
-
-constexpr auto GAMEFIX_API_COMMANDS_MAX = 3;
-constexpr auto GAMEFIX_API_COMMANDS_CYCLE = 1.0f;
-
-#define GAME_STAR_TREK_ELITE_FORCE_2
-//#define GAME_HEAVY_METAL_FAKK_2
-//#define GAME_MEDAL_OF_HONOR_ALLIED_ASSAULT
 
 bool gameFixAPI_inSingleplayer();
 bool gameFixAPI_inMultiplayer();
@@ -84,6 +87,9 @@ str gameFixAPI_mapListUp();
 str gameFixAPI_mapListDown();
 void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
 static void gameFixAPI_addDefaultMaps();
-static void gameFixAPI_addMap(str name, str gametypes, str maptype);
+static void gameFixAPI_addMap(str name, str gametypes, str gamemodes);
+static bool gameFixAPI_mapForSingleplayer(str name);
+static bool gameFixAPI_mapForMultiplayer(str name);
+static bool gameFixAPI_mapHasGameMode(str name, str gamemode);
 void gameFixAPI_shutdownGame();
 void gameFixAPI_initGame();

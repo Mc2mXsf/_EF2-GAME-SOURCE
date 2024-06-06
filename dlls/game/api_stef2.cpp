@@ -1225,31 +1225,89 @@ static void gameFixAPI_addDefaultMaps()
 	gameFixAPI_addMap("zoo1", "sp", "secret");
 	gameFixAPI_addMap("testmorph", "sp", "secret");
 
-	gameFixAPI_addMap("dm_attrexian1", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_borgurvish", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_bridwag", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_idryll2", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_kirk", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_kw", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_quarterdeck", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_sewer", "mp", "dm tdm");
-	gameFixAPI_addMap("dm_gullie", "mp", "dm tdm");
+	gameFixAPI_addMap("dm_attrexian1", "mp", "Holomatch TeamHolomatch controlpoints");
+	gameFixAPI_addMap("dm_borgurvish", "mp", "Holomatch TeamHolomatch controlpoints");
+	gameFixAPI_addMap("dm_bridwag", "mp", "Holomatch TeamHolomatch controlpoints");
+	gameFixAPI_addMap("dm_idryll2", "mp", "Holomatch TeamHolomatch controlpoints");
+	gameFixAPI_addMap("dm_kirk", "mp", "Holomatch TeamHolomatch controlpoints");
+	gameFixAPI_addMap("dm_kw", "mp", "Holomatch TeamHolomatch controlpoints");
+	gameFixAPI_addMap("dm_quarterdeck", "mp", "Holomatch TeamHolomatch");
+	gameFixAPI_addMap("dm_sewer", "mp", "Holomatch TeamHolomatch controlpoints powerstruggle oneflag");
+	gameFixAPI_addMap("dm_gullie", "mp", "Holomatch TeamHolomatch");
+	gameFixAPI_addMap("dm_trophonius", "mp", "Holomatch TeamHolomatch controlpoints");
 
-	gameFixAPI_addMap("dm_ctf_station", "mp", "dm tdm ctf bomb");
-	gameFixAPI_addMap("dm_t2_new", "mp", "dm tdm ctf bomb");
-	gameFixAPI_addMap("aah_ctf_tartirus", "mp", "dm tdm ctf bomb");
-	gameFixAPI_addMap("ctf_vor2", "mp", "dm tdm ctf bomb");
-	gameFixAPI_addMap("dm_ctf_voy1", "mp", "dm tdm ctf bomb");
-	gameFixAPI_addMap("hm_ctf_exigent", "mp", "dm tdm ctf bomb");
-	gameFixAPI_addMap("dm_t4mobius", "mp", "dm tdm ctf bomb");
-	gameFixAPI_addMap("dm_trophonius", "mp", "dm tdm ctf bomb");
+	gameFixAPI_addMap("dm_ctf_station", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints powerstruggle oneflag specialties");
+	gameFixAPI_addMap("dm_t2_new", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints powerstruggle oneflag specialties");
+	gameFixAPI_addMap("aah_ctf_tartirus", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion powerstruggle oneflag specialties");
+	gameFixAPI_addMap("ctf_vor2", "mp", "Holomatch TeamHolomatch CaptureTheFlag controlpoints powerstruggle");
+	gameFixAPI_addMap("dm_ctf_voy1", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints");
+	gameFixAPI_addMap("hm_ctf_exigent", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints powerstruggle");
+	gameFixAPI_addMap("dm_t4mobius", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints powerstruggle oneflag specialties");
+	
 }
-static void gameFixAPI_addMap(str name, str gametypes, str maptype)
+static bool gameFixAPI_mapIsStock(str name)
+{
+	int i = 0;
+	while (i <= gamefix_defaultMapsSize) {
+		//find map
+		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+static bool gameFixAPI_mapForSingleplayer(str name)
+{
+	int i = 0;
+	while (i <= gamefix_defaultMapsSize) {
+		//find map
+		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
+			//check for gametype
+			if (Q_stricmp(gamefix_defaultMaps_t[i].gametypes.c_str(), "sp") == 0) {
+				return true;
+			}
+		}
+		i++;
+	}
+	return false;
+}
+static bool gameFixAPI_mapForMultiplayer(str name)
+{
+	int i = 0;
+	while (i <= gamefix_defaultMapsSize) {
+		//find map
+		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
+			//check for gametype
+			if (Q_stricmp(gamefix_defaultMaps_t[i].gametypes.c_str(), "mp") == 0) {
+				return true;
+			}
+		}
+		i++;
+	}
+	return false;
+}
+static bool gameFixAPI_mapHasGameMode(str name,str gamemode)
+{
+	int i = 0;
+	while (i <= gamefix_defaultMapsSize) {
+		//find map
+		if (Q_stricmp(gamefix_defaultMaps_t[i].mapname.c_str(), name.c_str()) == 0) {
+			//check for given gamemode
+			if (gamefix_findString(gamefix_defaultMaps_t[i].gamemodes.c_str(), gamemode.c_str()) != -1) {
+				return true;
+			}
+		}
+		i++;
+	}
+	return false;
+}
+static void gameFixAPI_addMap(str name, str gametypes, str gamemodes)
 {
 	static int mapIndex = 0;
 	gamefix_defaultMaps_t[mapIndex].mapname = name;
 	gamefix_defaultMaps_t[mapIndex].gametypes = gametypes;
-	gamefix_defaultMaps_t[mapIndex].maptype = maptype;
+	gamefix_defaultMaps_t[mapIndex].gamemodes = gamemodes;
 	mapIndex++;
 }
 
