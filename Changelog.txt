@@ -60,6 +60,16 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+
+Added: Warning if a non standard/stock map is voted - that players might get dropped
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+
+Added: Script Code based client commands allowing delayed handle to prevent overflow
+void CThread::SendClientCommand( Event *ev )
+
 Fixed: Hudprint/Hudsay for bots, which creates crashes depending on the text
 void Player::hudPrint( const str &string )
 void MultiplayerManager::HUDSay( int entnum, const str &string )
