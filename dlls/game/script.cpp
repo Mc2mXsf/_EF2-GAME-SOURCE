@@ -26,6 +26,13 @@
 #include "script.h"
 #include <qcommon/gameplaymanager.h>
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: to make gamefix functionality available - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
+
 #define TOKENCOMMENT      (';')
 #define TOKENCOMMENT2     ('#')
 #define TOKENEOL          ('\n')
@@ -1076,7 +1083,8 @@ void Script::Parse( const char *data, int temp_length, const char *name )
 	
 	buffer = data;
 	Reset();
-	end_p = script_p + temp_length;
+	end_p = buffer + temp_length;
+	//end_p = script_p + temp_length;
 	this->length = temp_length;
 	filename = name;
 }
@@ -1110,10 +1118,27 @@ void Script::LoadFile( const char *name )
 	{
 		error( "LoadFile", "Couldn't load %s\n", name );
 	}
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Null-Terminator at +1 to prevent a off-by-one error leading to a buffer overrun - chrissstrahl
+	//--------------------------------------------------------------
 	// create our own space
-	temp_buffer = ( byte * )gi.Malloc( temp_length );
+	temp_buffer = ( byte * )gi.Malloc( temp_length + 1 );
+	
 	// copy the file over to our space
-	memcpy( temp_buffer, tempbuf, temp_length );
+	memcpy( temp_buffer, tempbuf, temp_length + 1);
+	temp_buffer[temp_length] = '\0';
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Print warning, so that we know if there are issues with a specific file - chrissstrahl
+	//--------------------------------------------------------------
+	if (gamefix_containsNonANSI(temp_buffer, temp_length)) {
+		gi.Printf("Script::LoadFile - Gamefix Warning: %s contains non-ANSI characters\n", name);
+	}
+
+
 	// free the file
 	gi.FS_FreeFile( tempbuf );
 	
