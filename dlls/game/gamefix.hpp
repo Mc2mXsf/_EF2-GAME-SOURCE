@@ -19,6 +19,12 @@ constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Function to read contents of a file into a container, each line will be one object
+//--------------------------------------------------------------
+extern Container<str> gamefix_fileContentTokenized;
+
+
+//--------------------------------------------------------------
 // GAMEFIX - For delayed server commands - daggolin
 //--------------------------------------------------------------
 typedef struct gamefix_pendingServerCommand_s
@@ -138,6 +144,12 @@ void				gamefix_kickBots();
 void				gamefix_playerDelayedServerCommand(int entNum, const char* commandText);
 void				gamefix_playerHandleDelayedServerCommand(void);
 void				gamefix_playerClearDelayedServerCommand(int entNum);
+void				gamefix_getFileContents(str sFile);
+bool				gamefix_hasUTF8BOM(const unsigned char* buffer, size_t length);
+bool				gamefix_isLikelyUTF8(const unsigned char* buffer, size_t length);
+bool				gamefix_containsNonANSI(const unsigned char* buffer, size_t length);
+bool				gamefix_isUmlaut(char c);
+char*				gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str);
 void				gamefix_runFrame(int levelTime, int frameTime);
 void				gamefix_shutdownGame();
 void				gamefix_initGame();
