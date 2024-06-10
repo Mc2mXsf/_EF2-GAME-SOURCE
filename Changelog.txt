@@ -60,6 +60,27 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Support for Delayed serverCommands for players
+void gamefix_playerClearDelayedServerCommand(int entNum)
+void gamefix_playerHandleDelayedServerCommand(void)
+void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
+void gamefix_runFrame(int levelTime, int frameTime)
+extern "C" void G_RunFrame( int levelTime, int frameTime )
+
+Added: Votes that pass will not count towards player max vote limit
+void MultiplayerManager::cleanup( qboolean restart )
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+void MultiplayerManager::checkVote( void )
+class MultiplayerManager : public Class
+void MultiplayerManager::removePlayer( Player *player )
+
+Added: Null-Terminator at +1 to prevent a off-by-one error leading to a buffer overrun
+Added: Print warning, so that we know if there are issues with a specific file
+void Script::LoadFile( const char *name )
+
+Added: Umlauts to the list of valid chars
+char *COM_ParseExt( char **data_p, qboolean allowLineBreaks )
+
 Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps
 void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
 
