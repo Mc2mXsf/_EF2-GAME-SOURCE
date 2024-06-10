@@ -14,9 +14,10 @@
 //--------------------------------------------------------------
 Container<str> gamefix_fileContentTokenized;
 
-
+//--------------------------------------------------------------
+// GAMEFIX - Added: Support for Delayed serverCommands for players - daggolin
+//--------------------------------------------------------------
 gamefix_pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
-
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information list for all standard levels - chrissstrahl
@@ -1097,7 +1098,7 @@ void gamefix_kickBots()
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Description: This adds a serverCommand to a player's list of delayed commands - daggolin
+// GAMEFIX - Added: Support for Delayed serverCommands for players - This adds a serverCommand to a player's list of delayed commands - daggolin
 //--------------------------------------------------------------
 void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
 {
@@ -1146,7 +1147,7 @@ void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Description: This handles the still delayed serverCommands of all players. - daggolin
+// GAMEFIX - Added: Support for Delayed serverCommands for players - This handles the still delayed serverCommands of all players. - daggolin
 //--------------------------------------------------------------
 void gamefix_playerHandleDelayedServerCommand(void)
 {
@@ -1201,7 +1202,7 @@ void gamefix_playerHandleDelayedServerCommand(void)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Description: This clears the still delayed serverCommands of a player. - daggolin
+// GAMEFIX - Added: Support for Delayed serverCommands for players - This clears the still delayed serverCommands of a player. - daggolin
 //--------------------------------------------------------------
 void gamefix_playerClearDelayedServerCommand(int entNum)
 {
