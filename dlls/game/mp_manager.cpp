@@ -175,6 +175,11 @@ void MultiplayerManager::cleanup( qboolean restart )
 	// GAMEFIX - Added: Make player view from the current camera during cinematic, when just entering or switching around - chrissstrahl
 	//--------------------------------------------------------------
 	gamefixEF2_currentCamera = nullptr;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Votes that pass will not count towards player max vote limit  - chrissstrahl
+	//--------------------------------------------------------------
+	gamefixEF2_voteStartedByClient = -1;
 }
 
 void MultiplayerManager::init( void )
@@ -799,6 +804,13 @@ void MultiplayerManager::removePlayer( Player *player )
 
 	if ( !_playerData[ player->entnum ]._valid )
 		return;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Votes that pass will not count towards player max vote limit  - chrissstrahl
+	//--------------------------------------------------------------
+	gamefixEF2_voteStartedByClient = -1;
+
 
 	// Inform the game about the player being removed
 
@@ -2004,6 +2016,13 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	_playerData[ player->entnum ]._voted = true;
 	_playerData[ player->entnum ]._votecount++;
 
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Votes that pass will not count towards player max vote limit  - chrissstrahl
+	//--------------------------------------------------------------
+	gamefixEF2_voteStartedByClient = player->entnum;
+
+
 	// Clear all the other player's voteflags
 
 	count = 1;
@@ -2111,6 +2130,7 @@ void MultiplayerManager::checkVote( void )
 
 			multiplayerManager.HUDPrintAllClients( "$$VotePassed$$\n" );
 
+
 			//--------------------------------------------------------------
 			// GAMEFIX - Added: Voteoption to kick all bots with callvote kick bots - chrissstrahl
 			//--------------------------------------------------------------
@@ -2118,7 +2138,21 @@ void MultiplayerManager::checkVote( void )
 				gamefix_kickBots();
 			}
 
+
 			gi.SendConsoleCommand( va("%s\n", _voteString.c_str() ) );
+
+
+			//--------------------------------------------------------------
+			// GAMEFIX - Added: Votes that pass will not count towards player max vote limit  - chrissstrahl
+			//--------------------------------------------------------------
+			if (gamefixEF2_voteStartedByClient != -1 && gamefixEF2_voteStartedByClient < maxclients->integer) {
+				Player* player = getPlayer(gamefixEF2_voteStartedByClient);
+				if (player && _playerData[gamefixEF2_voteStartedByClient]._valid) {
+					_playerData[gamefixEF2_voteStartedByClient]._votecount--;
+				}
+			}
+
+
 		}
 		else if ( _voteNo >= ( _numVoters / 2.0f ) )
 		{
@@ -2133,6 +2167,13 @@ void MultiplayerManager::checkVote( void )
 	}
 
 	_voteTime = 0.0f;
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Added: Votes that pass will not count towards player max vote limit  - chrissstrahl
+	//--------------------------------------------------------------
+	gamefixEF2_voteStartedByClient = -1;
+
 
 	// Clear all the player's vote text
 
