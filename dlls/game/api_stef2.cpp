@@ -1321,6 +1321,7 @@ static void gameFixAPI_addMap(str name, str gametypes, str gamemodes)
 void gameFixAPI_shutdownGame()
 {
 	gameFixAPI_maplistContainer.FreeObjectList();
+	gamefix_fileContentTokenized.FreeObjectList();
 
 	/* int i = 0;
 	while (i < 89) {
