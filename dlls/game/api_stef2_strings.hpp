@@ -27,10 +27,19 @@ constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "M
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::AddPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_maxLevelitems_ctf_grey = "Cvar max_levelitems set to 384, to many info_helpernodes - ctf_grey\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_callvote_singleplayer_not_allowed = "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n";
-constexpr auto _GFixEF2_INFO_GAMEFIX_CALLVOTE_maplist = "cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
+constexpr auto _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed = "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callvote_mpMaplist = "cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_specificVotes = "Server Specific: %s.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_ini_err_cmdEmpty = "callvote.ini error key 'command' has no value!\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range = "$$InvalidVote$$ %s requires argument (%s) range: %s.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be = "Vote %s requires cvar^3 %s ^8to be^3 %s^8.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_arg_invalid = "$$InvalidVote$$ Vote Argument for command %s!\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_arg_valid = "Valid: %s.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_willForceReload = "^6WARNING:^3Vote %s ^3will force a level reload!\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_changeTakeEffect = "^3Vote changes will take effect after level change.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_exceeded_length = "$$InvalidVote$$ Exceeded given length limit of: %d\n";
 
 constexpr auto _GFixEF2_WARN_EVENT_ACTOR_attack_FAILED = "Actor::AttackEntity - $%s.attack($entity) failed, entity does not exist\n";
 constexpr auto _GFixEF2_WARN_EVENT_CTHREAD_triggerEntity_FAILED = "triggerEntity($...) - given entity does not exist\n";

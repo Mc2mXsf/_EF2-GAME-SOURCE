@@ -17,6 +17,7 @@ constexpr auto _GFix_PLAYER_increase = 1.0f; //was 2.0f
 constexpr auto _GFix_PLAYER_next_drown_time_delay = 3.0f; //was 2.0f
 constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 
+//--------------------------------------------------------------
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to read contents of a file into a container, each line will be one object
