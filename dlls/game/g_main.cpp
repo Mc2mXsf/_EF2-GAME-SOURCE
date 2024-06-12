@@ -128,10 +128,9 @@ extern "C" void G_CleanupGame( qboolean restart )
 {
 	try
 	{
-		//--------------------------------------------------------------
-		// GAMEFIX - make sure to print always - chrissstrahl
-		//--------------------------------------------------------------
-		gi.Printf ("==== CleanupGame ====\n");
+
+		gamefix_cleanupGame( restart );
+
 		
 		level.CleanUp( restart );
 	}
