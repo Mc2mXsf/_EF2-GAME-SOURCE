@@ -12,6 +12,9 @@
 #include "mp_manager.hpp"
 
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Information list for all standard levels - chrissstrahl
+//--------------------------------------------------------------
 Container<str> gameFixAPI_maplistContainer;
 
 //--------------------------------------------------------------
@@ -1337,3 +1340,12 @@ void gameFixAPI_initGame()
 {
 	gameFixAPI_addDefaultMaps();
 }
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage game clanup / mapchange - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_cleanupGame(qboolean restart)
+{
+	
+}
+

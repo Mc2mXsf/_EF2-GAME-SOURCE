@@ -25,9 +25,10 @@ constexpr auto GAMEFIX_API_COMMANDS_CYCLE = 1.0f;
 #include "gamefix_strings.hpp"
 #include "gamefix.hpp"
 
-
+//--------------------------------------------------------------
+// GAMEFIX - Added: Information list for all standard levels - chrissstrahl
+//--------------------------------------------------------------
 extern Container<str> gameFixAPI_maplistContainer;
-
 
 bool gameFixAPI_inSingleplayer();
 bool gameFixAPI_inMultiplayer();
@@ -94,3 +95,4 @@ static bool gameFixAPI_mapForMultiplayer(str name);
 static bool gameFixAPI_mapHasGameMode(str name, str gamemode);
 void gameFixAPI_shutdownGame();
 void gameFixAPI_initGame();
+void gameFixAPI_cleanupGame(qboolean restart);
