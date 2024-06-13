@@ -27,6 +27,7 @@ constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_TeamBaseAddPlayerToTeam = "M
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::AddPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_maxLevelitems_ctf_grey = "Cvar max_levelitems set to 384, to many info_helpernodes - ctf_grey\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_mapCheckFromMaplist = "%s: %s not found in maplist, false returned!\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
 constexpr auto _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed = "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n";

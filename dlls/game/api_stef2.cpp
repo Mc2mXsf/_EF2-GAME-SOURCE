@@ -1148,6 +1148,15 @@ void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to create default maps list - chrissstrahl
 //--------------------------------------------------------------
+void gameFixAPI_addMap(const str& name, str gametypes, const str& gamemodes)
+{
+	static int mapIndex = 0;
+	gamefix_defaultMaps_t[mapIndex].mapname = name;
+	gamefix_defaultMaps_t[mapIndex].gametypes = gametypes;
+	gamefix_defaultMaps_t[mapIndex].gamemodes = gamemodes;
+	mapIndex++;
+}
+
 static void gameFixAPI_addDefaultMaps()
 {
 	gameFixAPI_addMap("ent-training1", "sp", "training");
@@ -1248,7 +1257,10 @@ static void gameFixAPI_addDefaultMaps()
 	gameFixAPI_addMap("dm_t4mobius", "mp", "Holomatch TeamHolomatch CaptureTheFlag BombDiffusion controlpoints powerstruggle oneflag specialties");
 }
 
-bool gameFixAPI_mapIsStock(str name)
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to check if a map came with the game (Patch 1.1 / GOG) - chrissstrahl
+//--------------------------------------------------------------
+bool gameFixAPI_mapIsStock(const str& name)
 {
 	int i = 0;
 	while (i < gamefix_defaultMapsSize) {
@@ -1261,7 +1273,10 @@ bool gameFixAPI_mapIsStock(str name)
 	return false;
 }
 
-static bool gameFixAPI_mapForSingleplayer(str name)
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to check if a map is listed as Singleplayer - chrissstrahl
+//--------------------------------------------------------------
+bool gameFixAPI_mapForSingleplayer(const str& name)
 {
 	int i = 0;
 	while (i < gamefix_defaultMapsSize) {
@@ -1274,10 +1289,14 @@ static bool gameFixAPI_mapForSingleplayer(str name)
 		}
 		i++;
 	}
+	gi.Printf(_GFixEF2_INFO_GAMEFIX_mapCheckFromMaplist,"gameFixAPI_mapForSingleplayer", name.c_str());
 	return false;
 }
 
-static bool gameFixAPI_mapForMultiplayer(str name)
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to check if a map is listed as Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+bool gameFixAPI_mapForMultiplayer(const str& name)
 {
 	int i = 0;
 	while (i < gamefix_defaultMapsSize) {
@@ -1287,13 +1306,18 @@ static bool gameFixAPI_mapForMultiplayer(str name)
 			if (Q_stricmp(gamefix_defaultMaps_t[i].gametypes.c_str(), "mp") == 0) {
 				return true;
 			}
+			return false;
 		}
 		i++;
 	}
+	gi.Printf(_GFixEF2_INFO_GAMEFIX_mapCheckFromMaplist, "gameFixAPI_mapForSingleplayer", name.c_str());
 	return false;
 }
 
-static bool gameFixAPI_mapHasGameMode(str name,str gamemode)
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to check if a map is listed as Multiplayer - chrissstrahl
+//--------------------------------------------------------------
+bool gameFixAPI_mapHasGameMode(const str& name,const str& gamemode)
 {
 	int i = 0;
 	while (i < gamefix_defaultMapsSize) {
@@ -1306,16 +1330,142 @@ static bool gameFixAPI_mapHasGameMode(str name,str gamemode)
 		}
 		i++;
 	}
+	gi.Printf(_GFixEF2_INFO_GAMEFIX_mapCheckFromMaplist, "gameFixAPI_mapForSingleplayer", name.c_str());
 	return false;
 }
 
-static void gameFixAPI_addMap(str name, str gametypes, str gamemodes)
+bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, const str &arg, str &voteCommand, str &contentsSections)
 {
-	static int mapIndex = 0;
-	gamefix_defaultMaps_t[mapIndex].mapname = name;
-	gamefix_defaultMaps_t[mapIndex].gametypes = gametypes;
-	gamefix_defaultMaps_t[mapIndex].gamemodes = gamemodes;
-	mapIndex++;
+	//standard votes
+	if (!contentsSections.length()) {
+		voteCommand = va("%s %s", command.c_str(), arg.c_str());
+		return true;
+	}
+
+	float minBound = -99999.0f;
+	float maxBound = 99999.0f;
+	int totalLength = MAX_QPATH;
+	str argNew = arg;
+	str commandNew = get_key_value(contentsSections, "command");
+	str length = get_key_value(contentsSections, "length");
+	str extension = get_key_value(contentsSections, "extension");
+	str range = get_key_value(contentsSections, "range");
+	str argumentType = get_key_value(contentsSections, "argument");
+	str restartRequired = get_key_value(contentsSections, "restartrequired");
+	str restartForced = get_key_value(contentsSections, "restart");
+	str argumentsValid = get_key_value(contentsSections, "arguments");
+	str requiredCvar = get_key_value(contentsSections, "requiredcvar");
+	str requiredCvarValue = get_key_value(contentsSections, "requiredcvarvalue");
+
+	//default to false
+	if (!restartForced.length() || Q_stricmp(restartForced.c_str(), "true") != 0) {
+		restartForced = "false";
+	}
+
+	//default to false
+	if (!restartRequired.length() || Q_stricmp(restartRequired.c_str(), "true") != 0) {
+		restartRequired = "false";
+	}
+
+	//default to string for argument
+	if (!argumentType.length() || Q_stricmp(argumentType.c_str(), "none") != 0 && Q_stricmp(argumentType.c_str(), "integer") != 0 && Q_stricmp(argumentType.c_str(), "float") != 0) {
+		argumentType = "string";
+	}
+
+	//verify there is a command key and value for it
+	if (!commandNew.length()) {
+		multiplayerManager.HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callVote_ini_err_cmdEmpty);
+		return false;
+	}
+
+	//check if we require a argument
+	if (!arg.length() && Q_stricmp(argumentType.c_str(), "none") != 0) {
+		multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range, command.c_str(), argumentType.c_str(), range.c_str()));
+		return false;
+	}
+
+	//check if cvar settings match
+	if (requiredCvar.length() && requiredCvarValue.length()) {
+		if (gamefix_getCvarInt(requiredCvar) <= atoi(requiredCvarValue.c_str())) {
+			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be, command.c_str(), requiredCvar.c_str(), requiredCvarValue.c_str()));
+			return false;
+		}
+	}
+
+	//check if argument is valid
+	if (argumentsValid.length()) {
+		bool isValid = false;
+		//get arguments into list, seperator is space or tab
+		Container<str> validArguments;
+		gamefix_listSeperatedItems(validArguments, argumentsValid, " \t");
+		if (validArguments.NumObjects()) {
+			for (int iObj = 1; iObj <= validArguments.NumObjects(); iObj++) {
+				if (Q_stricmp(validArguments.ObjectAt(iObj).c_str(), argNew.c_str()) == 0) {
+					isValid = true;
+				}
+			}
+		}
+		validArguments.FreeObjectList();
+
+		if (!isValid) {
+			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_invalid, command.c_str()));
+			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_valid, argumentsValid.c_str()));
+			return false;
+		}
+	}
+
+	//verify rage of numeric value
+	if (range.length()) {
+		extract_floats(range, minBound, maxBound);
+
+		if (Q_stricmp(argumentType.c_str(), "integer") == 0) {
+			int iVal = bound(atoi(argNew.c_str()), minBound, maxBound);
+			argNew = va("%d", iVal);
+		}
+		else if (Q_stricmp(argumentType.c_str(), "float") == 0) {
+			int fVal = bound(atoi(argNew.c_str()), minBound, maxBound);
+			argNew = va("%f", fVal);
+		}
+	}
+
+	//verify file extension
+	if (extension.length()) {
+		str extensionStripped = gamefix_getExtension(extension.c_str());
+		if (extensionStripped.length()) {
+			extension = extensionStripped;
+		}
+		str fileExt = gamefix_getExtension(arg.c_str());
+		if (Q_stricmp(fileExt.c_str(), extension.c_str()) != 0) {
+			commandNew += va(".%s", extension.c_str());
+		}
+	}
+
+	//get maximum command length
+	if (length.length()) {
+		totalLength = atoi(length.c_str());
+	}
+
+	//construct actual vote command
+	voteCommand = va(commandNew.c_str(), argNew.c_str());
+
+	//check if a restart is wanted
+	if (restartForced.length() && Q_stricmp(restartForced.c_str(), "true") == 0) {
+		if (gamefix_getPlayers(false) > 1) {
+			multiplayerManager.HUDPrintAllClients(va(_GFixEF2_MSG_FUNC_callVote_willForceReload, command.c_str()));
+		}
+
+		voteCommand = va("%s;map %s", voteCommand.c_str(), level.mapname.c_str());
+	}
+	else if (restartRequired.length() && Q_stricmp(restartRequired.c_str(), "true") == 0) {
+		multiplayerManager.HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callVote_changeTakeEffect);
+	}
+
+	//verify maximum command length
+	if (voteCommand.length() >= totalLength) {
+		multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_exceeded_length, totalLength));
+		return false;
+	}
+	return true;
 }
 
 //--------------------------------------------------------------
