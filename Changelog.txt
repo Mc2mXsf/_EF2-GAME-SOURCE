@@ -60,6 +60,18 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Function To check if a map came with the game
+bool gameFixAPI_mapIsStock(const str& name)
+
+Added: Function to check if a map is listed as Singleplayer
+bool gameFixAPI_mapForSingleplayer(const str& name)
+
+Added: Function to check if a map is listed as Multiplayer
+bool gameFixAPI_mapForMultiplayer(const str& name)
+
+Added: Support for ini-file based custom vote commands
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+
 Added: Support for Delayed serverCommands for players
 void gamefix_playerClearDelayedServerCommand(int entNum)
 void gamefix_playerHandleDelayedServerCommand(void)
