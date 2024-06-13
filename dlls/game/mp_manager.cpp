@@ -1884,12 +1884,12 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	// GAMEFIX - Added: Support for ini based vote commands - chrissstrahl
 	//--------------------------------------------------------------
 	str iniContents;
-	str iniContents_section;
-	//get contents of section if vote command matches a section name
-	if (gamefix_getFileContents("ini.ini", iniContents)) {
-		iniContents_section = get_section_contents(iniContents, command.c_str());
+	str iniSectionNames;
+	str iniContentsSection;
+	if (gamefix_getFileContents("callvote.ini", iniContents)) {
+		iniContentsSection = get_section_contents(iniContents, command.c_str());
+		iniSectionNames = extract_section_names(iniContents);
 	}
-
 	
 	//--------------------------------------------------------------
 	// GAMEFIX - g_gametype changed to correct mp_gametype - chrissstrahl
@@ -1905,7 +1905,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 			//--------------------------------------------------------------
 			// GAMEFIX - Added: Support for ini based vote commands - chrissstrahl
 			//--------------------------------------------------------------
-			!iniContents_section.length()
+			!iniContentsSection.length()
 		)
 	{
 		HUDPrint( player->entnum, "$$InvalidVote$$\n" );
@@ -1916,8 +1916,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		// GAMEFIX - Added: Support for ini based vote commands - chrissstrahl
 		//--------------------------------------------------------------
 		if (iniContents.length()) {
-			str sectionNames = extract_section_names(iniContents);
-			HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_specificVotes, sectionNames.c_str()));
+			HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_specificVotes, iniSectionNames.c_str()));
 		}
 		return;
 	}
@@ -1934,8 +1933,10 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		// GAMEFIX - Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps - chrissstrahl
 		//--------------------------------------------------------------
 		if (!gamefix_getCvarInt("gfix_allowSpMaps")) {
-			HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed);
-			return;
+			if (gameFixAPI_mapIsStock(level.mapname) && gameFixAPI_mapForSingleplayer(level.mapname) && !gameFixAPI_mapForMultiplayer(level.mapname)) {
+				HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed);
+				return;
+			}
 		}
 
 
@@ -2027,136 +2028,10 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
 		//--------------------------------------------------------------
-		if (iniContents_section.length()) {
-			float minBound		= -99999.0f;
-			float maxBound		= 99999.0f;
-			int totalLength		= MAX_QPATH;
-			str argNew			= arg;
-			str commandNew		= get_key_value(iniContents_section, "command");
-			str length			= get_key_value(iniContents_section, "length");
-			str extension		= get_key_value(iniContents_section, "extension");
-			str range			= get_key_value(iniContents_section, "range");
-			str argumentType	= get_key_value(iniContents_section, "argument");
-			str restartRequired	= get_key_value(iniContents_section, "restartrequired");
-			str restartForced	= get_key_value(iniContents_section, "restart");
-			str argumentsValid	= get_key_value(iniContents_section, "arguments");
-			str requiredCvar		= get_key_value(iniContents_section, "requiredcvar");
-			str requiredCvarValue	= get_key_value(iniContents_section, "requiredcvarvalue");
-
-			//default to false
-			if (!restartForced.length() || Q_stricmp(restartForced.c_str(), "true") != 0) {
-				restartForced = "false";
-			}
-
-			//default to false
-			if (!restartRequired.length() || Q_stricmp(restartRequired.c_str(), "true") != 0) {
-				restartRequired = "false";
-			}
-			
-			//default to string for argument
-			if (!argumentType.length() || Q_stricmp(argumentType.c_str(), "none") != 0 && Q_stricmp(argumentType.c_str(), "integer") != 0 && Q_stricmp(argumentType.c_str(), "float") != 0) {
-				argumentType = "string";
-			}
-
-			//verify there is a command key and value for it
-			if (!commandNew.length()) {
-				HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callVote_ini_err_cmdEmpty);
-				return;
-			}
-
-			//check if we require a argument
-			if (!arg.length() && Q_stricmp(argumentType.c_str(), "none") != 0) {
-				HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range, command.c_str(), argumentType.c_str(), range.c_str()));
-				return;
-			}
-
-			//check if cvar settings match
-			if (requiredCvar.length() && requiredCvarValue.length()) {
-				if (gamefix_getCvarInt(requiredCvar) <= atoi(requiredCvarValue.c_str())) {
-					HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be,command.c_str(), requiredCvar.c_str(), requiredCvarValue.c_str()));
-					return;
-				}
-			}
-
-			//check if argument is valid
-			if (argumentsValid.length()) {
-				bool isValid = false;
-				//get arguments into list, seperator is space or tab
-				Container<str> validArguments;
-				gamefix_listSeperatedItems(validArguments, argumentsValid, " \t");
-				if (validArguments.NumObjects()) {
-					for (int iObj = 1; iObj <= validArguments.NumObjects(); iObj++) {
-						if (Q_stricmp(validArguments.ObjectAt(iObj).c_str(), argNew.c_str()) == 0) {
-							isValid = true;
-						}
-					}
-				}
-				validArguments.FreeObjectList();
-
-				if (!isValid) {
-					HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_invalid, command.c_str()));
-					HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_valid, argumentsValid.c_str()));
-					return;
-				}
-			}
-
-			//verify rage of numeric value
-			if (range.length()) {
-				extract_floats(range, minBound, maxBound);
-
-				if (Q_stricmp(argumentType.c_str(), "integer") == 0){
-					int iVal = bound(atoi(argNew.c_str()), minBound, maxBound);
-					argNew = va("%d", iVal);
-				}
-				else if (Q_stricmp(argumentType.c_str(), "float") == 0) {
-					int fVal = bound(atoi(argNew.c_str()), minBound, maxBound);
-					argNew = va("%f",fVal);
-				}
-			}
-
-			//verify file extension
-			if (extension.length()) {
-				str extensionStripped = gamefix_getExtension(extension.c_str());
-				if (extensionStripped.length()) {
-					extension = extensionStripped;
-				}
-				str fileExt = gamefix_getExtension(arg.c_str());
-				if (Q_stricmp(fileExt.c_str(), extension.c_str()) != 0) {
-					commandNew += va(".%s", extension.c_str());
-				}
-			}	
-
-			//get maximum command length
-			if (length.length()) {
-				totalLength = atoi(length.c_str());
-			}
-
-			//construct actual vote command
-			_voteString = va(commandNew.c_str(), argNew.c_str());
-
-			//check if a restart is wanted
-			if (restartForced.length() && Q_stricmp(restartForced.c_str(),"true") == 0) {
-				if (gamefix_getPlayers(false) > 1) {
-					multiplayerManager.HUDPrintAllClients(va(_GFixEF2_MSG_FUNC_callVote_willForceReload, command.c_str()));
-				}
-
-				_voteString = va("%s;map %s", _voteString.c_str(), level.mapname.c_str());
-			}
-			else if(restartRequired.length() && Q_stricmp(restartRequired.c_str(), "true") == 0){
-				HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callVote_changeTakeEffect);
-			}
-
-			//verify maximum command length
-			if (_voteString.length() >= totalLength ) {
-				HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_exceeded_length,totalLength));
-				return;
-			}
+		//_voteString = va("%s %s", command.c_str(), arg.c_str());
+		if (!gameFixAPI_callvoteIniHandle(player, command, arg, _voteString, iniContentsSection)){
+			return;
 		}
-
-
-		else {
-			_voteString = va( "%s %s", command.c_str(), arg.c_str() );
-		}		
 	}
 
 	// Print out a message to everyone
