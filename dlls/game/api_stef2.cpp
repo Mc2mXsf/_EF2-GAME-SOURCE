@@ -1286,6 +1286,7 @@ bool gameFixAPI_mapForSingleplayer(const str& name)
 			if (Q_stricmp(gamefix_defaultMaps_t[i].gametypes.c_str(), "sp") == 0) {
 				return true;
 			}
+			return false;
 		}
 		i++;
 	}
@@ -1327,6 +1328,7 @@ bool gameFixAPI_mapHasGameMode(const str& name,const str& gamemode)
 			if (gamefix_findString(gamefix_defaultMaps_t[i].gamemodes.c_str(), gamemode.c_str()) != -1) {
 				return true;
 			}
+			return false;
 		}
 		i++;
 	}
