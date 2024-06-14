@@ -578,7 +578,8 @@ str gamefix_getServerLanguage()
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function retrieving Player Language - chrissstrahl
 //--------------------------------------------------------------
-str gamefix_getLanguage(Player* player) {
+str gamefix_getLanguage(Player* player)
+{
 	return gameFixAPI_getLanguage(player);
 }
 
@@ -769,7 +770,8 @@ float gamefix_dialogGetSoundlength(char realDialogName[MAX_QPATH])
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function replacing specific part of a string - chrissstrahl
 //--------------------------------------------------------------
-void gamefix_replaceSubstring(char* str, const char* find, const char* replace) {
+void gamefix_replaceSubstring(char* str, const char* find, const char* replace)
+{
 	char buffer[1024];  // Ensure buffer is sufficiently large
 	char* result = buffer;  // Write result to the buffer
 	char* pos;
@@ -805,7 +807,7 @@ void gamefix_replaceSubstring(char* str, const char* find, const char* replace) 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function finding first occurence of given single char, returning its position - chrissstrahl
 //--------------------------------------------------------------
-static int gamefix_findChar(char* str, char find)
+int gamefix_findChar(const char* str, const char find)
 {
 	int pos = -1; //NoMatch
 	for (int i = 0; str[i] != '\0'; ++i) {
@@ -818,30 +820,18 @@ static int gamefix_findChar(char* str, char find)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function finding first occurence of given single char, returning its position - chrissstrahl
-//--------------------------------------------------------------
-//static int gamefix_findChar2(const char* str, char find)
-//{
-//	const char* pos = strchr(str, find);
-//
-//	if (pos != nullptr) {
-//		return pos - str;
-//	}
-//
-//	return -1;  // NoMatch
-//}
-
-//--------------------------------------------------------------
 // GAMEFIX - Added: Function finding first occurence of given any of the single chars, returning its position - chrissstrahl
 //--------------------------------------------------------------
-static int gamefix_findChars(char* str, const char* find)
+int gamefix_findChars(const char* str, const char* find)
 {
 	int pos = -1; // NoMatch
-	for (int i = 0; str[i] != '\0'; ++i) {
-		for (int j = 0; find[j] != '\0'; ++j) {
-			if (str[i] == find[j]) {
-				pos = i;
-				return pos;
+	if (strlen(find)) {
+		for (int i = 0; str[i] != '\0'; ++i) {
+			for (int j = 0; find[j] != '\0'; ++j) {
+				if (str[i] == find[j]) {
+					pos = i;
+					return pos;
+				}
 			}
 		}
 	}
@@ -850,6 +840,7 @@ static int gamefix_findChars(char* str, const char* find)
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function finding first occurence of given string, returning its position - chrissstrahl
+// Basically a substitude for: .find .contains .find_first_of .IndexOf and strpos strstr
 //--------------------------------------------------------------
 int gamefix_findString(const char* str, const char* find)
 {
@@ -860,29 +851,11 @@ int gamefix_findString(const char* str, const char* find)
 	}
 	return -1;  // NoMatch
 }
-
-static int gamefix_findStringCase(str latinumstack, str find)
+int gamefix_findStringCase(const str& latinumstack,const str& find)
 {
-	int latinumLength = latinumstack.length();
-	int findLength = find.length();
-
-	if (findLength == 0 || latinumLength < findLength) {
-		return -1;
-	}
-
-	for (int latinumIndex = 0; latinumIndex <= latinumLength - findLength; ++latinumIndex) {
-		int findIndex = 0;
-		while (findIndex < findLength && tolower(latinumstack[latinumIndex + findIndex]) == tolower(find[findIndex])) {
-			++findIndex;
-		}
-		if (findIndex == findLength) {
-			return latinumIndex;
-		}
-	}
-	return -1;
+	return gamefix_findStringCase(latinumstack, find, false);
 }
-
-static int gamefix_findStringCase(str latinumstack, str find, bool wholeWord)
+int gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeWord)
 {
 	int latinumLength = latinumstack.length();
 	int findLength = find.length();
@@ -900,13 +873,14 @@ static int gamefix_findStringCase(str latinumstack, str find, bool wholeWord)
 			if (!wholeWord) {
 				return latinumIndex;
 			}
-			// Check if next char is a separator
-			if ((latinumIndex + findLength == latinumLength) ||
-				!isalnum(latinumstack[latinumIndex + findLength])) {
+			// Check if preceding character is a separator or start of the string
+			if ((latinumIndex == 0 || !isalnum(latinumstack[latinumIndex - 1])) &&
+				// Check if next character is a separator or end of the string
+				(latinumIndex + findLength == latinumLength || !isalnum(latinumstack[latinumIndex + findLength]))) {
 				return latinumIndex;
 			}
-
-			/*
+		}
+		/*
 			//check if next char is not a letter, but any kind of seperator
 			if (latinumIndex + 1 <= latinumLength) {
 				gi.Printf("---- Found, now checking for whole word ------\n");
@@ -918,8 +892,7 @@ static int gamefix_findStringCase(str latinumstack, str find, bool wholeWord)
 					}
 				}
 			}
-			*/
-		}
+		*/
 	}
 	return -1;
 }
@@ -927,10 +900,10 @@ static int gamefix_findStringCase(str latinumstack, str find, bool wholeWord)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function finding first occurence of given char, returning string prior to its occurence - chrissstrahl
 //--------------------------------------------------------------
-static str gamefix_getStringUntilChar(const str* source, char delimiter)
+str gamefix_getStringUntilChar(const str& source, const char& delimiter)
 {
 	str result = "";
-	for (int i = 0; source[i] != '\0'; ++i) {
+	for (int i = 0; i < source.length(); ++i) {
 		if (source[i] == delimiter) {
 			break;
 		}
@@ -938,28 +911,34 @@ static str gamefix_getStringUntilChar(const str* source, char delimiter)
 	}
 	return result;
 }
-static char* gamefix_getStringUntilChar(const char* source, char delimiter)
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function finding first occurence of given char, returning string prior to its occurence - chrissstrahl
+//--------------------------------------------------------------
+char* gamefix_getStringUntilChar(const char* source, const char& delimiter)
 {
-	//get length
+	// Get length
 	int length = 0;
 	while (source[length] != '\0' && source[length] != delimiter) {
 		++length;
 	}
 
-	//allocate
+	// Allocate memory
 	char* result = new char[length + 1];
 
-	//copy and terminate
-	Q_strncpyz(result, source, (length + 1));
+	// Copy and terminate
+	Q_strncpyz(result, source, length + 1);
 
 	return result;
 }
 
-static char* gamefix_getStringUntil(char* sString, const int iStart, int iEnd)
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning a substr/part of a string - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_getStringUntil(const str& sString, const int iStart, const int iEnd)
 {
-	const int iLength = strlen(sString);
+	const int iLength = sString.length();
 	if (iStart >= iLength) {
-		throw("Contact HZM with this info data: COOP PROGRAMMING ERROR IN: manipulateFromWithLength ERROR INFORMATION READS: start pos > then strlen");
+		throw("gamefix_getStringUntil: start pos > then strlen");
 	}
 
 	int actualEnd = iEnd;
@@ -967,51 +946,18 @@ static char* gamefix_getStringUntil(char* sString, const int iStart, int iEnd)
 		actualEnd = iLength - iStart;
 	}
 
-	char* sPartial = new char[actualEnd + 1];
+	str result;
 	for (int i = 0; i < actualEnd; ++i) {
-		sPartial[i] = sString[iStart + i];
+		result += sString[iStart + i];
 	}
-	sPartial[actualEnd] = '\0';
 
-	for (int i = 0; i <= actualEnd; ++i) {
-		sString[i] = sPartial[i];
-	}
-	
-	delete[] sPartial;
-	return sString;
+	return result;
 }
-
-static str gamefix_getStringUntil(str &sString, const int iStart, int iEnd)
-{
-	const int iLength = strlen(sString);
-	if (iStart >= iLength) {
-		throw("Contact HZM with this info data: COOP PROGRAMMING ERROR IN: manipulateFromWithLength ERROR INFORMATION READS: start pos > then strlen");
-	}
-
-	int actualEnd = iEnd;
-	if (iStart + iEnd > iLength) {
-		actualEnd = iLength - iStart;
-	}
-
-	char* sPartial = new char[actualEnd + 1];
-	for (int i = 0; i < actualEnd; ++i) {
-		sPartial[i] = sString[iStart + i];
-	}
-	sPartial[actualEnd] = '\0';
-
-	for (int i = 0; i <= actualEnd; ++i) {
-		sString[i] = sPartial[i];
-	}
-	
-	delete[] sPartial;
-	return sString;
-}
-
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function counting occurence of given char in a string - chrissstrahl
 //--------------------------------------------------------------
-static int gamefix_countCharOccurrences(const char* str, char ch)
+int gamefix_countCharOccurrences(const char* str,const char& ch)
 {
 	int count = 0;
 	while (*str) {
@@ -1024,9 +970,7 @@ static int gamefix_countCharOccurrences(const char* str, char ch)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function to fix m11l3a-drull_ruins3_boss, hole in floor player falling out of level - chrissstrahl
-// Adds a clip to a specific location at the level start at the pillar where we fight the first stalker in the level
-// Player can fall out of the level if circeling the pillar to closely, this clip fixes this - SP/MP
+// GAMEFIX - Added: Function to allow spawning Object, pretty much like in the scripts
 //--------------------------------------------------------------
 Entity* gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags)
 {
@@ -1121,6 +1065,9 @@ void gamefix_playerDelayedServerCommand(int entNum, const char* commandText)
 		gi.Printf("gamefix_playerDelayedServerCommand: Couldn't allocate memory for new pendingServerCommand -> Dropping command.\n");
 		return;
 	}
+	// Ensuring initialization - to stop MS-VS from nagging - chrissstrahl
+	command->command = NULL;
+	command->next = NULL; 
 
 	int commandLength = strlen(commandText) + 1;
 	command->command = (char*)malloc(commandLength * sizeof(char));
@@ -1210,7 +1157,7 @@ void gamefix_playerClearDelayedServerCommand(int entNum)
     while (current != NULL) {
         gamefix_pendingServerCommand* temp = current;
         current = current->next;
-        free(temp->command);
+		free(temp->command);
         free(temp);
     }
     pendingServerCommandList[entNum] = NULL;
@@ -1219,24 +1166,22 @@ void gamefix_playerClearDelayedServerCommand(int entNum)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to read contents of a file into a container, each line will be one object - chrissstrahl
 //--------------------------------------------------------------
-void gamefix_getFileContents(str sFile)
-{
-	gamefix_fileContentTokenized.FreeObjectList();
-
-	static str bufferOld = "";
-	static str buffer = "";
+int gamefix_getFileContents(str sFile, str& contents) {
+	contents = "";
 	if (!gi.FS_Exists(sFile.c_str())) {
 		gi.Printf("gamefix_getFileContents: Couldn't find file: %s\n", sFile.c_str());
-		return;
+		return 0;
 	}
-	
+	static str bufferOld = "";
+	static str buffer = "";
+
 	Script bufferInternal;
 	bufferInternal.LoadFile(sFile.c_str());
 	long lSize = bufferInternal.length;
 
 	if (bufferInternal.buffer == NULL) {
 		bufferInternal.Close();
-		return;
+		return 0;
 	}
 
 	bufferOld = bufferInternal.buffer;
@@ -1245,40 +1190,617 @@ void gamefix_getFileContents(str sFile)
 	if (bufferOld[lSize - 1] != '\0') {
 		bufferOld += '\0';
 	}
-	
-	//Convert Umlauts if the file was ENCODED as UTF8 instead of ANSI
+
+	// Convert Umlauts if the file was ENCODED as UTF8 instead of ANSI
 	buffer = gamefix_convertUtf8UmlautsToAnsi(bufferOld);
 
 	char* ptr;
 	char* token;
 	ptr = const_cast<char*>(buffer.c_str());
-	int lineNum = 1;
+	int lineNum = 0;
 	int tokenNumTotal = 0;
-	while (ptr != '\0') {
+
+	while (ptr && *ptr != '\0') {
 		str lineContents = "";
 		int tokenNum = 0;
+
 		while (true) {
 			token = COM_ParseExt(&ptr, false);
 			if (!token[0]) {
 				break;
 			}
-			
-			//when putting the line together, seperate the tokens with a tab
-			if (tokenNum != 0) {
 
-				lineContents += "\t";
+			// When putting the line together, separate the tokens with a tab
+			if (tokenNum != 0) {
+				//lineContents += "\t";
+				lineContents += " ";
 			}
 			lineContents += token;
 			tokenNumTotal += ++tokenNum;
 		}
 
-		gamefix_fileContentTokenized.AddObject(lineContents);
-		gi.Printf("%s\n", lineContents.c_str());
+		if (lineContents.length() > 0) {
+			contents += lineContents;
+			contents += "\n";
+		}
 		lineNum++;
 	}
 	gi.Printf("Lines: %d, Tokens: %d, Size: %d, File: %s\n", lineNum, tokenNumTotal, lSize, sFile.c_str());
+	//gi.Printf("%s\n", contents.c_str());
+	return lineNum;
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to check if text contains non ANSI Chars - generated by ChatGTP 4o - chrissstrahl
+//--------------------------------------------------------------
+bool gamefix_containsNonANSI(const unsigned char* buffer, size_t length)
+{
+	for (size_t i = 0; i < length; i++) {
+		if (buffer[i] >= 0x80) {
+			return true;
+		}
+	}
+	return false;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to convert UTF-8 Umlaut and others withing ASCII bounds to ANSI - generated by ChatGTP 4o - chrissstrahl
+//--------------------------------------------------------------
+char* gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str)
+{
+	const unsigned char* src = (const unsigned char*)utf8_str;
+	size_t utf8_len = strlen(utf8_str);
+	size_t ansi_size = utf8_len + 1; // Add 1 for null-termination
+
+	// Allocate sufficient memory for ANSI string
+	char* ansi_str = (char*)malloc(ansi_size);
+	if (!ansi_str) {
+		gi.Printf("Error: malloc");
+		return NULL;
+	}
+
+	unsigned char* dst = (unsigned char*)ansi_str;
+	size_t len = 0;
+
+	while (*src) {
+		// Check for specific UTF-8 umlauts and other characters
+		if (src[0] == 0xC3) {
+			switch (src[1]) {
+			case 0xA4: // a-uml
+				*dst++ = 0xE4;
+				src += 2;
+				len++;
+				continue;
+			case 0xB6: // o-uml
+				*dst++ = 0xF6;
+				src += 2;
+				len++;
+				continue;
+			case 0xBC: // u-uml
+				*dst++ = 0xFC;
+				src += 2;
+				len++;
+				continue;
+			case 0x84: // A-uml
+				*dst++ = 0xC4;
+				src += 2;
+				len++;
+				continue;
+			case 0x96: // O-uml
+				*dst++ = 0xD6;
+				src += 2;
+				len++;
+				continue;
+			case 0x9C: // U-uml
+				*dst++ = 0xDC;
+				src += 2;
+				len++;
+				continue;
+			case 0x9F: // Sharp-S
+				*dst++ = 0xDF;
+				src += 2;
+				len++;
+				continue;
+			}
+		}
+		else if (src[0] == 0xC2) {
+			switch (src[1]) {
+			case 0xA9: // Copyright Symbol
+				*dst++ = 0xA9;
+				src += 2;
+				len++;
+				continue;
+			case 0xAE: // Registered Symbol
+				*dst++ = 0xAE;
+				src += 2;
+				len++;
+				continue;
+			case 0xB1: // Plus Minus unified Symbol
+				*dst++ = 0xB1;
+				src += 2;
+				len++;
+				continue;
+			case 0xBC: // One Fourth Symbol
+				*dst++ = 0xBC;
+				src += 2;
+				len++;
+				continue;
+			}
+		}
+		else if (src[0] == 0xE2) {
+			if (src[1] == 0x80) {
+				switch (src[2]) {
+				case 0x98: // left single quotation mark
+				case 0x99: // right single quotation mark
+					*dst++ = '\'';
+					src += 3;
+					len++;
+					continue;
+				case 0x9C: // left double quotation mark
+				case 0x9D: // right bouble quotation mark
+					*dst++ = '"';
+					src += 3;
+					len++;
+					continue;
+				}
+			}
+		}
+		// If not a specific character, just copy the byte
+		*dst++ = *src++;
+		len++;
+	}
+
+	*dst = '\0'; // Null-terminate the output string
+
+	return ansi_str;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to trim whitespace from a string - generated by ChatGTP 4o - chrissstrahl
+//--------------------------------------------------------------
+char* gamefix_trimWhitespace(char* input)
+{
+	char* end = nullptr;
+
+	// Trim leading space
+	while (isspace((unsigned char)*input)) input++;
+
+	if (*input == 0)  // All spaces?
+		return input;
+
+	// Trim trailing space
+	end = input + strlen(input) - 1;
+	while (end > input && isspace((unsigned char)*end)) end--;
+
+	// Write new null terminator
+	end[1] = '\0';
+
+	return input;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to trim whitespace from a string - generated by ChatGTP 4o - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_trimWhitespace(const str& input)
+{
+	const char* c_str = input.c_str();
+	int start = 0;
+	int end = input.length() - 1;
+
+	// Trim leading whitespace
+	while (start <= end && isspace(static_cast<unsigned char>(c_str[start]))) {
+		start++;
+	}
+
+	// Trim trailing whitespace
+	while (end >= start && isspace(static_cast<unsigned char>(c_str[end]))) {
+		end--;
+	}
+
+	// Create a new str with trimmed content
+	return str(input, start, end + 1);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to list seperated values in a str container - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_listSeperatedItems(Container<str>& container, const str& source, const str& seperator)
+{
+	container.FreeObjectList();
+	if (!source.length() || !seperator.length()) {
+		return;
+	}
+
+	str item = "";
+	for (int i = 0; i < source.length(); i++) {
+		bool add = false;
+		for (int idx = 0; idx < seperator.length(); idx++) {
+			if (source[i] == seperator[idx]) {
+				add = true;
+			}
+		}
+
+		if (!add) {
+			item += source[i];
+		}
+
+		if (add || i == (source.length() - 1)) {
+			if (item.length()) {
+				container.AddObject(item);
+			}
+			item = "";
+			continue;
+		}
+	}
+}
+
+
+
+
+
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to get file extension from string - taken from q_shared - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_getExtension(const str& in)
+{
+	static char exten[8];
+	int i;
+
+	const char* c_in = in.c_str();
+	while (*c_in && (*c_in != '.'))
+		c_in++;
+	if (!*c_in)
+		return str("");
+	c_in++;
+	for (i = 0; i < 7 && *c_in; i++, c_in++)
+		exten[i] = *c_in;
+	exten[i] = 0;
+	return str(exten);
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to handle each frame call - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_runFrame(int levelTime, int frameTime)
+{
+	gamefix_playerHandleDelayedServerCommand();
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage game shutdown - chrissstrahl
+// Executed if game is shut down - killserver, quit, HOST-disconnect
+//--------------------------------------------------------------
+void gamefix_shutdownGame()
+{
+	gameFixAPI_shutdownGame();
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage game startup - chrissstrahl
+// Executed ONLY if game is started for first time
+//--------------------------------------------------------------
+void gamefix_initGame()
+{
+	gameFixAPI_initGame();
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to manage game shutdown - chrissstrahl
+// Executed if level is exited/changed/restarted - but not on first load/game start
+//--------------------------------------------------------------
+void gamefix_cleanupGame(qboolean restart)
+{
+	gi.Printf("==== CleanupGame ====\n");
+	gameFixAPI_cleanupGame(restart);
+}
+
+
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Support for ini-files - generated by ChatGTP 4o - chrissstrahl
+//--------------------------------------------------------------
+gamefix_iniFileSection* gamefix_iniFileParseSections(const str& data, int* section_count)
+{
+	const char* c_data = data.c_str(); // Get the const char* from str
+	size_t len = strlen(c_data); // Calculate the length of the string
+
+	// Make a modifiable copy of the string
+	char* modifiable_data = (char*)malloc(len + 1);
+	if (!modifiable_data) {
+		perror("malloc");
+		return NULL;
+	}
+	strcpy(modifiable_data, c_data);
+
+	Container<gamefix_iniFileSection> sections;
+	*section_count = 0;
+	gamefix_iniFileSection* current_section = nullptr;
+
+	char* line = strtok(modifiable_data, "\n");
+	while (line != NULL) {
+		str trimmed_line = gamefix_trimWhitespace(line);
+
+		// Ignore empty lines and comments
+		if (!trimmed_line.length() || trimmed_line[0] == ';' || trimmed_line[0] == '#') {
+			line = strtok(NULL, "\n");
+			continue;
+		}
+
+		// Check if the line is a section header
+		if (trimmed_line[0] == '[') {
+			int end_pos = gamefix_findChar(trimmed_line, ']');
+			if (end_pos != -1) {
+				str section_name = str(trimmed_line, 1, end_pos - 1); // Skip opening bracket and remove closing bracket
+				gamefix_iniFileSection new_section;
+				new_section.section = section_name;
+				sections.AddObject(new_section);
+				current_section = &sections[sections.NumObjects() - 1];
+				(*section_count)++;
+				gi.Printf("New section: %s\n", current_section->section.c_str());  // Debug print
+			}
+		}
+		else if (current_section) {
+			gi.Printf("Processing line: %s\n", trimmed_line.c_str());  // Debug print
+			current_section->lines.AddObject(trimmed_line);
+			gi.Printf("Added line to section [%s]: %s\n", current_section->section.c_str(), trimmed_line.c_str());  // Debug print
+		}
+
+		line = strtok(NULL, "\n");
+	}
+
+	free(modifiable_data);
+
+	// Allocate memory for the sections to return
+	gamefix_iniFileSection* result = (gamefix_iniFileSection*)malloc(sections.NumObjects() * sizeof(gamefix_iniFileSection));
+	if (!result) {
+		perror("malloc");
+		return NULL;
+	}
+
+	// Copy sections to the result array
+	for (int i = 1; i <= sections.NumObjects(); ++i) { //<- Loop through the Container to copy sections
+		result[i - 1] = sections.ObjectAt(i); //<- Copy each section to the result array
+	}
+
+	return result;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to return contents given section if it exists  - generated by ChatGTP 4o - chrissstrahl
+// Added: Support for ini-files
+//--------------------------------------------------------------
+str gamefix_iniFileGetSection(const str& data, const char* section_name)
+{
+	int section_count;
+	gamefix_iniFileSection* sections = gamefix_iniFileParseSections(data, &section_count);
+	str result = "";
+
+	for (int i = 0; i < section_count; i++) {
+		if (Q_stricmp(sections[i].section.c_str(), section_name) == 0) {
+			for (int j = 1; j <= sections[i].lines.NumObjects(); j++) { // Use Container's NumObjects and 1-based index
+				if (result.length() > 0) {
+					result += "\n";
+				}
+				result += sections[i].lines.ObjectAt(j); // Access lines using Container's ObjectAt method
+			}
+			break;
+		}
+	}
+
+	free(sections); // Free the allocated sections array
+
+	return result;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to get the value of the given key of the given section - generated by ChatGTP 4o - chrissstrahl
+// Added: Support for ini-files
+//--------------------------------------------------------------
+str gamefix_iniFileGetValueFromKey(const str& section_contents, const char* key)
+{
+	char* contents = gamefix_duplicateString(section_contents.c_str()); // Duplicate the contents to avoid modifying the original string
+	if (!contents) {
+		perror("malloc");
+		return str(""); // Return an empty string if memory allocation fails
+	}
+
+	char* line = strtok(contents, "\n");
+
+	while (line != NULL) {
+		// Trim whitespace from the line
+		while (isspace((unsigned char)*line)) line++;
+		char* end = line + strlen(line) - 1;
+		while (end > line && isspace((unsigned char)*end)) end--;
+		*(end + 1) = '\0';
+
+		// Check if the line starts with the key
+		if (Q_stricmpn(line, key, strlen(key)) == 0 && line[strlen(key)] == '=') {
+			// Extract the value
+			char* value = line + strlen(key) + 1;
+
+			// Trim leading whitespace from the value
+			while (isspace((unsigned char)*value)) value++;
+
+			// Handle quoted value
+			if (*value == '"') {
+				value++;
+				end = value + strlen(value) - 1;
+				while (end > value && *end != '"') end--;
+				*end = '\0';
+			}
+			else {
+				// Trim trailing whitespace from the value
+				end = value + strlen(value) - 1;
+				while (end > value && isspace((unsigned char)*end)) end--;
+				*(end + 1) = '\0';
+			}
+
+			str result(value);
+			free(contents); // Free the duplicated string
+			return result;
+		}
+
+		line = strtok(NULL, "\n");
+	}
+
+	free(contents); // Free the duplicated string
+	return str("");  // Return an empty string if the key is not found
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to all section names from INI - generated by ChatGTP 4o - chrissstrahl
+// Added: Support for ini-files
+//--------------------------------------------------------------
+str gamefix_iniFileGetSectionNames(const str& contents)
+{
+	str section_names = "";
+	char* data = gamefix_duplicateString(contents.c_str());  // Duplicate the contents to avoid modifying the original string
+	char* line = strtok(data, "\n");
+
+	while (line != NULL) {
+		// Trim whitespace from the line
+		while (isspace((unsigned char)*line)) line++;
+		char* endLn = line + strlen(line) - 1;
+		while (endLn > line && isspace((unsigned char)*endLn)) endLn--;
+		*(endLn + 1) = '\0';
+
+		// Check if the line is a section header
+		if (line[0] == '[') {
+			char* end = strchr(line, ']');
+			if (end) {
+				*end = '\0';  // Remove closing bracket
+				str section_name = str(line + 1);  // Skip opening bracket
+
+				if (section_names.length() > 0) {
+					section_names += ", ";
+				}
+				section_names += section_name;
+			}
+		}
+
+		line = strtok(NULL, "\n");
+	}
+
+	free(data);  // Free the duplicated string
+	return section_names;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to extract two integers from a str representing a min/max range with various separators - generated by ChatGTP 4o - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_extractIntegerRangeFromStr(const str& input, int& first, int& second)
+{
+	const char* c_str = input.c_str();
+	char* sep = const_cast<char*>(c_str);
+
+	// Find the first whitespace or dash character
+	while (*sep && !isspace(static_cast<unsigned char>(*sep)) && *sep != '-') {
+		sep++;
+	}
+
+	if (*sep) {
+		char* next = sep;
+
+		if (*sep == '-') {
+			next++;
+			while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+') {
+				next++;
+			}
+			if (*next) {
+				sep = next - 1;
+			}
+		}
+
+		*sep = '\0';  // Temporarily terminate the first part of the string
+		first = atoi(c_str);  // Convert the first part to an integer
+
+		next = sep + 1;
+		// Skip over any non-digit and non-sign characters
+		while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+') {
+			next++;
+		}
+		second = atoi(next);  // Convert the second part to an integer
+
+		if (first > second) {
+			gi.Printf("Invalid range: %d to %d (min value must be the beginning first value)\n", first, second);
+		}
+	}
+	else {
+		// Handle cases where no separator is found
+		first = 0;
+		second = atoi(c_str);
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to extract two floats from a str representing a min/max range with various separators - generated by ChatGTP 4o - chrissstrahl
+//--------------------------------------------------------------
+void gamefix_extractFloatRangeFromStr(const str& input, float& first, float& second)
+{
+	const char* c_str = input.c_str();
+	char* sep = const_cast<char*>(c_str);
+
+	// Find the first whitespace or dash character
+	while (*sep && !isspace(static_cast<unsigned char>(*sep)) && *sep != '-') {
+		sep++;
+	}
+
+	if (*sep) {
+		char* next = sep;
+
+		if (*sep == '-') {
+			next++;
+			while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.') {
+				next++;
+			}
+			if (*next) {
+				sep = next - 1;
+			}
+		}
+
+		*sep = '\0';  // Temporarily terminate the first part of the string
+		first = atof(c_str);  // Convert the first part to a float
+
+		next = sep + 1;
+		// Skip over any non-digit and non-sign characters
+		while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.') {
+			next++;
+		}
+		second = atof(next);  // Convert the second part to a float
+
+		if (first > second) {
+			gi.Printf("Invalid range: %.2f to %.2f (min value must be the beginning first value)\n", first, second);
+		}
+	}
+	else {
+		// Handle cases where no separator is found
+		first = 0.0f;
+		second = atof(c_str);
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to duplicate a string  - generated by ChatGTP 4o - chrissstrahl
+// manual implementation of strdup
+//--------------------------------------------------------------
+char* gamefix_duplicateString(const char* source)
+{
+	size_t len = strlen(source);
+	char* dest = (char*)malloc(len + 1); // Allocate memory for the string
+	if (dest) {
+		strcpy(dest, source); // Copy the source string into the allocated memory
+	}
+	return dest;
+}
+
+/*
+NOT IN USE - BUT MIGHT COME IN HANDY ONE DAY - THIS SHOULD PROBABLY BE PUT INTO A SEPERATE FILE
+*
+* *
+* * *
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to check if text contains UTF8 BOM - generated by ChatGTP 4o - chrissstrahl
 //--------------------------------------------------------------
@@ -1340,18 +1862,6 @@ bool gamefix_isLikelyUTF8(const unsigned char* buffer, size_t length) {
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function to check if text contains non ANSI Chars - generated by ChatGTP 4o - chrissstrahl
-//--------------------------------------------------------------
-bool gamefix_containsNonANSI(const unsigned char* buffer, size_t length) {
-	for (size_t i = 0; i < length; i++) {
-		if (buffer[i] >= 0x80) {
-			return true;
-		}
-	}
-	return false;
-}
-
-//--------------------------------------------------------------
 // GAMEFIX - Added: Function to check Char is a Umlaut - generated by ChatGTP 4o - chrissstrahl
 //--------------------------------------------------------------
 bool gamefix_isUmlaut(char c) {
@@ -1360,102 +1870,20 @@ bool gamefix_isUmlaut(char c) {
 		c == '\xDF';                                  // ß
 }
 
-//--------------------------------------------------------------
-// GAMEFIX - Added: Function to replace UTF8 Umlauts to ANSI - generated by ChatGTP 4o - chrissstrahl
-//--------------------------------------------------------------
-char* gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str) {
-	const unsigned char* src = (const unsigned char*)utf8_str;
-	size_t utf8_len = strlen(utf8_str);
-	size_t ansi_size = utf8_len + 1; // Add 1 for null-termination
-
-	// Allocate sufficient memory for ANSI string
-	char* ansi_str = (char*)malloc(ansi_size);
-	if (!ansi_str) {
-		gi.Printf("Error: malloc");
-		return NULL;
-	}
-
-	unsigned char* dst = (unsigned char*)ansi_str;
-	size_t len = 0;
-
-	while (*src) {
-		// Check for specific UTF-8 umlauts
-		if (src[0] == 0xC3) {
-			switch (src[1]) {
-			case 0xA4: // ä
-				if (len + 1 >= ansi_size) break;
-				*dst++ = 0xE4;
-				src += 2;
-				len++;
-				continue;
-			case 0xB6: // ö
-				if (len + 1 >= ansi_size) break;
-				*dst++ = 0xF6;
-				src += 2;
-				len++;
-				continue;
-			case 0xBC: // ü
-				if (len + 1 >= ansi_size) break;
-				*dst++ = 0xFC;
-				src += 2;
-				len++;
-				continue;
-			case 0x84: // Ä
-				if (len + 1 >= ansi_size) break;
-				*dst++ = 0xC4;
-				src += 2;
-				len++;
-				continue;
-			case 0x96: // Ö
-				if (len + 1 >= ansi_size) break;
-				*dst++ = 0xD6;
-				src += 2;
-				len++;
-				continue;
-			case 0x9C: // Ü
-				if (len + 1 >= ansi_size) break;
-				*dst++ = 0xDC;
-				src += 2;
-				len++;
-				continue;
-			case 0x9F: // ß
-				if (len + 1 >= ansi_size) break;
-				*dst++ = 0xDF;
-				src += 2;
-				len++;
-				continue;
-			}
-		}
-		// If not a specific umlaut, just copy the byte
-		if (len + 1 >= ansi_size) break;
-		*dst++ = *src++;
-		len++;
-	}
-	*dst = '\0'; // Null-terminate the output string
-
-	return ansi_str;
-}
-
-//--------------------------------------------------------------
-// GAMEFIX - Added: Function to handle each frame call - chrissstrahl
-//--------------------------------------------------------------
-void gamefix_runFrame(int levelTime, int frameTime)
+const char* gamefix_getExtension(const char* in)
 {
-	gamefix_playerHandleDelayedServerCommand();
+	static char exten[8];
+	int		i;
+
+	while (*in && (*in != '.'))
+		in++;
+	if (!*in)
+		return "";
+	in++;
+	for (i = 0; i < 7 && *in; i++, in++)
+		exten[i] = *in;
+	exten[i] = 0;
+	return exten;
 }
 
-//--------------------------------------------------------------
-// GAMEFIX - Added: Function to manage game shutdown - chrissstrahl
-//--------------------------------------------------------------
-void gamefix_shutdownGame()
-{
-	gameFixAPI_shutdownGame();
-}
-
-//--------------------------------------------------------------
-// GAMEFIX - Added: Function to manage game startup - chrissstrahl
-//--------------------------------------------------------------
-void gamefix_initGame()
-{
-	gameFixAPI_initGame();
-}
+*/

@@ -18,23 +18,27 @@ constexpr auto _GFix_PLAYER_next_drown_time_delay = 3.0f; //was 2.0f
 constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Support for ini-files - chrissstrahl
+//--------------------------------------------------------------
+struct gamefix_iniFileSection {
+	str section;
+	Container<str> lines;
+};
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to read contents of a file into a container, each line will be one object
 //--------------------------------------------------------------
 extern Container<str> gamefix_fileContentTokenized;
 
-
 //--------------------------------------------------------------
 // GAMEFIX - For delayed server commands - daggolin
 //--------------------------------------------------------------
 typedef struct gamefix_pendingServerCommand_s
 {
-	char* command = nullptr;
-	gamefix_pendingServerCommand_s* next = nullptr;
+	char* command;
+	gamefix_pendingServerCommand_s* next;
 } gamefix_pendingServerCommand;
 extern gamefix_pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
-
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Information list for all standard levels - chrissstrahl
@@ -129,28 +133,37 @@ void				gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_
 str					gamefix_localizeStringForPlayer(Player* player, char unlocal[MAX_QPATH]);
 float				gamefix_dialogGetSoundlength(char sound[MAX_QPATH]);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
-static int			gamefix_findChar(const char* str, char find);
-static int			gamefix_findChars(char* str, const char* find);
+int					gamefix_findChar(const char* str, const char find);
+int					gamefix_findChars(const char* str, const char* find);
 int					gamefix_findString(const char* str, const char* find);
-static int			gamefix_findStringCase(str latinumstack, str find);
-static int			gamefix_findStringCase(str latinumstack, str find,bool wholeWord);
-static str			gamefix_getStringUntilChar(const str* source, char delimiter);
-static char*		gamefix_getStringUntil(char* sString, const int iStart, int iEnd);
-static str			gamefix_getStringUntil(str &sString, const int iStart, int iEnd);
-static char*		gamefix_getStringUntilChar(const char* source, char delimiter);
-static int			gamefix_countCharOccurrences(const char* str, char ch);
+int					gamefix_findStringCase(const str& latinumstack,const str& find);
+int					gamefix_findStringCase(const str& latinumstack, const str& find,bool wholeWord);
+str					gamefix_getStringUntilChar(const str& source, const char& delimiter);
+str					gamefix_getStringUntil(const str &sString, const int iStart, const int iEnd);
+char*				gamefix_getStringUntilChar(const char* source,const char& delimiter);
+int					gamefix_countCharOccurrences(const char* str, const char& ch);
 Entity*				gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags);
 void				gamefix_svFloodProtectDisable();
 void				gamefix_kickBots();
 void				gamefix_playerDelayedServerCommand(int entNum, const char* commandText);
 void				gamefix_playerHandleDelayedServerCommand(void);
 void				gamefix_playerClearDelayedServerCommand(int entNum);
-void				gamefix_getFileContents(str sFile);
-bool				gamefix_hasUTF8BOM(const unsigned char* buffer, size_t length);
-bool				gamefix_isLikelyUTF8(const unsigned char* buffer, size_t length);
+int					gamefix_getFileContents(str sFile, str& contents);
 bool				gamefix_containsNonANSI(const unsigned char* buffer, size_t length);
-bool				gamefix_isUmlaut(char c);
 char*				gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str);
+char*				gamefix_trimWhitespace(char* input);
+str					gamefix_trimWhitespace(const str& input);
+void				gamefix_listSeperatedItems(Container<str>& container, const str& src, const str& seperator);
+str					gamefix_getExtension(const str& in);
+gamefix_iniFileSection*	gamefix_iniFileParseSections(const str& data, int* section_count);
+str					gamefix_iniFileGetSection(const str& data, const char* section_name);
+str					gamefix_iniFileGetValueFromKey(const str& section_contents, const char* key);
+str					gamefix_iniFileGetSectionNames(const str& contents);
+void				gamefix_extractIntegerRangeFromStr(const str& input, int& first, int& second);
+void				gamefix_extractFloatRangeFromStr(const str& input, float& first, float& second);
+char*				gamefix_duplicateString(const char* source);
 void				gamefix_runFrame(int levelTime, int frameTime);
 void				gamefix_shutdownGame();
 void				gamefix_initGame();
+void				gamefix_cleanupGame(qboolean restart);
+
