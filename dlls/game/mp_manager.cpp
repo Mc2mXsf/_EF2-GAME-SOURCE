@@ -1887,8 +1887,8 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	str iniSectionNames;
 	str iniContentsSection;
 	if (gamefix_getFileContents("callvote.ini", iniContents)) {
-		iniContentsSection = get_section_contents(iniContents, command.c_str());
-		iniSectionNames = extract_section_names(iniContents);
+		iniContentsSection = gamefix_iniFileGetSection(iniContents, command.c_str());
+		iniSectionNames = gamefix_iniFileGetSectionNames(iniContents);
 	}
 	
 	//--------------------------------------------------------------

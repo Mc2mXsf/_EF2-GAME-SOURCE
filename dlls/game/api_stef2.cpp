@@ -1351,16 +1351,16 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 	float maxBound = 99999.0f;
 	int totalLength = MAX_QPATH;
 	str argNew = arg;
-	str commandNew = get_key_value(contentsSections, "command");
-	str length = get_key_value(contentsSections, "length");
-	str extension = get_key_value(contentsSections, "extension");
-	str range = get_key_value(contentsSections, "range");
-	str argumentType = get_key_value(contentsSections, "argument");
-	str restartRequired = get_key_value(contentsSections, "restartrequired");
-	str restartForced = get_key_value(contentsSections, "restart");
-	str argumentsValid = get_key_value(contentsSections, "arguments");
-	str requiredCvar = get_key_value(contentsSections, "requiredcvar");
-	str requiredCvarValue = get_key_value(contentsSections, "requiredcvarvalue");
+	str commandNew = gamefix_iniFileGetValueFromKey(contentsSections, "command");
+	str length = gamefix_iniFileGetValueFromKey(contentsSections, "length");
+	str extension = gamefix_iniFileGetValueFromKey(contentsSections, "extension");
+	str range = gamefix_iniFileGetValueFromKey(contentsSections, "range");
+	str argumentType = gamefix_iniFileGetValueFromKey(contentsSections, "argument");
+	str restartRequired = gamefix_iniFileGetValueFromKey(contentsSections, "restartrequired");
+	str restartForced = gamefix_iniFileGetValueFromKey(contentsSections, "restart");
+	str argumentsValid = gamefix_iniFileGetValueFromKey(contentsSections, "arguments");
+	str requiredCvar = gamefix_iniFileGetValueFromKey(contentsSections, "requiredcvar");
+	str requiredCvarValue = gamefix_iniFileGetValueFromKey(contentsSections, "requiredcvarvalue");
 
 	//default to false
 	if (!restartForced.length() || Q_stricmp(restartForced.c_str(), "true") != 0) {
@@ -1421,7 +1421,7 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 
 	//verify rage of numeric value
 	if (range.length()) {
-		extract_floats(range, minBound, maxBound);
+		gamefix_extractFloatRangeFromStr(range, minBound, maxBound);
 
 		if (Q_stricmp(argumentType.c_str(), "integer") == 0) {
 			int iVal = bound(atoi(argNew.c_str()), minBound, maxBound);
@@ -1435,11 +1435,11 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 
 	//verify file extension
 	if (extension.length()) {
-		str extensionStripped = gamefix_getExtension(extension.c_str());
+		str extensionStripped = gamefix_getExtension(extension);
 		if (extensionStripped.length()) {
 			extension = extensionStripped;
 		}
-		str fileExt = gamefix_getExtension(arg.c_str());
+		str fileExt = gamefix_getExtension(arg);
 		if (Q_stricmp(fileExt.c_str(), extension.c_str()) != 0) {
 			commandNew += va(".%s", extension.c_str());
 		}
