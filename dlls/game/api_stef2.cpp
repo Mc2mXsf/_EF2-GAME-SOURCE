@@ -1336,6 +1336,9 @@ bool gameFixAPI_mapHasGameMode(const str& name,const str& gamemode)
 	return false;
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
+//--------------------------------------------------------------
 bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, const str &arg, str &voteCommand, str &contentsSections)
 {
 	//standard votes
