@@ -20,10 +20,15 @@ constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 //--------------------------------------------------------------
 // GAMEFIX - Added: Support for ini-files - chrissstrahl
 //--------------------------------------------------------------
-struct gamefix_iniFileSection {
-	str section;
-	Container<str> lines;
-};
+#define MAX_LINES 1024
+#define MAX_LINE_LENGTH 1024
+#define MAX_SECTIONS 100
+
+typedef struct {
+	char section[MAX_LINE_LENGTH];
+	char lines[MAX_LINES][MAX_LINE_LENGTH];
+	int line_count;
+} gamefix_iniFileSection;
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to read contents of a file into a container, each line will be one object
@@ -152,15 +157,17 @@ int					gamefix_getFileContents(str sFile, str& contents);
 bool				gamefix_containsNonANSI(const unsigned char* buffer, size_t length);
 char*				gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str);
 char*				gamefix_trimWhitespace(char* input);
+char*				gamefix_trimWhitespace(char* input, bool dontTrimNewLine);
 str					gamefix_trimWhitespace(const str& input);
+str					gamefix_trimWhitespace(const str& input, bool dontTrimNewLine);
 void				gamefix_listSeperatedItems(Container<str>& container, const str& src, const str& seperator);
 str					gamefix_getExtension(const str& in);
-gamefix_iniFileSection*	gamefix_iniFileParseSections(const str& data, int* section_count);
+gamefix_iniFileSection* gamefix_iniFileParseSections(const char* data, int* section_count);
 str					gamefix_iniFileGetSection(const str& data, const char* section_name);
-str					gamefix_iniFileGetValueFromKey(const str& section_contents, const char* key);
+str					gamefix_iniFileGetValueFromKey(const str& section_contents, const str& key);
 str					gamefix_iniFileGetSectionNames(const str& contents);
-void				gamefix_extractIntegerRangeFromStr(const str& input, int& first, int& second);
-void				gamefix_extractFloatRangeFromStr(const str& input, float& first, float& second);
+void				gamefix_extractIntegerRange(const str& input, int& first, int& second);
+void				gamefix_extractFloatRange(const str input, float& first, float& second);
 char*				gamefix_duplicateString(const char* source);
 void				gamefix_runFrame(int levelTime, int frameTime);
 void				gamefix_shutdownGame();

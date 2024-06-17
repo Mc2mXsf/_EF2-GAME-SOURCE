@@ -809,14 +809,15 @@ void gamefix_replaceSubstring(char* str, const char* find, const char* replace)
 //--------------------------------------------------------------
 int gamefix_findChar(const char* str, const char find)
 {
-	int pos = -1; //NoMatch
-	for (int i = 0; str[i] != '\0'; ++i) {
-		if (str[i] == find) {
-			pos = i;
-			break;
+	if (str) {
+		for (int i = 0; str[i] != '\0'; ++i) {
+			if (str[i] == find) {
+				return i;
+				break;
+			}
 		}
 	}
-	return pos;
+	return -1;
 }
 
 //--------------------------------------------------------------
@@ -824,18 +825,18 @@ int gamefix_findChar(const char* str, const char find)
 //--------------------------------------------------------------
 int gamefix_findChars(const char* str, const char* find)
 {
-	int pos = -1; // NoMatch
-	if (strlen(find)) {
-		for (int i = 0; str[i] != '\0'; ++i) {
-			for (int j = 0; find[j] != '\0'; ++j) {
-				if (str[i] == find[j]) {
-					pos = i;
-					return pos;
+	if (str) {
+		if (strlen(find)) {
+			for (int i = 0; str[i] != '\0'; ++i) {
+				for (int j = 0; find[j] != '\0'; ++j) {
+					if (str[i] == find[j]) {
+						return i;
+					}
 				}
 			}
 		}
 	}
-	return pos;
+	return -1;
 }
 
 //--------------------------------------------------------------
@@ -903,12 +904,16 @@ int gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeW
 str gamefix_getStringUntilChar(const str& source, const char& delimiter)
 {
 	str result = "";
-	for (int i = 0; i < source.length(); ++i) {
-		if (source[i] == delimiter) {
-			break;
+
+	if (delimiter) {
+		for (int i = 0; i < source.length(); ++i) {
+			if (source[i] == delimiter) {
+				break;
+			}
+			result += source[i];
 		}
-		result += source[i];
 	}
+
 	return result;
 }
 //--------------------------------------------------------------
@@ -916,6 +921,10 @@ str gamefix_getStringUntilChar(const str& source, const char& delimiter)
 //--------------------------------------------------------------
 char* gamefix_getStringUntilChar(const char* source, const char& delimiter)
 {
+	if (!delimiter) {
+		return (char*)source;
+	}
+	
 	// Get length
 	int length = 0;
 	while (source[length] != '\0' && source[length] != delimiter) {
@@ -932,7 +941,7 @@ char* gamefix_getStringUntilChar(const char* source, const char& delimiter)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function returning a substr/part of a string - chrissstrahl
+// GAMEFIX - Added: Function returning a substr / part of a string - chrissstrahl
 //--------------------------------------------------------------
 str gamefix_getStringUntil(const str& sString, const int iStart, const int iEnd)
 {
@@ -959,6 +968,10 @@ str gamefix_getStringUntil(const str& sString, const int iStart, const int iEnd)
 //--------------------------------------------------------------
 int gamefix_countCharOccurrences(const char* str,const char& ch)
 {
+	if (!ch) {
+		return 0;
+	}
+
 	int count = 0;
 	while (*str) {
 		if (*str == ch) {
@@ -1225,7 +1238,7 @@ int gamefix_getFileContents(str sFile, str& contents) {
 		}
 		lineNum++;
 	}
-	gi.Printf("Lines: %d, Tokens: %d, Size: %d, File: %s\n", lineNum, tokenNumTotal, lSize, sFile.c_str());
+	//gi.Printf("Lines: %d, Tokens: %d, Size: %d, File: %s\n", lineNum, tokenNumTotal, lSize, sFile.c_str());
 	//gi.Printf("%s\n", contents.c_str());
 	return lineNum;
 }
@@ -1360,22 +1373,40 @@ char* gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str)
 //--------------------------------------------------------------
 char* gamefix_trimWhitespace(char* input)
 {
+	gamefix_trimWhitespace(input, false);
+}
+char* gamefix_trimWhitespace(char* input, bool dontTrimNewLine)
+{
+	char* start = input;
 	char* end = nullptr;
 
-	// Trim leading space
-	while (isspace((unsigned char)*input)) input++;
+	// Find the first non-whitespace character
+	if (dontTrimNewLine) {
+		while (isspace((unsigned char)*start) && *start != '\n') start++;
+	}
+	else {
+		while (isspace((unsigned char)*start)) start++;
+	}
+	
 
-	if (*input == 0)  // All spaces?
-		return input;
+	// If the input is all spaces, return it
+	if (*start == 0) {
+		return start;
+	}
 
-	// Trim trailing space
-	end = input + strlen(input) - 1;
-	while (end > input && isspace((unsigned char)*end)) end--;
+	// Find the last non-whitespace character
+	end = start + strlen(start) - 1;
+	if (dontTrimNewLine) {
+		while (end > start && isspace((unsigned char)*end) && *end != '\n') end--;
+	}
+	else {
+		while (end > start && isspace((unsigned char)*end)) end--;
+	}
 
 	// Write new null terminator
 	end[1] = '\0';
 
-	return input;
+	return start;
 }
 
 //--------------------------------------------------------------
@@ -1383,18 +1414,36 @@ char* gamefix_trimWhitespace(char* input)
 //--------------------------------------------------------------
 str gamefix_trimWhitespace(const str& input)
 {
+	gamefix_trimWhitespace(input,false);
+}
+str gamefix_trimWhitespace(const str& input, bool dontTrimNewLine)
+{
 	const char* c_str = input.c_str();
 	int start = 0;
 	int end = input.length() - 1;
 
 	// Trim leading whitespace
-	while (start <= end && isspace(static_cast<unsigned char>(c_str[start]))) {
-		start++;
+	if (dontTrimNewLine) {
+		while (start <= end && isspace(static_cast<unsigned char>(c_str[start])) && c_str[start] != '\n') {
+			start++;
+		}
+	}
+	else {
+		while (start <= end && isspace(static_cast<unsigned char>(c_str[start]))) {
+			start++;
+		}
 	}
 
 	// Trim trailing whitespace
-	while (end >= start && isspace(static_cast<unsigned char>(c_str[end]))) {
-		end--;
+	if (dontTrimNewLine) {
+		while (end >= start && isspace(static_cast<unsigned char>(c_str[end])) && c_str[start] != '\n') {
+			end--;
+		}
+	}
+	else {
+		while (end >= start && isspace(static_cast<unsigned char>(c_str[end]))) {
+			end--;
+		}
 	}
 
 	// Create a new str with trimmed content
@@ -1496,76 +1545,61 @@ void gamefix_cleanupGame(qboolean restart)
 	gameFixAPI_cleanupGame(restart);
 }
 
-
-
-
 //--------------------------------------------------------------
 // GAMEFIX - Added: Support for ini-files - generated by ChatGTP 4o - chrissstrahl
 //--------------------------------------------------------------
-gamefix_iniFileSection* gamefix_iniFileParseSections(const str& data, int* section_count)
-{
-	const char* c_data = data.c_str(); // Get the const char* from str
-	size_t len = strlen(c_data); // Calculate the length of the string
-
-	// Make a modifiable copy of the string
-	char* modifiable_data = (char*)malloc(len + 1);
-	if (!modifiable_data) {
-		perror("malloc");
+gamefix_iniFileSection* gamefix_iniFileParseSections(const char* data, int* section_count) {
+	*section_count = 0;
+	gamefix_iniFileSection* sections = (gamefix_iniFileSection*)malloc(MAX_SECTIONS * sizeof(gamefix_iniFileSection));
+	if (!sections) {
+		gi.Error(ERR_DROP, "gamefix_iniFileParseSections - Failed to allocate memory\n");
 		return NULL;
 	}
-	strcpy(modifiable_data, c_data);
 
-	Container<gamefix_iniFileSection> sections;
-	*section_count = 0;
-	gamefix_iniFileSection* current_section = nullptr;
+	for (int i = 0; i < MAX_SECTIONS; ++i) {
+		sections[i].line_count = 0;
+	}
+
+	char* modifiable_data = strdup(data);
+	if (!modifiable_data) {
+		gi.Error(ERR_DROP, "gamefix_iniFileParseSections - Failed to dublicate string\n");
+		free(sections);
+		return NULL;
+	}
 
 	char* line = strtok(modifiable_data, "\n");
-	while (line != NULL) {
-		str trimmed_line = gamefix_trimWhitespace(line);
+	gamefix_iniFileSection* current_section = NULL;
 
-		// Ignore empty lines and comments
-		if (!trimmed_line.length() || trimmed_line[0] == ';' || trimmed_line[0] == '#') {
+	while (line != NULL) {
+		char* trimmed_line = gamefix_trimWhitespace(line,true);
+
+		if (trimmed_line[0] == '\0' || trimmed_line[0] == ';' || trimmed_line[0] == '#') {
 			line = strtok(NULL, "\n");
 			continue;
 		}
 
-		// Check if the line is a section header
 		if (trimmed_line[0] == '[') {
 			int end_pos = gamefix_findChar(trimmed_line, ']');
 			if (end_pos != -1) {
-				str section_name = str(trimmed_line, 1, end_pos - 1); // Skip opening bracket and remove closing bracket
-				gamefix_iniFileSection new_section;
-				new_section.section = section_name;
-				sections.AddObject(new_section);
-				current_section = &sections[sections.NumObjects() - 1];
-				(*section_count)++;
-				gi.Printf("New section: %s\n", current_section->section.c_str());  // Debug print
+				if (*section_count >= MAX_SECTIONS) {
+					fprintf(stderr, "Maximum number of sections exceeded\n");
+					break;
+				}
+				current_section = &sections[(*section_count)++];
+				strncpy(current_section->section, trimmed_line + 1, end_pos - 1);
+				current_section->section[end_pos - 1] = '\0';
 			}
 		}
-		else if (current_section) {
-			gi.Printf("Processing line: %s\n", trimmed_line.c_str());  // Debug print
-			current_section->lines.AddObject(trimmed_line);
-			gi.Printf("Added line to section [%s]: %s\n", current_section->section.c_str(), trimmed_line.c_str());  // Debug print
+		else if (current_section && current_section->line_count < MAX_LINES) {
+			strncpy(current_section->lines[current_section->line_count++], trimmed_line, MAX_LINE_LENGTH - 1);
+			current_section->lines[current_section->line_count - 1][MAX_LINE_LENGTH - 1] = '\0';
 		}
 
 		line = strtok(NULL, "\n");
 	}
 
 	free(modifiable_data);
-
-	// Allocate memory for the sections to return
-	gamefix_iniFileSection* result = (gamefix_iniFileSection*)malloc(sections.NumObjects() * sizeof(gamefix_iniFileSection));
-	if (!result) {
-		perror("malloc");
-		return NULL;
-	}
-
-	// Copy sections to the result array
-	for (int i = 1; i <= sections.NumObjects(); ++i) { //<- Loop through the Container to copy sections
-		result[i - 1] = sections.ObjectAt(i); //<- Copy each section to the result array
-	}
-
-	return result;
+	return sections;
 }
 
 //--------------------------------------------------------------
@@ -1578,13 +1612,19 @@ str gamefix_iniFileGetSection(const str& data, const char* section_name)
 	gamefix_iniFileSection* sections = gamefix_iniFileParseSections(data, &section_count);
 	str result = "";
 
+	if (!sections) {
+		gi.Printf("gamefix_iniFileGetSection: Failed to parse INI sections\n");
+		return result;
+	}
+
 	for (int i = 0; i < section_count; i++) {
-		if (Q_stricmp(sections[i].section.c_str(), section_name) == 0) {
-			for (int j = 1; j <= sections[i].lines.NumObjects(); j++) { // Use Container's NumObjects and 1-based index
-				if (result.length() > 0) {
+		if (Q_stricmp(sections[i].section, section_name) == 0) {
+			for (int j = 0; j < sections[i].line_count; j++) {
+				if (!result.length()) {
 					result += "\n";
 				}
-				result += sections[i].lines.ObjectAt(j); // Access lines using Container's ObjectAt method
+				result += sections[i].lines[j];
+				result += "\n";
 			}
 			break;
 		}
@@ -1596,58 +1636,58 @@ str gamefix_iniFileGetSection(const str& data, const char* section_name)
 }
 
 //--------------------------------------------------------------
-// GAMEFIX - Added: Function to get the value of the given key of the given section - generated by ChatGTP 4o - chrissstrahl
+// GAMEFIX - Added: Function to get the value of the given key of the given section - chrissstrahl
 // Added: Support for ini-files
 //--------------------------------------------------------------
-str gamefix_iniFileGetValueFromKey(const str& section_contents, const char* key)
+str gamefix_iniFileGetValueFromKey(const str& section_contents, const str& key)
 {
-	char* contents = gamefix_duplicateString(section_contents.c_str()); // Duplicate the contents to avoid modifying the original string
-	if (!contents) {
-		perror("malloc");
-		return str(""); // Return an empty string if memory allocation fails
+	int length = section_contents.length();
+	int lengthKey = key.length();
+
+	if (lengthKey > 32) {
+		gi.Printf("Key-Name exceeded 32 length limit for key %s...\n",gamefix_getStringUntil(key, 0, 24).c_str());
+		return str("");
 	}
 
-	char* line = strtok(contents, "\n");
+	//empty section, leave
+	//empty key-name, leave
+	if (!length || !lengthKey) {
+		return str("");
+	}
 
-	while (line != NULL) {
-		// Trim whitespace from the line
-		while (isspace((unsigned char)*line)) line++;
-		char* end = line + strlen(line) - 1;
-		while (end > line && isspace((unsigned char)*end)) end--;
-		*(end + 1) = '\0';
+	int foundKeyAt = gamefix_findStringCase(section_contents, key,true);
+	
+	//not found, leave
+	if (foundKeyAt == -1) {
+		return str("");
+	}
 
-		// Check if the line starts with the key
-		if (Q_stricmpn(line, key, strlen(key)) == 0 && line[strlen(key)] == '=') {
-			// Extract the value
-			char* value = line + strlen(key) + 1;
-
-			// Trim leading whitespace from the value
-			while (isspace((unsigned char)*value)) value++;
-
-			// Handle quoted value
-			if (*value == '"') {
-				value++;
-				end = value + strlen(value) - 1;
-				while (end > value && *end != '"') end--;
-				*end = '\0';
-			}
-			else {
-				// Trim trailing whitespace from the value
-				end = value + strlen(value) - 1;
-				while (end > value && isspace((unsigned char)*end)) end--;
-				*(end + 1) = '\0';
-			}
-
-			str result(value);
-			free(contents); // Free the duplicated string
-			return result;
+	//no actual value, leave
+	if (length < foundKeyAt + lengthKey + 2) {
+		return str("");
+	}
+	
+	bool valueStarted = false;
+	str valueLines = "";
+	for (int i = (foundKeyAt + lengthKey); i < length; i++) {
+		if (section_contents[i] == '\n' || section_contents[i] == '\r') {
+			break;
 		}
-
-		line = strtok(NULL, "\n");
+		if (!valueStarted){
+			if (section_contents[i] == '=' || isspace(section_contents[i])) {
+				continue;
+			}else{
+				valueStarted = true;
+			}
+		}
+		valueLines += section_contents[i];
 	}
-
-	free(contents); // Free the duplicated string
-	return str("");  // Return an empty string if the key is not found
+	valueLines = gamefix_trimWhitespace(valueLines,true);
+	if (valueLines.length() > 256) {
+		valueLines = gamefix_getStringUntil(valueLines, 0, 255);
+		gi.Printf("Value exceeded 256 length for key: %s\n", key.c_str());
+	}
+	return valueLines;
 }
 
 //--------------------------------------------------------------
@@ -1657,14 +1697,14 @@ str gamefix_iniFileGetValueFromKey(const str& section_contents, const char* key)
 str gamefix_iniFileGetSectionNames(const str& contents)
 {
 	str section_names = "";
-	char* data = gamefix_duplicateString(contents.c_str());  // Duplicate the contents to avoid modifying the original string
+	char* data = gamefix_duplicateString(contents.c_str());
 	char* line = strtok(data, "\n");
 
-	while (line != NULL) {
+	while (line != nullptr) {
 		// Trim whitespace from the line
-		while (isspace((unsigned char)*line)) line++;
+		while (isspace(static_cast<unsigned char>(*line))) line++;
 		char* endLn = line + strlen(line) - 1;
-		while (endLn > line && isspace((unsigned char)*endLn)) endLn--;
+		while (endLn > line && isspace(static_cast<unsigned char>(*endLn))) endLn--;
 		*(endLn + 1) = '\0';
 
 		// Check if the line is a section header
@@ -1674,14 +1714,14 @@ str gamefix_iniFileGetSectionNames(const str& contents)
 				*end = '\0';  // Remove closing bracket
 				str section_name = str(line + 1);  // Skip opening bracket
 
-				if (section_names.length() > 0) {
+				if (section_names.length()) {
 					section_names += ", ";
 				}
 				section_names += section_name;
 			}
 		}
 
-		line = strtok(NULL, "\n");
+		line = strtok(nullptr, "\n");
 	}
 
 	free(data);  // Free the duplicated string
@@ -1691,7 +1731,7 @@ str gamefix_iniFileGetSectionNames(const str& contents)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to extract two integers from a str representing a min/max range with various separators - generated by ChatGTP 4o - chrissstrahl
 //--------------------------------------------------------------
-void gamefix_extractIntegerRangeFromStr(const str& input, int& first, int& second)
+void gamefix_extractIntegerRange(const str& input, int& first, int& second)
 {
 	const char* c_str = input.c_str();
 	char* sep = const_cast<char*>(c_str);
@@ -1706,8 +1746,10 @@ void gamefix_extractIntegerRangeFromStr(const str& input, int& first, int& secon
 
 		if (*sep == '-') {
 			next++;
-			while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+') {
+			int length = 0; //make sure we don't go outside the safe atoi/atof bounds with any returned number
+			while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.' && length < 11) {
 				next++;
+				length++;
 			}
 			if (*next) {
 				sep = next - 1;
@@ -1715,30 +1757,40 @@ void gamefix_extractIntegerRangeFromStr(const str& input, int& first, int& secon
 		}
 
 		*sep = '\0';  // Temporarily terminate the first part of the string
-		first = atoi(c_str);  // Convert the first part to an integer
+		first = atoi(c_str);  // Convert the first part to a int
 
 		next = sep + 1;
 		// Skip over any non-digit and non-sign characters
-		while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+') {
+		int length = 0; //make sure we don't go outside the safe atoi/atof bounds with any returned number
+		while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.' && length < 11) {
 			next++;
+			length++;
 		}
-		second = atoi(next);  // Convert the second part to an integer
+		second = atoi(next);  // Convert the second part to a int
 
 		if (first > second) {
-			gi.Printf("Invalid range: %d to %d (min value must be the beginning first value)\n", first, second);
+			gi.Printf("Invalid range: %.2f to %.2f (min value must be the beginning first value)\n", first, second);
 		}
 	}
 	else {
+		//make sure we don't go outside the safe atoi/atof bounds with any returned number
+		str snum = "";
+		if (strlen(c_str) > 10) {
+			snum = gamefix_getStringUntil(c_str, 0, 9);
+		}
+		else {
+			snum = c_str;
+		}
 		// Handle cases where no separator is found
-		first = 0;
-		second = atoi(c_str);
+		first = atoi(snum);
+		second = atoi(snum);
 	}
 }
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to extract two floats from a str representing a min/max range with various separators - generated by ChatGTP 4o - chrissstrahl
 //--------------------------------------------------------------
-void gamefix_extractFloatRangeFromStr(const str& input, float& first, float& second)
+void gamefix_extractFloatRange(const str input, float& first, float& second)
 {
 	const char* c_str = input.c_str();
 	char* sep = const_cast<char*>(c_str);
@@ -1753,8 +1805,10 @@ void gamefix_extractFloatRangeFromStr(const str& input, float& first, float& sec
 
 		if (*sep == '-') {
 			next++;
-			while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.') {
+			int length = 0; //make sure we don't go outside the safe atoi/atof bounds with any returned number
+			while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.' && length < 11) {
 				next++;
+				length++;
 			}
 			if (*next) {
 				sep = next - 1;
@@ -1766,8 +1820,10 @@ void gamefix_extractFloatRangeFromStr(const str& input, float& first, float& sec
 
 		next = sep + 1;
 		// Skip over any non-digit and non-sign characters
-		while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.') {
+		int length = 0; //make sure we don't go outside the safe atoi/atof bounds with any returned number
+		while (*next && !isdigit(static_cast<unsigned char>(*next)) && *next != '-' && *next != '+' && *next != '.' && length < 11) {
 			next++;
+			length++;
 		}
 		second = atof(next);  // Convert the second part to a float
 
@@ -1776,9 +1832,17 @@ void gamefix_extractFloatRangeFromStr(const str& input, float& first, float& sec
 		}
 	}
 	else {
+		//make sure we don't go outside the safe atoi/atof bounds with any returned number
+		str snum = "";
+		if (strlen(c_str) > 10) {
+			snum = gamefix_getStringUntil(c_str, 0, 9);
+		}
+		else {
+			snum = c_str;
+		}
 		// Handle cases where no separator is found
-		first = 0.0f;
-		second = atof(c_str);
+		first = atof(snum);
+		second = atof(snum);
 	}
 }
 
