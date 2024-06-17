@@ -1360,7 +1360,7 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 	str restartForced = gamefix_iniFileGetValueFromKey(contentsSections, "restart");
 	str argumentsValid = gamefix_iniFileGetValueFromKey(contentsSections, "arguments");
 	str requiredCvar = gamefix_iniFileGetValueFromKey(contentsSections, "requiredcvar");
-	str requiredCvarValue = gamefix_iniFileGetValueFromKey(contentsSections, "requiredcvarvalue");
+	str requiredCvarRange = gamefix_iniFileGetValueFromKey(contentsSections, "requiredcvarrange");
 
 	//default to false
 	if (!restartForced.length() || Q_stricmp(restartForced.c_str(), "true") != 0) {
@@ -1384,16 +1384,37 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 	}
 
 	//check if we require a argument
-	if (!arg.length() && Q_stricmp(argumentType.c_str(), "none") != 0) {
-		multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range, command.c_str(), argumentType.c_str(), range.c_str()));
-		return false;
+	if (!arg.length()) {
+		if (Q_stricmp(argumentType.c_str(), "none") != 0) {
+			if (Q_stricmp(argumentType.c_str(), "string") == 0) {
+				multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_length, command.c_str(), "string", length.c_str()));
+				if (argumentsValid.length()) {
+					multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_valid, argumentsValid.c_str()));
+				}
+			}
+			else{
+				multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range, command.c_str(), argumentType.c_str(), range.c_str()));
+			}
+			return false;
+		}
 	}
 
 	//check if cvar settings match
-	if (requiredCvar.length() && requiredCvarValue.length()) {
-		if (gamefix_getCvarInt(requiredCvar) <= atoi(requiredCvarValue.c_str())) {
-			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be, command.c_str(), requiredCvar.c_str(), requiredCvarValue.c_str()));
+	if (requiredCvar.length()){
+		if (requiredCvar.length() > 32) {
+			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cvarName_exceeds, command.c_str()));
 			return false;
+		}
+		
+		if (requiredCvarRange.length()) {
+			float min, max, val;
+			gamefix_extractFloatRangeFromStr(requiredCvarRange, min, max);
+			val = gamefix_getCvarFloat(requiredCvar);
+			
+			if (val < min || val > max) {
+				multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be, command.c_str(), requiredCvar.c_str(), requiredCvarRange.c_str()));
+				return false;
+			}
 		}
 	}
 
@@ -1428,9 +1449,87 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 			argNew = va("%d", iVal);
 		}
 		else if (Q_stricmp(argumentType.c_str(), "float") == 0) {
-			int fVal = bound(atoi(argNew.c_str()), minBound, maxBound);
+			float fVal = bound(atof(argNew.c_str()), minBound, maxBound);
 			argNew = va("%f", fVal);
 		}
+	}
+
+	//allow mp_flags specfic votes
+	if (Q_stricmp(command.c_str(),"flags") == 0) {
+		int curFlags = mp_flags->integer;
+		if (Q_stricmp(arg.c_str(), "health") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_NO_HEALTH)) {
+				curFlags &= ~MP_FLAG_NO_HEALTH;
+			}
+			else {
+				curFlags |= MP_FLAG_NO_HEALTH;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "powerup") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_NO_POWERUPS)) {
+				curFlags &= ~MP_FLAG_NO_POWERUPS;
+			}
+			else {
+				curFlags |= MP_FLAG_NO_POWERUPS;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "stay") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_WEAPONS_STAY)) {
+				curFlags &= ~MP_FLAG_WEAPONS_STAY;
+			}
+			else {
+				curFlags |= MP_FLAG_WEAPONS_STAY;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "falling") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_NO_FALLING)) {
+				curFlags &= ~MP_FLAG_NO_FALLING;
+			}
+			else {
+				curFlags |= MP_FLAG_NO_FALLING;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "friendly") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_FRIENDLY_FIRE)) {
+				curFlags &= ~MP_FLAG_FRIENDLY_FIRE;
+			}
+			else {
+				curFlags |= MP_FLAG_FRIENDLY_FIRE;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "respawn") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_FORCE_RESPAWN)) {
+				curFlags &= ~MP_FLAG_FORCE_RESPAWN;
+			}
+			else {
+				curFlags |= MP_FLAG_FORCE_RESPAWN;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "ammo") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_INFINITE_AMMO)) {
+				curFlags &= ~MP_FLAG_INFINITE_AMMO;
+			}
+			else {
+				curFlags |= MP_FLAG_INFINITE_AMMO;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "join") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_NO_AUTO_JOIN_TEAM)) {
+				curFlags &= ~MP_FLAG_NO_AUTO_JOIN_TEAM;
+			}
+			else {
+				curFlags |= MP_FLAG_NO_AUTO_JOIN_TEAM;
+			}
+		}
+		else if (Q_stricmp(arg.c_str(), "balance") == 0) {
+			if (multiplayerManager.checkFlag(MP_FLAG_AUTO_BALANCE_TEAMS)) {
+				curFlags &= ~MP_FLAG_AUTO_BALANCE_TEAMS;
+			}
+			else {
+				curFlags |= MP_FLAG_AUTO_BALANCE_TEAMS;
+			}
+		}
+		argNew = va("%d", curFlags);
 	}
 
 	//verify file extension
@@ -1448,6 +1547,9 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 	//get maximum command length
 	if (length.length()) {
 		totalLength = atoi(length.c_str());
+	}
+	else {
+		length = va("%d", totalLength / 2);
 	}
 
 	//construct actual vote command
