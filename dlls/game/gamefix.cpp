@@ -1373,7 +1373,7 @@ char* gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str)
 //--------------------------------------------------------------
 char* gamefix_trimWhitespace(char* input)
 {
-	gamefix_trimWhitespace(input, false);
+	return gamefix_trimWhitespace(input, false);
 }
 char* gamefix_trimWhitespace(char* input, bool dontTrimNewLine)
 {
@@ -1414,7 +1414,7 @@ char* gamefix_trimWhitespace(char* input, bool dontTrimNewLine)
 //--------------------------------------------------------------
 str gamefix_trimWhitespace(const str& input)
 {
-	gamefix_trimWhitespace(input,false);
+	return gamefix_trimWhitespace(input,false);
 }
 str gamefix_trimWhitespace(const str& input, bool dontTrimNewLine)
 {
