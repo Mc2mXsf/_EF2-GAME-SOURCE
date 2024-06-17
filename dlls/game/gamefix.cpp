@@ -1560,7 +1560,7 @@ gamefix_iniFileSection* gamefix_iniFileParseSections(const char* data, int* sect
 		sections[i].line_count = 0;
 	}
 
-	char* modifiable_data = strdup(data);
+	char* modifiable_data = gamefix_duplicateString(data);
 	if (!modifiable_data) {
 		gi.Error(ERR_DROP, "gamefix_iniFileParseSections - Failed to dublicate string\n");
 		free(sections);
