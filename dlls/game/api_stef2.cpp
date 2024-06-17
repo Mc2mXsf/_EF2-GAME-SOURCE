@@ -1408,7 +1408,7 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 		
 		if (requiredCvarRange.length()) {
 			float min, max, val;
-			gamefix_extractFloatRangeFromStr(requiredCvarRange, min, max);
+			gamefix_extractFloatRange(requiredCvarRange, min, max);
 			val = gamefix_getCvarFloat(requiredCvar);
 			
 			if (val < min || val > max) {
@@ -1442,7 +1442,7 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 
 	//verify rage of numeric value
 	if (range.length()) {
-		gamefix_extractFloatRangeFromStr(range, minBound, maxBound);
+		gamefix_extractFloatRange(range, minBound, maxBound);
 
 		if (Q_stricmp(argumentType.c_str(), "integer") == 0) {
 			int iVal = bound(atoi(argNew.c_str()), minBound, maxBound);
