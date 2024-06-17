@@ -60,6 +60,51 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Function to manage game startup / shutdown / level-change
+void gamefix_shutdownGame()
+void gameFixAPI_initGame()
+void gamefix_cleanupGame(qboolean restart)
+
+Added: Support for ini-files
+gamefix_iniFileSection* gamefix_iniFileParseSections(const char* data, int* section_count)
+str gamefix_iniFileGetSection(const str& data, const char* section_name)
+str gamefix_iniFileGetValueFromKey(const str& section_contents, const str& key)
+str gamefix_iniFileGetSectionNames(const str& contents)
+
+Added: Function to extract two integers from a str representing a min/max range with various separators
+void gamefix_extractIntegerRange(const str& input, int& first, int& second)
+
+Added: Function to extract two floats from a str representing a min/max range with various separators
+void gamefix_extractFloatRange(const str& input, float& first, float& second)
+
+Added: Function to allow spawning Object, pretty much like in the scripts
+Entity* gamefix_spawn(char const* className, char const* model, char const* origin, char const* targetname, const int spawnflags)
+
+Added: Function to get file extension from string - taken from q_shared
+const char* gamefix_getExtension(const char* in)
+
+Added: Function finding first occurence of given any of the single chars, returning its position
+int gamefix_findChars(const char* str, const char* find)
+
+Added: Function finding first occurence of given single char, returning its position
+int gamefix_findChar(const char* str, const char find)
+
+Added: Function returning a substr/part of a string
+str gamefix_getStringUntil(const str& sString, int iStart, int iEnd)
+
+Added: Function finding first occurence of given char, returning string prior to its occurence
+str gamefix_getStringUntilChar(const str& source, const char& delimiter)
+char* gamefix_getStringUntilChar(const char* source, const char& delimiter)
+
+Added: Function finding first occurence of given string, returning its position
+int gamefix_findString(const char* str, const char* find)
+int gamefix_findStringCase(const str& latinumstack,const str& find)
+int gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeWord)
+
+Added: Function to trim whitespace from a string
+char* gameFix_trimWhitespace(char* str)
+gameFix_trimWhitespace(const str& input)
+
 Added: Function To check if a map came with the game
 bool gameFixAPI_mapIsStock(const str& name)
 
@@ -71,6 +116,7 @@ bool gameFixAPI_mapForMultiplayer(const str& name)
 
 Added: Support for ini-file based custom vote commands
 void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, const str &arg, str &voteCommand, str &contentsSections)
 
 Added: Support for Delayed serverCommands for players
 void gamefix_playerClearDelayedServerCommand(int entNum)
@@ -89,6 +135,15 @@ void MultiplayerManager::removePlayer( Player *player )
 Added: Null-Terminator at +1 to prevent a off-by-one error leading to a buffer overrun
 Added: Print warning, so that we know if there are issues with a specific file
 void Script::LoadFile( const char *name )
+
+Added: Function to list seperated values in a str container
+void gamefix_listSeperatedItems(Container<str>& container, const str& source, const str& seperator)
+
+Added: Function to check if text contains non ANSI Chars
+bool gamefix_containsNonANSI(const unsigned char* buffer, size_t length)
+
+Added: Function to convert UTF-8 Umlaut and others withing ASCII bounds to ANSI
+char* gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str)
 
 Added: Umlauts to the list of valid chars
 char *COM_ParseExt( char **data_p, qboolean allowLineBreaks )
@@ -110,11 +165,14 @@ void MultiplayerManager::HUDSay( int entnum, const str &string )
 Added: Voteoption to kick all bots with callvote kick bots
 void MultiplayerManager::checkVote( void )
 
+Added: Function kick all bots from server
+void gamefix_kickBots()
+
 Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname
 void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
 
 Added: Function to count how many occurences of a char are in a string
-static int gamefix_countCharOccurrences(const char* str, char ch)
+int gamefix_countCharOccurrences(const char* str,const char& ch)
 
 Added: sv_floodprotect disable to fix various issues in multiplayer
 World::World()
