@@ -60,6 +60,9 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Printouts for various missing mp_flags
+void MultiplayerManager::checkModifiedCvars( bool informPlayers )
+
 Added: Function to manage game startup / shutdown / level-change
 void gamefix_shutdownGame()
 void gameFixAPI_initGame()
@@ -168,7 +171,7 @@ void MultiplayerManager::checkVote( void )
 Added: Function kick all bots from server
 void gamefix_kickBots()
 
-Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname
+Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - or even * for random
 void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
 
 Added: Function to count how many occurences of a char are in a string
