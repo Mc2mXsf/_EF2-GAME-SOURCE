@@ -1886,8 +1886,9 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	str iniContents;
 	str iniSectionNames;
 	str iniContentsSection;
-	if (gamefix_getFileContents("callvote.ini", iniContents)) {
-		iniContentsSection = gamefix_iniFileGetSection(iniContents, command.c_str());
+	str iniCallvoteFileName = "callvote.ini";
+	if (gamefix_getFileContents(iniCallvoteFileName, iniContents)) {
+		iniContentsSection = gamefix_iniFileGetSection(iniCallvoteFileName.c_str(), iniContents, command.c_str());
 		iniSectionNames = gamefix_iniFileGetSectionNames(iniContents);
 	}
 	
@@ -1916,7 +1917,35 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		// GAMEFIX - Added: Support for ini based vote commands - chrissstrahl
 		//--------------------------------------------------------------
 		if (iniContents.length()) {
-			HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_specificVotes, iniSectionNames.c_str()));
+			int iFullLength = iniSectionNames.length();
+			const int iSplitPos = 80;
+			int iCurSplitPos = 0;
+
+			// First printout with extra information
+			int firstSplitPos = gamefix_findCharsReverse(iniSectionNames.c_str(), ",", 0, iSplitPos);
+			if (firstSplitPos == -1) {
+				firstSplitPos = iSplitPos;
+			}
+			str iniSectionNamesSplit = gamefix_getStringUntil(iniSectionNames, iCurSplitPos, firstSplitPos);
+			HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_specificVotes, iniSectionNamesSplit.c_str()));
+
+			// Move the current split position forward
+			iCurSplitPos = firstSplitPos + 1;
+
+			// Subsequent printouts without the extra information
+			while (iCurSplitPos < iFullLength) {
+				int nextSplitPos = iCurSplitPos + iSplitPos;
+				if (nextSplitPos > iFullLength) {
+					nextSplitPos = iFullLength;
+				}
+				int lastCommaPos = gamefix_findCharsReverse(iniSectionNames.c_str(), ",", iCurSplitPos, nextSplitPos);
+				if (lastCommaPos != -1 && lastCommaPos < nextSplitPos) {
+					nextSplitPos = lastCommaPos + 1;
+				}
+				iniSectionNamesSplit = gamefix_getStringUntil(iniSectionNames, iCurSplitPos, nextSplitPos);
+				HUDPrint(player->entnum, va("%s\n", iniSectionNamesSplit.c_str()));
+				iCurSplitPos = nextSplitPos;
+			}
 		}
 		return;
 	}
@@ -1930,10 +1959,22 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	if ( Q_stricmp( command.c_str(), "map" ) == 0 || Q_stricmp(command.c_str(), "nextmap") == 0)
 	{
 		//--------------------------------------------------------------
+		// GAMEFIX - Added: Cleanup of mapname - chrissstrahl
+		//--------------------------------------------------------------
+		str cleanArgument;
+		int illegalChar = gamefix_findChars(arg.c_str(),"$");
+		if (illegalChar != -1) {
+			cleanArgument = gamefix_getStringUntil(arg,0, illegalChar);
+		}
+		else {
+			cleanArgument = arg;
+		}
+
+		//--------------------------------------------------------------
 		// GAMEFIX - Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps - chrissstrahl
 		//--------------------------------------------------------------
 		if (!gamefix_getCvarInt("gfix_allowSpMaps")) {
-			if (gameFixAPI_mapIsStock(level.mapname) && gameFixAPI_mapForSingleplayer(level.mapname) && !gameFixAPI_mapForMultiplayer(level.mapname)) {
+			if (gameFixAPI_mapIsStock(cleanArgument) && gameFixAPI_mapForSingleplayer(cleanArgument) && !gameFixAPI_mapForMultiplayer(cleanArgument)) {
 				HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed);
 				return;
 			}
@@ -1943,42 +1984,8 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - chrissstrahl
 		//--------------------------------------------------------------
-		if (!strlen(arg.c_str()) && Q_stricmp(command.c_str(), "nextmap") == 0 || Q_stricmp(arg.c_str(), "+") == 0 || Q_stricmp(arg.c_str(), "++") == 0 || Q_stricmp(arg.c_str(), ">") == 0 || Q_stricmp(arg.c_str(), "->") == 0) {
-			if ((mp_useMapList->integer) && (strlen(mp_mapList->string) > 0)) {
-				//get current maplist inti a container list
-				gameFixAPI_mapList();
-				//get next map in the maplist
-				str nextMapName = gameFixAPI_mapListUp();
-				//issue command to player to start the desired vote
-				gi.SendServerCommand(player->entnum, "stufftext \"callvote %s %s\"\n", command.c_str(), nextMapName.c_str());
-				
-			}
-			else {
-				HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callvote_mpMaplist);
-			}
+		if (gameFixAPI_callvoteMap(player, command, cleanArgument)) {
 			return;
-		}
-		else if (Q_stricmp(arg.c_str(), "-") == 0 || Q_stricmp(arg.c_str(), "--") == 0 || Q_stricmp(arg.c_str(), "<") == 0 || Q_stricmp(arg.c_str(), "<-") == 0) {
-			if ((mp_useMapList->integer) && (strlen(mp_mapList->string) > 0)) {
-				//get current maplist inti a container list
-				gameFixAPI_mapList();
-				//get next map in the maplist
-				str nextMapName = gameFixAPI_mapListDown();
-				//issue command to player to start the desired vote
-				gi.SendServerCommand(player->entnum, "stufftext \"callvote %s %s\"\n", command.c_str(), nextMapName.c_str());
-			}
-			else {
-				HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callvote_mpMaplist);
-			}
-			return;
-		}
-
-
-		//--------------------------------------------------------------
-		// GAMEFIX - Added: Warning if a non standard/stock map is voted - chrissstrahl
-		//--------------------------------------------------------------
-		if (!gameFixAPI_mapIsStock(arg.c_str())) {
-			multiplayerManager.HUDPrintAllClients(va(_GFixEF2_WARN_CALLVOTE_map_NOTSTOCK, arg.c_str()));
 		}
 
 
@@ -1986,7 +1993,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		str printString;
 
 		fullMapName = "maps/";
-		fullMapName += arg;
+		fullMapName += cleanArgument;
 		fullMapName += ".bsp";
 
 		if ( !gi.FS_Exists( fullMapName.c_str() ) )
@@ -1994,6 +2001,14 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 			printString = fullMapName + " $$NotFoundOnServer$$\n";
 			HUDPrint( player->entnum, printString.c_str() );
 			return;
+		}
+
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Warning if a non standard/stock map is voted - chrissstrahl
+		//--------------------------------------------------------------
+		if (!gameFixAPI_mapIsStock(cleanArgument.c_str())) {
+			multiplayerManager.HUDPrintAllClients(va(_GFixEF2_WARN_CALLVOTE_map_NOTSTOCK, cleanArgument.c_str()));
 		}
 	}
 
@@ -2005,22 +2020,27 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	//--------------------------------------------------------------
 	if ( Q_stricmp( command.c_str(), "map" ) == 0 )
 	{
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Cleanup of mapname - chrissstrahl
+		//--------------------------------------------------------------
+		str cleanArgument;
+		int illegalChar = gamefix_findChars(arg.c_str(), "$");
+		if (illegalChar != -1) {
+			cleanArgument = gamefix_getStringUntil(arg, 0, illegalChar);
+		}
+		else {
+			cleanArgument = arg;
+		}
+
+
 		// If a map command was issued, preserve the nextmap cvar so we don't lose it
 		if ( strlen( sv_nextmap->string ) )
 		{
-			_voteString = va( "%s %s; set nextmap \"%s\"", command.c_str(), arg.c_str(), sv_nextmap->string );
+			_voteString = va( "%s %s; set nextmap \"%s\"", command.c_str(), cleanArgument.c_str(), sv_nextmap->string );
 		}
 		else
 		{
-			_voteString = va( "%s %s", command.c_str(), arg.c_str() );
-		}
-
-
-		//--------------------------------------------------------------
-		// GAMEFIX - Added: Warning if a non standard/stock map is voted - chrissstrahl
-		//--------------------------------------------------------------
-		if (!gameFixAPI_mapIsStock(arg.c_str())) {
-			multiplayerManager.HUDPrintAllClients(va(_GFixEF2_WARN_CALLVOTE_map_NOTSTOCK, arg.c_str()));
+			_voteString = va( "%s %s", command.c_str(), cleanArgument.c_str() );
 		}
 	}
 	else
@@ -3925,7 +3945,7 @@ void MultiplayerManager::setNextMap( void )
 	}
 
 
-	if ( ( strlen( sv_nextmap->string ) == 0 ) && ( mp_useMapList->integer ) && ( strlen( mp_mapList->string ) > 0 ) )
+	if ( ( strlen( sv_nextmap->string ) == 0 ) && ( mp_useMapList->integer ) && ( strlen( mp_mapList->string ) > 5 ) )
 	{
 		nextMapName = getNextMap();
 
@@ -4098,6 +4118,38 @@ void MultiplayerManager::checkModifiedCvars( bool informPlayers )
 		checkCvar( mp_pointlimit, "$$PointLimit$$", MP_CVAR_TYPE_INTEGER );
 		checkCvar( mp_timelimit, "$$TimeLimit$$", MP_CVAR_TYPE_INTEGER );
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Added: Printouts for various missing mp_flags - chrissstrahl
+		// Not all are actually in the game
+		//--------------------------------------------------------------
+		if (hasFlagChanged(MP_FLAG_NO_HEALTH))
+			checkCvar(mp_flags, "$$NoHealthItems$$", MP_CVAR_TYPE_BOOL, MP_FLAG_NO_HEALTH);
+		if (hasFlagChanged(MP_FLAG_NO_POWERUPS))
+			checkCvar(mp_flags, "$$NoPowerupItems$$", MP_CVAR_TYPE_BOOL, MP_FLAG_NO_POWERUPS);
+		if (hasFlagChanged(MP_FLAG_NO_AUTO_JOIN_TEAM))
+			checkCvar(mp_flags, "$$DontAutoJoinTeam$$", MP_CVAR_TYPE_BOOL, MP_FLAG_NO_AUTO_JOIN_TEAM);
+		if (hasFlagChanged(MP_FLAG_AUTO_BALANCE_TEAMS))
+			checkCvar(mp_flags, "$$AutoBalanceTeams$$", MP_CVAR_TYPE_BOOL, MP_FLAG_AUTO_BALANCE_TEAMS);
+		if (hasFlagChanged(MP_FLAG_SAME_LEVEL))
+			checkCvar(mp_flags, "Same Level", MP_CVAR_TYPE_BOOL, MP_FLAG_SAME_LEVEL);
+		if (hasFlagChanged(MP_FLAG_INSTANT_ITEMS))
+			checkCvar(mp_flags, "Instant Items", MP_CVAR_TYPE_BOOL, MP_FLAG_INSTANT_ITEMS);
+		if (hasFlagChanged(MP_FLAG_FORCE_DEFAULT_MODEL))
+			checkCvar(mp_flags, "$$ForceModel$$", MP_CVAR_TYPE_BOOL, MP_FLAG_FORCE_DEFAULT_MODEL);
+		if (hasFlagChanged(MP_FLAG_MODELTEAMS))
+			checkCvar(mp_flags, "Force Model Teams", MP_CVAR_TYPE_BOOL, MP_FLAG_MODELTEAMS);
+		if (hasFlagChanged(MP_FLAG_SKINTEAMS))
+			checkCvar(mp_flags, "Force Skins", MP_CVAR_TYPE_BOOL, MP_FLAG_SKINTEAMS);
+		if (hasFlagChanged(MP_FLAG_NO_ARMOR))
+			checkCvar(mp_flags, "$$NoArmorItems$$", MP_CVAR_TYPE_BOOL, MP_FLAG_NO_ARMOR);
+		//if (hasFlagChanged(MP_FLAG_FAST_WEAPONS))
+			//checkCvar(mp_flags, "Fast Weapons", MP_CVAR_TYPE_BOOL, MP_FLAG_FAST_WEAPONS);
+		//if (hasFlagChanged(MP_FLAG_NOEXIT))
+			//checkCvar(mp_flags, "No Exit", MP_CVAR_TYPE_BOOL, MP_FLAG_NOEXIT);
+		//if (hasFlagChanged(MP_FLAG_SPAWN_FARTHEST))
+			//checkCvar(mp_flags, "Spawn Farthest", MP_CVAR_TYPE_BOOL, MP_FLAG_SPAWN_FARTHEST);
+		
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: mp_pointlimit cvar will update game instantly - chrissstrahl
