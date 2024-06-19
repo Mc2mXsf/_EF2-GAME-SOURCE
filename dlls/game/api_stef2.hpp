@@ -93,6 +93,7 @@ bool gameFixAPI_mapIsStock(const str& name);
 bool gameFixAPI_mapForSingleplayer(const str& name);
 bool gameFixAPI_mapForMultiplayer(const str& name);
 bool gameFixAPI_mapHasGameMode(const str& name,const str& gamemode);
+bool gameFixAPI_callvoteMap(Player* player, str command, str arg);
 bool gameFixAPI_callvoteIniHandle(const Player* player, const str& command, const str& arg, str& voteCommand, str& contentsSections);
 void gameFixAPI_shutdownGame();
 void gameFixAPI_initGame();

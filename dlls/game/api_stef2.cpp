@@ -1337,6 +1337,96 @@ bool gameFixAPI_mapHasGameMode(const str& name,const str& gamemode)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - chrissstrahl
+//--------------------------------------------------------------
+bool gameFixAPI_callvoteMap(Player* player, str command, str arg)
+{
+	if (!strlen(arg.c_str()) && Q_stricmp(command.c_str(), "nextmap") == 0 ||
+		strlen(arg.c_str()) && arg[0] == '+' ||
+		strlen(arg.c_str()) && arg[0] == '-' ||
+		strlen(arg.c_str()) && arg[0] == '*')
+	{
+		if (!(mp_useMapList->integer) || (strlen(mp_mapList->string)) < 5) {
+			multiplayerManager.HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callvote_mpMaplist);
+			return true;
+		}
+		
+		int iStepsToGo = 1;
+		bool upInList = true;
+		str nextMapName;
+
+		//get current maplist inti a container list
+		gameFixAPI_mapList();
+
+		//check if we want to go up 1 in list - no argument given with map or nextmap - skip this then
+		//argument given - downwards
+		if (strlen(arg.c_str())) {
+			//extract how many steps we should be going forward or back
+			if (arg.length() > 1) {
+				str sRestOfArgument = gamefix_getStringUntil(arg, 1, arg.length() - 1);
+				if (arg.length() > 10) {
+					sRestOfArgument = gamefix_getStringUntil(sRestOfArgument, 0, 9);
+				}
+				iStepsToGo = atoi(sRestOfArgument.c_str());
+			}
+			else if (arg[0] == '*') {
+				int iRandomStepsMax = gameFixAPI_maplistContainer.NumObjects();
+				iStepsToGo = 0;
+				while (iStepsToGo == 0) {
+					iStepsToGo = int(G_Random(float(iRandomStepsMax + 1)));
+				}
+			}
+
+			//we want to go downwards 
+			if (arg[0] == '-') {
+				upInList = false;
+			}
+		}
+		//go the desired steps up/down
+		for (int stepsTaken = 0; stepsTaken < iStepsToGo; stepsTaken++) {
+			if (upInList) {
+				nextMapName = gameFixAPI_mapListUp();
+			}
+			else {
+				nextMapName = gameFixAPI_mapListDown();
+			}
+		}
+
+		//on random map if it is the same map, just go one more extra
+		if (strlen(arg.c_str()) && arg[0] == '*') {
+			if (Q_stricmp(nextMapName.c_str(), level.mapname.c_str()) == 0) {
+				if (upInList) {
+					nextMapName = gameFixAPI_mapListUp();
+				}
+				else {
+					nextMapName = gameFixAPI_mapListDown();
+				}
+			}
+		}
+
+		//sp map which is not allowed - try a coupe of times to get a map that supports mp
+		if (!gamefix_getCvarInt("gfix_allowSpMaps")) {
+			int mapListSingleplayerSkipTries = 10;
+			while (gameFixAPI_mapIsStock(nextMapName) && gameFixAPI_mapForSingleplayer(nextMapName) && !gameFixAPI_mapForMultiplayer(nextMapName) && mapListSingleplayerSkipTries > 0) {
+				if (upInList) {
+					nextMapName = gameFixAPI_mapListUp();
+				}
+				else {
+					nextMapName = gameFixAPI_mapListDown();
+				}
+				mapListSingleplayerSkipTries--;
+			}
+		}
+
+		//issue command to player to start the desired vote
+		gi.SendServerCommand(player->entnum, "stufftext \"callvote %s %s\"\n", command.c_str(), nextMapName.c_str());
+		return true;
+	}
+	return false;
+}
+
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
 //--------------------------------------------------------------
 bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, const str &arg, str &voteCommand, str &contentsSections)
