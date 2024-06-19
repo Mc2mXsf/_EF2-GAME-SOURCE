@@ -22,7 +22,7 @@ constexpr auto _GFix_PLAYER_next_painsound_time = 3.0f; //was 3.0f
 //--------------------------------------------------------------
 #define MAX_LINES 1024
 #define MAX_LINE_LENGTH 1024
-#define MAX_SECTIONS 100
+#define MAX_SECTIONS 150
 
 typedef struct {
 	char section[MAX_LINE_LENGTH];
@@ -140,6 +140,8 @@ float				gamefix_dialogGetSoundlength(char sound[MAX_QPATH]);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
 int					gamefix_findChar(const char* str, const char find);
 int					gamefix_findChars(const char* str, const char* find);
+int					gamefix_findCharsReverse(const char* str, const char* find);
+int					gamefix_findCharsReverse(const char* str, const char* find, int startPos, int endPos);
 int					gamefix_findString(const char* str, const char* find);
 int					gamefix_findStringCase(const str& latinumstack,const str& find);
 int					gamefix_findStringCase(const str& latinumstack, const str& find,bool wholeWord);
@@ -162,8 +164,8 @@ str					gamefix_trimWhitespace(const str& input);
 str					gamefix_trimWhitespace(const str& input, bool dontTrimNewLine);
 void				gamefix_listSeperatedItems(Container<str>& container, const str& src, const str& seperator);
 str					gamefix_getExtension(const str& in);
-gamefix_iniFileSection* gamefix_iniFileParseSections(const char* data, int* section_count);
-str					gamefix_iniFileGetSection(const str& data, const char* section_name);
+gamefix_iniFileSection* gamefix_iniFileParseSections(const char* file, const char* data, int* section_count);
+str					gamefix_iniFileGetSection(const char* file, const str& data, const char* section_name);
 str					gamefix_iniFileGetValueFromKey(const str& section_contents, const str& key);
 str					gamefix_iniFileGetSectionNames(const str& contents);
 void				gamefix_extractIntegerRange(const str& input, int& first, int& second);
