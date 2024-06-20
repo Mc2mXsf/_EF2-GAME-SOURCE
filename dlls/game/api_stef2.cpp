@@ -1425,6 +1425,56 @@ bool gameFixAPI_callvoteMap(Player* player, str command, str arg)
 	return false;
 }
 
+//--------------------------------------------------------------
+// GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
+//--------------------------------------------------------------
+void gameFixAPI_callvoteIniGet(const str& sectionName, str& iniContents, str& iniContentsSection, Container<str>& iniSectionNames)
+{
+	str iniCallvoteFileName = "callvote.ini";
+	if (gamefix_getFileContents(iniCallvoteFileName, iniContents)) {
+		iniContentsSection = gamefix_iniFileGetSection(iniCallvoteFileName.c_str(), iniContents, sectionName.c_str());
+		gamefix_iniFileGetSectionNames(iniCallvoteFileName, iniSectionNames, iniContents);
+	}
+	else {
+		iniContents = "";
+		iniContentsSection = "";
+		iniSectionNames.FreeObjectList();
+	}
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
+// Print all section names to player hud - they represent the vote commands
+//--------------------------------------------------------------
+void gameFixAPI_callvoteIniHudPrintSectionNames(Player* player, Container<str>& iniSectionNames)
+{
+	if (!player || iniSectionNames.NumObjects() < 1) {
+		return;
+	}
+
+	const int maxLineLength = 80;
+	int i = 1;
+	int iNumSections = iniSectionNames.NumObjects();
+	str sectionNamesGlued;
+	while (i <= iNumSections) {
+		sectionNamesGlued = "-> ";
+		while ( i <= iNumSections && (sectionNamesGlued.length() + iniSectionNames.ObjectAt(i).length()) < maxLineLength) {
+			if (sectionNamesGlued.length() > 3) {
+				sectionNamesGlued += ", ";
+			}
+			//else if(i == 1){
+				//gamefix_playerDelayedServerCommand(player->entnum,"hudprint Server specific commands:\n");
+			//}
+
+			sectionNamesGlued += iniSectionNames.ObjectAt(i);
+			i++;
+		}
+		if (sectionNamesGlued.length() > 3) {
+			gamefix_playerDelayedServerCommand(player->entnum, va("hudprint %s\n", sectionNamesGlued.c_str()));
+		}
+	}
+}
+
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl

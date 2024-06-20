@@ -1884,14 +1884,11 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	// GAMEFIX - Added: Support for ini based vote commands - chrissstrahl
 	//--------------------------------------------------------------
 	str iniContents;
-	str iniSectionNames;
 	str iniContentsSection;
-	str iniCallvoteFileName = "callvote.ini";
-	if (gamefix_getFileContents(iniCallvoteFileName, iniContents)) {
-		iniContentsSection = gamefix_iniFileGetSection(iniCallvoteFileName.c_str(), iniContents, command.c_str());
-		iniSectionNames = gamefix_iniFileGetSectionNames(iniContents);
-	}
+	Container<str> iniSectionNames;
+	gameFixAPI_callvoteIniGet(command, iniContents, iniContentsSection, iniSectionNames);
 	
+
 	//--------------------------------------------------------------
 	// GAMEFIX - g_gametype changed to correct mp_gametype - chrissstrahl
 	// GAMEFIX - Replaced 5 times - Fixed: Warning: C4996 stricmp: The POSIX name for this item is deprecated. Using instead: Q_stricmp - chrissstrahl
@@ -1916,37 +1913,9 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Support for ini based vote commands - chrissstrahl
 		//--------------------------------------------------------------
-		if (iniContents.length()) {
-			int iFullLength = iniSectionNames.length();
-			const int iSplitPos = 80;
-			int iCurSplitPos = 0;
+		gameFixAPI_callvoteIniHudPrintSectionNames(player, iniSectionNames);
 
-			// First printout with extra information
-			int firstSplitPos = gamefix_findCharsReverse(iniSectionNames.c_str(), ",", 0, iSplitPos);
-			if (firstSplitPos == -1) {
-				firstSplitPos = iSplitPos;
-			}
-			str iniSectionNamesSplit = gamefix_getStringUntil(iniSectionNames, iCurSplitPos, firstSplitPos);
-			HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_specificVotes, iniSectionNamesSplit.c_str()));
 
-			// Move the current split position forward
-			iCurSplitPos = firstSplitPos + 1;
-
-			// Subsequent printouts without the extra information
-			while (iCurSplitPos < iFullLength) {
-				int nextSplitPos = iCurSplitPos + iSplitPos;
-				if (nextSplitPos > iFullLength) {
-					nextSplitPos = iFullLength;
-				}
-				int lastCommaPos = gamefix_findCharsReverse(iniSectionNames.c_str(), ",", iCurSplitPos, nextSplitPos);
-				if (lastCommaPos != -1 && lastCommaPos < nextSplitPos) {
-					nextSplitPos = lastCommaPos + 1;
-				}
-				iniSectionNamesSplit = gamefix_getStringUntil(iniSectionNames, iCurSplitPos, nextSplitPos);
-				HUDPrint(player->entnum, va("%s\n", iniSectionNamesSplit.c_str()));
-				iCurSplitPos = nextSplitPos;
-			}
-		}
 		return;
 	}
 
