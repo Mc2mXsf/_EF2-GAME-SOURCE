@@ -1883,10 +1883,11 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 	//--------------------------------------------------------------
 	// GAMEFIX - Added: Support for ini based vote commands - chrissstrahl
 	//--------------------------------------------------------------
+	str iniFileName = "callvote.ini";
 	str iniContents;
 	str iniContentsSection;
 	Container<str> iniSectionNames;
-	gameFixAPI_callvoteIniGet(command, iniContents, iniContentsSection, iniSectionNames);
+	gameFixAPI_callvoteIniGet(iniFileName, command, iniContents, iniContentsSection, iniSectionNames);
 	
 
 	//--------------------------------------------------------------
@@ -2018,7 +2019,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		// GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
 		//--------------------------------------------------------------
 		//_voteString = va("%s %s", command.c_str(), arg.c_str());
-		if (!gameFixAPI_callvoteIniHandle(player, command, arg, _voteString, iniContentsSection)){
+		if (!gameFixAPI_callvoteIniHandle(player, command, arg, _voteString, iniFileName, iniContentsSection)){
 			return;
 		}
 	}
