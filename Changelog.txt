@@ -69,10 +69,10 @@ void gameFixAPI_initGame()
 void gamefix_cleanupGame(qboolean restart)
 
 Added: Support for ini-files
-gamefix_iniFileSection* gamefix_iniFileParseSections(const char* data, int* section_count)
-str gamefix_iniFileGetSection(const str& data, const char* section_name)
-str gamefix_iniFileGetValueFromKey(const str& section_contents, const str& key)
-str gamefix_iniFileGetSectionNames(const str& contents)
+gamefix_iniFileSection* gamefix_iniFileParseSections(const str& file, const char* data, int* section_count)
+str gamefix_iniFileGetSection(const str& file, const str& data, const char* section_name)
+str gamefix_iniFileGetValueFromKey(const str& file, const str& section_contents, const str& key);
+void gamefix_iniFileGetSectionNames(const str& file, Container<str> &sectionList, const str& contents)
 
 Added: Function to extract two integers from a str representing a min/max range with various separators
 void gamefix_extractIntegerRange(const str& input, int& first, int& second)
@@ -118,8 +118,9 @@ Added: Function to check if a map is listed as Multiplayer
 bool gameFixAPI_mapForMultiplayer(const str& name)
 
 Added: Support for ini-file based custom vote commands
-void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
-bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, const str &arg, str &voteCommand, str &contentsSections)
+bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, const str &arg, const str& file, str &voteCommand, str &contentsSections)
+void gameFixAPI_callvoteIniGet(const str& file, const str& sectionName, str& iniContents, str& iniContentsSection, Container<str>& iniSectionNames);
+void gameFixAPI_callvoteIniHudPrintSectionNames(Player* player, Container<str>& iniSectionNames);
 
 Added: Support for Delayed serverCommands for players
 void gamefix_playerClearDelayedServerCommand(int entNum)
@@ -173,6 +174,7 @@ void gamefix_kickBots()
 
 Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - or even * for random
 void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+bool gameFixAPI_callvoteMap(Player* player, str command, str arg);
 
 Added: Function to count how many occurences of a char are in a string
 int gamefix_countCharOccurrences(const char* str,const char& ch)
