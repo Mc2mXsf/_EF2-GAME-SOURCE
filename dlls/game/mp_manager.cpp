@@ -1931,26 +1931,15 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Cleanup of mapname - chrissstrahl
 		//--------------------------------------------------------------
-		str cleanArgument;
-		int illegalChar = gamefix_findChars(arg.c_str(),"$");
-		if (illegalChar != -1) {
-			cleanArgument = gamefix_getStringUntil(arg,0, illegalChar);
-		}
-		else {
-			cleanArgument = arg;
-		}
+		str cleanArgument = gamefix_cleanMapName(arg);
 
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps - chrissstrahl
 		//--------------------------------------------------------------
-		if (!gamefix_getCvarInt("gfix_allowSpMaps")) {
-			if (gameFixAPI_mapIsStock(cleanArgument) && gameFixAPI_mapForSingleplayer(cleanArgument) && !gameFixAPI_mapForMultiplayer(cleanArgument)) {
-				HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed);
-				return;
-			}
+		if (!gameFixAPI_callvoteMapCheckSingleplayer) {
+			return;
 		}
-
-
+		
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - chrissstrahl
 		//--------------------------------------------------------------
@@ -1993,15 +1982,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Cleanup of mapname - chrissstrahl
 		//--------------------------------------------------------------
-		str cleanArgument;
-		int illegalChar = gamefix_findChars(arg.c_str(), "$");
-		if (illegalChar != -1) {
-			cleanArgument = gamefix_getStringUntil(arg, 0, illegalChar);
-		}
-		else {
-			cleanArgument = arg;
-		}
-
+		str cleanArgument = gamefix_cleanMapName(arg);
 
 		// If a map command was issued, preserve the nextmap cvar so we don't lose it
 		if ( strlen( sv_nextmap->string ) )
@@ -2019,9 +2000,11 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		// GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
 		//--------------------------------------------------------------
 		//_voteString = va("%s %s", command.c_str(), arg.c_str());
+		str voteNew;
 		if (!gameFixAPI_callvoteIniHandle(player, command, arg, _voteString, iniFileName, iniContentsSection)){
 			return;
 		}
+		_voteString = voteNew;
 	}
 
 	// Print out a message to everyone
