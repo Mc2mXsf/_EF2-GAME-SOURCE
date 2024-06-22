@@ -986,12 +986,15 @@ str gamefix_getStringUntil(const str& sString, const int iStart, const int iEnd)
 {
 	const int iLength = sString.length();
 	if (iStart >= iLength) {
-		throw("gamefix_getStringUntil: start pos > then strlen");
+		throw("gamefix_getStringUntil: start pos > than strlen");
 	}
 
 	int actualEnd = iEnd;
-	if (iStart + iEnd > iLength) {
-		actualEnd = iLength - iStart;
+	if (iEnd > iLength) {
+		actualEnd = iLength;
+	}
+	else if (iStart + iEnd > iLength) {
+		actualEnd = iLength;
 	}
 
 	str result;
