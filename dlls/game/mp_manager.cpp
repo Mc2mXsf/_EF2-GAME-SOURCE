@@ -2000,11 +2000,9 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		// GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
 		//--------------------------------------------------------------
 		//_voteString = va("%s %s", command.c_str(), arg.c_str());
-		str voteNew;
-		if (!gameFixAPI_callvoteIniHandle(player, command, arg, _voteString, iniFileName, iniContentsSection)){
+		if (!gameFixAPI_callvoteIniHandle(player, command, arg, iniFileName, _voteString, iniContentsSection)){
 			return;
 		}
-		_voteString = voteNew;
 	}
 
 	// Print out a message to everyone

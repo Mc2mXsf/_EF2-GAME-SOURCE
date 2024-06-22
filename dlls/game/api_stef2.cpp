@@ -1337,6 +1337,21 @@ bool gameFixAPI_mapHasGameMode(const str& name,const str& gamemode)
 }
 
 //--------------------------------------------------------------
+// GAMEFIX - Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps - chrissstrahl
+//--------------------------------------------------------------
+bool gameFixAPI_callvoteMapCheckSingleplayer(Player* player, str mapname)
+{
+	if (gamefix_getCvarInt("gfix_allowSpMaps")) {
+		mapname = gamefix_cleanMapName(mapname);
+		if (gameFixAPI_mapIsStock(mapname) && gameFixAPI_mapForSingleplayer(mapname) && !gameFixAPI_mapForMultiplayer(mapname)) {
+			gameFixAPI_hudPrint(player, _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed);
+			return false;
+		}
+	}
+	return true;
+}
+
+//--------------------------------------------------------------
 // GAMEFIX - Added: Voteoption to get next/previous map during map and nextmap vote by using + or - instead of a mapname - chrissstrahl
 //--------------------------------------------------------------
 bool gameFixAPI_callvoteMap(Player* player, str command, str arg)
@@ -1474,11 +1489,10 @@ void gameFixAPI_callvoteIniHudPrintSectionNames(Player* player, Container<str>& 
 	}
 }
 
-
 //--------------------------------------------------------------
 // GAMEFIX - Added: Support for ini-file based custom vote commands - chrissstrahl
 //--------------------------------------------------------------
-bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, const str &arg, const str& file, str &voteCommand, str &contentsSections)
+bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str &arg, const str& file, str& voteCommand, str &contentsSections)
 {
 	//standard votes
 	if (!contentsSections.length()) {
@@ -1518,7 +1532,7 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 
 	//verify there is a command key and value for it
 	if (!commandNew.length()) {
-		multiplayerManager.HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callVote_ini_err_cmdEmpty);
+		gameFixAPI_hudPrint(player, _GFixEF2_MSG_FUNC_callVote_ini_err_cmdEmpty);
 		return false;
 	}
 
@@ -1526,13 +1540,13 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 	if (!arg.length()) {
 		if (Q_stricmp(argumentType.c_str(), "none") != 0) {
 			if (Q_stricmp(argumentType.c_str(), "string") == 0) {
-				multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_length, command.c_str(), "string", length.c_str()));
+				gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_length, command.c_str(), "string", length.c_str()));
 				if (argumentsValid.length()) {
-					multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_valid, argumentsValid.c_str()));
+					gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_arg_valid, argumentsValid.c_str()));
 				}
 			}
 			else{
-				multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range, command.c_str(), argumentType.c_str(), range.c_str()));
+				gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range, command.c_str(), argumentType.c_str(), range.c_str()));
 			}
 			return false;
 		}
@@ -1541,7 +1555,7 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 	//check if cvar settings match
 	if (requiredCvar.length()){
 		if (requiredCvar.length() > 32) {
-			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cvarName_exceeds, command.c_str()));
+			gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_cvarName_exceeds, command.c_str()));
 			return false;
 		}
 		
@@ -1551,7 +1565,7 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 			val = gamefix_getCvarFloat(requiredCvar);
 			
 			if (val < min || val > max) {
-				multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be, command.c_str(), requiredCvar.c_str(), requiredCvarRange.c_str()));
+				gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be, command.c_str(), requiredCvar.c_str(), requiredCvarRange.c_str()));
 				return false;
 			}
 		}
@@ -1573,8 +1587,8 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 		validArguments.FreeObjectList();
 
 		if (!isValid) {
-			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_invalid, command.c_str()));
-			multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_arg_valid, argumentsValid.c_str()));
+			gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_arg_invalid, command.c_str()));
+			gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_arg_valid, argumentsValid.c_str()));
 			return false;
 		}
 	}
@@ -1697,20 +1711,31 @@ bool gameFixAPI_callvoteIniHandle(const Player* player ,const str &command, cons
 	//check if a restart is wanted
 	if (restartForced.length() && Q_stricmp(restartForced.c_str(), "true") == 0) {
 		if (gamefix_getPlayers(false) > 1) {
-			multiplayerManager.HUDPrintAllClients(va(_GFixEF2_MSG_FUNC_callVote_willForceReload, command.c_str()));
+			gameFixAPI_hudPrintAllClients(va(_GFixEF2_MSG_FUNC_callVote_willForceReload, command.c_str()));
 		}
 
 		voteCommand = va("%s;map %s", voteCommand.c_str(), level.mapname.c_str());
 	}
 	else if (restartRequired.length() && Q_stricmp(restartRequired.c_str(), "true") == 0) {
-		multiplayerManager.HUDPrint(player->entnum, _GFixEF2_MSG_FUNC_callVote_changeTakeEffect);
+		gameFixAPI_hudPrint(player, _GFixEF2_MSG_FUNC_callVote_changeTakeEffect);
 	}
 
 	//verify maximum command length
 	if (voteCommand.length() >= totalLength) {
-		multiplayerManager.HUDPrint(player->entnum, va(_GFixEF2_MSG_FUNC_callVote_exceeded_length, totalLength));
+		gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_exceeded_length, totalLength));
 		return false;
 	}
+
+	if (Q_stricmp(command.c_str(), "exec") == 0) {
+		int filth = gamefix_findStringCase(voteCommand,"exec",true);
+		int length = voteCommand.length();
+		str filePath = gamefix_getStringUntil(voteCommand, filth + 5, length + 111);
+		if (!gi.FS_Exists(va("%s", filePath.c_str()))) {
+			gameFixAPI_hudPrint(player, va("%s could not be found on the server\n", filePath.c_str()));
+			return false;
+		}
+	}
+
 	return true;
 }
 
