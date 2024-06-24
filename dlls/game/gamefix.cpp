@@ -1879,11 +1879,15 @@ char* gamefix_duplicateString(const char* source)
 //--------------------------------------------------------------
 str gamefix_cleanMapName(const str& mapname)
 {
+	str cleanMapName = mapname;
+	if (cleanMapName[0] == '/') {
+		cleanMapName = gamefix_getStringUntil(mapname,1, mapname.length());
+	}
+
 	int filth = gamefix_findChar(mapname,'$');
 	if (filth == -1) {
-		return mapname;
+		return cleanMapName;
 	}
-	str cleanMapName = mapname;
 	cleanMapName.CapLength(filth);
 	return cleanMapName;
 }
