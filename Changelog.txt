@@ -60,6 +60,9 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Cleanup of mapname
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+
 Added: Function to clean string of given illegal chars
 str gamefix_filterChars(const str filthy, str illegal)
 
