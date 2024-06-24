@@ -60,6 +60,18 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Function to clean string of given illegal chars
+str gamefix_filterChars(const str filthy, str illegal)
+
+Added: Function to clean string of given chars if they are dublicated
+str gamefix_stripDoubleChar(const str filthy, str illegal)
+
+Added: Function to return cleaned up mapname
+str gamefix_cleanMapName(const str& mapname)
+
+Added: Function to duplicate a string
+char* gamefix_duplicateString(const char* source)
+
 Added: Printouts for various missing mp_flags
 void MultiplayerManager::checkModifiedCvars( bool informPlayers )
 
