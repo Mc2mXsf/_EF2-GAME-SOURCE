@@ -1649,30 +1649,34 @@ str gamefix_iniFileGetSection(const str& file, const str& data, const char* sect
 //--------------------------------------------------------------
 str gamefix_iniFileGetValueFromKey(const str& file, const str& section_contents, const str& key)
 {
+	return gamefix_iniFileGetValueFromKey(file, section_contents, key,"");
+}
+str gamefix_iniFileGetValueFromKey(const str& file, const str& section_contents, const str& key, const str& altVal)
+{
 	int length = section_contents.length();
 	int lengthKey = key.length();
 
 	if (lengthKey > 32) {
 		gi.Printf("%s - Key-Name exceeded 32 length -> %s...\n",file.c_str(), gamefix_getStringUntil(key, 0, 24).c_str());
-		return str("");
+		return altVal;
 	}
 
 	//empty section, leave
 	//empty key-name, leave
 	if (!length || !lengthKey) {
-		return str("");
+		return altVal;
 	}
 
 	int foundKeyAt = gamefix_findStringCase(section_contents, key,true);
 	
 	//not found, leave
 	if (foundKeyAt == -1) {
-		return str("");
+		return altVal;
 	}
 
 	//no actual value, leave
 	if (length < foundKeyAt + lengthKey + 2) {
-		return str("");
+		return altVal;
 	}
 	
 	bool valueStarted = false;
@@ -1882,6 +1886,58 @@ str gamefix_cleanMapName(const str& mapname)
 	str cleanMapName = mapname;
 	cleanMapName.CapLength(filth);
 	return cleanMapName;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to clean string of given illegal chars - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_filterChars(const str filthy, str illegal)
+{
+	int filthyLength = filthy.length();
+	int illegalLength = illegal.length();
+	if (filthy && illegal && filthyLength && illegalLength) {
+		str sNew = "";
+		for(int i = 0; i < filthyLength && filthy[i] != '\0'; i++) {
+			bool add = true;
+			for (int j = 0; j < illegalLength;j++) {
+				if (filthy[i] == illegal[j]) {
+					add = false;
+					break;
+				}
+			}
+			if (add) {
+				sNew += filthy[i];
+			}
+		}
+		return sNew;
+	}
+	return filthy;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to clean string of given chars if they are dublicated - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_stripDoubleChar(const str filthy, str illegal)
+{
+	//strip double slashes
+	int i = 0;
+	str clean = "";
+	for (i = 0; i < filthy.length(); i++) {
+		bool add = true;
+		for (int j = 0; j < illegal.length(); j++) {
+			if (i < (filthy.length() - 1) && filthy[i] == illegal[j] && filthy[i + 1] == illegal[j]) {
+				add = false;
+				break;
+			}
+		}
+
+		if (!add) {
+			continue;
+		}
+
+		clean += filthy[i];
+	}
+	return clean;
 }
 
 
