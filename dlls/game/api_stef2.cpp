@@ -1341,7 +1341,7 @@ bool gameFixAPI_mapHasGameMode(const str& name,const str& gamemode)
 //--------------------------------------------------------------
 bool gameFixAPI_callvoteMapCheckSingleplayer(Player* player, str mapname)
 {
-	if (gamefix_getCvarInt("gfix_allowSpMaps")) {
+	if (!gamefix_getCvarInt("gfix_allowSpMaps")) {
 		mapname = gamefix_cleanMapName(mapname);
 		if (gameFixAPI_mapIsStock(mapname) && gameFixAPI_mapForSingleplayer(mapname) && !gameFixAPI_mapForMultiplayer(mapname)) {
 			gameFixAPI_hudPrint(player, _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed);

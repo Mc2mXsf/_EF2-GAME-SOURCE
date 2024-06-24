@@ -34,7 +34,7 @@ constexpr auto _GFixEF2_INFO_GAMEFIX_stalledCommandsFor = "Gamefix Stalled Comma
 constexpr auto _GFixEF2_INFO_GAMEFIX_mpMapListDoesNotExist = "mp_mapList: maps/%s.bsp does not exist on server\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
-constexpr auto _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed = "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed = "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 'seta gfix_allowSpMaps 1' to allow.\n";
 constexpr auto _GFixEF2_MSG_FUNC_callvote_mpMaplist = "Cvar mp_useMapList needs to be 1 and mp_mapList needs to be populated\n";
 constexpr auto _GFixEF2_MSG_FUNC_callVote_specificVotes = "Server Specific: %s.\n";
 constexpr auto _GFixEF2_MSG_FUNC_callVote_ini_err_cmdEmpty = "callvote.ini error key 'command' has no value!\n";
