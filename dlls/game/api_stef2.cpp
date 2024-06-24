@@ -405,7 +405,7 @@ bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
 		if (strlen(gamefix_client_persistant_t[clientNum].commandsStalled)) {
 			Player* player = GetPlayer(clientNum);
 			if (player) {
-				gi.Printf("Gamefix Stalled Commands (%s) for %s\n", gamefix_client_persistant_t[clientNum].commandsStalled.c_str(), player->client->pers.netname);
+				gi.Printf(_GFixEF2_INFO_GAMEFIX_stalledCommandsFor, gamefix_client_persistant_t[clientNum].commandsStalled.c_str(), player->client->pers.netname);
 			}
 		}
 		gamefix_client_persistant_t[clientNum].commandsStalled = "";
@@ -1090,7 +1090,7 @@ void gameFixAPI_mapList()
 						gameFixAPI_maplistContainer.AddObject(mapname);
 					}
 					else {
-						gi.Printf("mp_mapList: maps/%s.bsp does not exist on server\n", mapname.c_str());
+						gi.Printf(_GFixEF2_INFO_GAMEFIX_mpMapListDoesNotExist, mapname.c_str());
 					}
 					mapname = "";
 				}
@@ -1117,7 +1117,7 @@ void gameFixAPI_mapList()
 		int numObjects = gameFixAPI_maplistContainer.NumObjects();
 		int curObj = 1;
 		while (curObj <= numObjects) {
-			gi.Printf("map in list: %s at %d\n", gameFixAPI_maplistContainer.ObjectAt(curObj).c_str(), curObj);
+			//gi.Printf("map in list: %s at %d\n", gameFixAPI_maplistContainer.ObjectAt(curObj).c_str(), curObj);
 			curObj++;
 		}
 	}
@@ -1476,9 +1476,6 @@ void gameFixAPI_callvoteIniHudPrintSectionNames(Player* player, Container<str>& 
 			if (sectionNamesGlued.length() > 3) {
 				sectionNamesGlued += ", ";
 			}
-			//else if(i == 1){
-				//gamefix_playerDelayedServerCommand(player->entnum,"hudprint Server specific commands:\n");
-			//}
 
 			sectionNamesGlued += iniSectionNames.ObjectAt(i);
 			i++;
@@ -1504,8 +1501,9 @@ bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str 
 	float maxBound = 99999.0f;
 	int totalLength = MAX_QPATH;
 	str argNew = arg;
+	argNew = gamefix_filterChars(arg, "%;'<>\"´`");
 	str commandNew = gamefix_iniFileGetValueFromKey(file, contentsSections, "command");
-	str length = gamefix_iniFileGetValueFromKey(file, contentsSections, "length");
+	str length = gamefix_iniFileGetValueFromKey(file, contentsSections, "length", va("%d", totalLength));
 	str extension = gamefix_iniFileGetValueFromKey(file, contentsSections, "extension");
 	str range = gamefix_iniFileGetValueFromKey(file, contentsSections, "range");
 	str argumentType = gamefix_iniFileGetValueFromKey(file, contentsSections, "argument");
@@ -1697,12 +1695,12 @@ bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str 
 		}
 	}
 
-	//get maximum command length
+	//get maximum argument length
 	if (length.length()) {
 		totalLength = atoi(length.c_str());
 	}
 	else {
-		length = va("%d", totalLength / 2);
+		length = va("%d", totalLength);
 	}
 
 	//construct actual vote command
@@ -1720,18 +1718,21 @@ bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str 
 		gameFixAPI_hudPrint(player, _GFixEF2_MSG_FUNC_callVote_changeTakeEffect);
 	}
 
-	//verify maximum command length
-	if (voteCommand.length() >= totalLength) {
+	//verify maximum argument length
+	if (argNew.length() >= totalLength) {
 		gameFixAPI_hudPrint(player, va(_GFixEF2_MSG_FUNC_callVote_exceeded_length, totalLength));
 		return false;
 	}
 
 	if (Q_stricmp(command.c_str(), "exec") == 0) {
 		int filth = gamefix_findStringCase(voteCommand,"exec",true);
-		int length = voteCommand.length();
-		str filePath = gamefix_getStringUntil(voteCommand, filth + 5, length + 111);
+		int lengthCmd = voteCommand.length();
+		str filePath = gamefix_getStringUntil(voteCommand, filth + 5, lengthCmd + 111);
+		filePath.BackSlashesToSlashes();
+		filePath = gamefix_stripDoubleChar(filePath,"/");
+
 		if (!gi.FS_Exists(va("%s", filePath.c_str()))) {
-			gameFixAPI_hudPrint(player, va("%s could not be found on the server\n", filePath.c_str()));
+			gameFixAPI_hudPrint(player, va(_GFixEF2_INFO_GAMEFIX_couldNotBeFoundOnServer, filePath.c_str()));
 			return false;
 		}
 	}

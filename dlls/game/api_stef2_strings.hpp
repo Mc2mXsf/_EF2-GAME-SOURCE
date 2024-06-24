@@ -28,6 +28,10 @@ constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchAddPlayer = "Missi
 constexpr auto _GFixEF2_INFO_GAMEFIX_spawnlocations_DeathmatchRespawnPlayer = "Missing currently valid info_player_deathmatch - ModeDeathmatch::respawnPlayer\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_maxLevelitems_ctf_grey = "Cvar max_levelitems set to 384, to many info_helpernodes - ctf_grey\n";
 constexpr auto _GFixEF2_INFO_GAMEFIX_mapCheckFromMaplist = "%s: %s not found in maplist, false returned!\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_couldNotBeFoundOnServer = "%s could not be found on the server\n";
+constexpr auto _GFixEF2_INFO_GAMEFIX_stalledCommandsFor = "Gamefix Stalled Commands (%s) for %s\n";
+
+constexpr auto _GFixEF2_INFO_GAMEFIX_mpMapListDoesNotExist = "mp_mapList: maps/%s.bsp does not exist on server\n";
 
 constexpr auto _GFixEF2_MSG_FUNC_FinishMissionFailed = "^1=/\\=^3 Mission Failed ^1=/\\=\n";
 constexpr auto _GFixEF2_MSG_FUNC_callvote_singleplayer_not_allowed = "^3Singleplayer^8 levels ^3not allowed^8 on the server!^8 seta gfix_allowSpMaps 1 -> to allow.\n";
@@ -35,7 +39,7 @@ constexpr auto _GFixEF2_MSG_FUNC_callvote_mpMaplist = "Cvar mp_useMapList needs 
 constexpr auto _GFixEF2_MSG_FUNC_callVote_specificVotes = "Server Specific: %s.\n";
 constexpr auto _GFixEF2_MSG_FUNC_callVote_ini_err_cmdEmpty = "callvote.ini error key 'command' has no value!\n";
 constexpr auto _GFixEF2_MSG_FUNC_callVote_cmd_req_arg_range = "$$InvalidVote$$ %s requires argument (%s) range: %s.\n";
-constexpr auto _GFixEF2_MSG_FUNC_callVote_cmd_req_arg_length = "$$InvalidVote$$ %s requires argument (%s) max length: %s.\n";
+constexpr auto _GFixEF2_MSG_FUNC_callVote_cmd_req_arg_length = "$$InvalidVote$$ %s requires argument (%s) max length: %s. But was empty\n";
 constexpr auto _GFixEF2_MSG_FUNC_callVote_cmd_req_cvar_be = "Vote %s requires Cvar^3 %s ^8to be^3 %s^8.\n";
 constexpr auto _GFixEF2_MSG_FUNC_callVote_arg_invalid = "$$InvalidVote$$ Vote Argument for command: %s!\n";
 constexpr auto _GFixEF2_MSG_FUNC_callVote_arg_valid = "-> Valid: %s.\n";
