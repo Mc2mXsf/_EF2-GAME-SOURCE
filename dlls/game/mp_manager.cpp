@@ -1936,7 +1936,7 @@ void MultiplayerManager::callVote( Player *player, const str &command, const str
 		//--------------------------------------------------------------
 		// GAMEFIX - Added: Check to prevent singleplayer maps to be voted if not allowed by cvar gfix_allowSpMaps - chrissstrahl
 		//--------------------------------------------------------------
-		if (!gameFixAPI_callvoteMapCheckSingleplayer) {
+		if (!gameFixAPI_callvoteMapCheckSingleplayer(player, cleanArgument)) {
 			return;
 		}
 		
