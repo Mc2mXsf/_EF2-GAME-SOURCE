@@ -386,14 +386,14 @@ bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd)
 	}
 
 	//allow these commands to always pass
-	if (Q_stricmp(cmd,"disconnect") == 0 ||
-		Q_stricmp(cmd,"say") == 0 ||
-		Q_stricmp(cmd,"tsay") == 0 ||
-		Q_stricmp(cmd,"vsay") == 0 ||
-		Q_stricmp(cmd,"vosay") == 0 ||
-		Q_stricmp(cmd,"vosay_team") == 0 ||
-		Q_stricmp(cmd,"vsay_team") == 0 ||
-		Q_stricmp(cmd,"say_team") == 0 ||
+	if (Q_stricmp(cmd.c_str(), "disconnect") == 0 ||
+		Q_stricmp(cmd.c_str(),"say") == 0 ||
+		Q_stricmp(cmd.c_str(),"tsay") == 0 ||
+		Q_stricmp(cmd.c_str(),"vsay") == 0 ||
+		Q_stricmp(cmd.c_str(),"vosay") == 0 ||
+		Q_stricmp(cmd.c_str(),"vosay_team") == 0 ||
+		Q_stricmp(cmd.c_str(),"vsay_team") == 0 ||
+		Q_stricmp(cmd.c_str(),"say_team") == 0 ||
 		cmd == "Eng" ||
 		cmd == "Deu")
 	{
