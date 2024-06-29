@@ -1445,7 +1445,7 @@ bool gameFixAPI_callvoteMap(Player* player, str command, str arg)
 //--------------------------------------------------------------
 void gameFixAPI_callvoteIniGet(const str& file,const str& sectionName, str& iniContents, str& iniContentsSection, Container<str>& iniSectionNames)
 {
-	if (gamefix_getFileContents(file, iniContents)) {
+	if (gamefix_getFileContents(file, iniContents,true)) {
 		iniContentsSection = gamefix_iniFileGetSection(file.c_str(), iniContents, sectionName.c_str());
 		gamefix_iniFileGetSectionNames(file, iniSectionNames, iniContents);
 	}
