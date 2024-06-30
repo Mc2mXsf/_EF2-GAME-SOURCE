@@ -60,6 +60,15 @@ qboolean Actor::checkplayerranged()
 qboolean Actor::checkInPreferredRange( Conditional &condition )
 void SnipeEnemy::updateEnemy()
 
+Added: Function to write contents of a file
+bool gamefix_setFileContents(str sFile, str& contents)
+
+Added: Function to update a section
+gamefix_iniFileUpdateSection(const str& file, const str& file_contents, const str& section_name, const str& new_section_contents);
+
+Added: check for illegal vote command/argument
+void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
+
 Added: Cleanup of mapname
 void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
 
