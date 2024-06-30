@@ -1502,16 +1502,16 @@ bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str 
 	int totalLength = MAX_QPATH;
 	str argNew = arg;
 	argNew = gamefix_filterChars(arg, "%;'<>\"´`");
-	str commandNew = gamefix_iniFileGetValueFromKey(file, contentsSections, "command");
+	str argumentsValid = gamefix_iniFileGetValueFromKey(file, contentsSections, "arguments", "");
+	str commandNew = gamefix_iniFileGetValueFromKey(file, contentsSections, "command","");
 	str length = gamefix_iniFileGetValueFromKey(file, contentsSections, "length", va("%d", totalLength));
-	str extension = gamefix_iniFileGetValueFromKey(file, contentsSections, "extension");
-	str range = gamefix_iniFileGetValueFromKey(file, contentsSections, "range");
-	str argumentType = gamefix_iniFileGetValueFromKey(file, contentsSections, "argument");
-	str restartRequired = gamefix_iniFileGetValueFromKey(file, contentsSections, "restartrequired");
-	str restartForced = gamefix_iniFileGetValueFromKey(file, contentsSections, "restart");
-	str argumentsValid = gamefix_iniFileGetValueFromKey(file, contentsSections, "arguments");
-	str requiredCvar = gamefix_iniFileGetValueFromKey(file, contentsSections, "requiredcvar");
-	str requiredCvarRange = gamefix_iniFileGetValueFromKey(file, contentsSections, "requiredcvarrange");
+	str extension = gamefix_iniFileGetValueFromKey(file, contentsSections, "extension", "");
+	str range = gamefix_iniFileGetValueFromKey(file, contentsSections, "range", "");
+	str argumentType = gamefix_iniFileGetValueFromKey(file, contentsSections, "argument", "");
+	str restartRequired = gamefix_iniFileGetValueFromKey(file, contentsSections, "restartrequired", "");
+	str restartForced = gamefix_iniFileGetValueFromKey(file, contentsSections, "restart", "");
+	str requiredCvar = gamefix_iniFileGetValueFromKey(file, contentsSections, "requiredcvar", "");
+	str requiredCvarRange = gamefix_iniFileGetValueFromKey(file, contentsSections, "requiredcvarrange", "");
 
 	//default to false
 	if (!restartForced.length() || Q_stricmp(restartForced.c_str(), "true") != 0) {
@@ -1725,7 +1725,7 @@ bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str 
 	}
 
 	if (Q_stricmp(command.c_str(), "exec") == 0) {
-		int filth = gamefix_findStringCase(voteCommand,"exec",true);
+		int filth = gamefix_findStringCase(voteCommand, "exec", true, 0);
 		int lengthCmd = voteCommand.length();
 		str filePath = gamefix_getStringUntil(voteCommand, filth + 5, lengthCmd + 111);
 		filePath.BackSlashesToSlashes();
