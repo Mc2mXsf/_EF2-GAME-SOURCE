@@ -155,7 +155,7 @@ void				gamefix_kickBots();
 void				gamefix_playerDelayedServerCommand(int entNum, const char* commandText);
 void				gamefix_playerHandleDelayedServerCommand(void);
 void				gamefix_playerClearDelayedServerCommand(int entNum);
-int					gamefix_getFileContents(str sFile, str& contents);
+bool				gamefix_getFileContents(str sFile, str& contents, bool tokenize);
 bool				gamefix_containsNonANSI(const unsigned char* buffer, size_t length);
 char*				gamefix_convertUtf8UmlautsToAnsi(const char* utf8_str);
 char*				gamefix_trimWhitespace(char* input);
@@ -168,6 +168,7 @@ gamefix_iniFileSection* gamefix_iniFileParseSections(const str& file, const char
 str					gamefix_iniFileGetSection(const str& file, const str& data, const char* section_name);
 str					gamefix_iniFileGetValueFromKey(const str& file, const str& section_contents, const str& key);
 str					gamefix_iniFileGetValueFromKey(const str& file, const str& section_contents, const str& key, const str& altVal);
+str					gamefix_iniFileSetValueInSection(const str& section_contents, const str& key, const str& value);
 void				gamefix_iniFileGetSectionNames(const str& file, Container<str>& sectionList, const str& contents);
 void				gamefix_extractIntegerRange(const str& input, int& first, int& second);
 void				gamefix_extractFloatRange(const str input, float& first, float& second);
