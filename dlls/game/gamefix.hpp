@@ -167,6 +167,7 @@ str					gamefix_iniGetSection(const str& file, const str& data, const char* sect
 str					gamefix_iniGetValueFromKey(const str& file, const str& section_contents, const str& key, const str& altVal);
 str					gamefix_iniSetValueInSection(const str& file, const str& section_contents, const str& key, const str& value);
 str					gamefix_iniUpdateSection(const str& file, const str& file_contents, const str& section_name, const str& new_section_contents);
+str					gamefix_iniRemoveSection(const str& file, const str& file_contents, const str& section_name);
 void				gamefix_iniGetSectionNames(const str& file, Container<str>& sectionList, const str& contents);
 void				gamefix_extractIntegerRange(const str& input, int& first, int& second);
 void				gamefix_extractFloatRange(const str input, float& first, float& second);
