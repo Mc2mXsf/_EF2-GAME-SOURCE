@@ -1446,8 +1446,8 @@ bool gameFixAPI_callvoteMap(Player* player, str command, str arg)
 void gameFixAPI_callvoteIniGet(const str& file,const str& sectionName, str& iniContents, str& iniContentsSection, Container<str>& iniSectionNames)
 {
 	if (gamefix_getFileContents(file, iniContents,true)) {
-		iniContentsSection = gamefix_iniFileGetSection(file.c_str(), iniContents, sectionName.c_str());
-		gamefix_iniFileGetSectionNames(file, iniSectionNames, iniContents);
+		iniContentsSection = gamefix_iniGetSection(file.c_str(), iniContents, sectionName.c_str());
+		gamefix_iniGetSectionNames(file, iniSectionNames, iniContents);
 	}
 	else {
 		iniContents = "";
@@ -1502,16 +1502,16 @@ bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str 
 	int totalLength = MAX_QPATH;
 	str argNew = arg;
 	argNew = gamefix_filterChars(arg, "%;'<>\"´`");
-	str argumentsValid = gamefix_iniFileGetValueFromKey(file, contentsSections, "arguments", "");
-	str commandNew = gamefix_iniFileGetValueFromKey(file, contentsSections, "command","");
-	str length = gamefix_iniFileGetValueFromKey(file, contentsSections, "length", va("%d", totalLength));
-	str extension = gamefix_iniFileGetValueFromKey(file, contentsSections, "extension", "");
-	str range = gamefix_iniFileGetValueFromKey(file, contentsSections, "range", "");
-	str argumentType = gamefix_iniFileGetValueFromKey(file, contentsSections, "argument", "");
-	str restartRequired = gamefix_iniFileGetValueFromKey(file, contentsSections, "restartrequired", "");
-	str restartForced = gamefix_iniFileGetValueFromKey(file, contentsSections, "restart", "");
-	str requiredCvar = gamefix_iniFileGetValueFromKey(file, contentsSections, "requiredcvar", "");
-	str requiredCvarRange = gamefix_iniFileGetValueFromKey(file, contentsSections, "requiredcvarrange", "");
+	str argumentsValid = gamefix_iniGetValueFromKey(file, contentsSections, "arguments", "");
+	str commandNew = gamefix_iniGetValueFromKey(file, contentsSections, "command","");
+	str length = gamefix_iniGetValueFromKey(file, contentsSections, "length", va("%d", totalLength));
+	str extension = gamefix_iniGetValueFromKey(file, contentsSections, "extension", "");
+	str range = gamefix_iniGetValueFromKey(file, contentsSections, "range", "");
+	str argumentType = gamefix_iniGetValueFromKey(file, contentsSections, "argument", "");
+	str restartRequired = gamefix_iniGetValueFromKey(file, contentsSections, "restartrequired", "");
+	str restartForced = gamefix_iniGetValueFromKey(file, contentsSections, "restart", "");
+	str requiredCvar = gamefix_iniGetValueFromKey(file, contentsSections, "requiredcvar", "");
+	str requiredCvarRange = gamefix_iniGetValueFromKey(file, contentsSections, "requiredcvarrange", "");
 
 	//default to false
 	if (!restartForced.length() || Q_stricmp(restartForced.c_str(), "true") != 0) {
