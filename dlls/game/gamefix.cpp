@@ -1291,7 +1291,7 @@ bool gamefix_getFileContents(str sFile, str& contents, bool tokenize) {
 	contents = "";
 	if (!gi.FS_Exists(sFile.c_str())) {
 		gi.Printf("gamefix_getFileContents: Couldn't find file: %s\n", sFile.c_str());
-		return 0;
+		return false;
 	}
 	static str bufferOld = "";
 	static str buffer = "";
@@ -1301,7 +1301,7 @@ bool gamefix_getFileContents(str sFile, str& contents, bool tokenize) {
 
 	if (bufferInternal.buffer == NULL || !strlen(bufferInternal.buffer)) {
 		bufferInternal.Close();
-		return 0;
+		return false;
 	}
 
 	bufferOld = bufferInternal.buffer;
@@ -1353,7 +1353,7 @@ bool gamefix_getFileContents(str sFile, str& contents, bool tokenize) {
 	}
 	//gi.Printf("Lines: %d, Tokens: %d, Size: %d, File: %s\n", lineNum, tokenNumTotal, lSize, sFile.c_str());
 	//gi.Printf("%s\n", contents.c_str());
-	return bool(contents.length());
+	return true;
 }
 
 //--------------------------------------------------------------
