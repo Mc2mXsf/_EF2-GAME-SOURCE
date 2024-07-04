@@ -889,13 +889,23 @@ int gamefix_findCharsReverse(const char* str, const char* find)
 	return -1;
 }
 //by ChatGTP 4o
-int gamefix_findCharsReverse(const char* str, const char* find, int startPos, int endPos)
+int gamefix_findCharsReverse(const char* str, const char* find, unsigned int endAt, unsigned int startAt)
 {
 	if (str) {
-		int len_find = strlen(find);
+		unsigned int len_str = strlen(str);
+
+		// Check bounds
+		if (startAt >= len_str) {
+			startAt = len_str - 1;
+		}
+		if (endAt > (len_str - 1) || startAt != endAt && startAt < endAt) {
+			return -1;
+		}
+
+		unsigned int len_find = strlen(find);
 		if (len_find) {
-			for (int i = endPos - 1; i >= startPos; --i) {
-				for (int j = 0; j < len_find; ++j) {
+			for (int i = startAt; i >= 0 && i >= (int)endAt; --i) {
+				for (unsigned int j = 0; j < len_find; ++j) {
 					if (str[i] == find[j]) {
 						return i;
 					}
@@ -919,12 +929,17 @@ int gamefix_findString(const char* str, const char* find)
 	}
 	return -1;  // NoMatch
 }
-int gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeWord, int startPos)
+int gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeWord, unsigned int startPos, bool sameLine)
 {
 	int latinumLength = latinumstack.length();
 	int findLength = find.length();
 
 	if (findLength == 0 || latinumLength < findLength) {
+		return -1;
+	}
+
+	if (sameLine && gamefix_findChar(find,'\n') != -1) {
+		gi.Printf("gamefix_findStringCase: ERROR -> New Line in find parameter while requesting a single line search!\n");
 		return -1;
 	}
 
@@ -964,11 +979,11 @@ int gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeW
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function finding first occurence of given char, returning string prior to its occurence - chrissstrahl
 //--------------------------------------------------------------
-str gamefix_getStringUntilChar(const str& source, const char& delimiter)
+str gamefix_getStringUntilChar(const str& source, const char& delimiter, unsigned int startPos)
 {
 	str result = "";
 
-	if (delimiter) {
+	if (delimiter && startPos < strlen(source)) {
 		for (int i = 0; i < source.length(); ++i) {
 			if (source[i] == delimiter) {
 				break;
@@ -982,14 +997,18 @@ str gamefix_getStringUntilChar(const str& source, const char& delimiter)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function finding first occurence of given char, returning string prior to its occurence - chrissstrahl
 //--------------------------------------------------------------
-char* gamefix_getStringUntilChar(const char* source, const char& delimiter)
+char* gamefix_getStringUntilChar(const char* source, const char& delimiter, unsigned int startPos)
 {
 	if (!delimiter) {
 		return (char*)source;
 	}
+
+	if (startPos > strlen(source)) {
+		return (char*)source;
+	}
 	
 	// Get length
-	int length = 0;
+	int length = startPos;
 	while (source[length] != '\0' && source[length] != delimiter) {
 		++length;
 	}
@@ -1006,16 +1025,16 @@ char* gamefix_getStringUntilChar(const char* source, const char& delimiter)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function returning a substr / part of a string - chrissstrahl
 //--------------------------------------------------------------
-str gamefix_getStringUntil(const str& sString, const int iStart, const int iEnd)
+str gamefix_getStringUntil(const str& sString, const unsigned int iStart, const unsigned int iEnd)
 {
-	const int iLength = sString.length();
+	const unsigned int iLength = strlen(sString);
 	if (iStart >= iLength) {
 		//throw("gamefix_getStringUntil: start pos > than strlen");
 		return str("");
 	}
 
 	
-	int actualEnd = iEnd;
+	unsigned int actualEnd = iEnd;
 	if (iEnd > iLength) {
 		actualEnd = iLength;
 	}
@@ -1024,7 +1043,28 @@ str gamefix_getStringUntil(const str& sString, const int iStart, const int iEnd)
 	}
 
 	str result;
-	for (int i = iStart; i < actualEnd; ++i) {
+	for (unsigned int i = iStart; i < actualEnd; ++i) {
+		result += sString[i];
+	}
+
+	return result;
+}
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function returning a line from a string - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_getLine(const str& sString, const unsigned int iStart)
+{
+	const unsigned int iLength = strlen(sString);
+	if (iStart >= iLength) {
+		return str("");
+	}
+	
+	str result;
+	for (unsigned int i = iStart; i < iLength; ++i) {
+		if (sString[i] == '\n' || sString[i] == '\r' || sString[i] == '0') {
+			break;
+		}
 		result += sString[i];
 	}
 
@@ -1198,7 +1238,7 @@ void gamefix_playerHandleDelayedServerCommand(void)
 					Q_stricmp("status", pendingCommand->command) == 0 ||
 					Q_stricmp("score", pendingCommand->command) == 0)
 				{
-					sCmd = gamefix_getStringUntilChar(pendingCommand->command, ' ');
+					sCmd = gamefix_getStringUntilChar(pendingCommand->command, ' ', 0);
 				}
 				else {
 					sCmd = "stufftext";
@@ -1332,7 +1372,7 @@ bool gamefix_setFileContents(str sFile, str& contents)
 		}
 	}
 
-	gi.FS_WriteFile(sFile.c_str(), contents.c_str(), contents.length() + 1);
+	gi.FS_WriteFile(sFile.c_str(), contents.c_str(), contents.length());
 	if (!gi.FS_Exists(sFile.c_str())) {
 		gi.Printf("Failed to write file %s\n", sFile.c_str());
 		return false;
@@ -1629,6 +1669,24 @@ gamefix_iniFileSection* gamefix_iniSectionsParse(const str& file, const char* da
 		if (trimmed_line[0] == '[') {
 			int end_pos = gamefix_findChar(trimmed_line, ']');
 			if (end_pos != -1) {
+				int space_pos = gamefix_findChars(trimmed_line, " \t");
+				if (space_pos != -1 && space_pos < end_pos) {
+					gi.Printf("Malformed ini, whitespace in 'Section-Head' in: %s at:\n%s\n%s\n", file.c_str(), trimmed_line, gamefix_debugTextErrorMarker(space_pos).c_str());
+				}
+
+				int badStart_pos = gamefix_findChar(trimmed_line, '[', 1);
+				if (badStart_pos != -1) {
+					gi.Printf("Malformed ini, dublicated opening bracket in 'Section-Head' in: %s at:\n%s\n%s\n", file.c_str(), trimmed_line, gamefix_debugTextErrorMarker(badStart_pos).c_str());
+				}
+
+				int badClosing_pos = gamefix_findChar(trimmed_line, ']', end_pos + 1);
+				if (badClosing_pos != -1) {
+					gi.Printf("Malformed ini, dublicated closing bracket in 'Section-Head' in: %s at:\n%s\n%s\n", file.c_str(), trimmed_line, gamefix_debugTextErrorMarker(badClosing_pos).c_str());
+				}
+				else if (end_pos > -1 && (int)strlen(trimmed_line) > end_pos + 1) {
+					gi.Printf("Malformed ini, no new line after 'Section-Head' in: %s at:\n%s\n%s\n", file.c_str(), trimmed_line, gamefix_debugTextErrorMarker(end_pos + 1).c_str());
+				}
+
 				if (*section_count >= MAX_SECTIONS) {
 					gi.Error(ERR_DROP,"Exceeded limit of %d sections in: %s\n", MAX_SECTIONS, file.c_str());
 					free(modifiable_data);
@@ -1638,6 +1696,9 @@ gamefix_iniFileSection* gamefix_iniSectionsParse(const str& file, const char* da
 				current_section = &sections[(*section_count)++];
 				strncpy(current_section->section, trimmed_line + 1, end_pos - 1);
 				current_section->section[end_pos - 1] = '\0';
+			}
+			else {
+				gi.Printf("Malformed ini, missing closing bracket for 'Section-Head' in: %s at:\n%s\n%s\n", file.c_str(), trimmed_line, gamefix_debugTextErrorMarker(strlen(trimmed_line)).c_str());
 			}
 		}
 		else if (current_section && current_section->line_count < MAX_LINES) {
@@ -1729,23 +1790,35 @@ str gamefix_iniSectionSet(const str& file, const str& file_contents, const str& 
 {
 	str modified_contents = file_contents;
 	str trimmed_section_name = "[" + gamefix_trimWhitespace(section_name, false) + "]";
-	int section_start = gamefix_findStringCase(modified_contents, trimmed_section_name, false, 0);
+	int section_start = gamefix_findStringCase(modified_contents, trimmed_section_name, false, 0, false);
+
+	// Adjust section detection to handle lines with leading whitespace or other characters
+	while (section_start != -1 && section_start > 0 && modified_contents[section_start - 1] != '\n') {
+		section_start = gamefix_findStringCase(modified_contents, trimmed_section_name, false, section_start + 1, false);
+	}
 
 	if (section_start != -1) {
-		// Find the end of the section by looking for the next section header
-		int section_end = gamefix_findStringCase(modified_contents, "\n[", false, section_start + trimmed_section_name.length());
+		// Improved logic to find the end of the section by looking for the next section header
+		int section_end = section_start + trimmed_section_name.length();
+		while (section_end != -1) {
+			section_end = gamefix_findStringCase(modified_contents, "\n[", false, section_end, false);
+			if (section_end != -1 && (section_end == 0 || modified_contents[section_end - 1] == '\n')) {
+				break;
+			}
+			if (section_end != -1) {
+				section_end++;
+			}
+		}
+
 		if (section_end == -1) {
 			section_end = modified_contents.length();
-		}
-		else {
-			section_end++; // Include newline character
 		}
 
 		// Replace the entire section
 		str before_section = gamefix_getStringUntil(modified_contents, 0, section_start);
 		str after_section = gamefix_getStringUntil(modified_contents, section_end, modified_contents.length());
 
-		//trim so we have consistent output
+		// Trim so we have consistent output
 		before_section = gamefix_trimWhitespace(before_section, false);
 		after_section = gamefix_trimWhitespace(after_section, false);
 
@@ -1755,8 +1828,7 @@ str gamefix_iniSectionSet(const str& file, const str& file_contents, const str& 
 		}
 	}
 	else {
-
-		//trim so we have consistent output
+		// Trim so we have consistent output
 		modified_contents = gamefix_trimWhitespace(modified_contents, false);
 
 		// Section not found, append to the end
@@ -1772,34 +1844,54 @@ str gamefix_iniSectionSet(const str& file, const str& file_contents, const str& 
 str gamefix_iniSectionDelete(const str& file, const str& file_contents, const str& section_name)
 {
 	str modified_contents = file_contents;
-	str trimmed_section_name = "[" + gamefix_trimWhitespace(section_name, false) + "]";
-	int section_start = gamefix_findStringCase(modified_contents, trimmed_section_name, false, 0);
+	
+	// Validate given section name
+	if (gamefix_findChars(section_name," \t") != -1) {
+		gi.Printf(va("Invalid section name '%s' given for file '%s'.\nSection names can not contain spaces.\n", section_name.c_str(), file.c_str()));
+		return modified_contents;
+	}
+
+	str full_section_name = "[" + section_name + "]";
+	int section_start = gamefix_findStringCase(modified_contents, full_section_name, false, 0, false);
+	
+	while (section_start != -1 && section_start > 0 && modified_contents[section_start - 1] != '\n') {
+		section_start = gamefix_findStringCase(modified_contents, full_section_name, false, section_start + 1, false);
+	}
 
 	if (section_start != -1) {
-		// Find the end of the section by looking for the next section header
-		int section_end = gamefix_findStringCase(modified_contents, "\n[", false, section_start + trimmed_section_name.length());
-		if (section_end == -1) {
-			section_end = modified_contents.length();
-		}
-		else {
-			section_end++; // Include newline character
+		int section_end = section_start + full_section_name.length();
+
+		// Extend the end to the next section or end of file
+		while (section_end < modified_contents.length()) {
+			char current_char = modified_contents[section_end];
+			if (current_char == '[' && (section_end == 0 || modified_contents[section_end - 1] == '\n')) {
+				break;
+			}
+			section_end++;
 		}
 
-		// Replace the entire section
-		str before_section = gamefix_getStringUntil(modified_contents, 0, section_start);
+		// Ensure we remove preceding comments and blank lines
+		int removal_start = section_start;
+		while (removal_start > 0 && modified_contents[removal_start - 1] != '\n') {
+			removal_start--;
+		}
+
+		// Ensure we remove trailing blank lines and comments
+		while (section_end < modified_contents.length() && (modified_contents[section_end] == '\n' || modified_contents[section_end] == ';' || modified_contents[section_end] == '#')) {
+			section_end++;
+		}
+
+		str before_section = gamefix_getStringUntil(modified_contents, 0, removal_start);
 		str after_section = gamefix_getStringUntil(modified_contents, section_end, modified_contents.length());
 
-		//trim so we have consistent output
 		before_section = gamefix_trimWhitespace(before_section, false);
 		after_section = gamefix_trimWhitespace(after_section, false);
 
-		modified_contents = before_section + "\n\n";
-		if (after_section.length()) {
-			modified_contents += after_section + "\n";
+		modified_contents = "";
+		if (before_section.length()) {
+			modified_contents += before_section + "\n\n";
 		}
-	}
-	else {
-		gi.Printf(va("Section '%s' not found in: %s\n", section_name.c_str(), file.c_str()));
+		modified_contents += after_section;
 	}
 
 	return modified_contents;
@@ -1824,7 +1916,7 @@ str gamefix_iniKeyGet(const str& file, const str& section_contents, const str& k
 		return altVal;
 	}
 
-	int foundKeyAt = gamefix_findStringCase(section_contents, key, true, 0);
+	int foundKeyAt = gamefix_findStringCase(section_contents, key, true, 0, false);
 	
 	//not found, leave
 	if (foundKeyAt == -1) {
@@ -1882,7 +1974,7 @@ str gamefix_iniKeySet(const str& file, const str& section_contents, const str& k
 	}
 
 	// find key
-	int found_key_at = gamefix_findStringCase(modified_section, key, true, 0);
+	int found_key_at = gamefix_findStringCase(modified_section, key, true, 0, false);
 
 	if (found_key_at != -1) {
 		// found key, replave value
@@ -1947,7 +2039,11 @@ str gamefix_iniKeySet(const str& file, const str& section_contents, const str& k
 		}
 
 		// modify
-		modified_section = before_key + "\n" + key + "=" + new_value;
+		if (before_key.length()) {
+			modified_section = before_key + "\n" + key + "=" + new_value;
+		}else{
+			modified_section = key + "=" + new_value;
+		}
 		if (after_key.length()) {
 			modified_section += "\n" + after_key;
 		}
@@ -1985,7 +2081,7 @@ str gamefix_iniKeyDelete(const str& file, const str& section_contents, const str
 	}
 
 	// find key
-	int found_key_at = gamefix_findStringCase(modified_section, key, true, 0);
+	int found_key_at = gamefix_findStringCase(modified_section, key, true, 0, false);
 
 	if (found_key_at != -1) {
 		// found key, replave value
@@ -2264,6 +2360,19 @@ str gamefix_stripDoubleChar(const str filthy, str illegal)
 	return clean;
 }
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Added: Function to print a error marker at a specific location in text - chrissstrahl
+//--------------------------------------------------------------
+str gamefix_debugTextErrorMarker(unsigned int pos)
+{
+	str sMarker = "";
+	while (pos) {
+		pos--;
+		sMarker += " ";
+	}
+	return (sMarker += "^ ERROR");
+}
 
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to handle each frame call - chrissstrahl

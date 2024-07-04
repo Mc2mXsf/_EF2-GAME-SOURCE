@@ -177,22 +177,25 @@ void				gamefix_listSeperatedItems(Container<str>& container, const str& src, co
 int					gamefix_findChar(const char* str, const char find);
 int					gamefix_findChars(const char* str, const char* find);
 int					gamefix_findCharsReverse(const char* str, const char* find);
-int					gamefix_findCharsReverse(const char* str, const char* find, int startPos, int endPos);
+int					gamefix_findCharsReverse(const char* str, const char* find, unsigned int endAt, unsigned int startAt);
 int					gamefix_findString(const char* str, const char* find);
-int					gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeWord, int startPos);
+int					gamefix_findStringCase(const str& latinumstack, const str& find, bool wholeWord, unsigned int startPos, bool sameLine);
 int					gamefix_countCharOccurrences(const char* str, const char& ch);
 
 char*				gamefix_duplicateString(const char* source);
 void				gamefix_replaceSubstring(char* str, const char* find, const char* replace);
-str					gamefix_getStringUntilChar(const str& source, const char& delimiter);
-char*				gamefix_getStringUntilChar(const char* source, const char& delimiter);
-str					gamefix_getStringUntil(const str& sString, const int iStart, const int iEnd);
+str					gamefix_getStringUntilChar(const str& source, const char& delimiter, unsigned int startPos);
+char*				gamefix_getStringUntilChar(const char* source, const char& delimiter, unsigned int startPos);
+str					gamefix_getStringUntil(const str& sString, const unsigned int iStart, const unsigned int iEnd);
+str					gamefix_getLine(const str& sString, const unsigned int iStart);
 
 char*				gamefix_trimWhitespace(char* input, bool dontTrimNewLine);
 str					gamefix_trimWhitespace(const str& input, bool dontTrimNewLine);
 str					gamefix_cleanMapName(const str& mapname);
 str					gamefix_filterChars(const str filthy, str illegal);
 str					gamefix_stripDoubleChar(const str filthy, str illegal);
+
+str					gamefix_debugTextErrorMarker(unsigned int pos);
 
 void				gamefix_runFrame(int levelTime, int frameTime);
 void				gamefix_shutdownGame();
