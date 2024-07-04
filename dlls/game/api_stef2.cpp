@@ -1725,7 +1725,7 @@ bool gameFixAPI_callvoteIniHandle(Player* player ,const str &command, const str 
 	}
 
 	if (Q_stricmp(command.c_str(), "exec") == 0) {
-		int filth = gamefix_findStringCase(voteCommand, "exec", true, 0);
+		int filth = gamefix_findStringCase(voteCommand, "exec", true, 0, false);
 		int lengthCmd = voteCommand.length();
 		str filePath = gamefix_getStringUntil(voteCommand, filth + 5, lengthCmd + 111);
 		filePath.BackSlashesToSlashes();
