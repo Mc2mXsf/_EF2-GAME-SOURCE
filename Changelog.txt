@@ -64,7 +64,7 @@ Added: Function to write contents of a file
 bool gamefix_setFileContents(str sFile, str& contents)
 
 Added: Function to update a section
-gamefix_iniFileUpdateSection(const str& file, const str& file_contents, const str& section_name, const str& new_section_contents);
+gamefix_iniSectionSet(const str& file, const str& file_contents, const str& section_name, const str& new_section_contents);
 
 Added: check for illegal vote command/argument
 void MultiplayerManager::callVote( Player *player, const str &command, const str &arg )
@@ -94,9 +94,9 @@ void gamefix_cleanupGame(qboolean restart)
 
 Added: Support for ini-files
 gamefix_iniFileSection* gamefix_iniFileParseSections(const str& file, const char* data, int* section_count)
-str gamefix_iniFileGetSection(const str& file, const str& data, const char* section_name)
-str gamefix_iniFileGetValueFromKey(const str& file, const str& section_contents, const str& key);
-void gamefix_iniFileGetSectionNames(const str& file, Container<str> &sectionList, const str& contents)
+str gamefix_iniSectionGet(const str& file, const str& data, const char* section_name)
+str gamefix_iniKeyGet(const str& file, const str& section_contents, const str& key);
+void gamefix_iniSectionsNamesGet(const str& file, Container<str> &sectionList, const str& contents)
 
 Added: Function to extract two integers from a str representing a min/max range with various separators
 void gamefix_extractIntegerRange(const str& input, int& first, int& second)
