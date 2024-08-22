@@ -722,7 +722,7 @@ void gamefix_playerClientBegin(gentity_t* ent)
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function handling Dialog in Multiplayer - chrissstrahl
 //--------------------------------------------------------------
-void gamefix_dialogSetupPlayers(Actor* speaker,char unlocalDialogName[MAX_QPATH], bool headDisplay)
+void gamefix_dialogSetupPlayers(Actor* speaker,char *unlocalDialogName, bool headDisplay)
 {
 	gameFixAPI_dialogSetupPlayers(speaker, unlocalDialogName, headDisplay);
 }

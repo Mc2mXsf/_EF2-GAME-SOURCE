@@ -1126,7 +1126,7 @@ void gameFixAPI_mapList()
 //--------------------------------------------------------------
 // GAMEFIX - Added: Function to manage Actor-Dialog in Multiplayer - chrissstrahl
 //--------------------------------------------------------------
-void gameFixAPI_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay)
+void gameFixAPI_dialogSetupPlayers(Actor* speaker, char *localizedDialogName, bool headDisplay)
 {
 	Player* player = nullptr;
 	Actor* eActor = NULL;

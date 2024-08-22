@@ -118,7 +118,7 @@ void				gamefix_playerModelChanged(Player* player);
 void				gamefix_playerUseItem(Player* player, const char* name);
 void				gamefix_playerScore(Player* player);
 void				gamefix_playerClientBegin(gentity_t* ent);
-void				gamefix_dialogSetupPlayers(Actor* speaker, char localizedDialogName[MAX_QPATH], bool headDisplay);
+void				gamefix_dialogSetupPlayers(Actor* speaker, char *localizedDialogName, bool headDisplay);
 void				gamefix_playerDelayedServerCommand(int entNum, const char* commandText);
 void				gamefix_playerHandleDelayedServerCommand(void);
 void				gamefix_playerClearDelayedServerCommand(int entNum);
