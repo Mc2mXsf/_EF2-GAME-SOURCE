@@ -148,6 +148,18 @@ class str : public Class
                void     CapLength ( int );
 
                void     BackSlashesToSlashes ();
+
+			   //--------------------------------------------------------------
+			   // GAMEFIX - ADDED:  - chrissstrahl
+			   //--------------------------------------------------------------
+			   str substr(int start, int length) const {
+				   if (start < 0 || start >= len || length < 0 || start + length > len) {
+					   return "";
+				   }
+
+				   // Create and return substring
+				   return str(*this, start, start + length);
+			   }
    };
 
 
@@ -186,8 +198,9 @@ inline str::str()
 	{
 	data = buffer;
 	alloced = STRING_PREALLOC_SIZE;
-	data[ 0 ] = 0;
 	len = 0;
+	//gamefix
+	data[0] = '\0';
 	}
 
 inline str::str
@@ -524,7 +537,7 @@ inline str& str::operator=
 	//--------------------------------------------------------------
 	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
 	//--------------------------------------------------------------
-	Q_strncpyz( data, text.c_str() , text.length() + 1 );
+	Q_strncpyz( data, text.c_str() , text.length() + 1);
 
 
    len = text.length();
@@ -532,72 +545,58 @@ inline str& str::operator=
    }
 
 inline str& str::operator=
-	(
-	const char *text
+(
+	const char* text
 	)
+{
+	assert(text);
 
+	if (!text)
 	{
-   int stringLength;
+		// safe behavior if NULL
+		EnsureAlloced(1, false);
+		data[0] = 0;
+		len = 0;
+		return *this;
+	}
 
-	assert( text );
+	if (text == data)
+		return *this; // Copying same thing.  Punt.
 
-	if ( !text )
+	// Now we need to check if we're aliasing..
+	unsigned int dataStart = reinterpret_cast<unsigned int>(data);
+	unsigned int dataEnd = reinterpret_cast<unsigned int>(data) + len;
+	unsigned int textStart = reinterpret_cast<unsigned int>(text);
+	if (textStart >= dataStart && textStart <= dataEnd)
+	{
+		// Great, we're aliasing.  We're copying from inside ourselves.
+		// This means that I don't have to ensure that anything is alloced,
+		// though I'll assert just in case.
+		int diff = text - data;
+		int i;
+
+		assert(strlen(text) < (unsigned)len);
+
+		for (i = 0; text[i]; i++)
 		{
-		// safe behaviour if NULL
-		EnsureAlloced ( 1, false );
-      data[0] = 0;
-      len = 0;
-      return *this;
+			data[i] = text[i];
 		}
 
-   if ( text == data )
-      return *this; // Copying same thing.  Punt.
+		data[i] = 0;
 
-   // Now we need to check if we're aliasing..
+		len -= diff;
 
-   unsigned int dataStart = reinterpret_cast<unsigned int> (data);
-   unsigned int dataEnd = reinterpret_cast<unsigned int> (data) + len;
-   unsigned int textStart = reinterpret_cast<unsigned int> (text);
-   if ( textStart >= dataStart && textStart <= dataEnd )
-      {
-      // Great, we're aliasing.  We're copying from inside ourselves.
-      // This means that I don't have to ensure that anything is alloced,
-      // though I'll assert just in case.
-      int diff = text - data;
-      int i;
-
-      assert ( strlen ( text ) < (unsigned) len );
-
-      for ( i = 0; text[i]; i++ )
-         {
-         data[i] = text[i];
-         }
-
-      data[i] = 0;
-
-      len -= diff;
-
-      return *this;
-      }
-
-
-	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: warning C4365: =: conversion from size_t to int, signed/unsigned mismatch. - chrissstrahl
-	//--------------------------------------------------------------
-	stringLength = (int)strlen( text );
-
-
-   EnsureAlloced ( stringLength + 1, false );
-
-	//--------------------------------------------------------------
-	// GAMEFIX - Fixed: C4996 strcpy: This function or variable may be unsafe. Using instead: Q_strncpyz - chrissstrahl
-	//--------------------------------------------------------------
-	Q_strncpyz( data, text , stringLength + 1 );
-
-
-   len = stringLength;
-	return *this;
+		return *this;
 	}
+
+	// Ensure sufficient memory allocation
+	int stringLength = (int)strlen(text);
+	EnsureAlloced(stringLength + 1, false);
+	Q_strncpyz(data, text, stringLength + 1);
+
+	len = stringLength;
+	return *this;
+}
 
 inline str operator+
 	(

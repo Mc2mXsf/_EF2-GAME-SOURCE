@@ -421,7 +421,7 @@ void str::EnsureAlloced( int amount, bool keepold )
 		//--------------------------------------------------------------
 		// GAMEFIX - Fixed: Warning C4996 strncpy: This function or variable may be unsafe. Using Q_strncpyz instead. - chrissstrahl
 		//--------------------------------------------------------------
-		Q_strncpyz( newbuffer, data, old_size );
+		Q_strncpyz(newbuffer, data, old_size + 1); //gamefix
 	}
 	
 	// Delete old buffer if necessary
@@ -432,6 +432,7 @@ void str::EnsureAlloced( int amount, bool keepold )
 	}
 	
 	data = newbuffer;
+	alloced = newsize;
 }
 
 void str::BackSlashesToSlashes( void )
