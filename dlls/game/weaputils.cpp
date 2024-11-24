@@ -27,6 +27,12 @@
 #include "mp_manager.hpp"
 #include <qcommon/gameplaymanager.h>
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
 void FlashPlayers
 (
 	const Vector   &org,
@@ -2213,6 +2219,13 @@ float BulletAttack(
 	float		new_value;
 	
 	ent = NULL;
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+	//--------------------------------------------------------------
+	bool countNot = false;
+	bool trackedLastWeaponHit = false;
+
 	
 	if ( owner->isSubclassOf( Player ) )
 	{
@@ -2222,7 +2235,37 @@ float BulletAttack(
 		
 		damage = player->getDamageDone( damage, meansofdeath, false );
 		
-		player->shotFired();
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+		//--------------------------------------------------------------
+		//make phaser shots count only once per fireing sequence
+		//phasers basically spit out bullets, but it looks like a continus beam
+		//so we are handeling it like a actual beam, not counting each bullet
+		//just the starting shot
+		long int trackedShotsForWeapon		= gamefix_client_persistant_t[player->entnum].heuristicsShots;
+		Entity* trackedLastWeapon			= gamefix_client_persistant_t[player->entnum].heuristicsWeap;
+		trackedLastWeaponHit				= gamefix_client_persistant_t[player->entnum].heuristicsHit;
+		str weaponName;
+		player->getActiveWeaponName(WEAPON_ANY, weaponName);
+		Weapon* curWeap = player->GetActiveWeapon(WEAPON_ANY);
+		if (weaponName == "Phaser" || weaponName == "Phaser-stx") {
+			if (trackedLastWeapon != weap || !trackedShotsForWeapon) {
+				player->shotFired();
+			}
+			else {
+				countNot = true;
+			}
+		}
+		else {
+			player->shotFired();
+		}
+		gamefix_client_persistant_t[player->entnum].heuristicsShots++;
+		gamefix_client_persistant_t[player->entnum].heuristicsWeap = weap;
+		//player->shotFired(); //original code
+
+
+
 		
 		if ( multiplayerManager.inMultiplayer() )
 			multiplayerManager.playerFired( player );
@@ -2412,18 +2455,47 @@ float BulletAttack(
 		if ( g_showbullettrace->integer )
 			G_DebugLine( start, end, 1.0f, 1.0f, 1.0f, 1.0f );
 	}
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Weapon accuracy bug, not counting destructibles. - chrissstrahl
+	//--------------------------------------------------------------
+	bool objectHit = false;
+	if (ent && ent->takedamage) {
+		if (ent->isSubclassOf(ScriptSlave) || ent->isSubclassOf(ScriptModel)) {
+			ScriptSlave* entScriptSlave = (ScriptSlave*)ent;
+			if (entScriptSlave->GetDamageLabel().length() || entScriptSlave->GetTriggerOnDamage()) {
+				objectHit = true;
+			}
+		}
+		else if (ent->isSubclassOf(Trigger)) {
+			Trigger* entTrigger = (Trigger*)ent;
+			if (entTrigger->GetDestructible() || entTrigger->GetTriggerOnDamage()) {
+				objectHit = true;
+			}
+		}
+	}
 	  
-	if ( damage_total > 0.0f )
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Weapon accuracy bug, not counting destructibles. - chrissstrahl
+	//--------------------------------------------------------------
+	if ( damage_total > 0.0f || objectHit )
 	{
-		if ( owner && owner->isSubclassOf( Player ) )
+		if (owner && owner->isSubclassOf(Player))
 		{
 			//--------------------------------------------------------------
 			// GAMEFIX - Fixed: Warning C4456: Declaration of player hides previous local declaration. - chrissstrahl
 			//--------------------------------------------------------------
-			Player *temp_player = (Player *)owner;
+			Player* temp_player = (Player*)owner;
 
 
-			temp_player->shotHit();
+			//--------------------------------------------------------------
+			// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+			//--------------------------------------------------------------
+			if (countNot == false || trackedLastWeaponHit == false) {
+				gamefix_client_persistant_t[temp_player->entnum].heuristicsHit = true;
+				temp_player->shotHit();
+			}
+			//temp_player->shotHit(); //original code
 		}
 		
 		return damage_total;

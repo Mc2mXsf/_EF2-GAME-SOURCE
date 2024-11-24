@@ -351,6 +351,14 @@ Player* gameFixAPI_getClosestPlayerInCallvolume(Entity* entity)
 //--------------------------------------------------------------
 void gameFixAPI_initPersistant(int clientNum, bool isBot)
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+	//--------------------------------------------------------------
+	gamefix_client_persistant_t[clientNum].heuristicsWeap = nullptr;
+	gamefix_client_persistant_t[clientNum].heuristicsShots = 0;
+	gamefix_client_persistant_t[clientNum].heuristicsHit = false;
+
+
 	if (gameFixAPI_inSingleplayer()) {
 		return;
 	}

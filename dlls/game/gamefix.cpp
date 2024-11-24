@@ -25,12 +25,12 @@ gamefix_pendingServerCommand* pendingServerCommandList[MAX_CLIENTS];
 gamefix_defaultMaps_s gamefix_defaultMaps_t[gamefix_defaultMapsSize];
 
 //--------------------------------------------------------------
-//Added: Information we want to persist over level changes and restarts - multiplayer only - See g_local.h for the struct - chrissstrahl
+// GAMEFIX - Added: Information we want to persist over level changes and restarts - multiplayer only - See g_local.h for the struct - chrissstrahl
 //--------------------------------------------------------------
 gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 
 //--------------------------------------------------------------
-//Added: Extra Information we can attach to entities - multiplayer only - chrissstrahl
+//GAMEFIX - Added: Extra Information we can attach to entities - multiplayer only - chrissstrahl
 //--------------------------------------------------------------
 gamefix_entity_extraData_s gamefix_entity_extraData_t[MAX_GENTITIES];
 

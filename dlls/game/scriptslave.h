@@ -109,6 +109,12 @@ class ScriptSlave : public Trigger
 
 							ScriptSlave();
 							~ScriptSlave();
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Weapon accuracy bug, not counting destructibles. - chrissstrahl
+		//--------------------------------------------------------------
+		str					GetDamageLabel( void );
+
 		
 		void				StopEvent( Event *ev );
 		void				Stop( void );

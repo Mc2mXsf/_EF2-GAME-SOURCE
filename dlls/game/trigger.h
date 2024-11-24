@@ -95,6 +95,14 @@ class Trigger : public Entity
 						      Trigger();
 		virtual		      ~Trigger();
 
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Weapon accuracy bug, not counting destructibles. - chrissstrahl
+		//--------------------------------------------------------------
+		bool				GetDestructible(void);
+		bool				GetTriggerOnDamage(void);
+
+
       // override this to allow objects other than players, projectiles, and monsters to activate the trigger
       virtual qboolean  respondTo( Entity *other );
 

@@ -766,6 +766,16 @@ CLASS_DECLARATION( Trigger, ScriptSlave, "script_object" )
 	{ NULL, NULL }
 };
 
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Weapon accuracy bug, not counting destructibles. - chrissstrahl
+//--------------------------------------------------------------
+str ScriptSlave::GetDamageLabel()
+{
+	return damagelabel;
+}
+
+
 ScriptSlave::ScriptSlave()
 {
 	mover = new Mover( this );

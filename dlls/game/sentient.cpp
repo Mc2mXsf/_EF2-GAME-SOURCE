@@ -31,8 +31,14 @@
 #include "actor.h"
 #include "mp_manager.hpp"
 #include <qcommon/gameplaymanager.h>
-
 #include "decals.h"
+
+
+//--------------------------------------------------------------
+// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+//--------------------------------------------------------------
+#include "gamefix.hpp"
+
 
 Event EV_Sentient_BeginAttack
 (
@@ -1009,6 +1015,16 @@ void Sentient::StopFireWeapon( Event *ev )
 	Weapon      *activeWeapon;
 	int         number=0;
 	str         side;
+	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+	//--------------------------------------------------------------
+	if (this->isSubclassOf(Player)) {
+		gamefix_client_persistant_t[this->entnum].heuristicsHit = false;
+		gamefix_client_persistant_t[this->entnum].heuristicsShots = 0;
+	}
+
 	
 	if ( ev->NumArgs() > 0 )
 	{

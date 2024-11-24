@@ -71,6 +71,14 @@ struct gamefix_client_persistant_s
 	float			chatsLast = 0.0f;
 	str				currentModel = "models/char/munro.tik";
 	str				currentTeam = "none";
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis - chrissstrahl
+	//--------------------------------------------------------------
+	EntityPtr		heuristicsWeap = nullptr;
+	long int		heuristicsShots = 0;
+	bool			heuristicsHit = false;
 };
 extern gamefix_client_persistant_s gamefix_client_persistant_t[MAX_CLIENTS];
 
@@ -83,6 +91,7 @@ struct gamefix_entity_extraData_s
 	float			lastActivated = -9999.0f;
 };
 extern gamefix_entity_extraData_s gamefix_entity_extraData_t[MAX_GENTITIES];
+
 
 Entity*				gamefix_returnInfoPlayerStart(str info);
 
