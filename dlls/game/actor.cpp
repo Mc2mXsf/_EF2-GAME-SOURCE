@@ -16467,7 +16467,12 @@ void Actor::_notifyGroupOfEnemy()
       {
       act = ActiveList.ObjectAt( i );
 		
-		if ( act->GetGroupID() == GetGroupID() )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Enemy being shared from different actortypes, making Friendly AI hate whom ever the Enemy AI hates currently, resulting in hating the player or them self - chrissstrahl
+		//--------------------------------------------------------------
+		//if ( act->GetGroupID() == GetGroupID() )
+		if ( act->GetGroupID() == GetGroupID() && act->actortype == this->actortype && currentEnemy != this )
          {
          act->sensoryPerception->Stimuli(STIMULI_ALL);
          act->enemyManager->TryToAddToHateList( currentEnemy );
@@ -16480,7 +16485,12 @@ void Actor::_notifyGroupOfEnemy()
       {
       act = SleepList.ObjectAt( i );
 		
-		if ( act->GetGroupID() == GetGroupID() )
+
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Enemy being shared from different actortypes, making Friendly AI hate whom ever the Enemy AI hates currently, resulting in hating the player or them self - chrissstrahl
+		//--------------------------------------------------------------
+		//if ( act->GetGroupID() == GetGroupID() )
+		if ( act->GetGroupID() == GetGroupID() && act->actortype == this->actortype && currentEnemy != this )
          {
 			act->sensoryPerception->Stimuli(STIMULI_ALL);
          act->enemyManager->TryToAddToHateList( currentEnemy );
