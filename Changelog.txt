@@ -16,8 +16,6 @@ bool gamefixAPI_commandsUpdate(int clientNum, const str &cmd) -> remove printout
 DISABLED CODE POTENCIALLY CAUSING ISSUES
 void Object::Setup( Event *ev ) - is sets health on objects, as far as I recall this was not in the original game release
 
-Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis.
-Fixed: Weapon accuracy bug, not counting destructibles.
 
 IGNORING THE FOLLOWING CODE WARNINGS:
 Warning C4996: void ClassEvents( const char *classname, qboolean print_to_disk )
@@ -29,6 +27,41 @@ Warning C26495: class Event : public Class -> Event *prev;
 Warning C6386: Buffer overflow while writing to objlist -> template< class Type > void Container<Type>::Resize
 Warning C6385: Invalid data is being read from objlist-> template< class Type > void Container<Type>::Resize
 WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
+
+Fixed: Weapon accuracy bug, not counting destructibles.
+Fixed: Phaser shots and hits being count on a per bullet rather as per beam basis.
+void gameFixAPI_initPersistant(int clientNum, bool isBot)
+struct gamefix_client_persistant_s
+str ScriptSlave::GetDamageLabel()
+void Sentient::StopFireWeapon( Event *ev )
+bool Trigger::GetDestructible()
+bool Trigger::GetTriggerOnDamage()
+float BulletAttack( ... )
+
+Fixed: Actortypes Friend and Civilian getting aggressive or failing the Mission from splashdamage by player
+void Actor::ArmorDamage( Event *ev )
+
+Fixed: Enemy being shared from different actortypes, making Friendly AI hate whom ever the Enemy AI hates currently, resulting in hating the player or them self
+void Actor::_notifyGroupOfEnemy()
+
+Fixed: Friendly and Civilian actortypes turning hostile or failing the Mission from splashdamage by player.
+void Actor::ArmorDamage( Event *ev )
+
+Fixed: gameplay.gdb, strange behaviour/animation when patrolling or following in all AIs with Bat'leth
+OBJECT HoldBatleth		Animations
+
+Fixed: Boundingbox size of model: Akira.tik
+Fixed: Boundingbox size of model: Ambassador.tik
+Fixed: Boundingbox size of model: borg-sphere.tik
+Fixed: Boundingbox size of model: Centaur.tik
+Fixed: Boundingbox size of model: Constitution.tik
+Fixed: Boundingbox size of model: e-shuttle-low.tik
+Fixed: Boundingbox size of model: ferengi_shuttle.tik
+Fixed: Boundingbox size of model: galaxy.tik
+Fixed: Boundingbox size of model: intrepid.tik
+Fixed: Boundingbox size of model: nebula.tik
+Fixed: Boundingbox size of model: rom_warbird.tik
+Fixed: Boundingbox size of model: romulan_assault.tik
 
 Fixed: Using/Checking for, client 0 only / Added: Multiplayer compatibility 
 void Actor::BranchDialog(Event* ev)
