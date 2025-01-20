@@ -13824,7 +13824,13 @@ void Actor::ArmorDamage( Event *ev )
 		{
 		//Teammates don't count MOD explosion, because it might
 		//be splash damage
-		if ( actortype == IS_TEAMMATE )
+		
+		
+		//--------------------------------------------------------------
+		// GAMEFIX - Fixed: Warning C4996 stricmp: The POSIX name for this item is deprecated. Using Q_stricmp instead. - chrissstrahl
+		//--------------------------------------------------------------
+		//if ( actortype == IS_TEAMMATE )
+		if ( actortype == IS_TEAMMATE || actortype == IS_CIVILIAN || actortype == IS_FRIEND )
 			{
 			int MOD = ev->GetInteger(9);
 			if ( MOD != MOD_EXPLOSION )
