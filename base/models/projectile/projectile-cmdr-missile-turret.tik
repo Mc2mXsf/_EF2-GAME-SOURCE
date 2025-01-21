@@ -24,7 +24,7 @@ init
 		explosionmodel				fx/fx-explosion-commander-missile.tik
 		cache 					models/fx/fx-explosion-commander-missile.tik
 		gravity					$ROM-HANDGRENADE-PROJ-GRAVITY$
-		knockback				$ROM-HANDGRENADE-PROJ-KNOCKBACK$
+		knockback				40 //<- [hzm singeplayer fix 1.00] chrissstrahl - Original -> //$ROM-HANDGRENADE-PROJ-KNOCKBACK$ //400
 		life					$ROM-HANDGRENADE-PROJ-LIFE$
 		bouncefactor            		0.5
 		bouncetouch
