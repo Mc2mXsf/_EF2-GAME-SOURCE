@@ -22,7 +22,7 @@ init
 	explosionmodel          fx/fx-explosion-commander-gooball.tik
 	cache 			models/fx/fx-explosion-commander-gooball.tik
 	gravity                 0
-	knockback               250
+	knockback               25 //<- [hzm singeplayer fix 1.00] chrissstrahl - Original -> // 250
 	life                    500
 	proj_notshootable
 	heatseek
