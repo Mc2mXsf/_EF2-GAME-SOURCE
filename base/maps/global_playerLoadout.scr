@@ -1079,6 +1079,8 @@ void globalLoadout_m6_deck16_engineering()
 		//--- the player is playing from the beginning
 		globalLoadout_GiveWeapon( WEAPON_NONE );
 		globalLoadout_GiveViewmode( VIEWMODE_STRUCTURAL_INTEGRITY );
+		
+		globalLoadout_TakeWeapon( WEAPON_GRENADE_LAUNCHER ); //<- [hzm singeplayer fix 1.00] chrissstrahl [take weapon as it does to much splash damage] - Original -> //
 	}
 	else
 	{
@@ -1088,7 +1090,7 @@ void globalLoadout_m6_deck16_engineering()
 		globalLoadout_GiveWeapon( WEAPON_ASSAULT_SHOTGUN );
 		globalLoadout_GiveWeapon( WEAPON_BURST_RIFLE );
 		globalLoadout_GiveWeapon( WEAPON_COMPRESSION_RIFLE );
-		globalLoadout_GiveWeapon( WEAPON_GRENADE_LAUNCHER );
+		//<- [hzm singeplayer fix 1.00] chrissstrahl [don't give weapon as it does to much splash damage] - Original -> //globalLoadout_GiveWeapon( WEAPON_GRENADE_LAUNCHER );
 		globalLoadout_GiveViewmode( VIEWMODE_STRUCTURAL_INTEGRITY );
 	}
 }
@@ -1108,6 +1110,8 @@ void globalLoadout_m6_deck1_bridge_redalert()
 		//--- the player is playing from the beginning
 		globalLoadout_GiveWeapon( WEAPON_NONE );
 		globalLoadout_GiveViewmode( VIEWMODE_STRUCTURAL_INTEGRITY );
+		
+		globalLoadout_GiveWeapon( WEAPON_GRENADE_LAUNCHER ); //<- [hzm singeplayer fix 1.00] chrissstrahl [give back weapon it was previously taken] - Original -> //
 	}
 	else
 	{
