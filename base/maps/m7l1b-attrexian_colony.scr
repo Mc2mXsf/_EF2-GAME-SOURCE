@@ -1876,16 +1876,17 @@ void setupCrateMonster()
 	$crateMonster.health( 2600 );
 	$crateMonster.anim( "idle" );
 	$crateMonster.immortal( 1 );
-	$crateMonster.hide();
 	$crateMonster.pushable( 0 );
-
+	
+	/* [hzm singeplayer fix 1.00] chrissstrahl [don't hide or force alpha]
+	$crateMonster.hide();
 	$crateMonster.forcealpha( 1 );
 	$crateMonster.alpha( 1 );
 
 	$crateMonster.fade( 1, 0 );
 	wait( 1 );
 	$crateMonster.alpha( 0 );
-
+	
 	$crateMonster_head1.attach( $crateMonster, "Bip01 Head" );
 	$crateMonster_torso1.attach( $crateMonster, "Bip01 Spine" );
 	$crateMonster_arm1.attach( $crateMonster, "Bip01 L Forearm" );
@@ -1895,7 +1896,10 @@ void setupCrateMonster()
 	wait( .1 );
 
 	$crateMonster_leg1.attach( $crateMonster, "Bip01 L Foot" );
-	$crateMonster_leg2.attach( $crateMonster, "Bip01 R Foot" );
+	$crateMonster_leg2.attach( $crateMonster, "Bip01 R Foot" );	
+	*/
+
+
 
 	$sewerCrateMonsterGateDoor1.time( 1 );
 	$sewerCrateMonsterGateDoor1.moveUp( 256 );
@@ -1959,6 +1963,29 @@ void crateMonsterAttack()
 	$crateMonster_arm2_mover.remove();
 	$crateMonster_head1_mover.remove();
 	$crateMonster_torso1_mover.remove();
+	
+	//[hzm singeplayer fix 1.00] chrissstrahl - code taken from teh HZm Coop Mod to make crate monster actually visible
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartHead","origin","5432 2344 -106","scale","0.55");
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartTorso","origin","5432 2344 -106","scale","0.65");
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartArm1","origin","5432 2344 -106","scale","0.4");
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartArm2","origin","5432 2344 -106","scale","0.4");
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartArm3","origin","5432 2344 -106","scale","0.4");
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartArm4","origin","5432 2344 -106","scale","0.4");
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartFoot1","origin","5432 2344 -106","scale","0.5");
+	spawn("script_model","model","models/enviro/crate-k7-32x32.tik","targetname","cMonPartFoot2","origin","5432 2344 -106","scale","0.5");
+	wait(0.05);
+	$cMonPartHead.attach( $crateMonster, "Bip01 Head" );
+	$cMonPartTorso.attach( $crateMonster, "Bip01 Spine" );
+	$cMonPartArm1.attach( $crateMonster, "Bip01 L Forearm" );
+	$cMonPartArm2.attach( $crateMonster, "Bip01 R Forearm" );
+	$cMonPartArm3.attach( $crateMonster, "Bip01 L Upperarm" );
+	$cMonPartArm4.attach( $crateMonster, "Bip01 R Upperarm" );
+	$cMonPartFoot1.attach( $crateMonster, "Bip01 L Foot" );
+	$cMonPartFoot2.attach( $crateMonster, "Bip01 R Foot" );
+	$cMonPartHead.angles('0 90 0');
+	wait(0.05);
+	$crateMonster.scale(2.2);
+	//end of fix
 
 	$crateMonster.updatebosshealth( 1 , 1 );
 	$crateMonster.maxbosshealth( 2601 );
