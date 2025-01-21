@@ -106,6 +106,11 @@ float boolArmShuttleFlightPlayed = 0;
 //---------------------
 void main()
 {
+	//[hzm singeplayer fix 1.00 Alpha 2] Chrissstrahl  - try fixing missing fog on this level - have very high numbers so it isn't visible during cinematics but already rendered
+	$world.entity_fade_dist( 20000000 );
+	$world.farplane_color ( '0.1 0.11 0.1' );
+	$world.farplane ( 4000000 );
+
 	//--- fade the world out
 	cam_fadeout( .1, 0, 0, 0, 1, 0 );
 	letterbox( .1 );
@@ -1374,6 +1379,13 @@ void cinematicArm_PostCrash_ArmEnd()
 	wait( .5 );
 
 	cam_fadein( .5, 0, 0, 0, 1, 0 );
+	
+	
+	//[hzm singeplayer fix 1.00 Alpha 2] Chrissstrahl  - try fixing missing fog on this level
+	$world.entity_fade_dist( 20001 );
+	$world.farplane_color ( '0.101 0.11 0.1' );
+	$world.farplane ( 4001 );
+	
 	wait( .3 );
 
 	$player.use( "FieldAssaultRifle" );
