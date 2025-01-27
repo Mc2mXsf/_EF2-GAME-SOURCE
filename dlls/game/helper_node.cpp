@@ -1719,7 +1719,26 @@ HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float ma
 	FindMovementPath find;
 	Path            *path;
 	int              nodeID;
+
 	
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	Player* player;
+	Entity* ent = gamefix_getActorFollowTarget(&self);
+	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+		player = (Player*)ent;
+	}
+	else {
+		ent = gamefix_actorGetCurrentEnemy(&self);
+		if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+			player = (Player*)ent;
+		}
+		else {
+			player = gamefix_getClosestPlayerSamePlane((Entity*)&self);
+		}
+	}
+
 	
 	// Set up our pathing heuristics
 	find.heuristic.self = &self;
@@ -1771,34 +1790,16 @@ HelperNode* HelperNode::FindClosestHelperNode( Actor &self , int mask , float ma
 			
 			if ( node->isReserved() )
 				continue;
-			
-			Player* player;
-
-
-			//--------------------------------------------------------------
-			// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
-			//--------------------------------------------------------------
-			Entity* ent = gamefix_getActorFollowTarget(&self);
-			if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
-				player = (Player*)ent;
-			}
-			else {
-				ent = gamefix_actorGetCurrentEnemy(&self);
-				if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
-					player = (Player*)ent;
-				}
-				else {
-					player = gamefix_getClosestPlayerSamePlane((Entity*) & self);
-				}
-			}
 
 
 			//--------------------------------------------------------------
 			// GAMEFIX - error: cannot convert 'bool' to 'HelperNode*' in return - chrissstrahl
+			// Also moved logic to grab player outside loop, since it is way more complex now
 			//--------------------------------------------------------------
-			if ( !player ) return nullptr;
+			if (!player) return nullptr;
 
 
+			//Check if node is within the minimum distance of the player
 			if ( player->WithinDistance( node->origin , minDistanceFromPlayer ) )
 				continue;
 
@@ -2274,6 +2275,25 @@ HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , 
 	int					nodeID;
 	trace_t				trace;
 	
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Using/Checking for, client 0 only - chrissstrahl
+	//--------------------------------------------------------------
+	Player* player;
+	Entity* entPlayer = gamefix_getActorFollowTarget(&self);
+	if (gamefix_EntityValid(ent) && ent->isSubclassOf(Player)) {
+		player = (Player*)entPlayer;
+	}
+	else {
+		ent = gamefix_actorGetCurrentEnemy(&self);
+		if (gamefix_EntityValid(entPlayer) && entPlayer->isSubclassOf(Player)) {
+			player = (Player*)entPlayer;
+		}
+		else {
+			player = gamefix_getClosestPlayerSamePlane((Entity*)&self);
+		}
+	}
+
 	
 	// Set up our pathing heuristics
 	find.heuristic.self = &self;
@@ -2324,20 +2344,15 @@ HelperNode* HelperNode::FindClosestHelperNodeThatCannotSeeEntity( Actor &self , 
 			if ( node->isReserved() )
 				continue;
 
-			//Check if node is within the minimum distance of the player
-			Player* player;
-			//--------------------------------------------------------------
-			// GAMEFIX - check with all players - grab any player on server - chrissstrahl
-			//--------------------------------------------------------------
-			player = gamefix_getAnyPlayerPreferably();
-
 
 			//--------------------------------------------------------------
 			// GAMEFIX - error: cannot convert 'bool' to 'HelperNode*' in return - chrissstrahl
+			// Also moved logic to grab player outside loop, since it is way more complex now
 			//--------------------------------------------------------------
 			if (!player) return nullptr;
 
 
+			//Check if node is within the minimum distance of the player
 			if ( player->WithinDistance( node->origin , minDistFromPlayer ) )
 				continue;
 
