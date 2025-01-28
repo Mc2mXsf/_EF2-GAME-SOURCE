@@ -28,6 +28,10 @@ Warning C6386: Buffer overflow while writing to objlist -> template< class Type 
 Warning C6385: Invalid data is being read from objlist-> template< class Type > void Container<Type>::Resize
 WARNING C6269: Potentially incorrect order of operations -> int BotAI(int client, float thinktime)
 
+
+Fixed: CAN_SEE_PLAYER check not working if client 0 is disconnected
+qboolean Actor::checkcanseeplayer( Conditional &condition )
+
 Fixed: Crash if a string operation with a deleted entity is done in the scripts
 void Interpreter::Execute( Event *e )
 

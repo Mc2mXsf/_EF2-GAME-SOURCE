@@ -8762,15 +8762,19 @@ qboolean Actor::checkcanseeplayer( Conditional &condition )
 	qboolean in_fov;
 	qboolean real_can_see;
 
-	// Get our current enemy
-	Entity *player;
-	player = GetPlayer ( 0 );
+	if ( condition.numParms() > 0 )
+		use_fov = atoi( condition.getParm( 1 ) );
+
+
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: CAN_SEE_PLAYER check not working if client 0 is disconnected - chrissstrahl
+	//--------------------------------------------------------------
+	Entity* player;
+	player = gamefix_getClosestPlayerActorCanSee(this, use_fov);
+
 
 	if ( !player )
 		return false;
-
-	if ( condition.numParms() > 0 )
-		use_fov = atoi( condition.getParm( 1 ) );
 
 	// See if we should check again
 
