@@ -9727,6 +9727,13 @@ void Entity::removeAffectingViewModes( unsigned int mask )
 //--------------------------------------------------------------
 void Entity::SetGroupID( Event *ev )
 {
+	//--------------------------------------------------------------
+	// GAMEFIX - Fixed: Dead Actor can be added to GroupId getting the scripts stuck if groupdeaththread is used - chrissstrahl
+	//--------------------------------------------------------------
+	if (this->isSubclassOf(Actor) && this->health <= 0) {
+		gi.Printf(va("Entity::SetGroupID - Dead Actor (%s) rejected from GroupID %d\n", this->targetname.c_str(), ev->GetInteger(1)));
+		return;
+	}
 	AddToGroup( ev->GetInteger( 1 ) );
 }
 
