@@ -657,7 +657,7 @@ void EnemyManager::Update()
 	act->sensoryPerception->SenseEnemies();
 	
 	
-	if ( GetCurrentEnemy() || act->GetActorFlag( ACTOR_FLAG_INVESTIGATING ) || ( act->mode == ACTOR_MODE_SCRIPT ) || ( act->mode == ACTOR_MODE_TALK ) )
+	if ( GetCurrentEnemy() || act->GetActorFlag( ACTOR_FLAG_INVESTIGATING ) || ( act->m_mode == ActorMode::Script ) || ( act->m_mode == ActorMode::Talk ) )
 		act->last_time_active = level.time;
 	
 	// Take care of enemies
@@ -967,7 +967,7 @@ void EnemyManager::TrySleep( void )
 			if ( player )
 			{
 				//We should NOT fall asleep if:
-				// our mode is ACTOR_MODE_IDLE _AND_ player flags are not equal to FL_NOTARGET 
+				// our mode is ActorMode::Idle _AND_ player flags are not equal to FL_NOTARGET 
 				// OR
 				// Player is within our vision distance
 				// OR
@@ -975,19 +975,19 @@ void EnemyManager::TrySleep( void )
 				
 				//
 				// 7/15/02 -- SK
-				// Added via && the "gi.inPVS( player->centroid, act->centroid )" to the ACTOR_MODE_IDLE 
+				// Added via && the "gi.inPVS( player->centroid, act->centroid )" to the ActorMode::Idle 
 				// checks because, without it, all AI_OFF'd actors would still be considered "active"
 				// and this was ruining the framerate... I do not believe this is going to have any 
 				// detrimental side effects. 
 				//
-				if ( ( act->mode == ACTOR_MODE_IDLE ) && !(player->flags & FL_NOTARGET) && gi.inPVS( player->centroid, act->centroid ) || act->sensoryPerception->WithinVisionDistance(player) || gi.inPVS( player->centroid, act->centroid ) )
+				if ( ( act->m_mode == ActorMode::Idle ) && !(player->flags & FL_NOTARGET) && gi.inPVS( player->centroid, act->centroid ) || act->sensoryPerception->WithinVisionDistance(player) || gi.inPVS( player->centroid, act->centroid ) )
 				{
 					act->last_time_active = level.time;
 				}
 				
 				else
 				{
-					if ( act->mode == ACTOR_MODE_AI )
+					if ( act->m_mode == ActorMode::AI )
 					{
 						act->EndMode();
 						

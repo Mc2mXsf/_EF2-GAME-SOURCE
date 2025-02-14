@@ -21,6 +21,8 @@
 #ifndef __ACTORINCLUDES_H__
 #define __ACTORINCLUDES_H__
 
+#include <cstdint>
+
 //=========================================
 // External Events
 //=========================================
@@ -156,11 +158,13 @@ extern Event EV_Actor_SetMovementMode ;
 //========================================
 // Actor modes
 //========================================
-#define ACTOR_MODE_NONE			0
-#define ACTOR_MODE_IDLE			1
-#define ACTOR_MODE_AI			2
-#define ACTOR_MODE_SCRIPT		3
-#define ACTOR_MODE_TALK			4
+enum class ActorMode : uint8_t {
+	None,
+	Idle,
+	AI,
+	Script,
+	Talk,
+};
 
 //=======================================
 // Pain types

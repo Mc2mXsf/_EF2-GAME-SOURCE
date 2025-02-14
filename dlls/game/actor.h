@@ -436,7 +436,7 @@ class Actor : public Sentient
 		// to talk, when the dialog is completed, they step back into
 		// the behaivors they saved off here
 		//---------------------------------------------------------------
-		int								saved_mode = 0;
+		ActorMode                       saved_mode          = ActorMode::None;
 		BehaviorPtr						saved_behavior = nullptr;
 		BehaviorPtr						saved_headBehavior = nullptr;
 		BehaviorPtr						saved_eyeBehavior = nullptr;
@@ -495,7 +495,7 @@ class Actor : public Sentient
 		Vector							last_attack_enemy_pos = Vector(0.0f, 0.0f, 0.0f);
 		EntityPtr						last_attack_entity_hit = nullptr;
 		Vector							last_attack_entity_hit_pos = Vector(0.0f, 0.0f, 0.0f);
-		int								mode = 0;
+		ActorMode                           m_mode                         = ActorMode::AI; // ActorMode::Idle
 		Vector							last_known_enemy_pos = Vector(0.0f, 0.0f, 0.0f);
 		Vector							last_known_player_pos = Vector(0.0f, 0.0f, 0.0f);
 		float							feet_width = 0.0f;
@@ -1167,8 +1167,8 @@ class Actor : public Sentient
 		//-----------------------------------------------------------------
 		// Mode functions
 		//-----------------------------------------------------------------
-		qboolean							ModeAllowed( int new_mode );
-		void								StartMode( int new_mode );
+		qboolean                            ModeAllowed(ActorMode _mode);
+		void                                StartMode(ActorMode _mode);
 		void								EndMode( void );
 		void								SaveMode( void );
 		void								RestoreMode( void );
