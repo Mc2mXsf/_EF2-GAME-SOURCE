@@ -36,4 +36,3 @@ dlls/game/game.ilk
 dlls/game/game.log
 dlls/game/vc.nativecodeanalysis.all.xml
 dlls/game/CodeAnalysisResultManifest.txt
-*.vcxproj
