@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="QCommon">
+      <UniqueIdentifier>{2222407e-1eb2-42a3-842b-b3677bc747e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{e7956262-790a-4ada-b58d-493e866947a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\dlls\game\q_math.c">
+      <Filter>QCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\game\q_mathsys.c">
+      <Filter>QCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\game\q_shared.c">
+      <Filter>QCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\game\str.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\dlls\game\class.h" />
+    <ClInclude Include="..\..\dlls\game\container.h" />
+    <ClInclude Include="..\..\dlls\game\gamedefs.h" />
+    <ClInclude Include="..\..\dlls\game\listener.h" />
+    <ClInclude Include="..\..\Shared\qcommon\alias.h">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\qcommon\cm_public.h">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\q_shared.h">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\qcommon\qcommon.h">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\qcommon\qfiles.h">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\qcommon\quaternion.h">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\qcommon\stringresource.hpp">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\qcommon\tiki_script.h">
+      <Filter>QCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\surfaceflags.h" />
+    <ClInclude Include="..\..\dlls\game\bit_vector.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\Linklist.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\output.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\queue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\stack.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\str.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\umap.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\game\vector.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
